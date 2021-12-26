@@ -1,5 +1,6 @@
 ﻿using Core.Base.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Web.Helper
 {
@@ -12,6 +13,18 @@ namespace Web.Helper
                 return new OkObjectResult(result.Result);
             }
             return new BadRequestObjectResult(result.Errors);
+        }
+
+        public static object CreateViewModel<T, R>(this ManagerResult<T> result, Func<T, R> func)
+        {
+            return new
+            {
+                Code = result.Code,
+                Message = result.Message,
+                Success = result.Success,
+                Errors = result.Errors,
+                Result = func(result.Result)
+            };
         }
     }
 }

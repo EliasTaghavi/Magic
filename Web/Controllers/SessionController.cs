@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System;
+using Web.Helper;
 using Web.Mappers;
 using Web.Models.Session;
 
@@ -58,7 +59,7 @@ namespace Web.Controllers
             string ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
-            return Ok(response);
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel()));
         }
     }
 }

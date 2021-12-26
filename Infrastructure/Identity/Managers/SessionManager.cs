@@ -98,7 +98,8 @@ namespace Infrastructure.Identity.Managers
             {
                 var newUser = new User
                 {
-                    Phone = phone
+                    Phone = phone,
+                    Username = phone
                 };
                 user = UserRepo.Create(newUser);
                 userAlreadyExist = false;
