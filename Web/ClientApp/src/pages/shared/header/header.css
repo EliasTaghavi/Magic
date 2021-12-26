@@ -1,0 +1,136 @@
+.headerMainContainer {
+    width: 100%;
+    display: flex;
+    position: absolute;
+    z-index: 250;
+    height: 65px;
+    align-items: center;
+    justify-content: flex-start;
+    right: 0;
+}
+.logo {
+    height: 50px;
+    object-fit: contain;
+    padding: 0 20px 0 40px;
+}
+.bg {
+    box-shadow: 0 2px 8px #999999cc;
+    background-color: #ffffff;
+    transition: 0.5s;
+}
+.noBg {
+    transition: 0.5s;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.inMainContainer {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leftSide {
+    height: 100%;
+    flex: 1;
+    align-items: center;
+}
+
+.rightSide {
+    height: 100%;
+    color: #000000;
+}
+
+.signUpText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    height: 100%;
+    padding: 0 30px;
+}
+
+.mainMenu {
+    height: 100%;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.mainMenu li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuBtn {
+    color: #000000;
+    padding: 0 20px;
+    height: 100%;
+    border-bottom: 3px solid #ffffff;
+    transition: 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuBtn:hover {
+    transition: 0.1s;
+    border-bottom: 3px solid #ff521d;
+    color: #000000;
+}
+
+.Drawer {
+    position: fixed;
+    width: 80%;
+    max-width: 330px;
+    z-index: 252;
+    top: 0;
+    bottom: 0;
+    right: -80%;
+    overflow-y: auto;
+    transition: 0.3s;
+}
+
+.DrawerFather {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    z-index: 251;
+    background-color: rgba(0,0,0,0.5);
+    -webkit-animation: fadein 0.3s;
+    -moz-animation: fadein 0.3s;
+    -ms-animation: fadein 0.3s;
+    -o-animation: fadein 0.3s;
+    animation: fadein 0.3s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.logo {
+
+}

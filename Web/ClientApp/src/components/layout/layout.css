@@ -1,0 +1,9 @@
+.scrollTopTopButton {
+    z-index: 200;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff8b04;
+    padding: 1rem;
+    position: fixed;
+    border-radius: 0;
+}
