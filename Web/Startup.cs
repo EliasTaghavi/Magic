@@ -1,60 +1,70 @@
+using Core.Base.Entities;
+using Core.Identity.Repos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using System.Linq;
+using Web.Middleware;
+using Web.Services;
 
 namespace Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserRepo userRepo)
         {
+            DbSeeder.AdminSeeder(userRepo, Configuration);
 
-            services.AddControllersWithViews();
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                configuration.RootPath = "ClientApp/build";
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                                   | ForwardedHeaders.XForwardedProto
             });
-        }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            //file
             app.UseSpaStaticFiles();
-
+            app.UseSerilogRequestLogging();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseMiddleware<JwtTokenMiddleware>();
+            app.UseCors(
+                options => options.AllowAnyOrigin()
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod()
+                );
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
@@ -65,6 +75,40 @@ namespace Web
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+            });
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddDbContext(Configuration);
+            services.AddIdentity(Configuration);
+            services.AddRepos();
+            services.AddManagers();
+            services.AddServices();
+            services.AddSettings(Configuration);
+            services.AddCors();
+            services.AddSwaggerGen();
+
+            services.AddControllersWithViews().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.Configure<ApiBehaviorOptions>(op =>
+            {
+                op.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    return new OkObjectResult(new ManagerResult<bool>
+                    {
+                        Code = 9,
+                        Errors = actionContext.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList(),
+                        Message = "InputsAreNotValid.",
+                        Success = false
+                    });
+                };
+            });
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
             });
         }
     }
