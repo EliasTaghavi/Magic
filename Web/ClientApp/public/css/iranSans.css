@@ -1,0 +1,12 @@
+@font-face {
+    font-family: IranSans;
+    src: url('./../fonts/IRANSansMobile(FaNum).ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: IranSansBold;
+    src: url('./../fonts/IRANSansMobile(FaNum)_Medium.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

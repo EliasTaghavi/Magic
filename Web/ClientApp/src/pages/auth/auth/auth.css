@@ -1,0 +1,101 @@
+.mainContainer {
+    flex: 1;
+    min-height: 100vh;
+    padding: 3rem 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../../../assets/images/pattern.png");
+    background-position: center;
+    background-repeat: repeat;
+}
+
+.headerImage {
+    width: 150px;
+    object-fit: contain;
+}
+
+.sliderContainer {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sliderImage {
+    width: 100%;
+    min-height: 350px;
+    min-width: 1120px;
+    height: auto;
+    margin-top: -10%;
+}
+
+.buttonsContainer {
+    margin: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.type {
+    display: flex;
+    width: 100%;
+    max-width: 320px;
+    height: 350px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 2rem;
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #66666666;
+    border: 0 solid transparent;
+    background-color: #ffffff;
+    transition: 0.2s;
+}
+
+.type:hover {
+    border: 3px solid #ff521d;
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+.type:focus {
+    box-shadow: 0 0 10px #66666666;
+}
+
+.image {
+    width: 36%;
+    object-fit: contain;
+}
+
+.button {
+    width: 90%;
+    height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    background-image: linear-gradient(120deg, #ffc004, #ff521d);
+    color: transparent;
+    border-radius: 50px;
+}
+
+.type:hover .button {
+    height: 40px;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
+.button:hover {
+    box-shadow: 0 5px 10px #66666644;
+}
+
+@media screen and (min-width: 768px) {
+    .type {
+        height: 430px;
+    }
+    .image {
+        width: 50%;
+    }
+}
