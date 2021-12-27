@@ -23,6 +23,15 @@ const SignupUserValidation = (data) => {
     if (!data?.address || data?.address.length < 10) {
       errors['address'] = 'آدرس حداقل 10 کارکتر است.'
     }
+
+    if (data?.image.size > 2095152) {
+      errors['image'] = 'حجم عکس نباید بیشتر از 2 مگابایت باشد.'
+    }
+
+    if (data?.selfiImage.size > 2095152) {
+      errors['selfiImage'] = 'حجم عکس نباید بیشتر از 2 مگابایت باشد.'
+    }
+
     value(errors);
   });
 };
