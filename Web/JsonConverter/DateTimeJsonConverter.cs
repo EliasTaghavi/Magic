@@ -1,19 +1,21 @@
-﻿using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System;
+using System.Globalization;
 
 namespace Web.JsonConverter
 {
     public class DateTimeJsonConverter : JsonConverter<DateTime>
     {
-        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        private readonly CultureInfo persianCulture = new("fa-IR");
+
+        public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            return TimeZoneInfo.ConvertTimeToUtc(existingValue);
         }
 
-        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            writer.WriteValue(value.ToString("yyyy/MM/dd", persianCulture));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.Identity.Entities;
+﻿using Core.File.Managers;
+using Core.Identity.Entities;
 using Core.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using Web.Helper;
 using Web.Mappers;
+using Web.Models.File;
 using Web.Models.User;
 
 namespace Web.Controllers
@@ -14,10 +16,12 @@ namespace Web.Controllers
     public class UserController : BaseController
     {
         private readonly IUserManager UserManager;
+        private readonly IFileManager fileManager;
 
-        public UserController(IUserManager userManager)
+        public UserController(IUserManager userManager, IFileManager fileManager)
         {
             UserManager = userManager;
+            this.fileManager = fileManager;
         }
 
         [HttpPost]
@@ -47,11 +51,23 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult FillData([FromBody] UserFillDataViewModel viewModel)
+        public IActionResult FillData([FromForm] UserFillDataViewModel viewModel)
         {
             var dto = viewModel.ToDto();
+            var fileViewModel = new IdentityFileModel
+            {
+                Identity = viewModel.Identity,
+                Selfie = viewModel.Selfie,
+            };
+            
             string userId = User.Claims.First(x => x.Type == ClaimTypes.UserData).Value;
+            var fileDto = fileViewModel.ToDto(userId);
             var response = UserManager.FillUserData(dto, userId);
+            var fileResponse = fileManager.UploadIdentities(fileDto);
+            if (!fileResponse.Success)
+            {
+                return Ok(fileResponse);
+            }
             return Ok(response);
         }
     }
