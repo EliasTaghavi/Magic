@@ -15,6 +15,8 @@ import SupportModal from "../../../../../components/shared/suportModal/supportMo
 import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../../../api/auth/auth';
 import Loader from 'react-loader-spinner';
 import RenderProgressBarModal from "../../../../../components/shared/renderProgressBarModal";
+import RenderUserWaitingModal from "../renderUserWaitingModal";
+import moment from 'moment-jalaali';
 
 let interval;
 let timer;
@@ -39,6 +41,13 @@ const LoginUser = () => {
   const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState('');
   const [token, setToken] = useState('');
   const [progressBarModal, setProgressBarModal] = useState(false);
+  const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login
+
+  const maximumDate = {
+    year: 1400,
+    month: 10,
+    day: 6,
+  }
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -91,9 +100,9 @@ const LoginUser = () => {
             100,
             0,
             uri => {
-              console.log(uri);
               uri.lastModifiedDate = new Date();
               uri.name = blobName;
+              console.log(uri);
               reader.readAsDataURL(uri);
               setSelfiImage(uri);
             },
@@ -273,22 +282,26 @@ const LoginUser = () => {
 
   const resendCode = async () => {
     await sendUserLoginSms(mobile);
-  }
+  };
 
   const sendCode = () => {
     setBtnLoader(true);
     sendUserLoginCode({mobile, code})
        .then((response) => {
-         let {result: {token, firstName}, success} = response;
+         let {result: {token, firstName, confirmed}, success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
              if (firstName !== null) {
-               TokenStore.setToken(token);
-               TokenStore.setUserType('user');
-               setBtnLoader(false);
-               history.replace('/user-panel');
+               if (confirmed) {
+                 TokenStore.setToken(token);
+                 TokenStore.setUserType('user');
+                 setBtnLoader(false);
+                 history.replace('/user-panel');
+               } else {
+                 setWaitingModal(2);
+               }
              } else {
                setStep(3);
                setToken(token);
@@ -308,6 +321,7 @@ const LoginUser = () => {
 
   const sendSignupUserData = (data) => {
     setBtnLoader(true);
+    setProgressBarModal(true);
     signupUser(data)
        .then((response) => {
          let {success} = response;
@@ -315,17 +329,25 @@ const LoginUser = () => {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
+             setWaitingModal(1);
              setBtnLoader(false);
+             setProgressBarModal(false);
            }
          } else {
            toast.error('خطای سرور', toastOptions);
            setBtnLoader(false);
+           setProgressBarModal(false);
          }
        })
        .catch(() => {
          toast.error('خطای سرور', toastOptions);
          setBtnLoader(false);
+         setProgressBarModal(false);
        })
+  };
+
+  const resetToHome = () => {
+    history.replace('/');
   };
 
   return (
@@ -435,6 +457,7 @@ const LoginUser = () => {
                   calendarClassName="responsive-calendar"
                   locale="fa"
                   inputPlaceholder="..."
+                  maximumDate={maximumDate}
                   wrapperClassName="w-100"
                   inputClassName={`text-right fs16 form-control input ${errors['birthday'] && 'is-invalid'}`}
                 />
@@ -516,6 +539,7 @@ const LoginUser = () => {
         )}
         {supportModal && <SupportModal setOpen={() => setSupportModal(false)} />}
         {progressBarModal && <RenderProgressBarModal />}
+        {waitingModal !== 0 && <RenderUserWaitingModal waitingModal={waitingModal} resetToHome={resetToHome} />}
       </FadeComponent>
     </div>
   );

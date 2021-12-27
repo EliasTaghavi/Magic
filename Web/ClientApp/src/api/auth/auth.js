@@ -27,7 +27,14 @@ export const sendUserLoginCode = ({mobile, code}) => {
   let data = JSON.stringify(rawData);
   return axios.post('/api/Session/VerifyTokenByPhone', data, {headers}).then((res) => {
     return res.data;
-  });
+  })
+     .catch((error) => {
+       if (error.response.status === 401) {
+         return 401;
+       } else {
+         return false;
+       }
+     })
 }
 
 export const signupUser = (data) => {
@@ -39,10 +46,10 @@ export const signupUser = (data) => {
   let formData = new FormData();
 
   let textData = {
-    firstName,
-    lastName,
-    birthday: `${birthday?.year}/${birthday?.month}/${birthday?.day}`,
-    address,
+    FirstName: firstName,
+    LastName: lastName,
+    Birthday: `${birthday?.year}/${birthday?.month}/${birthday?.day}`,
+    Address: address,
   };
 
   for (let [key, value] of Object.entries(textData)) {
@@ -56,16 +63,17 @@ export const signupUser = (data) => {
     formData.append('Selfie', selfiImage);
   }
 
-  return axios.post('/api/user/fillData', textData, {headers}).then((res) => {
+  console.log(Object.entries(formData))
+
+  return axios.post('/api/user/fillData', formData, {headers}).then((res) => {
     console.log(res);
-    let {success} = res.data;
-    if (success) {
-      return axios.post('/api/Session/VerifyTokenByPhone', formData, {headers}).then((res) => {
-        return res.data;
-      })
-         .catch()
-    } else {
-      return false;
-    }
-  });
+    return res.data;
+  })
+     .catch((error) => {
+       if (error.response.status === 401) {
+         return 401;
+       } else {
+         return false;
+       }
+     })
 }

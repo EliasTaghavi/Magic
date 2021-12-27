@@ -16,7 +16,6 @@ const RenderProgressBarModal = () => {
 					<ProgressBar className="w-100 mt-4 mb-1" animated now={100}/>
 				</div>
 			</div>
-
 		</Modal>
 	)
 };
