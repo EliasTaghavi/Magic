@@ -44,5 +44,15 @@ namespace Web.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult FillData([FromBody] UserFillDataViewModel viewModel)
+        {
+            var dto = viewModel.ToDto();
+            string userId = User.Claims.First(x => x.Type == ClaimTypes.UserData).Value;
+            var response = UserManager.FillUserData(dto, userId);
+            return Ok(response);
+        }
     }
 }

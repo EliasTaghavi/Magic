@@ -146,5 +146,19 @@ namespace Infrastructure.Identity.Managers
                 };
             }
         }
+
+        public ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId)
+        {
+            User user = UserRepo.Read(userId);
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.Address = dto.Address;
+            user.Birthday = dto.Birthday;
+            UserRepo.Update(user);
+            return new ManagerResult<bool>(true)
+            {
+                Code = 16
+            };
+        }
     }
 }

@@ -14,5 +14,16 @@ namespace Web.Mappers
                 Lastname = viewModel.Lastname,
             };
         }
+
+        public static UserFillDataDto ToDto(this UserFillDataViewModel viewModel)
+        {
+            return new UserFillDataDto
+            {
+                Address = viewModel.Address,
+                Birthday = viewModel.Birthday,
+                FirstName = viewModel.FirstName,
+                LastName = viewModel.LastName,
+            };
+        }
     }
 }

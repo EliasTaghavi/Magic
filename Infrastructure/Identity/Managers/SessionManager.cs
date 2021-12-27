@@ -177,6 +177,22 @@ namespace Infrastructure.Identity.Managers
                         }
                         ManagerResult<AccessToken> token = CreateToken(user, dto.IP);
                         CodeRepo.Remove(code);
+                        if (string.IsNullOrEmpty(user.FirstName))
+                        {
+                            return new ManagerResult<AccessToken>(token.Result, true)
+                            {
+                                Message = "Welcome! Fill the form",
+                                Code = 14
+                            };
+                        }
+                        if (!user.Confirmed)
+                        {
+                            return new ManagerResult<AccessToken>(token.Result, true)
+                            {
+                                Message = "Welcome! Admin didn't comfirm yor account.",
+                                Code = 15
+                            };
+                        }
                         return new ManagerResult<AccessToken>(token.Result, true)
                         {
                             Message = "Welcome",

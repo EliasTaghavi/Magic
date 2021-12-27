@@ -19,5 +19,6 @@ namespace Core.Identity.Managers
         ManagerResult<User> GetProfileDetails(string userId);
         ManagerResult<bool> Update(User user);
         ManagerResult<bool> CreateByPhone(CreateUserDto dto);
+        ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
     }
 }

@@ -7,8 +7,8 @@ namespace Core.Base.Entities
         public bool Success { get; set; }
         public T Result { get; set; }
         public List<string> Errors { get; set; }
-        public string Message { get; set; }
-        public int Code { get; set; }
+        public string Message { get; set; } = "Successful";
+        public int Code { get; set; } = 200;
         public ManagerResult()
         {
 
