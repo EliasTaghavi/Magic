@@ -36,30 +36,36 @@ export const signupUser = (data) => {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + token,
   };
+  let formData = new FormData();
 
-  let textData = JSON.stringify({
+  let textData = {
     firstName,
     lastName,
-    birthday,
+    birthday: `${birthday?.year}/${birthday?.month}/${birthday?.day}`,
     address,
-  });
+  };
 
-  let formData = new FormData();
+  for (let [key, value] of Object.entries(textData)) {
+    formData.append(key, value);
+  }
+
   if (image) {
-    formData.append('image', image);
+    formData.append('Identity', image);
   }
   if (selfiImage) {
-    formData.append('selfiImage', selfiImage);
+    formData.append('Selfie', selfiImage);
   }
 
-  return axios.post('/api/Session/VerifyTokenByPhone', textData, {headers}).then((res) => {
+  return axios.post('/api/user/fillData', textData, {headers}).then((res) => {
     console.log(res);
-    if (res.data) {
+    let {success} = res.data;
+    if (success) {
       return axios.post('/api/Session/VerifyTokenByPhone', formData, {headers}).then((res) => {
         return res.data;
       })
+         .catch()
     } else {
-      return
+      return false;
     }
   });
 }
