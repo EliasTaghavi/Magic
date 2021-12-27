@@ -8,7 +8,7 @@ import TokenStore from "../../../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
 import SignupShop from "../signupForm/signupShop.components";
 import SignupShopValidation from "../../../../../components/validations/authShop/signupShopValidation";
-import {sendMobile} from "../../../../../api/auth/auth";
+// import {sendMobile} from "../../../../../api/auth/auth";
 
 let interval;
 let timer;
@@ -73,7 +73,7 @@ const LoginShop = () => {
   }
 
   const sendSms = async () => {
-    await sendMobile(mobile);
+    // await sendMobile(mobile);
   };
 
   const handleValidate = (e) => {
@@ -273,7 +273,7 @@ const LoginShop = () => {
           {step === 1 && <span className="invalid-feedback mt-2 fs14" style={{
             display: errors['mobile'] ? 'block' : 'none',
           }}>{errors['mobile']}</span>}
-          {step == 2 && <span className="invalid-feedback mt-2 fs14" style={{
+          {step === 2 && <span className="invalid-feedback mt-2 fs14" style={{
             display: errors['code'] ? 'block' : 'none',
           }}>{errors['code']}</span>}
           <button type="submit" className="submitBtn border-0">

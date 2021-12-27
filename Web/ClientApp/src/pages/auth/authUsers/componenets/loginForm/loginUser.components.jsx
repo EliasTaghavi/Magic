@@ -12,6 +12,9 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Resizer from 'react-image-file-resizer';
 import SupportModal from "../../../../../components/shared/suportModal/supportModal.component";
+import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../../../api/auth/auth';
+import Loader from 'react-loader-spinner';
+import RenderProgressBarModal from "../../../../../components/shared/renderProgressBarModal";
 
 let interval;
 let timer;
@@ -20,12 +23,12 @@ const LoginUser = () => {
   const history = useHistory();
   const [step, setStep] = useState(1); // 1=mobile 2= code
   const [errors, setErrors] = useState({});
-  const [mobile, setMobile] = useState('09123456789');
-  const [code, setCode] = useState('5678');
+  const [mobile, setMobile] = useState('09137658795');
+  const [btnLoader, setBtnLoader] = useState(false);
+  const [code, setCode] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
@@ -34,6 +37,8 @@ const LoginUser = () => {
   const [selfiImage, setSelfiImage] = useState('');
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState('');
+  const [token, setToken] = useState('');
+  const [progressBarModal, setProgressBarModal] = useState(false);
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -202,30 +207,21 @@ const LoginUser = () => {
         step,
       }
       LoginUserValidation(data)
-        .then((response) => {
-          if (Object.entries(response).length < 1) {
-            if (step === 1) {
-              setStep(2);
-              // sendSms();
-            } else {
-              // sendCode();
-              if (true) {
-                TokenStore.setToken('token');
-                TokenStore.setUserType('user');
-                history.replace('/user-panel');
-              } else {
-                // else
-                setStep(3);
-              }
-            }
-          } else {
-            setErrors(response);
-            toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
-          }
-        })
-        .catch(() => {
-          toast.error('خطای سرور', toastOptions)
-        })
+         .then((response) => {
+           if (Object.entries(response).length < 1) {
+             if (step === 1) {
+               sendSmsFn();
+             } else {
+               sendCode();
+             }
+           } else {
+             setErrors(response);
+             toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
+           }
+         })
+         .catch(() => {
+           toast.error('خطای سرور', toastOptions)
+         })
     } else {
       let data = {
         firstName,
@@ -234,25 +230,103 @@ const LoginUser = () => {
         image,
         selfiImage,
         address,
+        token,
       }
       SignupUserValidation(data)
-        .then((response) => {
-          if (Object.entries(response).length < 1) {
-            // send data
-          } else {
-            setErrors(response);
-            toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
-          }
-        })
-        .catch((error) => {
-          toast.error('خطای سرور', toastOptions)
-        })
+         .then((response) => {
+           if (Object.entries(response).length < 1) {
+             sendSignupUserData(data);
+           } else {
+             setErrors(response);
+             toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
+           }
+         })
+         .catch(() => {
+           toast.error('خطای سرور', toastOptions)
+         })
     }
   }
 
-  const resendCode = () => {
+  const sendSmsFn = () => {
+    setBtnLoader(true);
+    sendUserLoginSms(mobile)
+       .then((response) => {
+         let {success} = response;
+         console.log(response);
+         if (response) {
+           if (response === 401) {
+             // do nothing but in another api's should logout from system
+           } else if (success) {
+             setStep(2);
+             setBtnLoader(false);
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBtnLoader(false);
+         }
+       })
+       .catch(() => {
+         toast.error('خطای سرور', toastOptions);
+         setBtnLoader(false);
+       })
+  };
 
+  const resendCode = async () => {
+    await sendUserLoginSms(mobile);
   }
+
+  const sendCode = () => {
+    setBtnLoader(true);
+    sendUserLoginCode({mobile, code})
+       .then((response) => {
+         let {result: {token, firstName}, success} = response;
+         if (response) {
+           if (response === 401) {
+             // do nothing but in another api's should logout from system
+           } else if (success) {
+             if (firstName !== null) {
+               TokenStore.setToken(token);
+               TokenStore.setUserType('user');
+               setBtnLoader(false);
+               history.replace('/user-panel');
+             } else {
+               setStep(3);
+               setToken(token);
+               setBtnLoader(false);
+             }
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBtnLoader(false);
+         }
+       })
+       .catch(() => {
+         setBtnLoader(false);
+         toast.error('خطای سرور', toastOptions);
+       });
+  };
+
+  const sendSignupUserData = (data) => {
+    setBtnLoader(true);
+    signupUser(data)
+       .then((response) => {
+         let {success} = response;
+         if (response) {
+           if (response === 401) {
+             // do nothing but in another api's should logout from system
+           } else if (success) {
+             setBtnLoader(false);
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBtnLoader(false);
+         }
+       })
+       .catch(() => {
+         toast.error('خطای سرور', toastOptions);
+         setBtnLoader(false);
+       })
+  };
 
   return (
     <div className={`loginUserContainer ${step === 2 && 'cpy4'}`}>
@@ -427,7 +501,8 @@ const LoginUser = () => {
             </div>
           )}
           <button type="submit" className="submitBtn border-0">
-            ثبت
+            {!btnLoader && <span>ثبت</span>}
+            {btnLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={8} width={70} className="loader"/>}
           </button>
           {step === 2 && <Timer resendCode={resendCode} setSupportModal={(value) => setSupportModal(value)}/>}
         </form>
@@ -440,13 +515,14 @@ const LoginUser = () => {
             }}>بازگشت</button>
         )}
         {supportModal && <SupportModal setOpen={() => setSupportModal(false)} />}
+        {progressBarModal && <RenderProgressBarModal />}
       </FadeComponent>
     </div>
   );
 }
 
 const Timer = ({resendCode, setSupportModal}) => {
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(5);
   const [resendCounter, setResendCounter] = useState(0);
 
   useEffect(() => {
@@ -490,7 +566,7 @@ const Timer = ({resendCode, setSupportModal}) => {
       {timer < 1 && resendCounter < 1 && (
         <button type="button" className="btn btn-transparent mt-3 outline p-0"
                 onClick={() => {
-                  setTimer(0);
+                  setTimer(5);
                   setResendCounter(resendCounter + 1);
                   resendCode();
                 }}>
