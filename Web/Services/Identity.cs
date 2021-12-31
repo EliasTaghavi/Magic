@@ -19,7 +19,7 @@ namespace Web.Services
 
             IConfigurationSection jwtSection = configuration?.GetSection("JWT");
 
-            JWTSettings jwtOptions = new JWTSettings();
+            JWTSettings jwtOptions = new();
             jwtSection.Bind(jwtOptions);
             services.Configure<JWTSettings>(jwtSection);
 

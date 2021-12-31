@@ -99,7 +99,8 @@ namespace Infrastructure.Identity.Managers
                 var newUser = new User
                 {
                     Mobile = phone,
-                    Username = phone
+                    Username = phone,
+                    UserStatus = UserStatus.New,
                 };
                 user = UserRepo.Create(newUser);
                 userAlreadyExist = false;
@@ -151,14 +152,6 @@ namespace Infrastructure.Identity.Managers
                 Success = true,
                 Result = true
             };
-
-            //return new ManagerResult<bool>
-            //{
-            //    Code = 4,
-            //    Message = "Something went wrong!!!",
-            //    Success = false,
-            //    Result = false
-            //};
         }
 
         public ManagerResult<AccessToken> VerifyTokenByPhone(VerifyTokenPhoneDto dto)
@@ -177,7 +170,7 @@ namespace Infrastructure.Identity.Managers
                         }
                         ManagerResult<AccessToken> token = CreateToken(user, dto.IP);
                         CodeRepo.Remove(code);
-                        if (string.IsNullOrEmpty(user.Name))
+                        if (user.UserStatus == UserStatus.New)
                         {
                             return new ManagerResult<AccessToken>(token.Result, true)
                             {
@@ -185,7 +178,7 @@ namespace Infrastructure.Identity.Managers
                                 Code = 14
                             };
                         }
-                        if (!user.Confirmed)
+                        if (user.UserStatus == UserStatus.NotConfirmed)
                         {
                             return new ManagerResult<AccessToken>(token.Result, true)
                             {

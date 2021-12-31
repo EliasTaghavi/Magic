@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Migrations.ParbadData
 {
-    public partial class payment : Migration
+    public partial class Payment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

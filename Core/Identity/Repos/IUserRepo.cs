@@ -21,5 +21,6 @@ namespace Core.Identity.Repos
         bool UserWithPhoneExist(string Phone);
         void UpdateProfile(User user);
         PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto);
+        User Create(string phone);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Core.Base.Dto;
+using Core.Base.Enums;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
+using Core.Identity.Enums;
 using Core.Identity.Mappers;
 using Core.Identity.Repos;
 using Infrastructure.Base.Repos;
@@ -22,6 +24,19 @@ namespace Infrastructure.Identity.Repos
             user.MobileConfirmed = true;
             user.Enable = true;
             Update(user);
+        }
+
+        public User Create(string phone)
+        {
+            var user = new User
+            {
+                FirstLogin = true,
+                Mobile = phone,
+                Username = phone,
+                UserStatus = UserStatus.New,
+                ObjectState = ObjectState.Added
+            };
+            return Create(user);
         }
 
         public bool IsUsernameAvailable(string Username)
@@ -55,7 +70,14 @@ namespace Infrastructure.Identity.Repos
             var query = GetSet();
             if (dto.MetaData.Confirmed.HasValue)
             {
-                query = query.Where(x => x.Confirmed == dto.MetaData.Confirmed);
+                if (dto.MetaData.Confirmed.Value)
+                {
+                    query = query.Where(x => x.UserStatus == UserStatus.Confirmed);
+                }
+                else
+                {
+                    query = query.Where(x => x.UserStatus != UserStatus.Confirmed);
+                }
             }
             if (string.IsNullOrEmpty(dto.MetaData.Mobile))
             {

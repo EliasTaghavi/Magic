@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Web.Migrations
 {
     [DbContext(typeof(OffDbContext))]
-    [Migration("20211226162937_init")]
-    partial class init
+    [Migration("20211231193633_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,7 +149,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "b72799ea-f2b8-4528-9387-2f1f339dcd1c",
-                            CreatedDate = new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(4057),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(6454),
                             EnName = "Admin",
                             Enable = true,
                             Name = "مدیر سیستم"
@@ -157,7 +157,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "f62ebb43-e65d-493d-965a-1c0bbf94b15f",
-                            CreatedDate = new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(5395),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7962),
                             EnName = "God",
                             Enable = true,
                             Name = "بالای بالا"
@@ -165,7 +165,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "815cc1c6-de17-46e7-a3e5-f73dfc818da3",
-                            CreatedDate = new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(5400),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7966),
                             EnName = "Support",
                             Enable = true,
                             Name = "پشتیبان"
@@ -173,7 +173,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "3f7566d3-7a9e-4fdb-8267-eceba8cfb024",
-                            CreatedDate = new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(5402),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7969),
                             EnName = "User",
                             Enable = true,
                             Name = "کاربر"
@@ -198,9 +198,6 @@ namespace Web.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Confirmed")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -219,9 +216,6 @@ namespace Web.Migrations
                     b.Property<bool>("FirstLogin")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
@@ -231,14 +225,9 @@ namespace Web.Migrations
                     b.Property<string>("IssuedPlaceId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Locked")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Mobile")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<bool>("MobileConfirmed")
                         .HasColumnType("bit");
@@ -255,18 +244,14 @@ namespace Web.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<bool>("PhoneConfirmed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Serial")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(450)");
@@ -277,9 +262,9 @@ namespace Web.Migrations
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
 
-                    b.HasIndex("Phone")
+                    b.HasIndex("Mobile")
                         .IsUnique()
-                        .HasFilter("[Phone] IS NOT NULL");
+                        .HasFilter("[Mobile] IS NOT NULL");
 
                     b.HasIndex("Username")
                         .IsUnique()

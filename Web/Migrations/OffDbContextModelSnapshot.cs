@@ -147,7 +147,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "b72799ea-f2b8-4528-9387-2f1f339dcd1c",
-                            CreatedDate = new DateTime(2021, 12, 31, 8, 59, 17, 843, DateTimeKind.Utc).AddTicks(2461),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(6454),
                             EnName = "Admin",
                             Enable = true,
                             Name = "مدیر سیستم"
@@ -155,7 +155,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "f62ebb43-e65d-493d-965a-1c0bbf94b15f",
-                            CreatedDate = new DateTime(2021, 12, 31, 8, 59, 17, 843, DateTimeKind.Utc).AddTicks(3844),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7962),
                             EnName = "God",
                             Enable = true,
                             Name = "بالای بالا"
@@ -163,7 +163,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "815cc1c6-de17-46e7-a3e5-f73dfc818da3",
-                            CreatedDate = new DateTime(2021, 12, 31, 8, 59, 17, 843, DateTimeKind.Utc).AddTicks(3849),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7966),
                             EnName = "Support",
                             Enable = true,
                             Name = "پشتیبان"
@@ -171,7 +171,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "3f7566d3-7a9e-4fdb-8267-eceba8cfb024",
-                            CreatedDate = new DateTime(2021, 12, 31, 8, 59, 17, 843, DateTimeKind.Utc).AddTicks(3852),
+                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7969),
                             EnName = "User",
                             Enable = true,
                             Name = "کاربر"
@@ -195,9 +195,6 @@ namespace Web.Migrations
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Confirmed")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -226,9 +223,6 @@ namespace Web.Migrations
                     b.Property<string>("IssuedPlaceId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Locked")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Mobile")
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
@@ -253,6 +247,9 @@ namespace Web.Migrations
 
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(450)");

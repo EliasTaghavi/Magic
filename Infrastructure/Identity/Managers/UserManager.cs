@@ -4,6 +4,7 @@ using Core.File.Enums;
 using Core.File.Repos;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
+using Core.Identity.Enums;
 using Core.Identity.Interfaces;
 using Core.Identity.Managers;
 using Core.Identity.Mappers;
@@ -112,6 +113,7 @@ namespace Infrastructure.Identity.Managers
         public ManagerResult<bool> SignOut(StringValues header)
         {
             string jwt = TokenManager.GetCurrent(header).Result;
+            //TODO : Implement SignOut
             return new ManagerResult<bool>(true, true);
         }
 
@@ -160,6 +162,7 @@ namespace Infrastructure.Identity.Managers
             user.Surname = dto.LastName;
             user.Address = dto.Address;
             user.Birthday = dto.Birthday;
+            user.UserStatus = UserStatus.NotConfirmed;
             UserRepo.Update(user);
             return new ManagerResult<bool>(true)
             {
@@ -178,6 +181,13 @@ namespace Infrastructure.Identity.Managers
                 item.IdentityURL = photos.First(x => x.UserId == item.Id && x.Type == FileType.Identity).FullName;
             }
             return new ManagerResult<PagedListDto<UserListDto>>(result);
+        }
+
+        public ManagerResult<bool> Confirm(string id)
+        {
+            var user = UserRepo.Read(id);
+            user.UserStatus = UserStatus.Confirmed;
+            return new ManagerResult<bool>(true);
         }
     }
 }

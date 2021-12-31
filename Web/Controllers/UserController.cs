@@ -72,12 +72,20 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult UserList([FromBody] PageRequestViewModel<UserListFilterViewModel> viewModel)
+        public IActionResult List([FromBody] PageRequestViewModel<UserListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = UserManager.Search(dto);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Confirm(string id)
+        {
+            var response = UserManager.Confirm(id);
             return Ok(response);
         }
     }

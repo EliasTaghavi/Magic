@@ -1,4 +1,5 @@
 ﻿using Core.Identity.Entities;
+using Core.Identity.Enums;
 using Core.Identity.Repos;
 using Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;
@@ -45,12 +46,11 @@ namespace Web
                 Email = "elias.taghavi.rz@outlook.com",
                 EmailConfirmed = true,
                 Address = "رفسنجان بلوار امام رضا کوچه شماره 2 پلاک 35",
-                Confirmed = true,
+                UserStatus = UserStatus.Confirmed,
                 //---------------------------------------------------------
                 Username = "admin",
                 PasswordHash = pass.PasswordHash,
                 PasswordSalt = pass.PasswordSalt,
-                Locked = false,
             };
             user.UserRoles.Add(new UserRole { RoleId = "f62ebb43-e65d-493d-965a-1c0bbf94b15f", CreatedDate = DateTime.UtcNow, Enable = true });
             user.UserRoles.Add(new UserRole { RoleId = "b72799ea-f2b8-4528-9387-2f1f339dcd1c", CreatedDate = DateTime.UtcNow, Enable = true });

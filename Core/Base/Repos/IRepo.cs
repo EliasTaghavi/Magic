@@ -15,6 +15,7 @@ namespace Core.Base.Repos
         void Disable(string id);
         IQueryable<T> GetSet();
         List<bool> Save(List<T> set);
+        bool Save(T set);
         IQueryable<T> Bucket();
     }
 }

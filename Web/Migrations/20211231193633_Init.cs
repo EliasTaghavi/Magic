@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,13 +40,8 @@ namespace Web.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Locked = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
-                    PhoneConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -60,10 +55,10 @@ namespace Web.Migrations
                     IssuedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IssuedPlaceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstLogin = table.Column<bool>(type: "bit", nullable: false),
-                    Confirmed = table.Column<bool>(type: "bit", nullable: false),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     MobileConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserStatus = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Enable = table.Column<bool>(type: "bit", nullable: true)
                 },
@@ -170,10 +165,10 @@ namespace Web.Migrations
                 columns: new[] { "Id", "CreatedDate", "EnName", "Enable", "Name" },
                 values: new object[,]
                 {
-                    { "b72799ea-f2b8-4528-9387-2f1f339dcd1c", new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(4057), "Admin", true, "مدیر سیستم" },
-                    { "f62ebb43-e65d-493d-965a-1c0bbf94b15f", new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(5395), "God", true, "بالای بالا" },
-                    { "815cc1c6-de17-46e7-a3e5-f73dfc818da3", new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(5400), "Support", true, "پشتیبان" },
-                    { "3f7566d3-7a9e-4fdb-8267-eceba8cfb024", new DateTime(2021, 12, 26, 16, 29, 36, 657, DateTimeKind.Utc).AddTicks(5402), "User", true, "کاربر" }
+                    { "b72799ea-f2b8-4528-9387-2f1f339dcd1c", new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(6454), "Admin", true, "مدیر سیستم" },
+                    { "f62ebb43-e65d-493d-965a-1c0bbf94b15f", new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7962), "God", true, "بالای بالا" },
+                    { "815cc1c6-de17-46e7-a3e5-f73dfc818da3", new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7966), "Support", true, "پشتیبان" },
+                    { "3f7566d3-7a9e-4fdb-8267-eceba8cfb024", new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7969), "User", true, "کاربر" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -213,11 +208,11 @@ namespace Web.Migrations
                 filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Phone",
+                name: "IX_Users_Mobile",
                 table: "Users",
-                column: "Phone",
+                column: "Mobile",
                 unique: true,
-                filter: "[Phone] IS NOT NULL");
+                filter: "[Mobile] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",

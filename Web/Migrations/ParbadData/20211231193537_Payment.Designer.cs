@@ -10,8 +10,8 @@ using Parbad.Storage.EntityFrameworkCore.Context;
 namespace Web.Migrations.ParbadData
 {
     [DbContext(typeof(ParbadDataContext))]
-    [Migration("20211227173305_payment")]
-    partial class payment
+    [Migration("20211231193537_Payment")]
+    partial class Payment
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

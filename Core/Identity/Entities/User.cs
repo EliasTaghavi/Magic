@@ -1,4 +1,5 @@
 ﻿using Core.Base.Entities;
+using Core.Identity.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -7,10 +8,8 @@ namespace Core.Identity.Entities
     public class User : BaseEntity
     {
         public ICollection<AccessToken> AccessTokens { get; private set; }
-
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
-        public bool Locked { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string Username { get; set; }
@@ -27,10 +26,10 @@ namespace Core.Identity.Entities
         public DateTime IssuedDate { get; set; }
         public string IssuedPlaceId { get; set; }
         public bool FirstLogin { get; set; }
-        public bool Confirmed { get; set; }
         public string Mobile { get; set; }
         public bool MobileConfirmed { get; set; }
         public string Address { get; set; }
+        public UserStatus UserStatus { get; set; }
 
         public User()
         {

@@ -11,7 +11,7 @@ namespace Infrastructure.Services
         public string SaveIdentity(Stream idStream, string identityExt)
         {
             string fileName = Guid.NewGuid().ToString();
-            using (FileStream idFileStream = new($"ids/{fileName}{identityExt}", FileMode.Create))
+            using (FileStream idFileStream = new($"ids/{fileName}.{identityExt}", FileMode.Create))
             {
                 idStream.CopyTo(idFileStream);
             }

@@ -1,5 +1,6 @@
 ﻿using Core.Identity.Dto;
 using Core.Identity.Entities;
+using Core.Identity.Enums;
 using Web.Models.Session;
 
 namespace Web.Mappers
@@ -28,11 +29,15 @@ namespace Web.Mappers
 
         public static VerifiedUserViewModel ToVerifiedUserViewModel(this AccessToken token)
         {
+            if (token == null)
+            {
+                return null;
+            }
             return new VerifiedUserViewModel
             {
                 Address = token.User.Address,
                 Birthday = token.User.Birthday,
-                Confirmed = token.User.Confirmed,
+                Confirmed = token.User.UserStatus == UserStatus.Confirmed,
                 FirstName = token.User.Name,
                 LastName = token.User.Surname,
                 Mobile = token.User.Mobile,

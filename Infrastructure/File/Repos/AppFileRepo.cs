@@ -15,7 +15,7 @@ namespace Infrastructure.File.Repos
 
         public List<AppFile> GetPhotos(IEnumerable<string> userIds)
         {
-            var list = GetSet().Where(x => userIds.Contains(x.Id));
+            var list = GetSet().Where(x => userIds.Contains(x.UserId));
             return list.ToList();
         }
     }

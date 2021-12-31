@@ -16,5 +16,6 @@ namespace Core.Identity.Repos
 
         void Update(Code code);
         IEnumerable<Code> GetSet();
+        Code Create(string id);
     }
 }

@@ -15,7 +15,14 @@ namespace Web.JsonConverter
 
         public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString("yyyy/MM/dd", persianCulture));
+            try
+            {
+                writer.WriteValue(value.ToString("yyyy/MM/dd", persianCulture));
+            }
+            catch (Exception)
+            {
+                writer.WriteNull();
+            }
         }
     }
 }

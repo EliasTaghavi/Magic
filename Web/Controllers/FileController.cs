@@ -1,4 +1,5 @@
-﻿using Core.File.Managers;
+﻿using Core;
+using Core.File.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace Web.Controllers
         {
             var path = Path.Combine(environment.ContentRootPath, "ids", id);
             string ext = id.Split('.')[1];
-            string mime = ext == "jpg" ? "image/jpeg" : MimeTypes.MimeTypeMap.GetMimeType($".{ext}");
+            string mime = MimeTypesMap.GetMimeType($".{ext}");
             return PhysicalFile(path, mime);
         }
     }

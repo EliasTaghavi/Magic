@@ -1,4 +1,5 @@
-﻿using Core.File.Dto;
+﻿using Core;
+using Core.File.Dto;
 using Web.Models.File;
 
 namespace Web.Mappers
@@ -11,9 +12,9 @@ namespace Web.Mappers
             {
                 UserId = userId,
                 Identity = model.Identity.OpenReadStream(),
-                IdentityExt = model.Identity.ContentType == "image/jpg" ? ".jpg" : MimeTypes.MimeTypeMap.GetExtension(model.Identity.ContentType),
+                IdentityExt = MimeTypesMap.GetExtension(model.Identity.ContentType),
                 Selfie = model.Selfie.OpenReadStream(),
-                SelfieExt = model.Selfie.ContentType == "image/jpg" ? ".jpg" : MimeTypes.MimeTypeMap.GetExtension(model.Selfie.ContentType)
+                SelfieExt = MimeTypesMap.GetExtension(model.Selfie.ContentType)
             };
         }
     }

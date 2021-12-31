@@ -102,5 +102,32 @@ namespace Infrastructure.Base.Repos
         {
             return Set;
         }
+
+        public bool Save(T entity)
+        {
+            try
+            {
+                ObjectState state = entity.ObjectState;
+                switch (state)
+                {
+                    case ObjectState.Added:
+                        Create(entity);
+                        break;
+                    case ObjectState.Changed:
+                        Update(entity);
+                        break;
+                    case ObjectState.Deleted:
+                        Delete(entity.Id);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

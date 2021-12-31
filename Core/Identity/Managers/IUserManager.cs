@@ -22,5 +22,6 @@ namespace Core.Identity.Managers
         ManagerResult<bool> CreateByPhone(CreateUserDto dto);
         ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
         ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto);
+        ManagerResult<bool> Confirm(string id);
     }
 }

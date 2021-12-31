@@ -1,4 +1,5 @@
 ﻿using Core.Base.Entities;
+using Core.Identity.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -19,14 +20,17 @@ namespace Web.Helper
         {
             return new
             {
-                Code = result.Code,
-                Message = result.Message,
-                Success = result.Success,
-                Errors = result.Errors,
+                result.Code,
+                result.Message,
+                result.Success,
+                result.Errors,
                 Result = func(result.Result)
             };
         }
 
-
+        public static string CreateMessageBaseOnEnvironment(int code)
+        {
+            return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{code}" : "SMS Sent.";
+        }
     }
 }
