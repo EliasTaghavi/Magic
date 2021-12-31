@@ -6,6 +6,14 @@ const getToken = () => {
   return localStorage.getItem('token');
 }
 
+const setAdminToken = (token) => {
+  return localStorage.setItem('adminToken', token);
+}
+
+const getAdminToken = () => {
+  return localStorage.getItem('adminToken');
+}
+
 const setUserType = (userType) => {
   return localStorage.setItem('userType', userType);
 }
@@ -22,6 +30,8 @@ const remove = () => {
 export default {
   setToken,
   getToken,
+  setAdminToken,
+  getAdminToken,
   setUserType,
   getUserType,
   remove,

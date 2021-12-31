@@ -1,0 +1,14 @@
+.adminLogin {
+    height: 100vh;
+    background-image: url("../../../assets/images/pattern.png");
+}
+
+.adminLoginBox {
+    max-width: 550px;
+    box-shadow: 0 0 20px 10px #cccccc99;
+    border-radius: 10px;
+}
+
+.adminLoginMainText {
+    font-size: 38px;
+}

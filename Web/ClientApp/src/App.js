@@ -10,6 +10,7 @@ import PrivateRouteUserPanel from "./components/routes/privateRouteUserPanel";
 import PrivateRouteShopPanel from "./components/routes/privateRouteShopPanel";
 import UserPanelRoute from "./components/routes/userPanelRoute";
 import ShopPanelRoute from "./components/routes/shopPanelRoute";
+import AdminAreaRoute from './adminArea/routes/adminAreaRoutes';
 
 export default () => (
    <Layout>
@@ -18,6 +19,7 @@ export default () => (
          <PrivateRouteReverse path='/login' component={LoginRoute} />
          <PrivateRouteUserPanel path='/user-panel' component={UserPanelRoute} />
          <PrivateRouteShopPanel path='/shop-panel' component={ShopPanelRoute} />
+         <Route path='/admin-login' component={AdminAreaRoute} />
          <Route path="*" component={NoMatch}/>
       </Switch>
    </Layout>

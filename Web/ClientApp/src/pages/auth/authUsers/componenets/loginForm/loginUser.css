@@ -17,29 +17,6 @@
     width: 70%;
 }
 
-.submitBtn {
-    border-radius: 10px;
-    background-image: linear-gradient(45deg, #ff521d, #ffc004);
-    width: 100%;
-    height: 38px;
-    box-shadow: 0 3px 5px #00000044;
-    margin-top: 40px;
-    color: #ffffff;
-    transition: 0.3s;
-}
-
-.submitBtn:hover {
-    box-shadow: 0 6px 7px #00000044;
-    color: #ffffff;
-    transition: 0.3s;
-}
-
-.submitBtn:active {
-    box-shadow: 0 6px 7px #00000044;
-    background-image: linear-gradient(-10deg, #ffc004, #ff521d);
-    transition: 0.3s;
-}
-
 .codeContainer {
     display: flex;
     flex-direction: column;

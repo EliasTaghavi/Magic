@@ -16,7 +16,6 @@ import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../../../ap
 import Loader from 'react-loader-spinner';
 import RenderProgressBarModal from "../../../../../components/shared/renderProgressBarModal";
 import RenderUserWaitingModal from "../renderUserWaitingModal";
-import moment from 'moment-jalaali';
 
 let interval;
 let timer;
@@ -28,10 +27,10 @@ const LoginUser = () => {
   const [mobile, setMobile] = useState('09137658795');
   const [btnLoader, setBtnLoader] = useState(false);
   const [code, setCode] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('شهاب');
+  const [lastName, setLastName] = useState('طالبی');
   const [birthday, setBirthday] = useState('');
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState('خیابان ابوذر');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
   const [loader, setLoader] = useState(true);
@@ -243,14 +242,20 @@ const LoginUser = () => {
       }
       SignupUserValidation(data)
          .then((response) => {
+           console.log(response);
            if (Object.entries(response).length < 1) {
              sendSignupUserData(data);
            } else {
              setErrors(response);
+             setBtnLoader(false);
+             setProgressBarModal(false);
              toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
            }
          })
-         .catch(() => {
+         .catch((e) => {
+           console.log(e, e.response);
+           setBtnLoader(false);
+           setProgressBarModal(false);
            toast.error('خطای سرور', toastOptions)
          })
     }
@@ -324,6 +329,7 @@ const LoginUser = () => {
     setProgressBarModal(true);
     signupUser(data)
        .then((response) => {
+         console.log(response);
          let {success} = response;
          if (response) {
            if (response === 401) {
@@ -339,7 +345,8 @@ const LoginUser = () => {
            setProgressBarModal(false);
          }
        })
-       .catch(() => {
+       .catch((e) => {
+         console.log(e, e.response);
          toast.error('خطای سرور', toastOptions);
          setBtnLoader(false);
          setProgressBarModal(false);
