@@ -19,7 +19,7 @@ namespace Infrastructure.Identity.Repos
 
         public void ConfirmPhone(User user)
         {
-            user.PhoneConfirmed = true;
+            user.MobileConfirmed = true;
             user.Enable = true;
             Update(user);
         }
@@ -31,7 +31,7 @@ namespace Infrastructure.Identity.Repos
 
         public User ReadByPhone(string phone)
         {
-            return GetSet().FirstOrDefault(x => x.Phone == phone);
+            return GetSet().FirstOrDefault(x => x.Mobile == phone);
         }
 
         public User ReadByUsername(string UserName)
@@ -73,15 +73,15 @@ namespace Infrastructure.Identity.Repos
         public void UpdateProfile(User user)
         {
             User old = GetSet().First(x => x.Id == user.Id);
-            old.FirstName = user.FirstName;
-            old.LastName = user.LastName;
+            old.Name = user.Name;
+            old.Surname = user.Surname;
             old.Email = user.Email;
             Update(old);
         }
 
         public bool UserWithPhoneExist(string Phone)
         {
-            return GetSet().Any(x => x.Phone == Phone);
+            return GetSet().Any(x => x.Mobile == Phone);
         }
     }
 }

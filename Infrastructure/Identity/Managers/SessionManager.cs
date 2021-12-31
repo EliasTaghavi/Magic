@@ -98,60 +98,60 @@ namespace Infrastructure.Identity.Managers
             {
                 var newUser = new User
                 {
-                    Phone = phone,
+                    Mobile = phone,
                     Username = phone
                 };
                 user = UserRepo.Create(newUser);
                 userAlreadyExist = false;
             }
-                userAlreadyExist = string.IsNullOrEmpty(user.Name?.Trim());
-                Code code = CodeRepo.ReadByUserId(user.Id, TokenType.SMS);
-                if (code != null)
+            userAlreadyExist = string.IsNullOrEmpty(user.Name?.Trim());
+            Code code = CodeRepo.ReadByUserId(user.Id, TokenType.SMS);
+            if (code != null)
+            {
+                if ((DateTime.UtcNow - code.CreatedDate) > TimeSpan.FromMinutes(1) && code.Times == 1)
                 {
-                    if ((DateTime.UtcNow - code.CreatedDate) > TimeSpan.FromMinutes(1) && code.Times == 1)
-                    {
-                        SMSService.Verification($"{code.Num}", user.Phone);
-                        code.Times = 2;
-                        CodeRepo.Update(code);
-                    }
-                    if (code.Times == 2 && settings.CallSupport)
-                    {
-                        return new ManagerResult<bool>
-                        {
-                            Message = "Call Support.",
-                            Result = true,
-                            Success = true,
-                            Code = 5
-                        };
-                    }
+                    SMSService.Verification($"{code.Num}", user.Mobile);
+                    code.Times = 2;
+                    CodeRepo.Update(code);
+                }
+                if (code.Times == 2 && settings.CallSupport)
+                {
                     return new ManagerResult<bool>
                     {
-                        Code = 3,
-                        Message = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{code.Num}" : "SMS Sent.",
+                        Message = "Call Support.",
+                        Result = true,
                         Success = true,
-                        Result = true
+                        Code = 5
                     };
                 }
-                Random random = new();
-                int num = random.Next(1000, 10000);
-                Code newCode = new()
-                {
-                    CreatedDate = DateTime.UtcNow,
-                    Num = num,
-                    Type = TokenType.SMS,
-                    UserId = user.Id,
-                    Times = 1
-                };
-                CodeRepo.Create(newCode);
-                SMSService.Verification($"{num}", user.Phone);
                 return new ManagerResult<bool>
                 {
-                    Code = userAlreadyExist ? 1 : 2,
-                    Message = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{num}" : "SMS Sent.",
+                    Code = 3,
+                    Message = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{code.Num}" : "SMS Sent.",
                     Success = true,
                     Result = true
                 };
-            
+            }
+            Random random = new();
+            int num = random.Next(1000, 10000);
+            Code newCode = new()
+            {
+                CreatedDate = DateTime.UtcNow,
+                Num = num,
+                Type = TokenType.SMS,
+                UserId = user.Id,
+                Times = 1
+            };
+            CodeRepo.Create(newCode);
+            SMSService.Verification($"{num}", user.Mobile);
+            return new ManagerResult<bool>
+            {
+                Code = userAlreadyExist ? 1 : 2,
+                Message = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{num}" : "SMS Sent.",
+                Success = true,
+                Result = true
+            };
+
             //return new ManagerResult<bool>
             //{
             //    Code = 4,
@@ -171,13 +171,13 @@ namespace Infrastructure.Identity.Managers
                 {
                     if (code.Num == dto.Token)
                     {
-                        if (!user.PhoneConfirmed)
+                        if (!user.MobileConfirmed)
                         {
                             UserRepo.ConfirmPhone(user);
                         }
                         ManagerResult<AccessToken> token = CreateToken(user, dto.IP);
                         CodeRepo.Remove(code);
-                        if (string.IsNullOrEmpty(user.FirstName))
+                        if (string.IsNullOrEmpty(user.Name))
                         {
                             return new ManagerResult<AccessToken>(token.Result, true)
                             {

@@ -33,9 +33,9 @@ namespace Web.Mappers
                 Address = token.User.Address,
                 Birthday = token.User.Birthday,
                 Confirmed = token.User.Confirmed,
-                FirstName = token.User.FirstName,
-                LastName = token.User.LastName,
-                Mobile = token.User.Phone,
+                FirstName = token.User.Name,
+                LastName = token.User.Surname,
+                Mobile = token.User.Mobile,
                 SelfieURL = string.Empty,
                 Token = token.JWT
             };

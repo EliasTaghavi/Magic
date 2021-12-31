@@ -72,9 +72,9 @@ namespace Infrastructure.Data
                     .IsUnique();
                 user.HasIndex(x => x.Email)
                     .IsUnique();
-                user.HasIndex(x => x.Phone)
+                user.HasIndex(x => x.Mobile)
                     .IsUnique();
-                user.Property(x => x.Phone)
+                user.Property(x => x.Mobile)
                     .HasMaxLength(12);
                 user.Ignore(x => x.ObjectState);
             });

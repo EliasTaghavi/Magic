@@ -11,9 +11,9 @@ namespace Core.Identity.Mappers
         {
             return new User
             {
-                Phone = dto.Phone,
-                FirstName = dto.FirstName,
-                LastName = dto.Lastname,
+                Mobile = dto.Phone,
+                Name = dto.FirstName,
+                Surname = dto.Lastname,
             };
         }
 
@@ -22,10 +22,10 @@ namespace Core.Identity.Mappers
             return new UserListDto
             {
                 Confirmed = user.Confirmed,
-                FirstName = user.FirstName,
+                FirstName = user.Name,
                 Id = user.Id,
                 IdentityURL = string.Empty,
-                LastName = user.LastName,
+                LastName = user.Surname,
                 Mobile = user.Mobile,
                 SelfieURL = string.Empty,
             };

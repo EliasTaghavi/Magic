@@ -60,7 +60,7 @@ namespace Web.Controllers
                 Identity = viewModel.Identity,
                 Selfie = viewModel.Selfie,
             };
-            
+
             string userId = User.Claims.First(x => x.Type == ClaimTypes.UserData).Value;
             var fileDto = fileViewModel.ToDto(userId);
             var response = UserManager.FillUserData(dto, userId);
@@ -73,8 +73,8 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin,God")]
-        public IActionResult UserList([FromBody]PageRequestViewModel<UserListFilterViewModel> viewModel)
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult UserList([FromBody] PageRequestViewModel<UserListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = UserManager.Search(dto);

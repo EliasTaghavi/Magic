@@ -3,7 +3,7 @@
 namespace Web.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]/[action]/{id?}")]
     public class BaseController : ControllerBase
     {
     }

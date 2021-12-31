@@ -34,11 +34,11 @@ namespace Web.Controllers
 
         //[Authorize(Roles ="Admin")]
         [HttpPost]
-        public IActionResult GetFile(string id)
+        public IActionResult GetFile([FromRoute] string id)
         {
             var path = Path.Combine(environment.ContentRootPath, "ids", id);
             string ext = id.Split('.')[1];
-            string mime = ext == "jpg" ? "image/jpg" : MimeTypes.MimeTypeMap.GetMimeType($".{ext}");
+            string mime = ext == "jpg" ? "image/jpeg" : MimeTypes.MimeTypeMap.GetMimeType($".{ext}");
             return PhysicalFile(path, mime);
         }
     }

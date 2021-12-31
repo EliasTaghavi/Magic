@@ -40,8 +40,6 @@ namespace Web
                 IssuedDate = new DateTime(1992, 05, 08, 0, 0, 0, DateTimeKind.Utc),
                 IssuedPlaceId = "8eef2bc7-e87d-4bca-ab23-388efdb644c1",
                 FirstLogin = true,
-                Phone = "03434287142",
-                PhoneConfirmed = true,
                 Mobile = "09304359576",
                 MobileConfirmed = true,
                 Email = "elias.taghavi.rz@outlook.com",

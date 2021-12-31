@@ -69,7 +69,7 @@ namespace Infrastructure.Identity.Managers
                 }
             }
 
-            if (!UserRepo.GetSet().Any(x => x.Phone == User.Phone))
+            if (!UserRepo.GetSet().Any(x => x.Mobile == User.Mobile))
             {
                 UserRepo.Create(User);
             }
@@ -156,8 +156,8 @@ namespace Infrastructure.Identity.Managers
         public ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId)
         {
             User user = UserRepo.Read(userId);
-            user.FirstName = dto.FirstName;
-            user.LastName = dto.LastName;
+            user.Name = dto.FirstName;
+            user.Surname = dto.LastName;
             user.Address = dto.Address;
             user.Birthday = dto.Birthday;
             UserRepo.Update(user);

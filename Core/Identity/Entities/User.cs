@@ -9,25 +9,11 @@ namespace Core.Identity.Entities
         public ICollection<AccessToken> AccessTokens { get; private set; }
 
         public string Email { get; set; }
-
         public bool EmailConfirmed { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
         public bool Locked { get; set; }
-
         public byte[] PasswordHash { get; set; }
-
         public byte[] PasswordSalt { get; set; }
-
-        public string Phone { get; set; }
-
-        public bool PhoneConfirmed { get; set; }
-
         public string Username { get; set; }
-
         public ICollection<UserRole> UserRoles { get; private set; }
         public string Code { get; set; }
         public string NationalId { get; set; }
