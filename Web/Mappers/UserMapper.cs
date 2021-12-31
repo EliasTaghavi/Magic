@@ -25,5 +25,14 @@ namespace Web.Mappers
                 LastName = viewModel.LastName,
             };
         }
+
+        public static UserListFilterDto ToDto(this UserListFilterViewModel viewModel)
+        {
+            return new UserListFilterDto
+            {
+                Confirmed = viewModel.Confirmed,
+                Mobile = viewModel.Mobile,
+            };
+        }
     }
 }

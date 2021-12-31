@@ -1,4 +1,7 @@
-﻿using Core.Identity.Entities;
+﻿using Core.Base.Dto;
+using Core.Identity.Dto;
+using Core.Identity.Entities;
+using Core.Identity.Mappers;
 using Core.Identity.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
@@ -45,6 +48,26 @@ namespace Infrastructure.Identity.Repos
                            .First().UserRoles
                            .Select(z => z.Role)
                            .ToList();
+        }
+
+        public PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto)
+        {
+            var query = GetSet();
+            if (dto.MetaData.Confirmed.HasValue)
+            {
+                query = query.Where(x => x.Confirmed == dto.MetaData.Confirmed);
+            }
+            if (string.IsNullOrEmpty(dto.MetaData.Mobile))
+            {
+                query = query.Where(x => x.Mobile.Contains(dto.MetaData.Mobile));
+            }
+            int count = query.Count();
+            var result = query.Skip(dto.Index * dto.Size).Take(dto.Size).ToList();
+            return new PagedListDto<UserListDto>
+            {
+                Count = count,
+                Items = result.ToDto()
+            };
         }
 
         public void UpdateProfile(User user)

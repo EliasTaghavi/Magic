@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using Web.Helper;
 using Web.Mappers;
+using Web.Models;
 using Web.Models.File;
 using Web.Models.User;
 
@@ -68,6 +69,15 @@ namespace Web.Controllers
             {
                 return Ok(fileResponse);
             }
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles ="Admin,God")]
+        public IActionResult UserList([FromBody]PageRequestViewModel<UserListFilterViewModel> viewModel)
+        {
+            var dto = viewModel.ToDto(mv => mv.ToDto());
+            var response = UserManager.Search(dto);
             return Ok(response);
         }
     }

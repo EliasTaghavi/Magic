@@ -1,4 +1,6 @@
-﻿using Core.Base.Repos;
+﻿using Core.Base.Dto;
+using Core.Base.Repos;
+using Core.Identity.Dto;
 using Core.Identity.Entities;
 using System.Collections.Generic;
 
@@ -18,5 +20,6 @@ namespace Core.Identity.Repos
 
         bool UserWithPhoneExist(string Phone);
         void UpdateProfile(User user);
+        PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto);
     }
 }

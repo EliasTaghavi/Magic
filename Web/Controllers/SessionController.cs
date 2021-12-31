@@ -34,7 +34,7 @@ namespace Web.Controllers
             string ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.CreateByUP(model.ToDto(ip));
-            return Ok(response);
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel()));
         }
 
         [Authorize]

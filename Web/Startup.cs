@@ -6,9 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Parbad.Builder;
+using Parbad.Gateway.ParbadVirtual;
+using Parbad.Gateway.ZarinPal;
+using Parbad.Storage.EntityFrameworkCore.Builder;
 using Serilog;
 using System.Linq;
 using Web.Middleware;
@@ -76,6 +81,7 @@ namespace Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            app.UseParbadVirtualGateway();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -90,6 +96,7 @@ namespace Web
             services.AddSettings(Configuration);
             services.AddCors();
             services.AddSwaggerGen();
+            services.AddPayment(Configuration);
 
             services.AddControllersWithViews().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.Configure<ApiBehaviorOptions>(op =>

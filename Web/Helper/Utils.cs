@@ -26,5 +26,7 @@ namespace Web.Helper
                 Result = func(result.Result)
             };
         }
+
+
     }
 }

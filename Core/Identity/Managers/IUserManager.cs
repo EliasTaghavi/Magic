@@ -1,4 +1,5 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
 using Microsoft.Extensions.Primitives;
@@ -20,5 +21,6 @@ namespace Core.Identity.Managers
         ManagerResult<bool> Update(User user);
         ManagerResult<bool> CreateByPhone(CreateUserDto dto);
         ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
+        ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto);
     }
 }

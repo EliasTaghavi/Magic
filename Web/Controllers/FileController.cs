@@ -1,6 +1,8 @@
 ﻿using Core.File.Managers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using Web.Mappers;
@@ -12,10 +14,12 @@ namespace Web.Controllers
     public class FileController : BaseController
     {
         private readonly IFileManager fileManager;
+        private readonly IWebHostEnvironment environment;
 
-        public FileController(IFileManager fileManager)
+        public FileController(IFileManager fileManager, IWebHostEnvironment environment)
         {
             this.fileManager = fileManager;
+            this.environment = environment;
         }
 
         [Authorize]
@@ -26,6 +30,16 @@ namespace Web.Controllers
             var dto = model.ToDto(userId);
             var response = fileManager.UploadIdentities(dto);
             return Ok(response);
+        }
+
+        //[Authorize(Roles ="Admin")]
+        [HttpPost]
+        public IActionResult GetFile(string id)
+        {
+            var path = Path.Combine(environment.ContentRootPath, "ids", id);
+            string ext = id.Split('.')[1];
+            string mime = ext == "jpg" ? "image/jpg" : MimeTypes.MimeTypeMap.GetMimeType($".{ext}");
+            return PhysicalFile(path, mime);
         }
     }
 }

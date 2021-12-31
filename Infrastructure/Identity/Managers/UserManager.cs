@@ -1,4 +1,7 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
+using Core.File.Enums;
+using Core.File.Repos;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
 using Core.Identity.Interfaces;
@@ -21,6 +24,7 @@ namespace Infrastructure.Identity.Managers
 
         protected ITokenManager TokenManager;
         private readonly IRoleRepo RoleRepo;
+        private readonly IAppFileRepo appFileRepo;
         protected ITokenRepo TokenRepo;
 
         protected IUserRepo UserRepo;
@@ -30,7 +34,8 @@ namespace Infrastructure.Identity.Managers
                            IPasswordHandler passwordHandler,
                            ITokenRepo tokenRepo,
                            ITokenManager tokenManager,
-                           IRoleRepo roleRepo)
+                           IRoleRepo roleRepo,
+                           IAppFileRepo appFileRepo)
         {
             UserRepo = userRepo;
             JwtTokenHandler = jwtTokenHandler;
@@ -38,6 +43,7 @@ namespace Infrastructure.Identity.Managers
             TokenRepo = tokenRepo;
             TokenManager = tokenManager;
             RoleRepo = roleRepo;
+            this.appFileRepo = appFileRepo;
         }
 
         public ManagerResult<bool> Create(User User, string Password)
@@ -159,6 +165,19 @@ namespace Infrastructure.Identity.Managers
             {
                 Code = 16
             };
+        }
+
+        public ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto)
+        {
+            var result = UserRepo.Search(dto);
+            var userIds = result.Items.Select(x => x.Id);
+            var photos = appFileRepo.GetPhotos(userIds);
+            foreach (var item in result.Items)
+            {
+                item.SelfieURL = photos.First(x => x.UserId == item.Id && x.Type == FileType.Selfie).FullName;
+                item.IdentityURL = photos.First(x => x.UserId == item.Id && x.Type == FileType.Identity).FullName;
+            }
+            return new ManagerResult<PagedListDto<UserListDto>>(result);
         }
     }
 }
