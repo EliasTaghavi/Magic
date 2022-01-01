@@ -33,9 +33,9 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        //[Authorize(Roles ="Admin")]
+        [Authorize]
         [HttpPost]
-        public IActionResult GetFile([FromRoute] string id)
+        public IActionResult GetFile([FromQuery] string id)
         {
             var path = Path.Combine(environment.ContentRootPath, "ids", id);
             string ext = id.Split('.')[1];
