@@ -797,6 +797,7 @@ namespace Core
             ["ief"] = "image/ief",
             ["jpeg"] = "image/jpeg",
             ["jpg"] = "image/jpeg",
+            ["jpg"] = "image/jpg",
             ["jpe"] = "image/jpeg",
             ["ktx"] = "image/ktx",
             ["png"] = "image/png",
