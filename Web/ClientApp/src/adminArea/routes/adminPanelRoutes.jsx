@@ -10,8 +10,6 @@ const AdminPanelRoute = () => {
 			<Switch>
 				<Route path="/admin/panel" exact={true} component={AdminDashboard}/>
 				<Route path="/admin/panel/all-users" exact={true} component={AdminAllUsers}/>
-				<Route path="/admin/panel/verified-users" exact={true} component={AdminDashboard}/>
-				<Route path="/admin/panel/waiting-users" exact={true} component={AdminDashboard}/>
 			</Switch>
 		</AdminPanel>
 	);
