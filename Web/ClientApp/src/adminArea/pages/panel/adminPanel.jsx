@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './adminPanel.css';
-import AdminHeader from "./components/header/adminHeader";
+import AdminHeader from "./components/adminHeader";
 
 const AdminPanel = ({children}) => {
 	const [open, setOpen] = useState(false);

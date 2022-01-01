@@ -72,7 +72,7 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin,God")]
         public IActionResult List([FromBody] PageRequestViewModel<UserListFilterViewModel> viewModel)
         {

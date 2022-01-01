@@ -1,0 +1,20 @@
+import React from 'react';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+
+const SearchBox = ({changeValue, searchValue, searchData}) => {
+	return (
+		<form noValidate={true} autoComplete="off" onSubmit={searchData}>
+			<div className="form-group d-flex justify-content-start">
+				<div className="w-100 d-flex">
+					<input type="text" name="floor" value={searchValue} className='form-control' placeholder="جستجو..." onChange={changeValue} style={{paddingLeft: 30}}/>
+				</div>
+				<button type="submit" className="outline btn d-flex align-items-center justify-content-center mr-2 bgMain">
+					<FontAwesomeIcon icon={faArrowLeft} className="text-white" />
+				</button>
+			</div>
+		</form>
+	)
+};
+
+export default SearchBox;

@@ -1,4 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from 'react';
