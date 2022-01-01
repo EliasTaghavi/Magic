@@ -1,0 +1,17 @@
+{
+    "platform": "netcore",
+    "app": "moelias",
+    "disks": [
+      {
+        "name": "log-disk",
+        "mountTo": "log"
+      },
+      {
+        "name": "ids-disk",
+        "mountTo": "ids"
+      }
+    ],
+    "netcore": {
+      "version": "5.0"
+    }
+  }
