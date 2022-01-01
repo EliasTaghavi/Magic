@@ -19,7 +19,7 @@ export default () => (
          <PrivateRouteReverse path='/login' component={LoginRoute} />
          <PrivateRouteUserPanel path='/user-panel' component={UserPanelRoute} />
          <PrivateRouteShopPanel path='/shop-panel' component={ShopPanelRoute} />
-         <Route path='/admin-login' component={AdminAreaRoute} />
+         <Route path='/admin' component={AdminAreaRoute} />
          <Route path="*" component={NoMatch}/>
       </Switch>
    </Layout>

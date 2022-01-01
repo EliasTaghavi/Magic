@@ -15,7 +15,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 			<div className="d-none d-md-flex">
 				<MdDrawer token={token} open={open} setOpen={setOpen} />
 				<div className="flex">
-					<div className="AdminHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
+					<div className="shadow1 sticky-top adminHeaderNav" style={{height: 63}}>
 						<div className="d-flex align-items-center justify-content-start h-100">
 							<button type="button"
 									  className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"
@@ -23,7 +23,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 								<FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
 							</button>
 							<div className="d-flex align-items-center">
-								<Link to="/admin-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
 							</div>
 						</div>
 						<div className="logoContainer">
@@ -40,7 +40,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 					  style={{display: open ? 'flex' : 'none'}}/>
 
 				<div className="d-flex flex-column w-100 align-items-start justify-content-start">
-					<div className="userHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
+					<div className="adminHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
 						<div className="d-flex align-items-center justify-content-start h-100">
 							<button type="button"
 									  className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"
@@ -69,7 +69,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 
 const MdDrawer = ({token, extraClassName, open, setOpen}) => {
 	return (
-		<div className={`userPanelDrawer py-3 transition sticky-top ${open ? 'w280' : 'w60'} ${extraClassName}`}>
+		<div className={`adminPanelDrawer py-3 transition sticky-top ${open ? 'w280' : 'w60'} ${extraClassName}`}>
 			<div className="d-flex centered px-2">
 				<div className="d-flex align-items-center justify-content-center userLogo bg-light">
 					<FontAwesomeIcon icon={faUser} className="text-dark"/>
@@ -84,7 +84,7 @@ const MdDrawer = ({token, extraClassName, open, setOpen}) => {
 
 const Drawer = ({token, extraClassName, open, setOpen}) => {
 	return (
-		<div className={`userPanelDrawer py-3 transition sticky-top w280 ${extraClassName}`}>
+		<div className={`adminPanelDrawer py-3 transition sticky-top w280 ${extraClassName}`}>
 			<div className="d-flex centered px-2">
 				<div className="d-flex align-items-center justify-content-center userLogo bg-light">
 					<FontAwesomeIcon icon={faUser} className="text-dark"/>
@@ -101,7 +101,7 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 	const history = useHistory();
 	const logout = () => {
 		TokenStore.remove();
-		history.replace('/');
+		history.replace('/admin/login');
 	}
 
 	return (

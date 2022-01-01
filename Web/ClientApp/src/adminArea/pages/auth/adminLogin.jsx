@@ -63,7 +63,7 @@ const AdminLogin  = () => {
 					} else if (success) {
 						setLoader(false);
 						TokenStore.setAdminToken(token);
-						history.replace('/admin-panel');
+						history.replace('/admin/panel');
 					}
 				} else {
 					setLoader(false);
