@@ -177,8 +177,8 @@ namespace Infrastructure.Identity.Managers
             var photos = appFileRepo.GetPhotos(userIds);
             foreach (var item in result.Items)
             {
-                item.SelfieURL = photos.First(x => x.UserId == item.Id && x.Type == FileType.Selfie).FullName;
-                item.IdentityURL = photos.First(x => x.UserId == item.Id && x.Type == FileType.Identity).FullName;
+                item.SelfieURL = photos.FirstOrDefault(x => x.UserId == item.Id && x.Type == FileType.Selfie)?.FullName;
+                item.IdentityURL = photos.FirstOrDefault(x => x.UserId == item.Id && x.Type == FileType.Identity)?.FullName;
             }
             return new ManagerResult<PagedListDto<UserListDto>>(result);
         }
