@@ -301,6 +301,26 @@ input::-webkit-inner-spin-button {
     padding-left: 0 !important;
 }
 
+.radioContainer {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ff521d;
+    border-radius: 25px;
+}
+
+.customRadio {
+    width: 12px;
+    height: 12px;
+    border-radius: 20px;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
 @media screen and (min-width: 768px) {
     .resText {
         text-align: right;

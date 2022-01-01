@@ -7,8 +7,6 @@ import {
 	faList,
 	faSignOutAlt,
 	faUser,
-	faChevronDown,
-	faCircle,
 	faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import {Link, useHistory} from "react-router-dom";
