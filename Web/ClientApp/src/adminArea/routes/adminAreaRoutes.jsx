@@ -11,8 +11,6 @@ const AdminAreaRoutes = () => {
 			<Switch>
 				<AdminPrivateRouteReversePanel path="/admin" exact={true} component={AdminLogin}/>
 				<AdminPrivateRoutePanel path='/admin/panel' component={AdminPanelRoute} />
-				{/*<Route path="/panel/shops" component={}/>*/}
-				{/*<Route path="/panel/users" component={}/>*/}
 			</Switch>
 		</Route>
 	);

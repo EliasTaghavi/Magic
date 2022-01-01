@@ -9,6 +9,7 @@ import toastOptions from "../../../components/ToastOptions";
 import {sendAdminLogin} from '../../api/auth/auth';
 import TokenStore from "../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
+import SupportModal from "../../../components/shared/suportModal/supportModal.component";
 
 const AdminLogin  = () => {
 	const history = useHistory();
@@ -19,6 +20,7 @@ const AdminLogin  = () => {
 	const [password, setPassword] = useState('3040184571');
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [focused, setFocused] = useState('');
+	const [supportModal, setSupportModal] = useState(false);
 
 	const changeValue = (e) => {
 		let target = e.target;
@@ -56,13 +58,13 @@ const AdminLogin  = () => {
 		sendAdminLogin({userName, password})
 			.then((response) => {
 				console.log(response);
-				let {success, token} = response;
+				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
 					} else if (success) {
 						setLoader(false);
-						TokenStore.setAdminToken(token);
+						TokenStore.setAdminToken(result.token);
 						history.replace('/admin/panel');
 					}
 				} else {
@@ -139,10 +141,11 @@ const AdminLogin  = () => {
 						{loader && <Loader type="ThreeDots" color='white' height={8}/>}
 					</button>
 					<div className="w-100">
-						<button type="button" disabled={loader} className="btn outline mr-1 mt-4 fs14 text-secondary">فراموشی رمز عبور</button>
+						<button type="button" disabled={loader} className="btn outline mr-1 mt-4 fs14 text-secondary" onClick={() => setSupportModal(true)}>فراموشی رمز عبور</button>
 					</div>
 				</form>
 			</div>}
+			{supportModal && <SupportModal setOpen={() => setSupportModal(false)} />}
 		</div>
 	);
 };
