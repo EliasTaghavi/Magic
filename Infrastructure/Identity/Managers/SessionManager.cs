@@ -1,0 +1,244 @@
+﻿using Core.Base.Entities;
+using Core.Base.Settings;
+using Core.Identity.Dto;
+using Core.Identity.Entities;
+using Core.Identity.Enums;
+using Core.Identity.Interfaces;
+using Core.Identity.Managers;
+using Core.Identity.Repos;
+using Core.Services;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Infrastructure.Identity.Managers
+{
+    public class SessionManager : ISessionManager
+    {
+
+        private readonly ICacheRepo CacheRepo;
+
+        private readonly ICodeRepo CodeRepo;
+
+        private readonly IPasswordHandler PasswordHandler;
+
+        private readonly SMSSettings settings;
+
+        private readonly ISMSService SMSService;
+
+        private readonly IJwtTokenHandler TokenHandler;
+
+        private readonly ITokenManager TokenManager;
+
+        private readonly ITokenRepo TokenRepo;
+
+        private readonly IUserRepo UserRepo;
+
+        public SessionManager(IUserRepo userRepo,
+                              ITokenRepo tokenRepo,
+                              IPasswordHandler passwordHandler,
+                              IJwtTokenHandler tokenHandler,
+                              ICodeRepo codeRepo,
+                              ITokenManager tokenManager,
+                              ICacheRepo cacheRepo,
+                              ISMSService sMSService,
+                              IOptionsMonitor<SMSSettings> options)
+        {
+            UserRepo = userRepo;
+            TokenRepo = tokenRepo;
+            PasswordHandler = passwordHandler;
+            TokenHandler = tokenHandler;
+            CodeRepo = codeRepo;
+            TokenManager = tokenManager;
+            CacheRepo = cacheRepo;
+            SMSService = sMSService;
+            settings = options.CurrentValue;
+        }
+
+        public ManagerResult<AccessToken> CreateByUP(UPSessionCreateDto dto)
+        {
+            User user = UserRepo.ReadByUsername(dto.Username);
+            byte[] hash = user.PasswordHash;
+            byte[] salt = user.PasswordSalt;
+            bool flag = PasswordHandler.VerifyPasswordHash(dto.Password, hash, salt);
+            if (flag)
+            {
+                return CreateToken(user, dto.Ip);
+            }
+            return new ManagerResult<AccessToken>()
+            {
+                Code = 11,
+                Message = "UsernameOrPasswordIsWrong.",
+                Success = false
+            };
+        }
+
+        public ManagerResult<bool> Delete(StringValues authHeader)
+        {
+            try
+            {
+                string jwt = TokenManager.GetCurrent(authHeader).Result;
+                TokenRepo.Disable(jwt);
+                CacheRepo.Create(jwt);
+                return new ManagerResult<bool>(true);
+            }
+            catch (Exception)
+            {
+                return new ManagerResult<bool>(false, false);
+            }
+        }
+
+        public ManagerResult<bool> RequsetSessionByPhone(string phone)
+        {
+            bool userAlreadyExist = true;
+            User user = UserRepo.ReadByPhone(phone);
+            if (user == null)
+            {
+                var newUser = new User
+                {
+                    Mobile = phone,
+                    Username = phone,
+                    UserStatus = UserStatus.New,
+                };
+                user = UserRepo.Create(newUser);
+                userAlreadyExist = false;
+            }
+            userAlreadyExist = string.IsNullOrEmpty(user.Name?.Trim());
+            Code code = CodeRepo.ReadByUserId(user.Id, TokenType.SMS);
+            if (code != null)
+            {
+                if ((DateTime.UtcNow - code.CreatedDate) > TimeSpan.FromMinutes(1) && code.Times == 1)
+                {
+                    SMSService.Verification($"{code.Num}", user.Mobile);
+                    code.Times = 2;
+                    CodeRepo.Update(code);
+                }
+                if (code.Times == 2 && settings.CallSupport)
+                {
+                    return new ManagerResult<bool>
+                    {
+                        Message = "Call Support.",
+                        Result = true,
+                        Success = true,
+                        Code = 5
+                    };
+                }
+                return new ManagerResult<bool>
+                {
+                    Code = 3,
+                    Message = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{code.Num}" : "SMS Sent.",
+                    Success = true,
+                    Result = true
+                };
+            }
+            Random random = new();
+            int num = random.Next(1000, 10000);
+            Code newCode = new()
+            {
+                CreatedDate = DateTime.UtcNow,
+                Num = num,
+                Type = TokenType.SMS,
+                UserId = user.Id,
+                Times = 1
+            };
+            CodeRepo.Create(newCode);
+            SMSService.Verification($"{num}", user.Mobile);
+            return new ManagerResult<bool>
+            {
+                Code = userAlreadyExist ? 1 : 2,
+                Message = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{num}" : "SMS Sent.",
+                Success = true,
+                Result = true
+            };
+        }
+
+        public ManagerResult<AccessToken> VerifyTokenByPhone(VerifyTokenPhoneDto dto)
+        {
+            User user = UserRepo.ReadByPhone(dto.Phone);
+            if (user != null)
+            {
+                Code code = CodeRepo.ReadByUserId(user.Id, TokenType.SMS);
+                if (code != null)
+                {
+                    if (code.Num == dto.Token)
+                    {
+                        if (!user.MobileConfirmed)
+                        {
+                            UserRepo.ConfirmPhone(user);
+                        }
+                        ManagerResult<AccessToken> token = CreateToken(user, dto.IP);
+                        CodeRepo.Remove(code);
+                        if (user.UserStatus == UserStatus.New)
+                        {
+                            return new ManagerResult<AccessToken>(token.Result, true)
+                            {
+                                Message = "Welcome! Fill the form",
+                                Code = 14
+                            };
+                        }
+                        if (user.UserStatus == UserStatus.NotConfirmed)
+                        {
+                            return new ManagerResult<AccessToken>(token.Result, true)
+                            {
+                                Message = "Welcome! Admin didn't comfirm yor account.",
+                                Code = 15
+                            };
+                        }
+                        return new ManagerResult<AccessToken>(token.Result, true)
+                        {
+                            Message = "Welcome",
+                            Code = 10
+                        };
+                    }
+                    return new ManagerResult<AccessToken>()
+                    {
+                        Code = 8,
+                        Message = "CodeIsNotCorrect.",
+                        Success = false
+                    };
+                }
+                return new ManagerResult<AccessToken>()
+                {
+                    Code = 7,
+                    Message = "NoCodeForThisUser.",
+                    Success = false
+                };
+            }
+            else
+            {
+                return new ManagerResult<AccessToken>()
+                {
+                    Code = 6,
+                    Message = "NoUserWithThisPhoneNumber.",
+                    Success = false
+                };
+            }
+        }
+
+        private ManagerResult<AccessToken> CreateToken(User user, string ip)
+        {
+            string userId = user.Id;
+            List<string> roles = UserRepo.ReadUserAllRoles(user).Select(x => x.EnName).ToList();
+            AccessToken access = new()
+            {
+                Enable = true,
+                JWT = TokenHandler.GenerateJWTToken(userId, roles, ip),
+                RefreshToken = TokenHandler.GenerateRefreshToken(),
+                UserId = userId,
+                Ip = ip,
+                CreatedDate = DateTime.UtcNow
+            };
+            TokenRepo.Create(access);
+
+            return new ManagerResult<AccessToken>
+            {
+                Code = 10,
+                Message = "Welcome.",
+                Result = access,
+                Success = true
+            };
+        }
+    }
+}

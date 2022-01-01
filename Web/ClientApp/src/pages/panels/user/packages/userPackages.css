@@ -1,0 +1,61 @@
+.packageContainer {
+    width: 70vw;
+    min-width: 220px;
+    max-width: 300px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    border-radius: 15px;
+    border: 0 solid transparent;
+    margin: 1rem 0;
+    padding: 2rem;
+    box-shadow: 7px 7px 15px 4px #cccccc77;
+    transform: scale(1);
+    transition: 0.3s;
+}
+
+.ch {
+    min-height: 470px;
+}
+
+.packageContainer:hover {
+    border: 3px solid #ff521d;
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+.cNumber {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+}
+
+.button {
+    width: 60%;
+    height: 40px;;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    background-image: linear-gradient(120deg, #ffc004, #ff8e04);
+    border-radius: 50px;
+    color: #ffffff;
+    cursor: pointer;
+    margin: 2rem 0 1rem 0;
+    box-shadow: 7px 7px 15px 4px #cccccc77;
+}
+
+.button:hover {
+    box-shadow: 0 0 3px #00000044;
+}
+
+@media screen and (min-width: 768px) {
+    .packageContainer {
+        min-width: 280px;
+        margin: 1rem;
+    }
+}

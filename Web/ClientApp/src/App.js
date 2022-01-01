@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import './assets/main.css';
+import * as React from 'react';
+import {Route, Switch} from 'react-router';
+import Home from "./pages/home/home.component";
+import Layout from "./components/layout/layout.component";
+import NoMatch from "./pages/NoMatch";
+import LoginRoute from "./components/routes/loginRoutes";
+import PrivateRouteReverse from "./components/routes/privateRouteReverse";
+import PrivateRouteUserPanel from "./components/routes/privateRouteUserPanel";
+import PrivateRouteShopPanel from "./components/routes/privateRouteShopPanel";
+import UserPanelRoute from "./components/routes/userPanelRoute";
+import ShopPanelRoute from "./components/routes/shopPanelRoute";
+import AdminAreaRoute from './adminArea/routes/adminAreaRoutes';
 
-import './custom.css'
-
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
-}
+export default () => (
+   <Layout>
+      <Switch>
+         <Route exact path='/' component={Home} />
+         <PrivateRouteReverse path='/login' component={LoginRoute} />
+         <PrivateRouteUserPanel path='/user-panel' component={UserPanelRoute} />
+         <PrivateRouteShopPanel path='/shop-panel' component={ShopPanelRoute} />
+         <Route path='/admin' component={AdminAreaRoute} />
+         <Route path="*" component={NoMatch}/>
+      </Switch>
+   </Layout>
+);
