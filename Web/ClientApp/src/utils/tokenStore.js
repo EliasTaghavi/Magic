@@ -25,6 +25,7 @@ const getUserType = () => {
 const remove = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userType');
+  localStorage.removeItem('adminToken');
 };
 
 export default {

@@ -10,7 +10,7 @@ const AdminPrivateRouteReversePanel = (props) => {
 			!token ? (
 				<Component {...props} />
 			) : (
-				<Redirect to={{pathname: '/admin-panel', state: {from: props?.location}}}/>
+				<Redirect to={{pathname: '/admin/panel', state: {from: props?.location}}}/>
 			)
 		)}
 		/>
