@@ -2,10 +2,10 @@ import React from 'react';
 import '../../../admin.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faBars,
+	faBars, faBoxes,
 	faHome,
-	faList,
-	faSignOutAlt,
+	faList, faMoneyBill,
+	faSignOutAlt, faStore,
 	faUser,
 	faUsers
 } from "@fortawesome/free-solid-svg-icons";
@@ -159,9 +159,21 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 				{/*</div>*/}
 			{/*</li>*/}
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				<Link to="/admin/panel/packages" className="menuLink cpx-12">
+					<FontAwesomeIcon icon={faBoxes} className="fs18"/>
+					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
+				</Link>
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
 				<Link to="/admin/panel/transactions" className="menuLink cpx-12">
-					<FontAwesomeIcon icon={faList} className="fs18"/>
-					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
+					<FontAwesomeIcon icon={faMoneyBill} className="fs18"/>
+					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
+				</Link>
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				<Link to="/admin/panel/shops" className="menuLink cpx-12">
+					<FontAwesomeIcon icon={faStore} className="fs18"/>
+					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
 				</Link>
 			</li>
 			<Divider />

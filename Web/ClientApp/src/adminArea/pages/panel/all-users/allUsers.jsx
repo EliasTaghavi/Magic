@@ -17,20 +17,10 @@ const AdminAllUsers = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pagesNumber, setPagesNumber] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
-	const [sendSmsModal, setSendSmsModal] = useState(false);
 	const [totalCount, setTotalCount] = useState(0);
+	const [sendSmsModal, setSendSmsModal] = useState(false);
 	const [status, setStatus] = useState(2); // 0=false 1=true 2=undefined
-	const [data, setData] = useState([
-		{
-			id: 1,
-			firstName: 'شهاب',
-			lastName: 'طالبی',
-			mobile: '09123456789',
-			birthday: '1400/01/01',
-			status: false,
-			address: 'خیابان ابوذر کوچه 35',
-		}
-	]);
+	const [data, setData] = useState([]);
 	const [detailsModal, setDetailsModal] = useState(null);
 
 	useEffect(() => {
