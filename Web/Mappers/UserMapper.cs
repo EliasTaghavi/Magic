@@ -30,7 +30,7 @@ namespace Web.Mappers
         {
             return new UserListFilterDto
             {
-                Confirmed = viewModel.Confirmed,
+                Status = viewModel.Status,
                 Mobile = viewModel.Mobile,
             };
         }

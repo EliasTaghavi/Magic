@@ -1,8 +1,10 @@
-﻿namespace Web.Models.User
+﻿using Core.Identity.Enums;
+
+namespace Web.Models.User
 {
     public class UserListFilterViewModel
     {
-        public bool? Confirmed { get; set; }
+        public UserStatus? Status { get; set; }
         public string Mobile { get; set; }
     }
 }

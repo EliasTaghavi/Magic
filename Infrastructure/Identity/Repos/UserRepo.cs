@@ -68,16 +68,11 @@ namespace Infrastructure.Identity.Repos
         public PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto)
         {
             var query = GetSet();
-            if (dto.MetaData.Confirmed.HasValue)
+            if (dto.MetaData.Status.HasValue)
             {
-                if (dto.MetaData.Confirmed.Value)
-                {
-                    query = query.Where(x => x.UserStatus == UserStatus.Confirmed);
-                }
-                else
-                {
-                    query = query.Where(x => x.UserStatus != UserStatus.Confirmed);
-                }
+                
+                    query = query.Where(x => x.UserStatus == dto.MetaData.Status.Value);
+                
             }
             if (string.IsNullOrEmpty(dto.MetaData.Mobile))
             {

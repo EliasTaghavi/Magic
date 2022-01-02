@@ -21,7 +21,7 @@ namespace Core.Identity.Mappers
         {
             return new UserListDto
             {
-                Confirmed = user.UserStatus == Enums.UserStatus.Confirmed,
+                Status = user.UserStatus,
                 FirstName = user.Name,
                 Id = user.Id,
                 IdentityURL = string.Empty,
