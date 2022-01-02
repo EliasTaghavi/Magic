@@ -63,6 +63,7 @@ const AdminAllUsers = () => {
 			status: lastStatus === 'null' ? null : lastStatus,
 			mobile: data?.searchValue ?? searchValue,
 		};
+		console.log(filteredData);
 		adminGetAllUsers(filteredData)
 			.then((response) => {
 				const {result: {count, items}, success} = response;
