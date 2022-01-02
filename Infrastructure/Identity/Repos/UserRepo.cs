@@ -74,7 +74,7 @@ namespace Infrastructure.Identity.Repos
                     query = query.Where(x => x.UserStatus == dto.MetaData.Status.Value);
                 
             }
-            if (string.IsNullOrEmpty(dto.MetaData.Mobile))
+            if (!string.IsNullOrEmpty(dto.MetaData.Mobile))
             {
                 query = query.Where(x => x.Mobile.Contains(dto.MetaData.Mobile));
             }
