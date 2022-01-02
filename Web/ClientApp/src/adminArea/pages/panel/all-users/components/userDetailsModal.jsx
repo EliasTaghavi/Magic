@@ -3,6 +3,7 @@ import {Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import '../../../../admin.css';
+import imagePreUrl from "../../../../../api/imagePreUrl";
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 	const sendVerification = (state) => {
@@ -13,6 +14,8 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 			sendSmsModal(true);
 		}
 	};
+
+	console.log(item);
 
 	return (
 		<Modal
@@ -29,23 +32,23 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 						<div className="mr-3">
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">نام: </p>
-								<p className="fs18 mr-md-3">{item?.firstName}</p>
+								<p className="fs18 mr-md-3">{item?.firstName ?? '-----'}</p>
 							</div>
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">نام خانوادگی: </p>
-								<p className="fs18 mr-md-3">{item?.lastName}</p>
+								<p className="fs18 mr-md-3">{item?.lastName ?? '-----'}</p>
 							</div>
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">موبایل: </p>
-								<p className="fs18 mr-md-3">{item?.mobile}</p>
+								<p className="fs18 mr-md-3">{item?.mobile ?? '-----'}</p>
 							</div>
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">تاریخ تولد: </p>
-								<p className="fs18 mr-md-3">{item?.birthday}</p>
+								<p className="fs18 mr-md-3">{item?.birthday ?? '-----'}</p>
 							</div>
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">آدرس: </p>
-								<p className="fs18 mr-md-3">{item?.address}</p>
+								<p className="fs18 mr-md-3">{item?.address ?? '-----'}</p>
 							</div>
 						</div>
 					</div>
@@ -53,15 +56,15 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 						<div style={{flex: 1}} className="d-flex flex-column align-items-start justify-content-start">
 							<p className="mt-3">عکس سلفی:</p>
 							<div className="adminUserImages">
-								{item?.image && <img alt="magicoff.ir" src={undefined} className="adminUserImages"/>}
-								{!item?.image && <FontAwesomeIcon icon={faUser} className="fs30 textGray"/>}
+								{item?.selfieURL && <img alt="magicoff.ir" src={imagePreUrl(item?.selfieURL)} className="adminUserImages"/>}
+								{!item?.selfieURL && <FontAwesomeIcon icon={faUser} className="fs30 textGray"/>}
 							</div>
 						</div>
 						<div style={{flex: 1}} className="d-flex flex-column align-items-start justify-content-start">
 							<p className="mt-3">عکس تاییدیه شغلی:</p>
 							<div className="adminUserImages">
-								{item?.image && <img alt="magicoff.ir" src={undefined} className="adminUserImages"/>}
-								{!item?.image && <FontAwesomeIcon icon={faUser} className="fs30 textGray"/>}
+								{item?.identityURL && <img alt="magicoff.ir" src={imagePreUrl(item?.identityURL)} className="adminUserImages"/>}
+								{!item?.identityURL && <FontAwesomeIcon icon={faUser} className="fs30 textGray"/>}
 							</div>
 						</div>
 					</div>

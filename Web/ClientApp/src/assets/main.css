@@ -321,6 +321,11 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 
+.css-1pahdxg-control {
+    border-color: #ff521d !important;
+    box-shadow: 0 0 0 1px #ff521dcc !important;
+}
+
 @media screen and (min-width: 768px) {
     .resText {
         text-align: right;
