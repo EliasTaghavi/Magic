@@ -19,7 +19,7 @@ const AdminAllUsers = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const [totalCount, setTotalCount] = useState(0);
 	const [sendSmsModal, setSendSmsModal] = useState(false);
-	const [status, setStatus] = useState(2); // 0=false 1=true 2=undefined
+	const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
 	const [data, setData] = useState([]);
 	const [detailsModal, setDetailsModal] = useState(null);
 
@@ -29,14 +29,12 @@ const AdminAllUsers = () => {
 
 	const getData = (data) => {
 		setBigLoader(true);
-		let lastStatus = data?.status ?? status;
 		let filteredData = {
 			index: data?.currentPage ?? currentPage,
 			size: data?.pageSize ?? pageSize,
-			confirmed: lastStatus === 0 ? false : lastStatus === 1 ? true : null,
+			confirmed: data?.status ?? status,
 			mobile: data?.searchValue ?? searchValue,
 		};
-		console.log(filteredData);
 		adminGetAllUsers(filteredData)
 			.then((response) => {
 				const {result: {count, items}, success} = response;
@@ -60,7 +58,6 @@ const AdminAllUsers = () => {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
 				toast.error('خطای سرور', toastOptions);
 				setBigLoader(false);
 			});
@@ -110,21 +107,21 @@ const AdminAllUsers = () => {
 			<div className="card-body w-100 d-flex flex-column px-3">
 				<div className="w-100 d-flex flex-row flex-wrap align-items-center justify-content-between">
 					<div className="d-flex justify-content-start align-items-center">
-						<button type="button" className="bg-transparent border-0 cursor d-flex centered" onClick={() => changeStatus(1)}>
+						<button type="button" className="bg-transparent border-0 cursor d-flex centered" onClick={() => changeStatus(true)}>
 							<div className="radioContainer">
-								<div className={`customRadio ${status === 1 ? 'bgMain' : 'bg-transparent'}`}/>
+								<div className={`customRadio ${status === true ? 'bgMain' : 'bg-transparent'}`}/>
 							</div>
 							<label className="cursor p-0 m-0 pr-2" htmlFor="verified">تایید شده</label>
 						</button>
-						<button type="button" className="bg-transparent border-0 cursor d-flex centered mr-3" onClick={() => changeStatus(0)}>
+						<button type="button" className="bg-transparent border-0 cursor d-flex centered mr-3" onClick={() => changeStatus(false)}>
 							<div className="radioContainer">
-								<div className={`customRadio ${status === 0 ? 'bgMain' : 'bg-transparent'}`}/>
+								<div className={`customRadio ${status === false ? 'bgMain' : 'bg-transparent'}`}/>
 							</div>
-							<label className="cursor p-0 m-0 pr-2" htmlFor="rejected">رد شده</label>
+							<label className="cursor p-0 m-0 pr-2" htmlFor="rejected">تایید نشده</label>
 						</button>
-						<button type="button" className="bg-transparent border-0 cursor d-flex centered mr-3" onClick={() => changeStatus(2)}>
+						<button type="button" className="bg-transparent border-0 cursor d-flex centered mr-3" onClick={() => changeStatus(null)}>
 							<div className="radioContainer">
-								<div className={`customRadio ${status === 2 ? 'bgMain' : 'bg-transparent'}`}/>
+								<div className={`customRadio ${status === null ? 'bgMain' : 'bg-transparent'}`}/>
 							</div>
 							<label className="cursor p-0 m-0 pr-2" htmlFor="undefined">در انتظار</label>
 						</button>
@@ -156,10 +153,12 @@ const AdminAllUsers = () => {
 									<td>{item?.mobile}</td>
 									<td>{item?.firstName}</td>
 									<td>{item?.lastName}</td>
-									<td>{item?.status ? (
+									<td>{item?.confirmed === true ? (
 										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
-									) : (
+									) : item?.confirmed === false ? (
 										<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
+									) : (
+										<p className="text-danger font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
 									)}</td>
 									<td>
 										<button className="outline btn btn-transparent optionBtn rounded-circle d-flex align-items-center justify-content-center m-0 p-0" style={{width: 40, height: 40}} onClick={() => openDetailsModal(item)}>
