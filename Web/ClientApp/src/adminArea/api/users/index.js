@@ -16,7 +16,9 @@ export const adminGetAllUsers = (data) => {
 			confirmed,
 			mobile,
 		}
-	})
+	});
+
+	console.log(JSON.parse(body));
 
 	return axios.post('/api/user/list', body,{headers}).then((res) => {
 		console.log(res);

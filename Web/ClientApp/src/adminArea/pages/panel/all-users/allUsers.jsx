@@ -29,12 +29,14 @@ const AdminAllUsers = () => {
 
 	const getData = (data) => {
 		setBigLoader(true);
+		let lastStatus = data?.status ?? status;
 		let filteredData = {
 			index: data?.currentPage ?? currentPage,
 			size: data?.pageSize ?? pageSize,
-			confirmed: data?.status ?? status,
+			confirmed: lastStatus === 0 ? false : lastStatus === 1 ? true : null,
 			mobile: data?.searchValue ?? searchValue,
 		};
+		console.log(filteredData);
 		adminGetAllUsers(filteredData)
 			.then((response) => {
 				const {result: {count, items}, success} = response;
