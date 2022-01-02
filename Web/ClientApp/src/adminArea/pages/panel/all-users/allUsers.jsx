@@ -10,6 +10,11 @@ import {adminGetAllUsers} from "../../../api/users";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import PageNumberGenerator from "../components/PageNumberGenerator";
+import makeAnimated from "react-select/animated/dist/react-select.esm";
+import {theme} from "../../../../components/shared/theme";
+import Select from "react-select";
+
+const animatedComponents = makeAnimated();
 
 const AdminAllUsers = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -22,6 +27,28 @@ const AdminAllUsers = () => {
 	const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
 	const [data, setData] = useState([]);
 	const [detailsModal, setDetailsModal] = useState(null);
+	const statusTypes = [
+		{
+			value: null,
+			label: 'همه',
+		},
+		{
+			value: 3,
+			label: 'تایید شده',
+		},
+		{
+			value: 5,
+			label: 'تایید نشده',
+		},
+		{
+			value: 4,
+			label: 'عدم تکمیل اطلاعات',
+		},
+		{
+			value: 6,
+			label: 'در انتظار بررسی',
+		},
+	];
 
 	useEffect(() => {
 		getData();
@@ -29,10 +56,11 @@ const AdminAllUsers = () => {
 
 	const getData = (data) => {
 		setBigLoader(true);
+		let lastStatus = data?.status ?? status;
 		let filteredData = {
 			index: data?.currentPage ?? currentPage,
 			size: data?.pageSize ?? pageSize,
-			confirmed: data?.status ?? status,
+			status: lastStatus === 'null' ? null : lastStatus,
 			mobile: data?.searchValue ?? searchValue,
 		};
 		adminGetAllUsers(filteredData)
@@ -94,9 +122,11 @@ const AdminAllUsers = () => {
 		setSearchValue(target.value);
 	}, []);
 
-	const changeStatus = (value) => {
+	const changeStatus = (val) => {
+		let {value} = val;
+		console.log(value);
 		setStatus(value);
-		getData({status: value});
+		getData({status: value !== null ? value : 'null'});
 	}
 
 	return (
@@ -105,26 +135,20 @@ const AdminAllUsers = () => {
 				<p className="card-title fs22 my-2">لیست همه کاربران</p>
 			</div>
 			<div className="card-body w-100 d-flex flex-column px-3">
-				<div className="w-100 d-flex flex-row flex-wrap align-items-center justify-content-between">
-					<div className="d-flex justify-content-start align-items-center">
-						<button type="button" className="bg-transparent border-0 cursor d-flex centered" onClick={() => changeStatus(true)}>
-							<div className="radioContainer">
-								<div className={`customRadio ${status === true ? 'bgMain' : 'bg-transparent'}`}/>
-							</div>
-							<label className="cursor p-0 m-0 pr-2" htmlFor="verified">تایید شده</label>
-						</button>
-						<button type="button" className="bg-transparent border-0 cursor d-flex centered mr-3" onClick={() => changeStatus(false)}>
-							<div className="radioContainer">
-								<div className={`customRadio ${status === false ? 'bgMain' : 'bg-transparent'}`}/>
-							</div>
-							<label className="cursor p-0 m-0 pr-2" htmlFor="rejected">تایید نشده</label>
-						</button>
-						<button type="button" className="bg-transparent border-0 cursor d-flex centered mr-3" onClick={() => changeStatus(null)}>
-							<div className="radioContainer">
-								<div className={`customRadio ${status === null ? 'bgMain' : 'bg-transparent'}`}/>
-							</div>
-							<label className="cursor p-0 m-0 pr-2" htmlFor="undefined">در انتظار</label>
-						</button>
+				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
+					<div className="col-12 col-sm-6 col-md-4 col-xl-3 form-group mt-4">
+						<Select
+							defaultValue={statusTypes[0]}
+							options={statusTypes}
+							isClearable={false}
+							components={animatedComponents}
+							isRtl={true}
+							isMulti={false}
+							isSearchable={false}
+							maxMenuHeight={200}
+							placeholder=""
+							onChange={(value) => changeStatus(value)}
+							styles={theme.customStyles}/>
 					</div>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
@@ -141,24 +165,21 @@ const AdminAllUsers = () => {
 						</tr>
 						</thead>
 						<tbody className="w-100">
-						{bigLoader && <tr>
-							<td colSpan={6}>
-								<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
-							</td>
-						</tr>}
-						{data.length > 0 && data.map((item, index) => {
+						{!bigLoader && data.length > 0 && data.map((item, index) => {
 							return (
 								<tr className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
 									<td>{item?.mobile}</td>
 									<td>{item?.firstName}</td>
 									<td>{item?.lastName}</td>
-									<td>{item?.confirmed === true ? (
+									<td>{item?.status === 3 ? (
 										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
-									) : item?.confirmed === false ? (
+									) : item?.status === 5 ? (
 										<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
+									) : item?.status === 6 ? (
+										<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
 									) : (
-										<p className="text-danger font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
+										<p className="text-secondary font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 									)}</td>
 									<td>
 										<button className="outline btn btn-transparent optionBtn rounded-circle d-flex align-items-center justify-content-center m-0 p-0" style={{width: 40, height: 40}} onClick={() => openDetailsModal(item)}>
@@ -168,13 +189,14 @@ const AdminAllUsers = () => {
 								</tr>
 							);
 						})}
-						{(data?.length < 1 && !bigLoader) && <tr>
-							<td colSpan={8}>
-								<span className="text-danger">داده ای وجود ندارد.</span>
-							</td>
-						</tr>}
 						</tbody>
 					</table>
+					{(data?.length < 1 && !bigLoader) && <div className="w-100 d-flex centered py-3">
+						<span className="text-danger">داده ای وجود ندارد.</span>
+					</div>}
+					{bigLoader && <div className="w-100 d-flex centered py-3">
+						<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+					</div>}
 				</div>
 				<hr className="w-100" />
 				<div className="w-100 bg-white p-3 pb-0 d-flex flex-column align-items-center justify-content-start flex-md-row align-items-md-center justify-content-md-between">

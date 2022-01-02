@@ -2,7 +2,7 @@ import axios from "axios";
 import tokenStore from "../../../utils/tokenStore";
 
 export const adminGetAllUsers = (data) => {
-	const {index, size, confirmed, mobile} = data;
+	const {index, size, status, mobile} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ export const adminGetAllUsers = (data) => {
 		index,
 		size,
 		metaData: {
-			confirmed,
+			status,
 			mobile,
 		}
 	});
