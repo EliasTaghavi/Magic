@@ -1,5 +1,5 @@
 const imagePreUrl = (imageId) => {
-	return `/api/file/getfile?id=${imageId}`
+	return `/ids/${imageId}`
 };
 
 export default imagePreUrl;

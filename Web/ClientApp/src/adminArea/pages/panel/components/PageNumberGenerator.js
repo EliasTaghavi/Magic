@@ -3,19 +3,26 @@ const PageNumberGenerator = (totalCount, pageSize) => {
 		totalCount = 1;
 	}
 	return new Promise(result => {
+		console.log(12, totalCount, pageSize, pageSize >= totalCount);
 		let value;
-		if (totalCount % pageSize === 0) {
-			value = totalCount / pageSize;
-			generateNumbers(value)
-				.then((response) => {
-					result(response);
-				})
+		if (pageSize >= totalCount) {
+			result([1]);
 		} else {
-			value =  totalCount / pageSize + 1;
-			generateNumbers(value)
-				.then((response) => {
-					result(response);
-				})
+			if (totalCount % pageSize === 0) {
+				value = totalCount / pageSize;
+				generateNumbers(value)
+					.then((response) => {
+						console.log(1, response, value);
+						result(response);
+					})
+			} else {
+				value =  totalCount / pageSize + 1;
+				generateNumbers(value)
+					.then((response) => {
+						console.log(2, response);
+						result(response);
+					})
+			}
 		}
 	})
 };
