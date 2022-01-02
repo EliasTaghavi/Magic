@@ -137,7 +137,7 @@ const NewPckModal = ({setOpen}) => {
 							display: errors['description'] ? 'block' : 'none',
 						}}>{errors['description']}</span>
 					</div>
-					<div className="modal-footer d-flex justify-content-between align-items-center">
+					<div className="modal-footer d-flex justify-content-between align-items-center mt-3">
 						<button type="submit" className="btn bgMain border-0 rounded px-3 py-2 text-white ml-1">ثبت</button>
 						<button type="button" className="btn btn-secondary border-0 rounded px-3 py-2 text-white" onClick={() => setOpen(false)}>بستن</button>
 					</div>

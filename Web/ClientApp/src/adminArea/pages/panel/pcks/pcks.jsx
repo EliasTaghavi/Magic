@@ -76,12 +76,7 @@ const AdminPcks = () => {
 						</tr>
 						</thead>
 						<tbody className="w-100">
-						{bigLoader && <tr>
-							<td colSpan={6}>
-								<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
-							</td>
-						</tr>}
-						{data.length > 0 && data.map((item, index) => {
+						{!bigLoader && data.length > 0 && data.map((item, index) => {
 							return (
 								<tr className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
@@ -92,13 +87,19 @@ const AdminPcks = () => {
 								</tr>
 							);
 						})}
-						{(data?.length < 1 && !bigLoader) && <tr>
-							<td colSpan={8}>
-								<span className="text-danger">داده ای وجود ندارد.</span>
-							</td>
-						</tr>}
+
 						</tbody>
 					</table>
+					{(data?.length < 1 && !bigLoader) && <tr>
+						<td colSpan={8}>
+							<span className="text-danger">داده ای وجود ندارد.</span>
+						</td>
+					</tr>}
+					{bigLoader && <tr>
+						<td colSpan={6}>
+							<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+						</td>
+					</tr>}
 				</div>
 				<hr className="w-100" />
 				<div className="w-100 bg-white p-3 pb-0 d-flex flex-column align-items-center justify-content-start flex-md-row align-items-md-center justify-content-md-between">
