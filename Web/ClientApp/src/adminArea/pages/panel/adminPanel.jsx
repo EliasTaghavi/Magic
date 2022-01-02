@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import './adminPanel.css';
 import AdminHeader from "./components/adminHeader";
 
 const AdminPanel = ({children}) => {

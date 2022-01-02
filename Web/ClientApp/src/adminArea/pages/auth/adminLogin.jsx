@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import Loader from 'react-loader-spinner';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-import './adminLogin.css';
 import loginAdminValidation from '../../validations/loginAdminValidation';
 import {toast} from "react-toastify";
 import toastOptions from "../../../components/ToastOptions";
