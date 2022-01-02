@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System.IO;
 using System.Linq;
 using Web.Middleware;
 using Web.Services;
@@ -50,6 +52,12 @@ namespace Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //file
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(env.ContentRootPath, "ids")),
+                RequestPath = "/ids"
+            });
             app.UseSpaStaticFiles();
             app.UseSerilogRequestLogging();
             app.UseRouting();
