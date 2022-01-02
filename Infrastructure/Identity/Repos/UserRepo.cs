@@ -84,7 +84,7 @@ namespace Infrastructure.Identity.Repos
                 query = query.Where(x => x.Mobile.Contains(dto.MetaData.Mobile));
             }
             int count = query.Count();
-            var result = query.Skip(dto.Index * dto.Size).Take(dto.Size).ToList();
+            var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
             return new PagedListDto<UserListDto>
             {
                 Count = count,
