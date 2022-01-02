@@ -50,11 +50,12 @@ namespace Infrastructure.Data
 
         public static void PackValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Pack.Entities.Pack>(token =>
+            builder.Entity<Core.Pack.Entities.Pack>(pack =>
             {
-                token.Property(x => x.Id)
+                pack.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
-                token.HasKey(x => x.Id);
+                pack.HasKey(x => x.Id);
+                pack.Ignore(x => x.ObjectState);
             });
         }
 
