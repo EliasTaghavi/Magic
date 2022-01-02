@@ -34,5 +34,21 @@ namespace Web.Mappers
                 Mobile = viewModel.Mobile,
             };
         }
+
+        public static UserListViewModel ToViewModel(this UserListDto dto)
+        {
+            return new UserListViewModel
+            {
+                Address = dto.Address,
+                Birthday = dto.Birthday,
+                FirstName = dto.FirstName,
+                Id = dto.Id,
+                IdentityURL = dto.IdentityURL,
+                LastName = dto.LastName,
+                Mobile = dto.Mobile,
+                SelfieURL = dto.SelfieURL,
+                Status = dto.Status,
+            };
+        }
     }
 }

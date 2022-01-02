@@ -48,6 +48,16 @@ namespace Infrastructure.Data
             });
         }
 
+        public static void PackValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Pack.Entities.Pack>(token =>
+            {
+                token.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                token.HasKey(x => x.Id);
+            });
+        }
+
         public static void RoleValidation(this ModelBuilder builder)
         {
             builder?.Entity<Role>(role =>

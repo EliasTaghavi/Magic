@@ -1,13 +1,16 @@
 ﻿using Core.Identity.Enums;
+using Newtonsoft.Json;
 using System;
+using Web.JsonConverter;
 
-namespace Core.Identity.Dto
+namespace Web.Models.User
 {
-    public class UserListDto
+    public class UserListViewModel
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime Birthday { get; set; }
         public string Address { get; set; }
         public UserStatus Status { get; set; }

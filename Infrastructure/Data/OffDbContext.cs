@@ -18,6 +18,7 @@ namespace Infrastructure.Data
         public DbSet<AccessToken> Tokens { get; set; }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Core.Pack.Entities.Pack> Packs { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
@@ -31,6 +32,7 @@ namespace Infrastructure.Data
             builder.TokenValidation();
             builder.CacheValidation();
             builder.CodeValidation();
+            builder.PackValidation();
 
             builder.AppFileValidation();
             builder.Seed();

@@ -28,6 +28,8 @@ namespace Core.Identity.Mappers
                 LastName = user.Surname,
                 Mobile = user.Mobile,
                 SelfieURL = string.Empty,
+                Address = user.Address,
+                Birthday = user.Birthday,
             };
         }
 

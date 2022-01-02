@@ -78,7 +78,7 @@ namespace Web.Controllers
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = UserManager.Search(dto);
-            return Ok(response);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
 
         [HttpPost]

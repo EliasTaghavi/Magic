@@ -1,7 +1,9 @@
 ﻿using Core.File.Managers;
 using Core.Identity.Managers;
+using Core.Pack.Managers;
 using Infrastructure.File.Managers;
 using Infrastructure.Identity.Managers;
+using Infrastructure.Pack.Managers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Web.Services
@@ -14,6 +16,7 @@ namespace Web.Services
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddTransient<ISessionManager, SessionManager>();
             services.AddTransient<IFileManager, FileManager>();
+            services.AddTransient<IPackManager, PackManager>();
         }
     }
 }
