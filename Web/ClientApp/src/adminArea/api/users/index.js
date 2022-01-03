@@ -39,16 +39,8 @@ export const sendLockUserData = (userId) => {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
-	let body = JSON.stringify({
-		// index,
-		// size,
-		// metaData: {
-		// 	status,
-		// 	mobile,
-		// }
-	});
 
-	return axios.post('/api/user/list', body,{headers}).then((res) => {
+	return axios.post(`/api/user/lock?id=${userId}`, null,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
