@@ -38,7 +38,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Delete(string id)
+        public IActionResult Delete([FromQuery]string id)
         {
             var response = packManager.Delete(id);
             return Ok(response);
