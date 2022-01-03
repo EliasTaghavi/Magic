@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit'
-import UserStore from './user';
+import * as UserStore from './user';
+import * as MainStore from './main';
 import thunk from "redux-thunk";
 import {
   persistStore,
@@ -9,7 +10,8 @@ import storage from 'redux-persist/lib/storage'
 import {combineReducers} from "redux";
 
 const rootReducer = combineReducers({
-  user: UserStore,
+  [MainStore.STORE_NAME]: MainStore.reducer,
+  user: UserStore.reducer,
 });
 
 const persistConfig = {

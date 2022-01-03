@@ -2,14 +2,15 @@ import React, {useCallback, useEffect, useState} from 'react';
 import SearchBox from "../components/SearchBox";
 import Loader from "react-loader-spinner";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import RenderPageButtons from "../components/RenderPageButtons";
 import NewPckModal from "./components/newPckModal";
-import {adminGetAllPcks} from "../../../api/pck";
+import {adminGetAllPcks, deletePck} from "../../../api/pck";
 import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import NumberFormat from "react-number-format";
+import DeleteItemModal from "../../../../components/shared/deleteItemModal";
 
 const AdminPcks = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -20,6 +21,7 @@ const AdminPcks = () => {
 	const [totalCount, setTotalCount] = useState(0);
 	const [data, setData] = useState([]);
 	const [newPckModal, setNewPckModal] = useState(false);
+	const [deleteItemModal, setDeleteItemModal] = useState(null);
 
 	const searchData = (e) => {
 		e.preventDefault();
@@ -88,6 +90,30 @@ const AdminPcks = () => {
 		getData({currentPage: 1, pageSize: target.value});
 	}, []);
 
+	const deleteItem = () => {
+		deletePck(deleteItemModal)
+			.then((response) => {
+				let {success} = response
+				console.log(response);
+				if (response) {
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else if (success) {
+						toast.success('آیتم با موفقیت حذف شد', toastOptions);
+						getData();
+						setDeleteItemModal(null);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setDeleteItemModal(null);
+				}
+			})
+			.catch((error) => {
+				toast.error('خطای سرور', toastOptions);
+				setDeleteItemModal(null);
+			});
+	};
+
 	return (
 		<div className="card cardPrimary px-3 w-100">
 			<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
@@ -110,6 +136,7 @@ const AdminPcks = () => {
 								<th style={{minWidth: 120}}>قیمت</th>
 								<th style={{minWidth: 120}}>مدت زمان</th>
 								<th style={{minWidth: 120}}>توضیحات</th>
+								<th style={{minWidth: 120}}>عملیات</th>
 							</tr>
 						</thead>
 						<tbody className="w-100">
@@ -121,6 +148,11 @@ const AdminPcks = () => {
 									<td>{item?.price ? <NumberFormat value={item?.price} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" /> : '-----'}</td>
 									<td>{item?.dayCount ?? '-----'}</td>
 									<td>{item?.description?.length > 0 ? item?.description : '-----'}</td>
+									<td>
+										<button type="button" className="btn bg-transparent border-0 outline" onClick={() => setDeleteItemModal(item)}>
+											<FontAwesomeIcon icon={faTrash} className="text-danger fs18" />
+										</button>
+									</td>
 								</tr>
 							);
 						})}
@@ -147,6 +179,7 @@ const AdminPcks = () => {
 				</div>
 			</div>
 			{newPckModal && <NewPckModal setOpen={() => setNewPckModal(null)} refreshList={() => getData()} />}
+			{deleteItemModal && <DeleteItemModal item={{type: 'پکیج', name: deleteItemModal?.title}} setOpen={() => setDeleteItemModal(null)} deleteItem={deleteItem} />}
 		</div>
 	);
 }

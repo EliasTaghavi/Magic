@@ -16,6 +16,11 @@ body {
     /*overflow-x: hidden !important;*/
 }
 
+button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .fontFamily {
     font-family: IranSans !important;
 }

@@ -13,10 +13,13 @@ import PageNumberGenerator from "../components/PageNumberGenerator";
 import makeAnimated from "react-select/animated/dist/react-select.esm";
 import {theme} from "../../../../components/shared/theme";
 import Select from "react-select";
+import {useDispatch} from "react-redux";
+import * as MainStore from '../../../../store/main';
 
 const animatedComponents = makeAnimated();
 
 const AdminAllUsers = () => {
+	const dispatch = useDispatch();
 	const [bigLoader, setBigLoader] = useState(false);
 	const [pageSize, setPageSize] = useState(5);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -67,10 +70,10 @@ const AdminAllUsers = () => {
 		adminGetAllUsers(filteredData)
 			.then((response) => {
 				const {result: {count, items}, success} = response;
-				console.log(response);
+				console.log(9999, response);
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal(true));
 					} else if (success) {
 						PageNumberGenerator(count, data?.pageSize ?? pageSize)
 							.then((res) => {
@@ -212,7 +215,10 @@ const AdminAllUsers = () => {
 				</div>
 			</div>
 			{detailsModal && <UserDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} sendSmsModal={() => setSendSmsModal(true)} />}
-			{sendSmsModal && <RejectSmsModal item={detailsModal} setOpen={() => setSendSmsModal(false)} />}
+			{sendSmsModal && <RejectSmsModal item={detailsModal} setOpen={() => {
+				setDetailsModal(null);
+				setSendSmsModal(false);
+			}} />}
 		</div>
 	);
 }
