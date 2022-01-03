@@ -5,6 +5,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import RenderPageButtons from "../components/RenderPageButtons";
 import NewPckModal from "./components/newPckModal";
+import {adminGetAllPcks} from "../../../api/pck";
+import PageNumberGenerator from "../components/PageNumberGenerator";
+import {toast} from "react-toastify";
+import toastOptions from "../../../../components/ToastOptions";
+import NumberFormat from "react-number-format";
 
 const AdminPcks = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -32,7 +37,39 @@ const AdminPcks = () => {
 	}, []);
 
 	const getData = (data) => {
-		// do nothing
+		setBigLoader(true);
+		let filteredData = {
+			index: data?.currentPage ?? currentPage,
+			size: data?.pageSize ?? pageSize,
+			title: data?.searchValue ?? searchValue,
+		};
+		console.log(filteredData);
+		adminGetAllPcks(filteredData)
+			.then((response) => {
+				let {success, result: {count, items}} = response
+				console.log(response);
+				if (response) {
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else if (success) {
+						PageNumberGenerator(count, data?.pageSize ?? pageSize)
+							.then((res) => {
+								console.log(res);
+								setPagesNumber(res);
+							});
+						setTotalCount(count);
+						setData(items);
+						setBigLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setBigLoader(false);
+				}
+			})
+			.catch((error) => {
+				toast.error('خطای سرور', toastOptions);
+				setBigLoader(false);
+			});
 	}
 
 	const changePageFn = (newPage) => {
@@ -40,7 +77,7 @@ const AdminPcks = () => {
 			// do nothing
 		} else {
 			setCurrentPage(newPage);
-			// getData(newPage);
+			getData({currentPage: newPage});
 		}
 	};
 
@@ -64,42 +101,37 @@ const AdminPcks = () => {
 					</button>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
-				<div className="table-responsive">
+				<div className="table-responsive table-striped">
 					<table className="w-100 mt-5">
 						<thead>
-						<tr>
-							<th style={{minWidth: 120}}>ردیف</th>
-							<th style={{minWidth: 120}}>نام پکیج</th>
-							<th style={{minWidth: 120}}>قیمت</th>
-							<th style={{minWidth: 120}}>مدت زمان</th>
-							<th style={{minWidth: 120}}>توضیحات</th>
-						</tr>
+							<tr>
+								<th style={{minWidth: 120}}>ردیف</th>
+								<th style={{minWidth: 120}}>نام پکیج</th>
+								<th style={{minWidth: 120}}>قیمت</th>
+								<th style={{minWidth: 120}}>مدت زمان</th>
+								<th style={{minWidth: 120}}>توضیحات</th>
+							</tr>
 						</thead>
 						<tbody className="w-100">
 						{!bigLoader && data.length > 0 && data.map((item, index) => {
 							return (
-								<tr className="customTr">
-									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
-									<td>{item?.name}</td>
-									<td>{item?.price}</td>
-									<td>{item?.duration}</td>
-									<td>{item?.description}</td>
+								<tr key={item?.id} className="customTr">
+									<td className="py-3">{(currentPage - 1) * pageSize + (index + 1)}</td>
+									<td>{item?.title ?? '-----'}</td>
+									<td>{item?.price ? <NumberFormat value={item?.price} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" /> : '-----'}</td>
+									<td>{item?.dayCount ?? '-----'}</td>
+									<td>{item?.description?.length > 0 ? item?.description : '-----'}</td>
 								</tr>
 							);
 						})}
-
 						</tbody>
 					</table>
-					{(data?.length < 1 && !bigLoader) && <tr>
-						<td colSpan={8}>
-							<span className="text-danger">داده ای وجود ندارد.</span>
-						</td>
-					</tr>}
-					{bigLoader && <tr>
-						<td colSpan={6}>
-							<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
-						</td>
-					</tr>}
+					{(data?.length < 1 && !bigLoader) && <div className="w-100 d-flex centered py-3">
+						<span className="text-danger">داده ای وجود ندارد.</span>
+					</div>}
+					{bigLoader && <div className="w-100 d-flex centered py-3">
+						<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+					</div>}
 				</div>
 				<hr className="w-100" />
 				<div className="w-100 bg-white p-3 pb-0 d-flex flex-column align-items-center justify-content-start flex-md-row align-items-md-center justify-content-md-between">
@@ -114,7 +146,7 @@ const AdminPcks = () => {
 					<span className="mt-3 mt-md-0">{`(\xa0${totalCount}\xa0آیتم\xa0)`}</span>
 				</div>
 			</div>
-			{newPckModal && <NewPckModal setOpen={() => setNewPckModal(null)} />}
+			{newPckModal && <NewPckModal setOpen={() => setNewPckModal(null)} refreshList={() => getData()} />}
 		</div>
 	);
 }

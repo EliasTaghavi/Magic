@@ -72,9 +72,8 @@ const AdminAllUsers = () => {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
 					} else if (success) {
-						PageNumberGenerator(count, pageSize)
+						PageNumberGenerator(count, data?.pageSize ?? pageSize)
 							.then((res) => {
-								console.log(res);
 								setPagesNumber(res);
 							});
 						setTotalCount(count);
@@ -96,10 +95,10 @@ const AdminAllUsers = () => {
 		setDetailsModal(item);
 	}
 
-	const setPageSizeValue = useCallback((e) => {
+	const setPageSizeValue = useCallback(async (e) => {
 		let target = e.target;
-		setCurrentPage(1);
 		setPageSize(target.value);
+		setCurrentPage(1);
 		getData({currentPage: 1, pageSize: target.value});
 	}, []);
 
@@ -108,7 +107,7 @@ const AdminAllUsers = () => {
 			// do nothing
 		} else {
 			setCurrentPage(newPage);
-			// getData(newPage);
+			getData({currentPage: newPage});
 		}
 	};
 
@@ -153,7 +152,7 @@ const AdminAllUsers = () => {
 					</div>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
-				<div className="table-responsive">
+				<div className="table-responsive table-striped">
 					<table className="w-100 mt-5">
 						<thead>
 						<tr>
@@ -168,11 +167,11 @@ const AdminAllUsers = () => {
 						<tbody className="w-100">
 						{!bigLoader && data.length > 0 && data.map((item, index) => {
 							return (
-								<tr className="customTr">
+								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
-									<td>{item?.mobile}</td>
-									<td>{item?.firstName}</td>
-									<td>{item?.lastName}</td>
+									<td>{item?.mobile ?? '-----'}</td>
+									<td>{item?.firstName ?? '-----'}</td>
+									<td>{item?.lastName ?? '-----'}</td>
 									<td>{item?.status === 3 ? (
 										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
 									) : item?.status === 5 ? (

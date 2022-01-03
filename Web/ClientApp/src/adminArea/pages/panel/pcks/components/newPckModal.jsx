@@ -1,16 +1,71 @@
 import React, {useState} from 'react';
 import {Modal} from "react-bootstrap";
+import {toast} from "react-toastify";
+import toastOptions from "../../../../../components/ToastOptions";
+import createPckValidation from "../../../../validations/createPckValidation";
+import {sendAddPckData} from "../../../../api/pck";
+import Loader from "react-loader-spinner";
+import NumberFormat from "react-number-format";
 
-const NewPckModal = ({setOpen}) => {
+const NewPckModal = ({setOpen, refreshList}) => {
 	const [focused, setFocused] = useState('');
 	const [errors, setErrors] = useState({});
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState('');
 	const [duration, setDuration] = useState('');
 	const [description, setDescription] = useState('');
+	const [loader, setLoader] = useState(false);
 
 	const handleValidate = (e) => {
 		e.preventDefault();
+		let data = {
+			name,
+			price,
+			duration,
+			description,
+		};
+		createPckValidation(data)
+			.then((response) => {
+				if (Object.entries(response).length < 1) {
+					sendPckData();
+				} else {
+					setErrors(response);
+					toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
+				}
+			})
+			.catch(() => {
+				toast.error('خطای سرور', toastOptions)
+			})
+	};
+
+	const sendPckData = (data) => {
+		setLoader(true);
+		let pckData = {
+			dayCount: data?.duration ?? duration,
+			title: data?.name ?? name,
+			price: data?.price ?? price,
+			description: data?.description ?? description,
+		};
+		sendAddPckData(pckData)
+			.then((response) => {
+				let {success} = response;
+				if (response) {
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else if (success) {
+						setOpen(false);
+						refreshList(true);
+						setLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setLoader(false);
+				}
+			})
+			.catch(() => {
+				toast.error('خطای سرور', toastOptions);
+				setLoader(false);
+			});
 	};
 
 	const focusedFn = (e) => {
@@ -30,7 +85,7 @@ const NewPckModal = ({setOpen}) => {
 				setName(target.value);
 				break;
 			case 'price':
-				setPrice(target.value);
+				setPrice(target.value.replace(/[.,]/gm, ''));
 				break;
 			case 'duration':
 				setDuration(target.value);
@@ -78,21 +133,22 @@ const NewPckModal = ({setOpen}) => {
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
 							<label htmlFor="price" className={`transition fs14 mb-0 ${focused === 'price' ? 'textMain' : 'textThird'}`}>
-								قیمت
+								قیمت (به تومان)
 							</label>
-							<input
+							<NumberFormat
 								id="price"
 								name="price"
-								type="number"
 								autoFocus={false}
 								required={true}
-								className={`form-control input ${errors['price'] && 'is-invalid'}`}
+								type="text"
+								min={0}
 								value={price}
+								className={`form-control input ${errors['price'] && 'is-invalid'}`}
 								onChange={changeValue}
 								placeholder="..."
 								onFocus={focusedFn}
 								onBlur={unfocusedFn}
-							/>
+								thousandSeparator={true} />
 							<span className="invalid-feedback mt-2 fs14" style={{
 								display: errors['price'] ? 'block' : 'none',
 							}}>{errors['price']}</span>
@@ -138,7 +194,10 @@ const NewPckModal = ({setOpen}) => {
 						}}>{errors['description']}</span>
 					</div>
 					<div className="modal-footer d-flex justify-content-between align-items-center mt-3">
-						<button type="submit" className="btn bgMain border-0 rounded px-3 py-2 text-white ml-1">ثبت</button>
+						<button type="submit" className="btn bgMain border-0 rounded px-3 py-2 text-white ml-1">
+							{!loader && <span>ثبت</span>}
+							{loader && <Loader type="ThreeDots" color='#ffffff' height={8} width={100} className="loader"/>}
+						</button>
 						<button type="button" className="btn btn-secondary border-0 rounded px-3 py-2 text-white" onClick={() => setOpen(false)}>بستن</button>
 					</div>
 				</form>
