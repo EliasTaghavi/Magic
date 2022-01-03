@@ -1,4 +1,5 @@
 ﻿using Core.Pack.Dto;
+using Core.Pack.Entities;
 using Web.Models.Pack;
 
 namespace Web.Mappers
@@ -22,6 +23,18 @@ namespace Web.Mappers
                 Id = dto.Id,
                 Price = dto.Price,
                 Title = dto.Title,
+            };
+        }
+
+        public static Pack ToDataModel(this CreatePackViewModel viewModel)
+        {
+            return new Pack
+            {
+                Title = viewModel.Title,
+                Price = viewModel.Price,
+                DayCount = viewModel.DayCount,
+                Description = viewModel.Description,
+                ObjectState = Core.Base.Enums.ObjectState.Added
             };
         }
     }

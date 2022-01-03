@@ -3,11 +3,6 @@ using Core.Base.Entities;
 using Core.Pack.Dto;
 using Core.Pack.Managers;
 using Core.Pack.Repos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Pack.Managers
 {
@@ -23,6 +18,12 @@ namespace Infrastructure.Pack.Managers
         public ManagerResult<bool> Create(Core.Pack.Entities.Pack data)
         {
             packRepo.Create(data);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Delete(string id)
+        {
+            packRepo.Delete(id);
             return new ManagerResult<bool>(true);
         }
 

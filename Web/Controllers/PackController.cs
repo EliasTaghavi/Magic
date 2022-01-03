@@ -31,15 +31,16 @@ namespace Web.Controllers
         [Authorize(Roles = "Admin,God")]
         public IActionResult Create([FromBody] CreatePackViewModel viewModel)
         {
-            var data = new Pack
-            {
-                Title = viewModel.Title,
-                Price = viewModel.Price,
-                DayCount = viewModel.DayCount,
-                Description = viewModel.Description,
-                ObjectState = Core.Base.Enums.ObjectState.Added
-            };
+            var data = viewModel.ToDataModel();
             var response = packManager.Create(data);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Delete(string id)
+        {
+            var response = packManager.Delete(id);
             return Ok(response);
         }
     }
