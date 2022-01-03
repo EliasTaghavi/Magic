@@ -16,7 +16,11 @@ export const sendAddPckData = (data) => {
 	});
 
 	return axios.post('/api/pack/create', body,{headers}).then((res) => {
-		return res.data;
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
 	})
 		.catch((error) => {
 			if (error.response.status === 401) {
@@ -43,7 +47,35 @@ export const adminGetAllPcks = (data) => {
 	});
 
 	return axios.post('/api/pack/list', body,{headers}).then((res) => {
-		return res.data;
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
+
+export const deletePck = (data) => {
+	let {id} = data;
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+
+	return axios.post(`/api/pack/delete?id=${id}`, null,{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
 	})
 		.catch((error) => {
 			if (error.response.status === 401) {

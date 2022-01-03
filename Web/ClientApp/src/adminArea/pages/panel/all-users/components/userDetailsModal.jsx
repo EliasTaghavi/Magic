@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import '../../../../admin.css';
 import imagePreUrl from "../../../../../api/imagePreUrl";
+import Switch from 'react-switch';
+import {sendLockUserData} from "../../../../api/users";
+import Loader from "react-loader-spinner";
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
+	const [loader, setLoader] = useState(false);
+	const [locked, setLocked] = useState(false);
+
 	const sendVerification = (state) => {
 		// setOpen(false);
 		if (state) {
@@ -14,6 +20,16 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 			sendSmsModal(true);
 		}
 	};
+
+	const sendLockFn = () => {
+		sendLockUserData(item?.id)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+	}
 
 	console.log(item);
 
@@ -24,8 +40,31 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 			onHide={() => setOpen(false)}
 		>
 			<div className="modal-content">
-				<div className="modal-header fs16 font-weight-bold">
-					مشخصات کاربر
+				<div className="modal-header fs16 font-weight-bold d-flex align-items-center justify-content-between">
+					<p className="p-0 m-0">مشخصات کاربر</p>
+					{item?.status === 3 ? (
+						<div className="d-flex centered">
+							<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
+							<Switch
+								className="mr-5"
+								handleDiameter={22}
+								boxShadow="0px 1px 5px rgba(0, 0, 0, 0.9)"
+								activeBoxShadow="0px 0px 1px 10px rgba(255, 255, 255, 0.2)"
+								width={45}
+								height={24}
+								onColor="#007bff"
+								onHandleColor='#ffffff'
+								onChange={() => sendLockFn()}
+								checked={locked}
+							/>
+						</div>
+					) : item?.status === 5 ? (
+						<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
+					) : item?.status === 6 ? (
+						<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
+					) : (
+						<p className="text-secondary font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
+					)}
 				</div>
 				<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5">
 					<div className="d-flex flex-column align-items-start justify-content-start flex-md-row">
@@ -69,15 +108,18 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 						</div>
 					</div>
 				</div>
-				<div className={`modal-footer d-flex align-items-center ${item?.status ? 'justify-content-end' : 'justify-content-between'}`}>
-					{!item?.status && <div className="d-flex flex-wrap align-items-start justify-content-start">
-						<button type="button" className="btn btn-success border-0 rounded px-3 py-2 text-white ml-1"
-								  onClick={() => sendVerification(true)}>تایید
-						</button>
-						<button type="button" className="btn btn-danger border-0 rounded px-3 py-2 text-white mr-1"
-								  onClick={() => sendVerification(false)}>رد کردن
-						</button>
-					</div>}
+				<div className={`modal-footer d-flex align-items-center ${(item?.status === 5 || item?.status === 6) ? 'justify-content-between' : 'justify-content-end'}`}>
+					<div className="d-flex flex-wrap align-items-start justify-content-start">
+						{(item?.status === 5 || item?.status === 6) && <button type="button" className="btn btn-success border-0 rounded px-3 py-2 text-white ml-1"
+									onClick={() => sendVerification(true)}>
+							{!loader && <span>تایید</span>}
+							{loader && <Loader type="ThreeDots" color='white' height={8}/>}
+						</button>}
+						{item?.status === 6 && <button type="button" className="btn btn-danger border-0 rounded px-3 py-2 text-white mr-1"
+									onClick={() => sendVerification(false)}>
+							<span>رد کردن</span>
+						</button>}
+					</div>
 					<button type="button" className="btn btn-secondary border-0 rounded px-3 py-2 text-white" onClick={() => setOpen(false)}>بستن</button>
 				</div>
 			</div>

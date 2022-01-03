@@ -4,7 +4,7 @@ const initialState = {
   value: 0,
 }
 
-export const user = createSlice({
+const user = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -13,3 +13,5 @@ export const user = createSlice({
     },
   },
 });
+
+export const {actions, reducer} = user;

@@ -11,7 +11,11 @@ export const sendAdminLogin = (fData) => {
 	};
 	let data = JSON.stringify(rawData);
 	return axios.post('/api/Session/createByUP', data, {headers}).then((res) => {
-		return res.data;
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
 	})
 	.catch((error) => {
 		if (error.response.status === 401) {

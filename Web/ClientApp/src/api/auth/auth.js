@@ -5,7 +5,11 @@ export const sendUserLoginSms = (mobileNumber) => {
     'Content-Type': 'application/json',
   };
   return axios.post('/api/Session/CreateByPhone', JSON.stringify({phone: mobileNumber}), {headers}).then((res) => {
-    return res.data;
+    if (res?.data?.code === '401') {
+      return 401;
+    } else {
+      return res.data;
+    }
   })
      .catch((error) => {
        if (error.response.status === 401) {
@@ -26,7 +30,11 @@ export const sendUserLoginCode = ({mobile, code}) => {
   };
   let data = JSON.stringify(rawData);
   return axios.post('/api/Session/VerifyTokenByPhone', data, {headers}).then((res) => {
-    return res.data;
+    if (res?.data?.code === '401') {
+      return 401;
+    } else {
+      return res.data;
+    }
   })
      .catch((error) => {
        if (error.response.status === 401) {
@@ -66,8 +74,11 @@ export const signupUser = (data) => {
   console.log(Object.entries(formData))
 
   return axios.post('/api/user/fillData', formData, {headers}).then((res) => {
-    console.log(res);
-    return res.data;
+    if (res?.data?.code === '401') {
+      return 401;
+    } else {
+      return res.data;
+    }
   })
      .catch((error) => {
        if (error.response.status === 401) {
