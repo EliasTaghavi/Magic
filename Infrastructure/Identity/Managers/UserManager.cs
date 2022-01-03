@@ -9,6 +9,8 @@ using Core.Identity.Interfaces;
 using Core.Identity.Managers;
 using Core.Identity.Mappers;
 using Core.Identity.Repos;
+using Core.Services;
+using Core.Services.Dto;
 using Infrastructure.Identity.Exceptions;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -26,6 +28,7 @@ namespace Infrastructure.Identity.Managers
         protected ITokenManager TokenManager;
         private readonly IRoleRepo RoleRepo;
         private readonly IAppFileRepo appFileRepo;
+        private readonly ISMSService sMSService;
         protected ITokenRepo TokenRepo;
 
         protected IUserRepo UserRepo;
@@ -36,7 +39,7 @@ namespace Infrastructure.Identity.Managers
                            ITokenRepo tokenRepo,
                            ITokenManager tokenManager,
                            IRoleRepo roleRepo,
-                           IAppFileRepo appFileRepo)
+                           IAppFileRepo appFileRepo, ISMSService sMSService)
         {
             UserRepo = userRepo;
             JwtTokenHandler = jwtTokenHandler;
@@ -45,6 +48,7 @@ namespace Infrastructure.Identity.Managers
             TokenManager = tokenManager;
             RoleRepo = roleRepo;
             this.appFileRepo = appFileRepo;
+            this.sMSService = sMSService;
         }
 
         public ManagerResult<bool> Create(User User, string Password)
@@ -187,7 +191,31 @@ namespace Infrastructure.Identity.Managers
         {
             var user = UserRepo.Read(id);
             user.UserStatus = UserStatus.Confirmed;
+            UserRepo.Update(user);
+            sMSService.SendConfirm(user.Mobile);
             return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Lock(string id)
+        {
+            var user = UserRepo.Read(id);
+            user.UserStatus = UserStatus.Locked;
+            UserRepo.Update(user);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Reject(RejectMessageDto dto)
+        {
+            var user = UserRepo.Read(dto.UserId);
+            user.UserStatus = UserStatus.Rejected;
+            UserRepo.Update(user);
+            sMSService.SendReject(user.Mobile,dto.Message);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Reject(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

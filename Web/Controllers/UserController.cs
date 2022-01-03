@@ -83,9 +83,26 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm(string id)
+        public IActionResult Confirm([FromQuery]string id)
         {
             var response = UserManager.Confirm(id);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Lock([FromQuery]string id)
+        {
+            var response = UserManager.Lock(id);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Reject([FromBody] RejectMessageViewModel viewModel)
+        {
+            var dto = viewModel.ToDto();
+            var response = UserManager.Reject(dto);
             return Ok(response);
         }
     }

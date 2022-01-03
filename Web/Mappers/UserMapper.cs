@@ -1,4 +1,5 @@
 ﻿using Core.Identity.Dto;
+using Core.Services.Dto;
 using Web.Models.User;
 
 namespace Web.Mappers
@@ -48,6 +49,14 @@ namespace Web.Mappers
                 Mobile = dto.Mobile,
                 SelfieURL = dto.SelfieURL,
                 Status = dto.Status,
+            };
+        }
+        public static RejectMessageDto ToDto(this RejectMessageViewModel viewModel)
+        {
+            return new RejectMessageDto
+            {
+                Message = viewModel.Message,
+                UserId = viewModel.UserId,
             };
         }
     }

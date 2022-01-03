@@ -37,5 +37,14 @@ namespace Web.Mappers
                 ObjectState = Core.Base.Enums.ObjectState.Added
             };
         }
+
+        public static CreateInvoiceDto ToDto(this CreateInvoiceViewModel viewModel, string userId)
+        {
+            return new CreateInvoiceDto
+            {
+                PackId = viewModel.PackId,
+                UserId = userId,
+            };
+        }
     }
 }

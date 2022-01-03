@@ -1,5 +1,6 @@
 ﻿using Core.File.Entities;
 using Core.Identity.Entities;
+using Core.Pack.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -19,6 +20,7 @@ namespace Infrastructure.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Core.Pack.Entities.Pack> Packs { get; set; }
+        public DbSet<PackBuy> PackBuys { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
@@ -33,6 +35,7 @@ namespace Infrastructure.Data
             builder.CacheValidation();
             builder.CodeValidation();
             builder.PackValidation();
+            builder.PackBuyValidation();
 
             builder.AppFileValidation();
             builder.Seed();

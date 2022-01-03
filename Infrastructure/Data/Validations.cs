@@ -59,6 +59,18 @@ namespace Infrastructure.Data
             });
         }
 
+        public static void PackBuyValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Pack.Entities.PackBuy>(packBuy =>
+            {
+                packBuy.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                packBuy.HasKey(x => x.Id);
+                packBuy.HasIndex(x => new { x.TrackingNumber , x.GatewayName}).IsUnique();
+                packBuy.Ignore(x => x.ObjectState);
+            });
+        }
+
         public static void RoleValidation(this ModelBuilder builder)
         {
             builder?.Entity<Role>(role =>

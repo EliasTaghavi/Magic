@@ -19,6 +19,7 @@ namespace Web.Services
             services.AddTransient<ICacheRepo, CacheRepo>();
             services.AddTransient<IAppFileRepo, AppFileRepo>();
             services.AddTransient<IPackRepo, PackRepo>();
+            services.AddTransient<IPackBuyRepo, PackBuyRepo>();
         }
     }
 }

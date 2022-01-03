@@ -17,6 +17,7 @@ namespace Web.Services
             services.AddTransient<ISessionManager, SessionManager>();
             services.AddTransient<IFileManager, FileManager>();
             services.AddTransient<IPackManager, PackManager>();
+            services.AddTransient<IPackBuyManager, PackBuyManager>();
         }
     }
 }

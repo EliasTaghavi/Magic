@@ -21,7 +21,7 @@ namespace Web.Services
                         {
                             accounts.AddInMemory(account =>
                             {
-                                account.Name = "Mellat"; // optional if there is only 1 account for this gateway
+                                account.Name = "ZarinPal"; // optional if there is only 1 account for this gateway
                                 account.MerchantId = "";
                                 account.IsSandbox = true;
                             });

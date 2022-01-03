@@ -2,6 +2,7 @@
 using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
+using Core.Services.Dto;
 using Microsoft.Extensions.Primitives;
 
 namespace Core.Identity.Managers
@@ -23,5 +24,7 @@ namespace Core.Identity.Managers
         ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
         ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto);
         ManagerResult<bool> Confirm(string id);
+        ManagerResult<bool> Lock(string id);
+        ManagerResult<bool> Reject(RejectMessageDto dto);
     }
 }

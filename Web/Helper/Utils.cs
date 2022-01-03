@@ -1,7 +1,8 @@
 ﻿using Core.Base.Entities;
-using Core.Identity.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace Web.Helper
 {
@@ -31,6 +32,11 @@ namespace Web.Helper
         public static string CreateMessageBaseOnEnvironment(int code)
         {
             return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? $"SMS Sent.{code}" : "SMS Sent.";
+        }
+
+        public static string GetUserId(this ClaimsPrincipal user)
+        {
+            return user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData).Value;
         }
     }
 }
