@@ -199,7 +199,7 @@ namespace Infrastructure.Identity.Managers
         public ManagerResult<bool> Lock(string id)
         {
             var user = UserRepo.Read(id);
-            user.UserStatus = UserStatus.Locked;
+            user.UserStatus = user.UserStatus == UserStatus.Locked ? UserStatus.Confirmed : UserStatus.Locked;
             UserRepo.Update(user);
             return new ManagerResult<bool>(true);
         }
@@ -211,11 +211,6 @@ namespace Infrastructure.Identity.Managers
             UserRepo.Update(user);
             sMSService.SendReject(user.Mobile,dto.Message);
             return new ManagerResult<bool>(true);
-        }
-
-        public ManagerResult<bool> Reject(string id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
