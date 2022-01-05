@@ -8,7 +8,7 @@ import toastOptions from "../../../components/ToastOptions";
 import {sendAdminLogin} from '../../api/auth/auth';
 import TokenStore from "../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
-import SupportModal from "../../../components/shared/suportModal/supportModal.component";
+import SupportModal from "../../../components/shared/supportModal.component";
 
 const AdminLogin  = () => {
 	const history = useHistory();

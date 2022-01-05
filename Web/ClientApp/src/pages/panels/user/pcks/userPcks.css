@@ -17,6 +17,24 @@
     transition: 0.3s;
 }
 
+.packageContainerNoHover {
+    width: 70vw;
+    min-width: 220px;
+    max-width: 300px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    border-radius: 15px;
+    border: 0 solid transparent;
+    margin: 1rem 0;
+    padding: 2rem;
+    box-shadow: 7px 7px 15px 4px #cccccc77;
+    transition: 0.3s;
+}
+
 .ch {
     min-height: 470px;
 }

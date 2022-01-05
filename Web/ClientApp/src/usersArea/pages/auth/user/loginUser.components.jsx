@@ -10,7 +10,7 @@ import SignupUserValidation from "../../../../components/validations/authUser/si
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Resizer from 'react-image-file-resizer';
-import SupportModal from "../../../../components/shared/suportModal/supportModal.component";
+import SupportModal from "../../../../components/shared/supportModal.component";
 import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../api/auth/auth';
 import Loader from 'react-loader-spinner';
 import RenderProgressBarModal from "../../../../components/shared/renderProgressBarModal";
@@ -42,7 +42,7 @@ const LoginUser = () => {
   const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState('');
   const [token, setToken] = useState('');
   const [progressBarModal, setProgressBarModal] = useState(false);
-  const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login
+  const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
 
   const maximumDate = {
     year: 1400,
@@ -296,20 +296,22 @@ const LoginUser = () => {
     sendUserLoginCode({mobile, code})
        .then((response) => {
          console.log(response);
-         let {result: {token, firstName, confirmed}, success} = response;
+         let {result: {token, status}, success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
-             if (firstName !== null) {
-               if (confirmed) {
+             if (status !== 4) {
+               if (status === 3) {
                  TokenStore.setToken(token);
                  TokenStore.setUserType('user');
                  dispatch(UserStore.actions.setUserData(response.result));
                  setBtnLoader(false);
                  history.replace('/user-panel');
-               } else {
+               } else if (status === 6) {
                  setWaitingModal(2);
+               } else {
+                 setWaitingModal(3);
                }
              } else {
                setStep(3);

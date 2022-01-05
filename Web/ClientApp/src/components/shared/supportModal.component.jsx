@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
+import {supportDetails} from "../../utils/supportDetails";
 
 const SupportModal = ({setOpen}) => {
 	return (
@@ -11,7 +12,7 @@ const SupportModal = ({setOpen}) => {
 			<div className="modal-content">
 				<div className="modal-body d-flex flex-column align-items-center justify-content-center pt-5">
 					<span className="fs24 textMain">لطفا با شماره زیر تماس حاصل فرمایید.</span>
-					<a href={`tel:09123456789`} className="font-weight-bold mt-5 fs24 textThird textDecoration">09123456789</a>
+					<a href={`tel:09123456789`} className="font-weight-bold mt-5 fs24 textThird textDecoration">{supportDetails.phoneNumber}</a>
 				</div>
 				<div className="modal-footer">
 					<button type="button" className="bgMain border-0 rounded px-3 py-2 text-white" onClick={() => setOpen(false)}>بستن</button>

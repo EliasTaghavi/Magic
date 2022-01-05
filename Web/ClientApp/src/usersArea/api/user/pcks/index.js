@@ -30,3 +30,29 @@ export const getPcksData = () => {
 			}
 		})
 }
+
+export const sendBuyDetails = (packId) => {
+	const token = tokenStore.getToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+	let body = JSON.stringify({
+		packId: 1,
+	});
+
+	return axios.post('/api/payment/createInvoice', body,{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}

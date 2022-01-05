@@ -22,9 +22,12 @@ const getUserType = () => {
   return localStorage.getItem('userType');
 }
 
-const remove = () => {
+const removeUserToken = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userType');
+};
+
+const removeAdminToken = () => {
   localStorage.removeItem('adminToken');
 };
 
@@ -35,5 +38,6 @@ export default {
   getAdminToken,
   setUserType,
   getUserType,
-  remove,
+  removeUserToken,
+  removeAdminToken,
 }

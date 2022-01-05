@@ -3,10 +3,14 @@ import './userPcks.css';
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {getPcksData} from "../../../../usersArea/api/user/pcks";
+import NumberFormat from "react-number-format";
+import ConfirmBuyPckModal from "./components/confirmBuyPckModal";
+import {sendBuyDetails} from "../../../../usersArea/api/user/pcks";
 
 const UserPackages = () => {
   const [bigLoader, setBigLoader] = useState(false);
   const [pcksData, setPcksData] = useState([]);
+  const [confirmBuyPckModal, setConfirmBuyPckModal] = useState(null);
 
   useEffect(() => {
     getPcksData()
@@ -30,6 +34,17 @@ const UserPackages = () => {
        })
   }, []);
 
+  const onBuyPress = (item) => {
+     sendBuyDetails(item?.id)
+        .then((response) => {
+           console.log(response);
+        })
+        .catch((error) => {
+           console.log(error);
+        })
+     setConfirmBuyPckModal(item);
+  }
+
   return (
     <div className="d-flex flex-column centered w-100">
       <div className="card cardPrimary px-3 w-100">
@@ -40,23 +55,26 @@ const UserPackages = () => {
           <p className="fs20 text-justify">با خرید هریک از اشتراک های زیر، با توجه به مدت زمانی خریداری شده، امکان استفاده با تخفیف از کلیه خدمات فروشگاه های هدف را دارید.</p>
           <div className="d-flex flex-wrap flex-column flex-md-row centered mt-5 ch">
             {!bigLoader && pcksData.length > 0 && pcksData.map((item) => {
-              console.log(item);
               return (
-                 <div key={null} className="packageContainer shadow">
-                   <p className="fs30 textSecondary1 m-0">هفتگی</p>
-                   <p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>
+                 <div key={item?.id} className="packageContainer shadow">
+                   <p className="fs40 textSecondary1 m-0">{item?.title}</p>
+                   <p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
+                   {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
                    <hr className="w-100 cDivider" />
-                   <p className="fs50 m-0 textSecondary1 text-center cNumber mt-2">53</p>
+                   <p className="fs50 m-0 textSecondary1 text-center cNumber mt-2">
+                      <NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
+                   </p>
                    <p className="fs18 textThird text-center">هزار تومان</p>
-                   <div className="button buyBtn">
+                   <button type="button" className="button buyBtn border-0" onClick={() => onBuyPress(item)}>
                      خرید
-                   </div>
+                   </button>
                  </div>
               );
             })}
           </div>
         </div>
       </div>
+      {confirmBuyPckModal && <ConfirmBuyPckModal pckDetails={confirmBuyPckModal} onClose={() => setConfirmBuyPckModal(null)} />}
     </div>
   );
 }

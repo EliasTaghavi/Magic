@@ -106,7 +106,7 @@ const Drawer = ({extraClassName, open, setOpen}) => {
 const MenuItems = ({open, setOpen, noOpacity}) => {
 	const history = useHistory();
 	const logout = () => {
-		TokenStore.remove();
+		TokenStore.removeAdminToken();
 		history.replace('/admin');
 	}
 

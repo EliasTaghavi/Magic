@@ -108,7 +108,7 @@ const Drawer = ({token, extraClassName, open, setOpen}) => {
 const MenuItems = ({open, setOpen, noOpacity}) => {
   const history = useHistory();
   const logout = () => {
-    TokenStore.remove();
+    TokenStore.removeUserToken();
     history.replace('/');
   }
 
