@@ -1,5 +1,6 @@
 ﻿using Core.Base.Entities;
 using Core.Identity.Entities;
+using System;
 
 namespace Core.Pack.Entities
 {
@@ -12,5 +13,6 @@ namespace Core.Pack.Entities
         public long TrackingNumber { get; set; }
         public string GatewayName { get; set; }
         public bool? PayStatus { get; set; }
+        public DateTime? PayDate { get; set; }
     }
 }

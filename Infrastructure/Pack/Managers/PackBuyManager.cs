@@ -63,6 +63,7 @@ namespace Infrastructure.Pack.Managers
         {
             var invoice = packBuyRepo.Bucket().Where(x => x.GatewayName == result.GatewayName && x.TrackingNumber == result.TrackingNumber).FirstOrDefault();
             invoice.PayStatus = result.IsSucceed;
+            invoice.PayDate = DateTime.UtcNow;
             packBuyRepo.Update(invoice);
             if (result.IsSucceed)
             {
