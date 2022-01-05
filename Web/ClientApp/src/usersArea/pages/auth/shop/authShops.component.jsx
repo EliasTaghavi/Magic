@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
-import './authUsers.css';
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHome, faPhone} from "@fortawesome/free-solid-svg-icons";
-import logo from "../../../assets/images/logo.png";
-import LoginUser from "./componenets/loginForm/loginUser.components";
+import LoginShop from "./loginShop.components";
+import logo from "../../../../assets/images/logo.png";
 
-const AuthUsers = () => {
-  const [section, setSection] = useState(1); // 1=auth 2=signUp
+const AuthShops = () => {
+  const [section, setSection] = useState<1 | 2>(1); // 1=auth 2=signUp
 
   return (
     <div className="mainContainer transition">
@@ -22,7 +21,7 @@ const AuthUsers = () => {
           </div>
         </div>
         <div className={`bottomSide transition ${section === 1 ? 'mH1' : 'mH2'}`}>
-          {section === 1 && <LoginUser />}
+          {section === 1 && <LoginShop />}
         </div>
       </div>
     </div>
@@ -48,4 +47,4 @@ const MenuItem = ({extraClass}) => {
   );
 }
 
-export default AuthUsers;
+export default AuthShops;

@@ -40,6 +40,10 @@ const AdminAllUsers = () => {
 			label: 'تایید شده',
 		},
 		{
+			value: 2,
+			label: 'قفل شده',
+		},
+		{
 			value: 5,
 			label: 'تایید نشده',
 		},
@@ -181,8 +185,10 @@ const AdminAllUsers = () => {
 										<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
 									) : item?.status === 6 ? (
 										<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
+									) : item?.status === 2 ? (
+										<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
 									) : (
-										<p className="text-secondary font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
+										<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 									)}</td>
 									<td>
 										<button className="outline btn btn-transparent optionBtn rounded-circle d-flex align-items-center justify-content-center m-0 p-0" style={{width: 40, height: 40}} onClick={() => openDetailsModal(item)}>
@@ -214,11 +220,11 @@ const AdminAllUsers = () => {
 					<span className="mt-3 mt-md-0">{`(\xa0${totalCount}\xa0آیتم\xa0)`}</span>
 				</div>
 			</div>
-			{detailsModal && <UserDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} sendSmsModal={() => setSendSmsModal(true)} />}
+			{detailsModal && <UserDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} sendSmsModal={() => setSendSmsModal(true)} refreshTable={() => getData()} />}
 			{sendSmsModal && <RejectSmsModal item={detailsModal} setOpen={() => {
 				setDetailsModal(null);
 				setSendSmsModal(false);
-			}} />}
+			}} refreshTable={() => getData()} />}
 		</div>
 	);
 }

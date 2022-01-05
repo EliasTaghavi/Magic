@@ -1,7 +1,7 @@
-import './assets/main.css';
+import './custom.css';
 import * as React from 'react';
 import {Route, Switch} from 'react-router';
-import Home from "./pages/home/home.component";
+import Home from "./usersArea/pages/home/home.component";
 import Layout from "./components/layout/layout.component";
 import NoMatch from "./pages/NoMatch";
 import LoginRoute from "./components/routes/loginRoutes";

@@ -1,15 +1,17 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
-  value: 0,
+  userData: {},
 }
 
+export const STORE_NAME = 'user';
+
 const user = createSlice({
-  name: 'user',
+  name: STORE_NAME,
   initialState,
   reducers: {
-    incrementByAmount: (state, {payload}) => {
-      state.value += payload
+    setUserData: (state, {payload}) => {
+      state.userData = payload;
     },
   },
 });

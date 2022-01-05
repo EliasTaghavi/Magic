@@ -1,13 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import './loginShop.css';
-import LoginShopValidation from "../../../../../components/validations/authShop/loginShopValidation";
-import toastOptions from "../../../../../components/ToastOptions";
+import LoginShopValidation from "../../../../components/validations/authShop/loginShopValidation";
+import toastOptions from "../../../../components/ToastOptions";
 import {toast} from "react-toastify";
-import FadeComponent from "../../../../../components/shared/fadeComponent/fadeComp.component";
-import TokenStore from "../../../../../utils/tokenStore";
+import FadeComponent from "../../../../components/shared/fadeComponent/fadeComp.component";
+import TokenStore from "../../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
-import SignupShop from "../signupForm/signupShop.components";
-import SignupShopValidation from "../../../../../components/validations/authShop/signupShopValidation";
+import SignupShopValidation from "../../../../components/validations/authShop/signupShopValidation";
 // import {sendMobile} from "../../../../../api/auth/auth";
 
 let interval;
