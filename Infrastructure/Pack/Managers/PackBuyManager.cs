@@ -68,6 +68,7 @@ namespace Infrastructure.Pack.Managers
             {
 
             }
+            return new ManagerResult<bool>(true);
         }
     }
 }
