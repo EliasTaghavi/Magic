@@ -19,7 +19,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin,God")]
+        [Authorize]
         public IActionResult List([FromBody] PageRequestViewModel<PackFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
