@@ -23,9 +23,10 @@ namespace Web.Controllers
         [Authorize]
         public IActionResult CreateInvoice([FromBody] CreateInvoiceViewModel viewModel)
         {
+            string callBackUrl = Url.Action("Verify", "Payment", null, Request.Scheme);
             var userId = User.GetUserId();
             var dto = viewModel.ToDto(userId);
-            var response = packBuyManager.CreateInvoice(dto);
+            var response = packBuyManager.CreateInvoice(dto, callBackUrl);
             return Ok(response.Result.GatewayTransporter.Descriptor.Url);
         }
 
@@ -36,9 +37,11 @@ namespace Web.Controllers
 
             
             var verifyResult = onlinePayment.Verify(invoice);
+
+            var response = packBuyManager.Verify(verifyResult);
             
 
-            return Ok(verifyResult);
+            return Ok(response);
         }
     }
 }

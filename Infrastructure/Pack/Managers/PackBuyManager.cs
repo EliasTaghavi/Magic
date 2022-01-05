@@ -16,7 +16,6 @@ namespace Infrastructure.Pack.Managers
 {
     public class PackBuyManager : IPackBuyManager
     {
-        const string CallBackUrl = "https://test.ir/verifypayment";
         private readonly IPackBuyRepo packBuyRepo;
         private readonly IPackRepo packRepo;
         private readonly IUserRepo userRepo;
@@ -30,7 +29,7 @@ namespace Infrastructure.Pack.Managers
             this.onlinePayment = onlinePayment;
         }
 
-        public ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto)
+        public ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto, string callBackUrl)
         {
             var user = userRepo.Read(dto.UserId);
             var pack = packRepo.Read(dto.PackId);
@@ -38,7 +37,7 @@ namespace Infrastructure.Pack.Managers
             {
                 invoice
                     .SetAmount(pack.Price)
-                    .SetCallbackUrl(CallBackUrl)
+                    .SetCallbackUrl(callBackUrl)
                     .SetGateway("ZarinPal")
                     .UseAutoIncrementTrackingNumber();
             });
@@ -58,6 +57,17 @@ namespace Infrastructure.Pack.Managers
                 Message = result.IsSucceed ? "Successful" : result.Message,
                 Code = result.IsSucceed ? 200 : 19
             };
+        }
+
+        public ManagerResult<bool> Verify(IPaymentVerifyResult result)
+        {
+            var invoice = packBuyRepo.Bucket().Where(x => x.GatewayName == result.GatewayName && x.TrackingNumber == result.TrackingNumber).FirstOrDefault();
+            invoice.PayStatus = result.IsSucceed;
+            packBuyRepo.Update(invoice);
+            if (result.IsSucceed)
+            {
+
+            }
         }
     }
 }

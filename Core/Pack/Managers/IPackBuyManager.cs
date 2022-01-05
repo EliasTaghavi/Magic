@@ -6,6 +6,7 @@ namespace Core.Pack.Managers
 {
     public interface IPackBuyManager
     {
-        ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto);
+        ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto, string callBackUrl);
+        ManagerResult<bool> Verify(IPaymentVerifyResult result);
     }
 }

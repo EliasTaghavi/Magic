@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Core.Identity.Enums;
+using Newtonsoft.Json;
 using System;
 using Web.JsonConverter;
 
@@ -7,7 +8,7 @@ namespace Web.Models.Session
     public class VerifiedUserViewModel
     {
         public string Token { get; set; }
-        public bool Confirmed { get; set; }
+        public UserStatus Status { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }

@@ -37,7 +37,7 @@ namespace Web.Mappers
             {
                 Address = token.User.Address,
                 Birthday = token.User.Birthday,
-                Confirmed = token.User.UserStatus == UserStatus.Confirmed,
+                Status = token.User.UserStatus ,
                 FirstName = token.User.Name,
                 LastName = token.User.Surname,
                 Mobile = token.User.Mobile,

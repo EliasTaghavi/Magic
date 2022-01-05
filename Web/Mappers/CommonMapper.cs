@@ -13,6 +13,8 @@ namespace Web.Mappers
             {
                 Index = viewModel.Index,
                 Size = viewModel.Size,
+                Order = viewModel.Order,
+                SortField = viewModel.SortField,
                 MetaData = func(viewModel.MetaData),
             };
         }

@@ -1,4 +1,5 @@
 ﻿using Core.Base.Dto;
+using Core.Base.Enums;
 using Core.Pack.Dto;
 using Core.Pack.Mapper;
 using Core.Pack.Repos;
@@ -26,6 +27,7 @@ namespace Infrastructure.Pack.Repos
             {
                 query = query.Where(x => x.Title.Contains(dto.MetaData.Title));
             }
+            query = query.OrderBy(x => x.DayCount);
             int count = query.Count();
             var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
             return new PagedListDto<PackListDto>
