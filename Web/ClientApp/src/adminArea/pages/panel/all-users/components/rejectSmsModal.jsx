@@ -9,10 +9,10 @@ import smsCounter from "../../components/smsCounter";
 import {rejectUser} from "../../../../api/users";
 import Loader from "react-loader-spinner";
 
-const RejectSmsModal = ({item, setOpen}) => {
+const RejectSmsModal = ({item, setOpen, refreshTable}) => {
 	const [loader, setLoader] = React.useState(false);
 	const [errors, setErrors] = React.useState({});
-	const [description, setDescription] = React.useState('');
+	const [description, setDescription] = React.useState('با سلام\nاطلاعات شما در پنل مجیک آف تایید نشده است. لطفا نسبت به ثبت نام مجدد اقدام نمایید.');
 
 	const validation = (e) => {
 		e.preventDefault();
@@ -38,13 +38,17 @@ const RejectSmsModal = ({item, setOpen}) => {
 			.then((response) => {
 				if (!response?.type) {
 					setOpen(false);
-					toast.success(`پیامک با موفقیت ارسال شد.`, toastOptions);
+					toast.success(`پیامک با موفقیت ارسال شد`, toastOptions);
+					refreshTable();
+					setLoader(false);
 				} else {
 					toast.error(`${response.value}`, toastOptions);
+					setLoader(false);
 				}
 			})
 			.catch((error) => {
 				toast.error(`عدم ارتباط با سرور`, toastOptions);
+				setLoader(false);
 			})
 	};
 
@@ -58,8 +62,8 @@ const RejectSmsModal = ({item, setOpen}) => {
 					ارسال پیامک عدم تایید اطلاعات کاربری
 				</div>
 				<form noValidate={true} autoComplete="off" onSubmit={(e) => validation(e)}>
-					<div className="w-100 modal-body d-flex flex-column align-items-start justify-content-start pt-5">
-						<div className="col-12 mt-5">
+					<div className="w-100 modal-body d-flex flex-column align-items-start justify-content-start mt-3">
+						<div className="col-12">
 							<div className="d-flex align-items-center justify-content-between mb-1">
 								<label className="p-0 m-0">
 									متن پیام

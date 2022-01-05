@@ -6,7 +6,6 @@ import {
   faBars,
   faUser,
   faHome,
-  faUsers,
   faUserAlt,
   faSignOutAlt,
   faList, faCubes
@@ -31,7 +30,7 @@ const UserHeader = ({open, setOpen, children}) => {
                 <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
               </button>
               <div className="d-flex align-items-center">
-                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
               </div>
             </div>
             <div className="logoContainer">
@@ -56,7 +55,7 @@ const UserHeader = ({open, setOpen, children}) => {
                 <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
               </button>
               <div className="d-flex align-items-center">
-                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
               </div>
             </div>
             <div className="logoContainer">
@@ -82,7 +81,7 @@ const MdDrawer = ({token, extraClassName, open, setOpen}) => {
         <div className="d-flex align-items-center justify-content-center userLogo bg-light">
           <FontAwesomeIcon icon={faUser} className="text-dark"/>
         </div>
-        <span className={`text-white transition mr-3 ${open ? '' : 'opacity0'}`}>{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
+        <span className={`text-white transition mr-3 noWrapText ${open ? '' : 'opacity0'}`}>{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
       </div>
       <Divider />
       <MenuItems open={open} setOpen={setOpen} />
@@ -97,7 +96,7 @@ const Drawer = ({token, extraClassName, open, setOpen}) => {
         <div className="d-flex align-items-center justify-content-center userLogo bg-light">
           <FontAwesomeIcon icon={faUser} className="text-dark"/>
         </div>
-        <span className="text-white transition mr-3">{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
+        <span className="text-white transition mr-3 noWrapText">{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
       </div>
       <Divider />
       <MenuItems open={open} setOpen={setOpen} noOpacity={true} />
@@ -118,32 +117,32 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
       <li className="menuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel" className="menuLink cpx-12">
           <FontAwesomeIcon icon={faHome} className="fs18"/>
-          <span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+          <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
         </Link>
       </li>
       <li className="menuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel/packages" className="menuLink cpx-12">
           <FontAwesomeIcon icon={faCubes} className="fs18"/>
-          <span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>پکیج ها</span>
+          <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>پکیج ها</span>
         </Link>
       </li>
       <li className="menuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel/transactions" className="menuLink cpx-12">
           <FontAwesomeIcon icon={faList} className="fs18"/>
-          <span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
+          <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
         </Link>
       </li>
       <Divider />
       <li className="menuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel/profile" className="menuLink cpx-12">
           <FontAwesomeIcon icon={faUserAlt} className="fs18"/>
-          <span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>حساب کاربری</span>
+          <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>حساب کاربری</span>
         </Link>
       </li>
       <li className="menuItem rounded" onClick={() => setOpen(false)}>
         <button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
           <FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
-          <span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
+          <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
         </button>
       </li>
     </ul>

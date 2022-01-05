@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import './authShops.css';
+import '../../../../assets/main.css';
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHome, faPhone} from "@fortawesome/free-solid-svg-icons";
-import LoginShop from "./componenets/loginForm/loginShop.components";
-import logo from "../../../assets/images/logo.png";
-import SignupShop from "./componenets/signupForm/signupShop.components";
+import logo from "../../../../assets/images/logo.png";
+import LoginUser from "./loginUser.components";
 
-const AuthShops = () => {
-  const [section, setSection] = useState<1 | 2>(1); // 1=auth 2=signUp
+const AuthUsers = () => {
+  const [section, setSection] = useState(1); // 1=auth 2=signUp
 
   return (
-    <div className="mainContainer transition">
+    <div className="authMainContainer transition">
       <div className="whiteAreaVertical d-flex transition">
         <div className="topSide transition">
           <MenuItem extraClass="horizontalize" />
@@ -23,7 +22,7 @@ const AuthShops = () => {
           </div>
         </div>
         <div className={`bottomSide transition ${section === 1 ? 'mH1' : 'mH2'}`}>
-          {section === 1 && <LoginShop />}
+          {section === 1 && <LoginUser />}
         </div>
       </div>
     </div>
@@ -49,4 +48,4 @@ const MenuItem = ({extraClass}) => {
   );
 }
 
-export default AuthShops;
+export default AuthUsers;

@@ -3,22 +3,44 @@ import {Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import '../../../../admin.css';
-import imagePreUrl from "../../../../../api/imagePreUrl";
+import imagePreUrl from "../../../../../usersArea/api/imagePreUrl";
 import Switch from 'react-switch';
 import {sendLockUserData} from "../../../../api/users";
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
+import {confirmUser} from "../../../../api/users";
 
-const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
+const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
+	const prevItem = item;
 	const [loader, setLoader] = useState(false);
-	const [locked, setLocked] = useState(false);
+	const [locked, setLocked] = useState(item?.status === 2);
 	const [lockLoader, setLockLoader] = useState(false);
 
 	const sendVerification = (state) => {
-		// setOpen(false);
 		if (state) {
-			// send verificationData
+			setLoader(true);
+			confirmUser(item?.id)
+				.then((response) => {
+					let {success} = response;
+					if (response) {
+						if (response === 401) {
+							// do nothing
+						} else if (success) {
+							setOpen(false);
+							setLoader(false);
+							refreshTable();
+							toast.success('وضعیت کاربر با موفقیت تغییر یافت', toastOptions);
+						}
+					} else {
+						toast.error('خطای سرور', toastOptions);
+						setLoader(false);
+					}
+				})
+				.catch(() => {
+					toast.error('خطای سرور', toastOptions);
+					setLoader(false);
+				})
 		} else {
 			sendSmsModal(true);
 		}
@@ -33,7 +55,15 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 					if (response === 401) {
 						// do nothing
 					} else if (success) {
-						setLocked(true);
+						if (prevItem?.status === 2) {
+							item.status = 3;
+						} else {
+							item.status = 2;
+						}
+						refreshTable();
+						setLocked(!locked);
+						setLockLoader(false);
+						toast.success('وضعیت کاربر با موفقیت تغییر یافت', toastOptions);
 					}
 				} else {
 					toast.error('خطای سرور', toastOptions);
@@ -46,8 +76,6 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 			})
 	}
 
-	console.log(item);
-
 	return (
 		<Modal
 			show={true}
@@ -57,35 +85,44 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal}) => {
 			<div className="modal-content">
 				<div className="modal-header fs16 font-weight-bold d-flex align-items-center justify-content-between">
 					<p className="p-0 m-0">مشخصات کاربر</p>
-					<div className="position-relative">
-						<Switch
-							className="ml-3"
-							handleDiameter={22}
-							boxShadow="0px 1px 5px rgba(0, 0, 0, 0.9)"
-							activeBoxShadow="0px 0px 1px 10px rgba(255, 255, 255, 0.2)"
-							width={45}
-							height={24}
-							onColor="#007bff"
-							onHandleColor='#ffffff'
-							onChange={() => sendLockFn()}
-							checked={locked}
-						/>
-						{lockLoader && <div className="position-absolute"
-								style={{zIndex: 2, top: 0, right: 0, left: 0, backgroundColor: '#ffffff66'}}>
-							<Loader type="ThreeDots" color='white' height={8}/>
+					<div className="d-flex centered">
+						{(item?.status === 2 || item?.status === 3) && <div className="position-relative d-flex centered p-1">
+							<Switch
+								className="ml-3"
+								handleDiameter={22}
+								boxShadow="0px 1px 5px rgba(0, 0, 0, 0.9)"
+								activeBoxShadow="0px 0px 1px 10px rgba(255, 255, 255, 0.2)"
+								width={45}
+								height={24}
+								onColor="#28a745"
+								onHandleColor='#ffffff'
+								onChange={() => sendLockFn()}
+								checked={!locked}
+							/>
+							{lockLoader && <div className="position-absolute d-flex centered"
+													  style={{
+														  zIndex: 2,
+														  top: 0,
+														  right: 0,
+														  left: 0,
+														  backgroundColor: '#ffffffdd',
+														  height: '100%'
+													  }}>
+								<Loader type="ThreeDots" color='#ff521d' height={8}/>
+							</div>}
 						</div>}
+						{item?.status === 3 ? (
+							<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
+						) : item?.status === 5 ? (
+							<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
+						) : item?.status === 6 ? (
+							<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
+						) : item?.status === 2 ? (
+							<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
+						) : (
+							<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
+						)}
 					</div>
-					{item?.status === 3 ? (
-						<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
-					) : item?.status === 5 ? (
-						<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
-					) : item?.status === 6 ? (
-						<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
-					) : item?.status === 2 ? (
-							<p className="text-warning font-weight-bold fs16 p-0 m-0">قفل شده</p>
-					) : (
-						<p className="text-secondary font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
-					)}
 				</div>
 				<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5">
 					<div className="d-flex flex-column align-items-start justify-content-start flex-md-row">

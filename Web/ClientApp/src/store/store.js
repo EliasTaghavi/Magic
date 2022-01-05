@@ -11,14 +11,17 @@ import {combineReducers} from "redux";
 
 const rootReducer = combineReducers({
   [MainStore.STORE_NAME]: MainStore.reducer,
-  user: UserStore.reducer,
+  [UserStore.STORE_NAME]: UserStore.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  blacklist: [],
+  reducer: rootReducer,
+  whiteList: [
+     'user',
+  ],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

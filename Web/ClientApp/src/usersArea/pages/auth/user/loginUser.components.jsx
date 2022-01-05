@@ -1,27 +1,29 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import './loginUser.css';
-import LoginUserValidation from "../../../../../components/validations/authUser/loginUserValidation";
-import toastOptions from "../../../../../components/ToastOptions";
+import LoginUserValidation from "../../../../components/validations/authUser/loginUserValidation";
+import toastOptions from "../../../../components/ToastOptions";
 import {toast} from "react-toastify";
-import FadeComponent from "../../../../../components/shared/fadeComponent/fadeComp.component";
-import TokenStore from '../../../../../utils/tokenStore';
+import FadeComponent from "../../../../components/shared/fadeComponent/fadeComp.component";
+import TokenStore from '../../../../utils/tokenStore';
 import {useHistory} from "react-router-dom";
 import DatePicker from "react-modern-calendar-datepicker";
-import SignupUserValidation from "../../../../../components/validations/authUser/signupUserValidation";
+import SignupUserValidation from "../../../../components/validations/authUser/signupUserValidation";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Resizer from 'react-image-file-resizer';
-import SupportModal from "../../../../../components/shared/suportModal/supportModal.component";
-import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../../../api/auth/auth';
+import SupportModal from "../../../../components/shared/suportModal/supportModal.component";
+import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../api/auth/auth';
 import Loader from 'react-loader-spinner';
-import RenderProgressBarModal from "../../../../../components/shared/renderProgressBarModal";
-import RenderUserWaitingModal from "../renderUserWaitingModal";
+import RenderProgressBarModal from "../../../../components/shared/renderProgressBarModal";
+import RenderUserWaitingModal from "./renderUserWaitingModal";
+import {useDispatch} from "react-redux";
+import * as UserStore from '../../../../store/user';
 
 let interval;
 let timer;
 
 const LoginUser = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [step, setStep] = useState(1); // 1=mobile 2= code
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09137658795');
@@ -293,6 +295,7 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginCode({mobile, code})
        .then((response) => {
+         console.log(response);
          let {result: {token, firstName, confirmed}, success} = response;
          if (response) {
            if (response === 401) {
@@ -302,6 +305,7 @@ const LoginUser = () => {
                if (confirmed) {
                  TokenStore.setToken(token);
                  TokenStore.setUserType('user');
+                 dispatch(UserStore.actions.setUserData(response.result));
                  setBtnLoader(false);
                  history.replace('/user-panel');
                } else {
