@@ -10,7 +10,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 			size="lg"
 			centered={true}
 			show={true}
-			onHide={() => onClose()}>
+			onHide={onClose}>
 			<div className="modal-body p-4">
 				<div className="d-flex flex-row-reverse align-items-center justify-content-between">
 					<div key={item?.id} className="packageContainerNoHover shadow">
@@ -30,7 +30,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 							{!btnLoader && <span>ثبت</span>}
 							{btnLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={8} width={70} className="loader"/>}
 						</button>
-						<button type="submit" className="w-100 btn btn-outline-secondary mt-2" style={{height: 38, borderRadius: 10}}>
+						<button type="button" className="w-100 btn bg-white shadow1 mt-2" style={{height: 38, borderRadius: 10}} onClick={onClose}>
 							<span>انصراف</span>
 						</button>
 					</div>

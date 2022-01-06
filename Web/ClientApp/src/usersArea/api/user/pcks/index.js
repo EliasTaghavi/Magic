@@ -32,13 +32,14 @@ export const getPcksData = () => {
 }
 
 export const sendBuyDetails = (packId) => {
+	console.log(packId);
 	const token = tokenStore.getToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
 	let body = JSON.stringify({
-		packId: 1,
+		packId,
 	});
 
 	return axios.post('/api/payment/createInvoice', body,{headers}).then((res) => {
@@ -49,6 +50,7 @@ export const sendBuyDetails = (packId) => {
 		}
 	})
 		.catch((error) => {
+			console.log(error, error.response);
 			if (error.response.status === 401) {
 				return 401;
 			} else {
