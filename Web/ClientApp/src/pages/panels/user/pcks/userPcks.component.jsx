@@ -5,10 +5,10 @@ import toastOptions from "../../../../components/ToastOptions";
 import {getPcksData} from "../../../../usersArea/api/user/pcks";
 import NumberFormat from "react-number-format";
 import ConfirmBuyPckModal from "./components/confirmBuyPckModal";
-import {sendBuyDetails} from "../../../../usersArea/api/user/pcks";
+import Loader from "react-loader-spinner";
 
 const UserPackages = () => {
-  const [bigLoader, setBigLoader] = useState(false);
+  const [bigLoader, setBigLoader] = useState(true);
   const [pcksData, setPcksData] = useState([]);
   const [confirmBuyPckModal, setConfirmBuyPckModal] = useState(null);
 
@@ -41,7 +41,7 @@ const UserPackages = () => {
           <p className="card-title fs22 my-2">اشتراک ها</p>
         </div>
         <div className="card-body w-100 d-flex flex-column px-3 py-5">
-          <p className="fs20 text-justify">با خرید هریک از اشتراک های زیر، با توجه به مدت زمانی خریداری شده، امکان استفاده با تخفیف از کلیه خدمات فروشگاه های هدف را دارید.</p>
+          <p className="fs20 text-justify  text-dark">با خرید هریک از اشتراک های زیر، با توجه به مدت زمانی خریداری شده، امکان استفاده با تخفیف از کلیه خدمات فروشگاه های هدف را دارید.</p>
           <div className="d-flex flex-wrap flex-column flex-md-row centered mt-5 ch">
             {!bigLoader && pcksData.length > 0 && pcksData.map((item) => {
               return (
@@ -60,6 +60,11 @@ const UserPackages = () => {
                  </div>
               );
             })}
+            {bigLoader && (
+              <div className="d-flex centered">
+                 <Loader type="ThreeDots" color='#ff521d' height={15} width={70} className="loader"/>
+              </div>
+            )}
           </div>
         </div>
       </div>

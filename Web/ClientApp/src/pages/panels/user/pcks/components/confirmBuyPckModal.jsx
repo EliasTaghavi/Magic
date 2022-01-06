@@ -56,8 +56,8 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 							<p className="fs14 textThird text-center">هزار تومان</p>
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-start flex pl-4">
-							<p className="fs18">شما در حال خرید پکیج روبرو هستید.</p>
-							<p className="fs18">آیا از خرید خود اطمینان دارید؟</p>
+							<p className="fs18 text-dark">شما در حال خرید پکیج روبرو هستید.</p>
+							<p className="fs18 text-dark">آیا از خرید خود اطمینان دارید؟</p>
 							<a href={buyUrl} rel="noopener noreferrer" className="submitBtn border-0 d-flex centered fs18">
 								پرداخت
 							</a>
