@@ -5,12 +5,14 @@ using Core.Pack.Entities;
 using Core.Pack.Managers;
 using Core.Pack.Repos;
 using Parbad;
+using Parbad.InvoiceBuilder;
 using Parbad.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Parbad.Gateway.ZarinPal;
 
 namespace Infrastructure.Pack.Managers
 {
@@ -35,11 +37,8 @@ namespace Infrastructure.Pack.Managers
             var pack = packRepo.Read(dto.PackId);
             var result = onlinePayment.Request(invoice =>
             {
-                invoice
-                    .SetAmount(pack.Price)
-                    .SetCallbackUrl(callBackUrl)
-                    .SetGateway("ZarinPal")
-                    .UseAutoIncrementTrackingNumber();
+                invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test","","09304359576")
+                .SetAmount(pack.Price).SetCallbackUrl(callBackUrl);
             });
             var packBuy = new PackBuy
             {
@@ -48,6 +47,7 @@ namespace Infrastructure.Pack.Managers
                 Pack = pack,
                 PayStatus = null,
                 TrackingNumber = result.TrackingNumber,
+                GatewayName = result.GatewayName,
                 User = user,
                 UserId = dto.UserId,
             };

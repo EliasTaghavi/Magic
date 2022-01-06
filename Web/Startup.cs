@@ -84,7 +84,6 @@ namespace Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            app.UseParbadVirtualGateway();
         }
 
         public void ConfigureServices(IServiceCollection services)
