@@ -1,10 +1,36 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Modal} from "react-bootstrap";
 import NumberFormat from "react-number-format";
 import Loader from "react-loader-spinner";
+import {sendBuyDetails} from "../../../../../usersArea/api/user/pcks";
+import {toast} from "react-toastify";
+import toastOptions from "../../../../../components/ToastOptions";
 
 const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
+	const [bigLoader, setBigLoader] = useState(true);
 	const [btnLoader, setBtnLoader] = useState(false);
+	const [buyUrl, setBuyUrl] = useState('');
+
+	useEffect(() => {
+		sendBuyDetails(item?.id)
+			.then((response) => {
+				console.log(response);
+				if (response) {
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else {
+						setBigLoader(false);
+						setBuyUrl(response);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+				}
+			})
+			.catch((error) => {
+				toast.error('خطای سرور', toastOptions);
+			})
+	}, []);
+
 	return (
 		<Modal
 			size="lg"
@@ -12,29 +38,35 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 			show={true}
 			onHide={onClose}>
 			<div className="modal-body p-4">
-				<div className="d-flex flex-row-reverse align-items-center justify-content-between">
-					<div key={item?.id} className="packageContainerNoHover shadow">
-						<p className="fs30 textSecondary1 m-0">{item?.title}</p>
-						<p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
-						{/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
-						<hr className="w-100 cDivider" />
-						<p className="fs50 m-0 textSecondary1 text-center cNumber mt-2">
-							<NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
-						</p>
-						<p className="fs14 textThird text-center">هزار تومان</p>
+				{bigLoader && (
+					<div className="d-flex centered mH1">
+						<Loader type="ThreeDots" color='#ff521d' height={15} width={70} className="loader"/>
 					</div>
-					<div className="d-flex flex-column align-items-start justify-content-start">
-						<p className="fs24">شما در حال خرید پکیج روبرو هستید.</p>
-						<p className="fs24">آیا از خرید خود اطمینان دارید؟</p>
-						<button type="submit" className="submitBtn border-0">
-							{!btnLoader && <span>ثبت</span>}
-							{btnLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={8} width={70} className="loader"/>}
-						</button>
-						<button type="button" className="w-100 btn bg-white shadow1 mt-2" style={{height: 38, borderRadius: 10}} onClick={onClose}>
-							<span>انصراف</span>
-						</button>
+				)}
+				{!bigLoader && (
+					<div className="d-flex flex-row-reverse align-items-center justify-content-between">
+						<div key={item?.id} className="packageContainerNoHover shadow">
+							<p className="fs30 textSecondary1 m-0">{item?.title}</p>
+							<p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
+							{/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
+							<hr className="w-100 cDivider" />
+							<p className="fs50 m-0 textSecondary1 text-center cNumber mt-2">
+								<NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
+							</p>
+							<p className="fs14 textThird text-center">هزار تومان</p>
+						</div>
+						<div className="d-flex flex-column align-items-start justify-content-start flex pl-4">
+							<p className="fs18">شما در حال خرید پکیج روبرو هستید.</p>
+							<p className="fs18">آیا از خرید خود اطمینان دارید؟</p>
+							<a href={buyUrl} rel="noopener noreferrer" className="submitBtn border-0 d-flex centered fs18">
+								پرداخت
+							</a>
+							<button type="button" className="w-100 btn bg-white shadow1 mt-2 text-secondary" style={{height: 38, borderRadius: 10}} onClick={onClose}>
+								<span>انصراف</span>
+							</button>
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		</Modal>
 	);

@@ -34,17 +34,6 @@ const UserPackages = () => {
        })
   }, []);
 
-  const onBuyPress = (item) => {
-     sendBuyDetails(item?.id)
-        .then((response) => {
-           console.log(response);
-        })
-        .catch((error) => {
-           console.log(error);
-        })
-     setConfirmBuyPckModal(item);
-  }
-
   return (
     <div className="d-flex flex-column centered w-100">
       <div className="card cardPrimary px-3 w-100">
@@ -65,7 +54,7 @@ const UserPackages = () => {
                       <NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
                    </p>
                    <p className="fs18 textThird text-center">هزار تومان</p>
-                   <button type="button" className="button buyBtn border-0" onClick={() => onBuyPress(item)}>
+                   <button type="button" className="button buyBtn border-0" onClick={() => setConfirmBuyPckModal(item)}>
                      خرید
                    </button>
                  </div>
