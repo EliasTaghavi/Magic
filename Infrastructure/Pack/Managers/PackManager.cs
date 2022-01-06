@@ -33,8 +33,30 @@ namespace Infrastructure.Pack.Managers
 
         public ManagerResult<CurrentPackDto> GetCurrent(string userId)
         {
-            var packBuy = packBuyRepo.GetSet().Where(x => x.UserId == userId && x.PayStatus == true).Include(x => x.Pack).OrderBy(x => x.PayDate).FirstOrDefault();
-            if (packBuy == null)
+            var packBuy = packBuyRepo.GetSet().Where(x => x.UserId == userId && x.PayStatus == true).Include(x => x.Pack).OrderByDescending(x => x.PayDate).FirstOrDefault();
+            
+            if (packBuy != null)
+            {
+                var daysRemain = (packBuy.PayDate.Value.AddDays(packBuy.Pack.DayCount) - System.DateTime.UtcNow).Days;
+                if (daysRemain < 0)
+                {
+                    return new ManagerResult<CurrentPackDto>()
+                    {
+                        Code = 21,
+                        Message = "ExpirePackage"
+                    };
+                }
+                CurrentPackDto dto = new CurrentPackDto
+                {
+                    DaysCount = packBuy.Pack.DayCount,
+                    Description = packBuy.Pack.Description,
+                    PayDate = packBuy.PayDate.Value,
+                    Price = packBuy.Pack.Price,
+                    Title = packBuy.Pack.Title,
+                };
+                return new ManagerResult<CurrentPackDto>(dto, true);
+            }
+            else
             {
                 return new ManagerResult<CurrentPackDto>()
                 {
@@ -42,15 +64,6 @@ namespace Infrastructure.Pack.Managers
                     Message = "NoPackage"
                 };
             }
-            CurrentPackDto dto = new CurrentPackDto
-            {
-                DaysCount = packBuy.Pack.DayCount,
-                Description = packBuy.Pack.Description,
-                PayDate = packBuy.PayDate.Value,
-                Price = packBuy.Pack.Price,
-                Title = packBuy.Pack.Title,
-            };
-            return new ManagerResult<CurrentPackDto>(dto, true);
         }
 
         public ManagerResult<PagedListDto<PackListDto>> Search(PageRequestDto<PackFilterDto> dto)

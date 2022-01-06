@@ -49,6 +49,10 @@ namespace Web.Mappers
 
         public static CurrentPackViewModel ToViewModel(this CurrentPackDto currentPackDto)
         {
+            if (currentPackDto == null)
+            {
+                return null;
+            }
             return new CurrentPackViewModel
             {
                 DaysCount = currentPackDto.DaysCount,
