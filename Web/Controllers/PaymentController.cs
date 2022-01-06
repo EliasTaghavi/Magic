@@ -41,7 +41,7 @@ namespace Web.Controllers
             var response = packBuyManager.Verify(verifyResult);
             
 
-            return Ok(response);
+            return Redirect("./user-panel");
         }
     }
 }
