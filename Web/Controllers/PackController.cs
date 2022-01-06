@@ -43,5 +43,14 @@ namespace Web.Controllers
             var response = packManager.Delete(id);
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetCurrent()
+        {
+            var userId = User.GetUserId();
+            var response = packManager.GetCurrent(userId);
+            return Ok(response.CreateViewModel(x => x.ToViewModel()));
+        }
     }
 }

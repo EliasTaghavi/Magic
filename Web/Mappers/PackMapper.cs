@@ -46,5 +46,19 @@ namespace Web.Mappers
                 UserId = userId,
             };
         }
+
+        public static CurrentPackViewModel ToViewModel(this CurrentPackDto currentPackDto)
+        {
+            return new CurrentPackViewModel
+            {
+                DaysCount = currentPackDto.DaysCount,
+                Description = currentPackDto.Description,
+                PayDate = currentPackDto.PayDate,
+                Price = currentPackDto.Price,
+                Title = currentPackDto.Title,
+                DaysRemain = (currentPackDto.PayDate.AddDays(currentPackDto.DaysCount) - System.DateTime.UtcNow).Days,
+                EndDate = currentPackDto.PayDate.AddDays(currentPackDto.DaysCount)
+            };
+        }
     }
 }
