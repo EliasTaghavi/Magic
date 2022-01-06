@@ -41,7 +41,7 @@ namespace Web.Controllers
             var response = packBuyManager.Verify(verifyResult);
             
 
-            return Redirect("./user-panel");
+            return Redirect($"../../user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }
     }
 }
