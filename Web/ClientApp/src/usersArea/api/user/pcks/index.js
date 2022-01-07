@@ -2,7 +2,7 @@ import tokenStore from "../../../../utils/tokenStore";
 import axios from "axios";
 
 export const getPcksData = () => {
-	const token = tokenStore.getToken();
+	const token = tokenStore.getUserToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
@@ -33,7 +33,7 @@ export const getPcksData = () => {
 
 export const sendBuyDetails = (packId) => {
 	console.log(packId);
-	const token = tokenStore.getToken();
+	const token = tokenStore.getUserToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`

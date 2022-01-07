@@ -15,7 +15,7 @@ import Divider from "../../../../../components/divider";
 import logo from '../../../../../assets/images/logo.png';
 
 const UserHeader = ({open, setOpen, children}) => {
-  const token = TokenStore.getToken();
+  const token = TokenStore.getUserToken();
 
   return (
     <div className="w-100">
@@ -109,7 +109,7 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
   const history = useHistory();
   const logout = () => {
     TokenStore.removeUserToken();
-    TokenStore.removeUserType();
+    // fixme clear redux data
     history.replace('/');
   }
 

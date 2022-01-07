@@ -2,16 +2,14 @@ import {Redirect, Route} from "react-router";
 import React from "react";
 import TokenStore from "../../utils/tokenStore";
 
-const PrivateRouteReverse = (props) => {
+const PrivateRouteReverseShop = (props) => {
   let {component: Component, ...restProps} = props;
-  const token = TokenStore.getToken();
-  const userType = TokenStore.getUserType();
-  return (
+  const shopToken = TokenStore.getShopToken();
+   console.log(shopToken);
+   return (
     <Route {...restProps} render={(props) => (
-      !token ? (
+      !shopToken ? (
         <Component {...props} />
-      ) : userType === 'user' ? (
-        <Redirect to={{pathname: '/user-panel', state: {from: props?.location}}}/>
       ) : (
         <Redirect to={{pathname: '/shop-panel', state: {from: props?.location}}}/>
       )
@@ -20,4 +18,4 @@ const PrivateRouteReverse = (props) => {
   )
 }
 
-export default PrivateRouteReverse;
+export default PrivateRouteReverseShop;
