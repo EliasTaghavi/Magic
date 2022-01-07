@@ -60,7 +60,7 @@ namespace Infrastructure.Shop.Managers
                     Name = shop.Name,
                     Phone = shop.Phone,
                     PhotoUrl = shop?.Photos?.Where(x => x.Type == Core.File.Enums.FileType.Shop).Select(x => x.FullName).ToList(),
-                    ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopLogo).FullName
+                    ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopLogo)?.FullName
                 },
                 Status = user.UserStatus,
                 Token = token.Result.JWT
