@@ -11,7 +11,7 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Resizer from 'react-image-file-resizer';
 import SupportModal from "../../../../components/shared/supportModal.component";
-import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../api/auth/auth';
+import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../api/auth/user';
 import Loader from 'react-loader-spinner';
 import RenderProgressBarModal from "../../../../components/shared/renderProgressBarModal";
 import RenderUserWaitingModal from "./renderUserWaitingModal";
@@ -364,9 +364,9 @@ const LoginUser = () => {
   };
 
   return (
-    <div className={`loginUserContainer ${step === 2 && 'cpy4'}`}>
+    <div className={`loginContainer ${step === 2 && 'cpy4'}`}>
       <FadeComponent className="d-flex flex-column centered w-100">
-        <form noValidate={true} autoComplete="off" className="loginUserForm" onSubmit={handleValidate}>
+        <form noValidate={true} autoComplete="off" className="loginForm" onSubmit={handleValidate}>
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
               <label htmlFor="mobile" className={`transition fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>

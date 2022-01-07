@@ -1,14 +1,10 @@
-import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
 
-export const getActiveUserPck = () => {
-	const token = tokenStore.getToken();
+export const sendShopLoginSms = (mobileNumber) => {
 	let headers = {
 		'Content-Type': 'application/json',
-		'Authorization': `Bearer ${token}`
 	};
-
-	return axios.get('/api/pack/getCurrent',{headers}).then((res) => {
+	return axios.post('/api/Session/CreateByPhone', JSON.stringify({phone: mobileNumber}), {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
@@ -16,7 +12,6 @@ export const getActiveUserPck = () => {
 		}
 	})
 		.catch((error) => {
-			console.log(error, error.response);
 			if (error.response.status === 401) {
 				return 401;
 			} else {
@@ -25,14 +20,16 @@ export const getActiveUserPck = () => {
 		})
 }
 
-export const getUserQrCode = () => {
-	const token = tokenStore.getToken();
+export const sendShopLoginCode = ({mobile, code}) => {
 	let headers = {
 		'Content-Type': 'application/json',
-		'Authorization': `Bearer ${token}`
 	};
-
-	return axios.get('/api/qr/getCurrent',{headers}).then((res) => {
+	let rawData = {
+		phone: mobile,
+		token: code,
+	};
+	let data = JSON.stringify(rawData);
+	return axios.post('/api/shop/VerifyTokenByPhone', data, {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

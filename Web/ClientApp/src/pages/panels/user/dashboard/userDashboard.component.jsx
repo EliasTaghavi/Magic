@@ -1,18 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {getActiveUserPck} from "../../../../usersArea/api/user/main";
+import {getActiveUserPck, getUserQrCode} from "../../../../usersArea/api/user/main";
 import NumberFormat from "react-number-format";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import Loader from "react-loader-spinner";
-import {faRecycle, faRedo} from "@fortawesome/free-solid-svg-icons";
+import {faRedo} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import QRCode from 'qrcode.react';
+import {qrCodePreUrl} from "../../../../usersArea/api/imagePreUrl";
 
 const UserDashboard = () => {
    const history = useHistory();
    const [paymentData, setPaymentData] = useState(null);
    const [currentPck, setCurrentPck] = useState(null);
    const [currentPckLoader, setCurrentPckLoader] = useState(0); // 0=false 1=true 2=fetchError
+   const [qrId, setQrId] = useState('');
+   const [qrLoader, setQrLoader] = useState(false);
 
    useEffect(() => {
       let url = history?.location?.search;
@@ -28,6 +32,7 @@ const UserDashboard = () => {
 
    useEffect(() => {
       getActivePck();
+      getQrCode();
    }, []);
 
    const getActivePck = () => {
@@ -46,66 +51,105 @@ const UserDashboard = () => {
                toast.error('خطای سرور', toastOptions);
                setCurrentPckLoader(2);
             }
-            console.log(response);
          })
-         .catch((error) => {
+         .catch(() => {
+            toast.error('خطای سرور', toastOptions);
             setCurrentPckLoader(2);
          });
    };
 
-   console.log(11, paymentData);
+   const getQrCode = () => {
+      setQrLoader(true);
+      getUserQrCode()
+         .then((response) => {
+            console.log(response);
+            if (response) {
+               let {success, result} = response
+               if (response === 401) {
+                  // do nothing but in another api's should logout from system
+               } else if (success) {
+                  setQrId(result);
+                  setQrLoader(false);
+               }
+            } else {
+               toast.error('خطای سرور', toastOptions);
+               setQrLoader(false);
+            }
+         })
+         .catch(() => {
+            toast.error('خطای سرور', toastOptions);
+            setQrLoader(false);
+         });
+   };
 
    return (
-    <div className="w-100 d-flex align-items-start justify-content-between">
-       <div className="col-9 ml-1 card cardPrimary px-3 h-100">
+    <div className="w-100 d-flex align-items-start justify-content-between bg-danger">
+       <div className="col-6 ml-1 card cardPrimary px-3">
           <div className="card-header bg-transparent">
-             <p className="card-title fs22 my-2">پکیج فعال شما</p>
+             <p className="card-title fs22 my-2">پنل کاربری</p>
           </div>
           <div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
              {paymentData && <PaymentResult data={paymentData}/>}
-
           </div>
        </div>
-       <div className="col-3 mr-1 card cardPrimary px-3">
+       <div className="w-100 col-3 mx-1 card cardPrimary px-3">
           <div className="card-header bg-transparent">
-             <p className="card-title fs22 my-2">پکیج فعال شما</p>
+             <p className="card-title fs22 my-2">کد QR شما</p>
           </div>
-          <div className="d-flex centered my-4">
-             {currentPckLoader === 0 && currentPck && <div className="packageContainerNoHover shadow w-100 pckBorder">
-                <p className="fs40 textSecondary1 m-0">{currentPck?.title}</p>
-                <p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${currentPck?.daysCount}\xa0روز`}</p>
-                {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
-                <hr className="w-100 cDivider"/>
-                <p className="fs50 m-0 textSecondary1 text-center cNumber mt-2">
-                   <NumberFormat value={currentPck?.price / 1000} displayType={'text'} thousandSeparator={true}
-                                 className="fontSizePreSmall"/>
-                </p>
-                <p className="fs18 textThird text-center">هزار تومان</p>
-                <hr className="w-100 cDivider"/>
-                <p className="fs18 textThird m-0 mt-2">مدت اعتبار باقی مانده: <span className="textMain fs20 font-weight-bold">{currentPck?.daysRemain}</span> روز</p>
-                <p className="fs18 textThird m-0 mt-2">{`تاریخ انقضا:\xa0${currentPck?.endDate}`}</p>
-             </div>}
-             {currentPckLoader === 0 && !currentPck && (
-                <div className="w-100 mh360 d-flex centered">
-                   <p className="text-danger">شما پکیج فعال ندارید.</p>
-                </div>
-             )}
-             {currentPckLoader === 1 && (
-                <div className="w-100 mh360 d-flex centered">
+          <div className="d-flex centered my-4 mh360">
+             {qrLoader && (
+                <div className="w-100 d-flex centered">
                    <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
                 </div>
              )}
-             {currentPckLoader === 2 && (
-                <div className="w-100 mh360 d-flex flex-column centered">
-                   <p className="text-danger fs16">دریافت اطلاعات با مشکل مواجه شد</p>
-                   <button type="button" className="btn btn-outline-danger" onClick={() => getActivePck()}>
-                      <FontAwesomeIcon icon={faRedo} className="fs12 ml-2" />
-                      <span className="fs14">تلاش مجدد</span>
+             {!qrLoader && qrId.length > 0 && (
+                <div className="w-100 d-flex flex-column centered">
+                   <QRCode value={qrCodePreUrl(qrId)} renderAs="svg" size={250} level="H" />
+                   <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18" style={{maxWidth: 300}}>
+                      ذخیره
                    </button>
                 </div>
              )}
           </div>
        </div>
+       <div className="col-3 mr-1 card cardPrimary px-3">
+             <div className="card-header bg-transparent">
+                <p className="card-title fs22 my-2">پکیج فعال شما</p>
+             </div>
+             <div className="d-flex centered my-4 mh360">
+                {currentPckLoader === 0 && currentPck && <div className="packageContainerNoHover shadow w-100 pckBorder">
+                   <p className="fs34 textSecondary1 m-0">{currentPck?.title}</p>
+                   <p className="fs14 textThird m-0 mt-2">{`مدت اعتبار:\xa0${currentPck?.daysCount}\xa0روز`}</p>
+                   {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
+                   <hr className="w-100 cDivider"/>
+                   <NumberFormat value={currentPck?.price / 1000} displayType={'text'} thousandSeparator={true}
+                                 className="fs60 m-0 textSecondary1 text-center cNumber mt-1" style={{height: 80}}/>
+                   <p className="fs14 textThird text-center">هزار تومان</p>
+                   <hr className="w-100 cDivider"/>
+                   <p className="fs14 textThird m-0 mt-1">مدت اعتبار باقی مانده: <span className="textMain fs20 font-weight-bold">{currentPck?.daysRemain}</span> روز</p>
+                   <p className="fs14 textThird m-0 mt-1">{`تاریخ انقضا:\xa0${currentPck?.endDate}`}</p>
+                </div>}
+                {currentPckLoader === 0 && !currentPck && (
+                   <div className="w-100 d-flex centered">
+                      <p className="text-danger">شما پکیج فعال ندارید.</p>
+                   </div>
+                )}
+                {currentPckLoader === 1 && (
+                   <div className="w-100 d-flex centered">
+                      <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
+                   </div>
+                )}
+                {currentPckLoader === 2 && (
+                   <div className="w-100 d-flex flex-column centered">
+                      <p className="text-danger fs16">دریافت اطلاعات با مشکل مواجه شد</p>
+                      <button type="button" className="btn btn-outline-danger" onClick={() => getActivePck()}>
+                         <FontAwesomeIcon icon={faRedo} className="fs12 ml-2" />
+                         <span className="fs14">تلاش مجدد</span>
+                      </button>
+                   </div>
+                )}
+             </div>
+          </div>
     </div>
   );
 }

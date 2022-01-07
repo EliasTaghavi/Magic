@@ -190,7 +190,7 @@
 }
 /*end of auth part*/
 /*login part*/
-.loginUserContainer {
+.loginContainer {
     width: 100%;
     height: 100%;
     display: flex;
@@ -200,7 +200,7 @@
     transition: 0.3s;
 }
 
-.loginUserForm {
+.loginForm {
     width: 70%;
 }
 
@@ -275,7 +275,7 @@
 }
 
 @media screen and (min-width: 768px) {
-    .loginUserForm {
+    .loginForm {
         width: 50%;
         padding: 80px 0;
     }

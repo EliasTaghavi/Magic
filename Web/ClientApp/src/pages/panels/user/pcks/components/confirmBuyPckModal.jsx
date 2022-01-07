@@ -8,7 +8,6 @@ import toastOptions from "../../../../../components/ToastOptions";
 
 const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 	const [bigLoader, setBigLoader] = useState(true);
-	const [btnLoader, setBtnLoader] = useState(false);
 	const [buyUrl, setBuyUrl] = useState('');
 
 	useEffect(() => {
@@ -50,7 +49,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 							<p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
 							{/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
 							<hr className="w-100 cDivider" />
-							<p className="fs50 m-0 textSecondary1 text-center cNumber mt-2">
+							<p className="fs90 m-0 textSecondary1 text-center cNumber mt-2">
 								<NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
 							</p>
 							<p className="fs14 textThird text-center">هزار تومان</p>
