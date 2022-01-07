@@ -16,7 +16,7 @@ import Divider from "../../../../../components/divider";
 import logo from '../../../../../assets/images/logo.png';
 
 const ShopHeader = ({open, setOpen, children}) => {
-  const token = TokenStore.getToken();
+  const token = TokenStore.getShopToken();
 
   return (
     <div className="w-100">
@@ -110,7 +110,6 @@ const MenuItems = ({open, setOpen}) => {
   const history = useHistory();
   const logout = () => {
     TokenStore.removeUserToken();
-    TokenStore.removeUserType();
     history.replace('/');
   }
 

@@ -1,8 +1,16 @@
-const setToken = (token) => {
+const setUserToken = (token) => {
   return localStorage.setItem('token', token);
 }
 
-const getToken = () => {
+const getUserToken = () => {
+  return localStorage.getItem('token');
+}
+
+const setShopToken = (token) => {
+  return localStorage.setItem('token', token);
+}
+
+const getShopToken = () => {
   return localStorage.getItem('token');
 }
 
@@ -12,18 +20,6 @@ const setAdminToken = (token) => {
 
 const getAdminToken = () => {
   return localStorage.getItem('adminToken');
-}
-
-const setUserType = (userType) => {
-  return localStorage.setItem('userType', userType);
-}
-
-const getUserType = () => {
-  return localStorage.getItem('userType');
-}
-
-const removeUserType = () => {
-  return localStorage.removeItem('userType');
 }
 
 const removeUserToken = () => {
@@ -36,13 +32,12 @@ const removeAdminToken = () => {
 };
 
 export default {
-  setToken,
-  getToken,
+  setUserToken,
+  getUserToken,
+  setShopToken,
+  getShopToken,
   setAdminToken,
   getAdminToken,
-  setUserType,
-  getUserType,
   removeUserToken,
   removeAdminToken,
-  removeUserType,
 }

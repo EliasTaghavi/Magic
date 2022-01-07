@@ -118,8 +118,7 @@ const LoginShop = () => {
         .then((response) => {
           if (Object.entries(response).length < 1) {
             // send data
-            TokenStore.setToken('token');
-            TokenStore.setUserType('shop');
+            TokenStore.setShopToken('token');
             history.push('/shop-panel');
           } else {
             setErrors(response);
@@ -164,16 +163,15 @@ const LoginShop = () => {
     sendShopLoginCode({mobile, code})
        .then((response) => {
          console.log(response);
-         let {result: {token, status}, success} = response;
+         let {result: {token, status, shop}, success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
              if (status !== 4) {
                if (status === 3) {
-                 TokenStore.setToken(token);
-                 TokenStore.setUserType('shop');
-                 dispatch(UserStore.actions.setUserData(response.result));
+                 TokenStore.setShopToken(token);
+                 dispatch(UserStore.actions.setUserData({...shop, token}));
                  setBtnLoader(false);
                  history.replace('/shop-panel');
                } else if (status === 6) {

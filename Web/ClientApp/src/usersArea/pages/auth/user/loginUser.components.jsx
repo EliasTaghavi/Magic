@@ -303,8 +303,7 @@ const LoginUser = () => {
            } else if (success) {
              if (status !== 4) {
                if (status === 3) {
-                 TokenStore.setToken(token);
-                 TokenStore.setUserType('user');
+                 TokenStore.setUserToken(token);
                  dispatch(UserStore.actions.setUserData(response.result));
                  setBtnLoader(false);
                  history.replace('/user-panel');

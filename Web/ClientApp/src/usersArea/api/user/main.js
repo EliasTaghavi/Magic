@@ -2,7 +2,7 @@ import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
 
 export const getActiveUserPck = () => {
-	const token = tokenStore.getToken();
+	const token = tokenStore.getUserToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
@@ -26,7 +26,7 @@ export const getActiveUserPck = () => {
 }
 
 export const getUserQrCode = () => {
-	const token = tokenStore.getToken();
+	const token = tokenStore.getUserToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
