@@ -23,6 +23,7 @@ namespace Infrastructure.Data
         public DbSet<Core.Pack.Entities.Pack> Packs { get; set; }
         public DbSet<PackBuy> PackBuys { get; set; }
         public DbSet<Core.QRString.Entities.QRString> QRs { get; set; }
+        public DbSet<Core.Shop.Entities.Shop> Shops { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
@@ -37,6 +38,7 @@ namespace Infrastructure.Data
             builder.CacheValidation();
             builder.CodeValidation();
             builder.PackValidation();
+            builder.ShopValidation();
             builder.PackBuyValidation();
             builder.QRValidation();
 

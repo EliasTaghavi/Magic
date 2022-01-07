@@ -60,6 +60,17 @@ namespace Infrastructure.Data
             });
         }
 
+        public static void ShopValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Shop.Entities.Shop>(shop =>
+            {
+                shop.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                shop.HasKey(x => x.Id);
+                shop.Ignore(x => x.ObjectState);
+            });
+        }
+
         public static void PackBuyValidation(this ModelBuilder builder)
         {
             builder.Entity<Core.Pack.Entities.PackBuy>(packBuy =>
