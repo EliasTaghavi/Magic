@@ -13,18 +13,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Parbad.Gateway.ZarinPal;
+using Core.QRString.Managers;
 
 namespace Infrastructure.Pack.Managers
 {
     public class PackBuyManager : IPackBuyManager
     {
+        private readonly IQRStringManager qRStringManager;
         private readonly IPackBuyRepo packBuyRepo;
         private readonly IPackRepo packRepo;
         private readonly IUserRepo userRepo;
         private readonly IOnlinePayment onlinePayment;
 
-        public PackBuyManager(IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
+        public PackBuyManager(IQRStringManager qRStringManager ,IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
         {
+            this.qRStringManager = qRStringManager;
             this.packBuyRepo = packBuyRepo;
             this.packRepo = packRepo;
             this.userRepo = userRepo;
@@ -65,6 +68,7 @@ namespace Infrastructure.Pack.Managers
             invoice.PayStatus = result.IsSucceed;
             invoice.PayDate = DateTime.UtcNow;
             packBuyRepo.Update(invoice);
+            qRStringManager.CreateNewQR(invoice.UserId);
             if (result.IsSucceed)
             {
 

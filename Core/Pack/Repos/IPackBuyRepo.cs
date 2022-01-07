@@ -5,6 +5,6 @@ namespace Core.Pack.Repos
 {
     public interface IPackBuyRepo : IRepo<PackBuy>
     {
-
+        PackBuy GetCurrentByUserId(string userId);
     }
 }

@@ -8,6 +8,7 @@ using Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace Infrastructure.Pack.Repos
             {
                 query = query.Where(x => x.Title.Contains(dto.MetaData.Title));
             }
-            query = query.OrderBy(x => x.DayCount);
+            query = query.OrderBy("DayCount");
             int count = query.Count();
             var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
             return new PagedListDto<PackListDto>

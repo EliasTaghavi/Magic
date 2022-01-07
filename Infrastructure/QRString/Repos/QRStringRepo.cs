@@ -1,6 +1,7 @@
 ﻿using Core.QRString.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,12 @@ namespace Infrastructure.QRString.Repos
         {
             var enableQRs = GetSet().Where(x => x.UserId == userId && x.Enable.Value == true).Select(x => x.Id).FirstOrDefault();
             return enableQRs;
+        }
+
+        public Core.QRString.Entities.QRString ReadByQR(string userId)
+        {
+            var qr = GetSet().Where(x => x.QR == userId).Include(x => x.User).FirstOrDefault();
+            return qr;
         }
     }
 }

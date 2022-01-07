@@ -1,4 +1,5 @@
 ﻿using Core.Base.Entities;
+using Core.QRString.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Core.QRString.Managers
     {
         ManagerResult<string> CreateNewQR(string userId);
         ManagerResult<string> GetCurrent(string userId);
+        ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto);
     }
 }

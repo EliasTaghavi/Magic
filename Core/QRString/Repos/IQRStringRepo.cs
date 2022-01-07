@@ -12,5 +12,6 @@ namespace Core.QRString.Repos
     {
         void DisableAllUserQR(string userId);
         string GetCurrent(string userId);
+        Entities.QRString ReadByQR(string userId);
     }
 }
