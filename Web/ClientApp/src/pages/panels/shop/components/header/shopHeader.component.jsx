@@ -109,7 +109,7 @@ const Drawer = ({token, extraClassName, open, setOpen}) => {
 const MenuItems = ({open, setOpen}) => {
   const history = useHistory();
   const logout = () => {
-    TokenStore.removeUserToken();
+    TokenStore.removeShopToken();
     history.replace('/');
   }
 

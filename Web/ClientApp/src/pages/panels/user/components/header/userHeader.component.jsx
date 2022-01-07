@@ -109,6 +109,7 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
   const history = useHistory();
   const logout = () => {
     TokenStore.removeUserToken();
+    // fixme clear redux data
     history.replace('/');
   }
 

@@ -11,8 +11,8 @@ const LoginRoute = () => {
   return (
     <Switch>
       <Route path="/login" exact={true} component={Login}/>
-      <PrivateRouteReverseShop path="/login/shops" component={AuthShops}/>
       <PrivateRouteReverseUser path="/login/users" component={AuthUsers}/>
+      <PrivateRouteReverseShop path="/login/shops" component={AuthShops}/>
     </Switch>
   );
 }

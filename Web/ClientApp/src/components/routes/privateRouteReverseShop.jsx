@@ -5,7 +5,8 @@ import TokenStore from "../../utils/tokenStore";
 const PrivateRouteReverseShop = (props) => {
   let {component: Component, ...restProps} = props;
   const shopToken = TokenStore.getShopToken();
-  return (
+   console.log(shopToken);
+   return (
     <Route {...restProps} render={(props) => (
       !shopToken ? (
         <Component {...props} />
