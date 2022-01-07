@@ -110,6 +110,7 @@ const MenuItems = ({open, setOpen}) => {
   const history = useHistory();
   const logout = () => {
     TokenStore.removeUserToken();
+    TokenStore.removeUserType();
     history.replace('/');
   }
 

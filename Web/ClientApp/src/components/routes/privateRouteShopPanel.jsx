@@ -8,14 +8,14 @@ const PrivateRouteShopPanel = (props) => {
   const type = TokenStore.getUserType();
   return (
     <Route {...restProps} render={(props) => (
-      // token ? FIXME
-      //   type === 'shop' ? (
+      token ?
+        type === 'shop' ? (
         <Component {...props} />
-      // ) : (
-      //   <Redirect to={{pathname: '/user-panel', state: {from: props?.location}}}/>
-      // ) : (
-      //   <Redirect to={{pathname: '/login', state: {from: props?.location}}}/>
-      // )
+      ) : (
+        <Redirect to={{pathname: '/user-panel', state: {from: props?.location}}}/>
+      ) : (
+        <Redirect to={{pathname: '/login', state: {from: props?.location}}}/>
+      )
     )}
     />
   )

@@ -29,7 +29,7 @@ export const sendShopLoginCode = ({mobile, code}) => {
 		token: code,
 	};
 	let data = JSON.stringify(rawData);
-	return axios.post('/api/Session/VerifyTokenByPhone', data, {headers}).then((res) => {
+	return axios.post('/api/shop/VerifyTokenByPhone', data, {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
@@ -37,6 +37,7 @@ export const sendShopLoginCode = ({mobile, code}) => {
 		}
 	})
 		.catch((error) => {
+			console.log(error, error.response);
 			if (error.response.status === 401) {
 				return 401;
 			} else {
