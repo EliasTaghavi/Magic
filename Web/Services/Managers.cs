@@ -1,9 +1,11 @@
 ﻿using Core.File.Managers;
 using Core.Identity.Managers;
 using Core.Pack.Managers;
+using Core.QRString.Managers;
 using Infrastructure.File.Managers;
 using Infrastructure.Identity.Managers;
 using Infrastructure.Pack.Managers;
+using Infrastructure.QRString.Managers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Web.Services
@@ -18,6 +20,7 @@ namespace Web.Services
             services.AddTransient<IFileManager, FileManager>();
             services.AddTransient<IPackManager, PackManager>();
             services.AddTransient<IPackBuyManager, PackBuyManager>();
+            services.AddTransient<IQRStringManager, QRStringManager>();
         }
     }
 }

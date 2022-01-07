@@ -1,5 +1,6 @@
 ﻿using Core.File.Entities;
 using Core.Identity.Entities;
+using Core.QRString.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -107,6 +108,17 @@ namespace Infrastructure.Data
         {
             builder?.Entity<UserRole>()
                     .HasKey(ur => new { ur.UserId, ur.RoleId });
+        }
+
+        public static void QRValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.QRString.Entities.QRString>(qrs =>
+            {
+                qrs.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                qrs.HasKey(x => x.Id);
+                qrs.Ignore(x => x.ObjectState);
+            });
         }
     }
 }
