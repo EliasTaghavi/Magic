@@ -6,24 +6,33 @@ import FadeComponent from "../../../../components/shared/fadeComponent/fadeComp.
 import TokenStore from "../../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
 import SignupShopValidation from "../../../../components/validations/authShop/signupShopValidation";
+import Loader from "react-loader-spinner";
+import {sendShopLoginSms, sendShopLoginCode} from "../../../api/auth/shop";
+import * as UserStore from "../../../../store/user";
+import {useDispatch} from "react-redux";
+import RenderUserWaitingModal from "../user/renderUserWaitingModal";
+import SupportModal from "../../../../components/shared/supportModal.component";
 // import {sendMobile} from "../../../../../api/auth/auth";
 
 let interval;
 let timer;
 
 const LoginShop = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [step, setStep] = useState<1 | 2 | 3>(1); // 1=mobile 2= code
-  const [errors, setErrors] = useState<any>({});
+  const [step, setStep] = useState(1); // 1=mobile 2= code
+  const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09123456789');
-  const [code, setCode] = useState('1234');
-  const [shopName, setShopName] = useState<string>('');
-  const [shopPhone, setShopPhone] = useState<string>('');
-  const [shopAddress, setShopAddress] = useState<string>('');
-  const [shopPassword, setShopPassword] = useState<string>('');
+  const [code, setCode] = useState('');
+  const [shopName, setShopName] = useState('');
+  const [shopPhone, setShopPhone] = useState('');
+  const [shopAddress, setShopAddress] = useState('');
+  const [shopPassword, setShopPassword] = useState('');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
   const [loader, setLoader] = useState(true);
+  const [btnLoader, setBtnLoader] = useState(false);
+  const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -86,28 +95,16 @@ const LoginShop = () => {
         .then((response) => {
           if (Object.entries(response).length < 1) {
             if (step === 1) {
-              setStep(2);
-              sendSms();
-              // sendSms();
+              sendSmsFn();
             } else {
-              // sendCode();
-              // if singed up
-              if (true) {
-                TokenStore.setToken('token');
-                TokenStore.setUserType('shop');
-                history.push('/shop-panel');
-              } else {
-                // else
-                setStep(3);
-              }
+              sendCode();
             }
           } else {
             setErrors(response);
             toast.error('لطفا اشکالات بالا را رفع نمایید.', toastOptions)
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           toast.error('خطای سرور', toastOptions)
         })
     } else {
@@ -135,14 +132,80 @@ const LoginShop = () => {
     }
   }
 
-  const resendCode = () => {
+  const sendSmsFn = () => {
+    setBtnLoader(true);
+    sendShopLoginSms(mobile)
+       .then((response) => {
+         let {success} = response;
+         console.log(response);
+         if (response) {
+           if (response === 401) {
+             // do nothing but in another api's should logout from system
+           } else if (success) {
+             setStep(2);
+             setBtnLoader(false);
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBtnLoader(false);
+         }
+       })
+       .catch(() => {
+         toast.error('خطای سرور', toastOptions);
+         setBtnLoader(false);
+       })
+  };
+  const resendCode = async () => {
+    await sendShopLoginSms(mobile);
+  };
 
-  }
+  const sendCode = () => {
+    setBtnLoader(true);
+    sendShopLoginCode({mobile, code})
+       .then((response) => {
+         console.log(response);
+         let {result: {token, status}, success} = response;
+         if (response) {
+           if (response === 401) {
+             // do nothing but in another api's should logout from system
+           } else if (success) {
+             if (status !== 4) {
+               if (status === 3) {
+                 TokenStore.setToken(token);
+                 TokenStore.setUserType('shop');
+                 dispatch(UserStore.actions.setUserData(response.result));
+                 setBtnLoader(false);
+                 history.replace('/shop-panel');
+               } else if (status === 6) {
+                 setWaitingModal(2);
+               } else {
+                 setWaitingModal(3);
+               }
+             } else {
+               // setStep(3);
+               // setToken(token);
+               // setBtnLoader(false);
+             }
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBtnLoader(false);
+         }
+       })
+       .catch(() => {
+         setBtnLoader(false);
+         toast.error('خطای سرور', toastOptions);
+       });
+  };
+
+  const resetToHome = () => {
+    history.replace('/');
+  };
 
   return (
-    <div className={`loginShopContainer ${step === 2 && 'cpy4'}`}>
+    <div className={`loginContainer ${step === 2 && 'cpy4'}`}>
       <FadeComponent className="d-flex flex-column centered w-100">
-        <form noValidate={true} autoComplete="off" className="loginShopForm" onSubmit={handleValidate}>
+        <form noValidate={true} autoComplete="off" className="loginForm" onSubmit={handleValidate}>
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
               <label htmlFor="mobile" className={`transition fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
@@ -275,17 +338,21 @@ const LoginShop = () => {
             display: errors['code'] ? 'block' : 'none',
           }}>{errors['code']}</span>}
           <button type="submit" className="submitBtn border-0">
-            ثبت
+            {!btnLoader && <span>ثبت</span>}
+            {btnLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={8} width={70} className="loader"/>}
           </button>
           {step === 2 && <Timer resendCode={resendCode} setSupportModal={(value) => setSupportModal(value)}/>}
         </form>
-        {step === 2 && <button className="bg-transparent border-0 fs14 text-primary textUnderline"
-										 onClick={() => {
-                                 setCode('');
-                                 setErrors({});
-                                 setStep(1);
-                               }}>بازگشت</button>}
-        {/*{supportModal && <SupportModal setOpen={() => setSupportModal(false)} />}*/}
+        {step === 2 && (
+           <button className="bg-transparent border-0 fs14 text-primary textUnderline"
+             onClick={() => {
+               setCode('');
+               setErrors({});
+               setStep(1);
+             }}>بازگشت</button>
+        )}
+        {supportModal && <SupportModal setOpen={() => setSupportModal(false)} />}
+        {waitingModal !== 0 && <RenderUserWaitingModal waitingModal={waitingModal} resetToHome={resetToHome} />}
       </FadeComponent>
     </div>
   );

@@ -3,7 +3,7 @@ import {Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import '../../../../admin.css';
-import imagePreUrl from "../../../../../usersArea/api/imagePreUrl";
+import {imagePreUrl} from "../../../../../usersArea/api/imagePreUrl";
 import Switch from 'react-switch';
 import {sendLockUserData} from "../../../../api/users";
 import Loader from "react-loader-spinner";

@@ -13,7 +13,7 @@ const UserPanelRoute = () => {
         <Route path="/user-panel" exact={true} component={UserDashboard}/>
         <Route path="/user-panel/profile" component={UserProfile}/>
         <Route path="/user-panel/transactions" component={UserTransactions}/>
-         <Route path="/user-panel/packages" component={UserPackages}/>
+        <Route path="/user-panel/packages" component={UserPackages}/>
       </Switch>
     </Panel>
   );

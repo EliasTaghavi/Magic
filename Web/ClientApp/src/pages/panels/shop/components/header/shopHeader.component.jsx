@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './shopHeader.css';
 import {Link, useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -31,7 +31,7 @@ const ShopHeader = ({open, setOpen, children}) => {
                 <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
               </button>
               <div className="d-flex align-items-center">
-                <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+                <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
               </div>
             </div>
             <div className="logoContainer">
@@ -43,10 +43,10 @@ const ShopHeader = ({open, setOpen, children}) => {
           </div>
         </div>
       </div>
-      <div className="position-relative d-flex d-md-none z1022" onClick={(e) => {
+      <div className="position-relative d-flex d-md-none" onClick={(e) => {
         if (e.target.id === 'drawerFather') setOpen(false);
       }}>
-        <div id="drawerFather" className="DrawerFather p-0 border-0"
+        <div id="drawerFather" className="DrawerFather p-0 border-0 z1022"
              style={{display: open ? 'flex' : 'none'}}/>
         <div className="flex">
           <div className="shopHeaderMainNav shadow1" style={{height: 63}}>
@@ -57,16 +57,19 @@ const ShopHeader = ({open, setOpen, children}) => {
                 <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
               </button>
               <div className="d-flex align-items-center">
-                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+                <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
               </div>
             </div>
             <div className="logoContainer">
               <img alt="magicOff" src={logo} className="logo" />
             </div>
           </div>
+          <div className="bg-light panelGlobalContainer">
+            {children}
+          </div>
         </div>
-        <div id="drawer" className="d-flex Drawer" style={open ? {right: 0} : {right: '-80%'}}>
-          <MdDrawer token={token} open={open} setOpen={setOpen} extraClassName="d-flex" />
+        <div id="drawer" className="d-flex panelDrawer sticky-top" style={open ? {right: 0} : {right: '-100%'}}>
+          <Drawer token={token} open={open} setOpen={setOpen} extraClassName="d-flex" />
         </div>
       </div>
     </div>
@@ -75,12 +78,12 @@ const ShopHeader = ({open, setOpen, children}) => {
 
 const MdDrawer = ({token, extraClassName, open, setOpen}) => {
   return (
-    <div className={`shopPanelDrawer py-3 transition ${open ? 'w280' : 'w60'} ${extraClassName}`}>
+    <div className={`userPanelDrawer py-3 transition ${open ? 'w280' : 'w60'} ${extraClassName}`}>
       <div className="d-flex centered px-2">
         <div className="d-flex align-items-center justify-content-center userLogo bg-light">
           <FontAwesomeIcon icon={faUser} className="text-dark"/>
         </div>
-        <span className={`text-white transition mr-3 ${open ? '' : 'opacity0'}`}>{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
+        <span className={`text-white transition mr-3 noWrapText ${open ? '' : 'opacity0'}`}>{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
       </div>
       <Divider />
       <MenuItems open={open} setOpen={setOpen} />
@@ -88,10 +91,25 @@ const MdDrawer = ({token, extraClassName, open, setOpen}) => {
   );
 }
 
+const Drawer = ({token, extraClassName, open, setOpen}) => {
+  return (
+     <div className={`userPanelDrawer py-3 transition sticky-top w280 ${extraClassName}`}>
+       <div className="d-flex centered px-2">
+         <div className="d-flex align-items-center justify-content-center userLogo bg-light">
+           <FontAwesomeIcon icon={faUser} className="text-dark"/>
+         </div>
+         <span className="text-white transition mr-3 noWrapText">{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
+       </div>
+       <Divider />
+       <MenuItems open={open} setOpen={setOpen} noOpacity={true} />
+     </div>
+  );
+}
+
 const MenuItems = ({open, setOpen}) => {
   const history = useHistory();
   const logout = () => {
-    TokenStore.remove();
+    TokenStore.removeUserToken();
     history.replace('/');
   }
 
@@ -101,18 +119,6 @@ const MenuItems = ({open, setOpen}) => {
         <Link to="/shop-panel" className="menuLink cpx-12">
           <FontAwesomeIcon icon={faHome} className="fs18"/>
           <span className={`nav-link my-1 transition ${open ? '' : 'opacity0'}`}>داشبورد</span>
-        </Link>
-      </li>
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <Link to="/shop-panel" className="menuLink cpx-12">
-          <FontAwesomeIcon icon={faUsers} className="fs18"/>
-          <span className={`nav-link my-1 transition ${open ? '' : 'opacity0'}`}>کاربران</span>
-        </Link>
-      </li>
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <Link to="/shop-panel" className="menuLink cpx-12">
-          <FontAwesomeIcon icon={faList} className="fs18"/>
-          <span className={`nav-link my-1 transition ${open ? '' : 'opacity0'}`}>پکیج ها</span>
         </Link>
       </li>
       <Divider />

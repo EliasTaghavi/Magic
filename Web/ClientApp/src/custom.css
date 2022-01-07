@@ -174,7 +174,11 @@ a:hover {
   font-size: 40px;
 }
 
-.fs50 {
+.fs60 {
+  font-size: 60px;
+}
+
+.fs90 {
   font-size: 90px;
 }
 
