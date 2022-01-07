@@ -1,17 +1,14 @@
 import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
 
-export const getActiveUserPck = (packId) => {
+export const getActiveUserPck = () => {
 	const token = tokenStore.getToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
-	let body = JSON.stringify({
-		packId,
-	});
 
-	return axios.post('/api/payment/createInvoice', body,{headers}).then((res) => {
+	return axios.get('/api/pack/getCurrent',{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
