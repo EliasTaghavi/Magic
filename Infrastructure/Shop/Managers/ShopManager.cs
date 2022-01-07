@@ -34,19 +34,20 @@ namespace Infrastructure.Shop.Managers
         public ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto)
         {
             var token = sessionManager.VerifyTokenByPhone(verifyTokenPhoneDto);
-            if (token.Result == null)
+            var user = token.Result.User;
+            var shop = shopRepo.ReadByUserId(user.Id);
+            if (shop == null)
             {
                 return new ManagerResult<VerifiedUserWithShopDto>
                 {
-                    Code = token.Code,
-                    Errors = token.Errors,
-                    Message = token.Message,
-                    Success = token.Success,
+                    Code = 22,
+                    Errors = null,
+                    Message = "NoShop",
+                    Success = false,
                     Result = null
                 };
             }
-            var user = token.Result.User;
-            var shop = shopRepo.ReadByUserId(user.Id);
+            
             var resultDto = new VerifiedUserWithShopDto
             {
                 Address = user.Address,
