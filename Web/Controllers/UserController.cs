@@ -105,5 +105,13 @@ namespace Web.Controllers
             var response = UserManager.Reject(dto);
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetLastFiveNewUser()
+        {
+            var response = UserManager.GetLastFiveNewUser();
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
+        }
     }
 }

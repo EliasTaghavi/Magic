@@ -26,5 +26,6 @@ namespace Core.Identity.Managers
         ManagerResult<bool> Confirm(string id);
         ManagerResult<bool> Lock(string id);
         ManagerResult<bool> Reject(RejectMessageDto dto);
+        ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser();
     }
 }

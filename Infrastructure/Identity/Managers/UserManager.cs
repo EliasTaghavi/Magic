@@ -1,5 +1,6 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
+using Core.Base.Enums;
 using Core.File.Enums;
 using Core.File.Repos;
 using Core.Identity.Dto;
@@ -211,6 +212,19 @@ namespace Infrastructure.Identity.Managers
             UserRepo.Update(user);
             sMSService.SendReject(user.Mobile, dto.Message);
             return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser()
+        {
+            var dto = new PageRequestDto<UserListFilterDto>
+            {
+                Index = 1,
+                MetaData = new UserListFilterDto(),
+                Order = SortOrder.ASC,
+                Size = 5,
+                SortField = "CreatedDate"
+            };
+            return Search(dto);
         }
     }
 }

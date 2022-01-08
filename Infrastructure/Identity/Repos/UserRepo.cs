@@ -10,6 +10,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Identity.Repos
 {
@@ -77,6 +78,10 @@ namespace Infrastructure.Identity.Repos
             if (!string.IsNullOrEmpty(dto.MetaData.Mobile))
             {
                 query = query.Where(x => x.Mobile.Contains(dto.MetaData.Mobile));
+            }
+            if (!string.IsNullOrEmpty(dto.SortField))
+            {
+                query = query.OrderBy(dto.SortField);
             }
             int count = query.Count();
             var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
