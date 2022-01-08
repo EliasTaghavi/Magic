@@ -1,6 +1,5 @@
 ﻿using Core.File.Entities;
 using Core.Identity.Entities;
-using Core.QRString.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -78,7 +77,7 @@ namespace Infrastructure.Data
                 packBuy.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
                 packBuy.HasKey(x => x.Id);
-                packBuy.HasIndex(x => new { x.TrackingNumber , x.GatewayName}).IsUnique();
+                packBuy.HasIndex(x => new { x.TrackingNumber, x.GatewayName }).IsUnique();
                 packBuy.Ignore(x => x.ObjectState);
             });
         }

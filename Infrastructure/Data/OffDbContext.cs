@@ -1,7 +1,6 @@
 ﻿using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Pack.Entities;
-using Core.QRString.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 

@@ -1,5 +1,4 @@
-﻿using Core.Pack.Entities;
-using Core.Pack.Managers;
+﻿using Core.Pack.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Helper;
@@ -38,7 +37,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Delete([FromQuery]string id)
+        public IActionResult Delete([FromQuery] string id)
         {
             var response = packManager.Delete(id);
             return Ok(response);

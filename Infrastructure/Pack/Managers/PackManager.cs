@@ -34,7 +34,7 @@ namespace Infrastructure.Pack.Managers
         public ManagerResult<CurrentPackDto> GetCurrent(string userId)
         {
             var packBuy = packBuyRepo.GetSet().Where(x => x.UserId == userId && x.PayStatus == true).Include(x => x.Pack).OrderByDescending(x => x.PayDate).FirstOrDefault();
-            
+
             if (packBuy != null)
             {
                 var daysRemain = (packBuy.PayDate.Value.AddDays(packBuy.Pack.DayCount) - System.DateTime.UtcNow).Days;

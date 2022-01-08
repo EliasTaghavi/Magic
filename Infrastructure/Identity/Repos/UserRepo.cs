@@ -70,9 +70,9 @@ namespace Infrastructure.Identity.Repos
             var query = GetSet();
             if (dto.MetaData.Status.HasValue)
             {
-                
-                    query = query.Where(x => x.UserStatus == dto.MetaData.Status.Value);
-                
+
+                query = query.Where(x => x.UserStatus == dto.MetaData.Status.Value);
+
             }
             if (!string.IsNullOrEmpty(dto.MetaData.Mobile))
             {

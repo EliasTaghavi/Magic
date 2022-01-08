@@ -1,5 +1,4 @@
-﻿using Core.Identity.Managers;
-using Core.QRString.Managers;
+﻿using Core.QRString.Managers;
 using Core.Shop.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +34,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult GetBuyer([FromBody] GetBuyerViewModel viewModel) 
+        public IActionResult GetBuyer([FromBody] GetBuyerViewModel viewModel)
         {
             var shoperId = User.GetUserId();
             var dto = viewModel.ToDto(shoperId);

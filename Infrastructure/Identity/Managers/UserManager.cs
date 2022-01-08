@@ -209,7 +209,7 @@ namespace Infrastructure.Identity.Managers
             var user = UserRepo.Read(dto.UserId);
             user.UserStatus = UserStatus.Rejected;
             UserRepo.Update(user);
-            sMSService.SendReject(user.Mobile,dto.Message);
+            sMSService.SendReject(user.Mobile, dto.Message);
             return new ManagerResult<bool>(true);
         }
     }

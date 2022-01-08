@@ -35,11 +35,11 @@ namespace Web.Controllers
         {
             var invoice = onlinePayment.Fetch();
 
-            
+
             var verifyResult = onlinePayment.Verify(invoice);
 
             var response = packBuyManager.Verify(verifyResult);
-            
+
 
             return Redirect($"../../user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }

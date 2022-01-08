@@ -47,7 +47,7 @@ namespace Infrastructure.Shop.Managers
                     Result = null
                 };
             }
-            
+
             var resultDto = new VerifiedUserWithShopDto
             {
                 Address = user.Address,

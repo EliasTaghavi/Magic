@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
 using Web.Helper;
 using Web.Mappers;
 using Web.Models.File;

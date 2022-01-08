@@ -4,16 +4,11 @@ using Core.Pack.Dto;
 using Core.Pack.Entities;
 using Core.Pack.Managers;
 using Core.Pack.Repos;
-using Parbad;
-using Parbad.InvoiceBuilder;
-using Parbad.Abstraction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Parbad.Gateway.ZarinPal;
 using Core.QRString.Managers;
+using Parbad;
+using Parbad.Gateway.ZarinPal;
+using System;
+using System.Linq;
 
 namespace Infrastructure.Pack.Managers
 {
@@ -25,7 +20,7 @@ namespace Infrastructure.Pack.Managers
         private readonly IUserRepo userRepo;
         private readonly IOnlinePayment onlinePayment;
 
-        public PackBuyManager(IQRStringManager qRStringManager ,IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
+        public PackBuyManager(IQRStringManager qRStringManager, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
         {
             this.qRStringManager = qRStringManager;
             this.packBuyRepo = packBuyRepo;
@@ -40,7 +35,7 @@ namespace Infrastructure.Pack.Managers
             var pack = packRepo.Read(dto.PackId);
             var result = onlinePayment.Request(invoice =>
             {
-                invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test","","09304359576")
+                invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test", "", "09304359576")
                 .SetAmount(pack.Price).SetCallbackUrl(callBackUrl);
             });
             var packBuy = new PackBuy

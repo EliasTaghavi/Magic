@@ -83,7 +83,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm([FromQuery]string id)
+        public IActionResult Confirm([FromQuery] string id)
         {
             var response = UserManager.Confirm(id);
             return Ok(response);
@@ -91,7 +91,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Lock([FromQuery]string id)
+        public IActionResult Lock([FromQuery] string id)
         {
             var response = UserManager.Lock(id);
             return Ok(response);

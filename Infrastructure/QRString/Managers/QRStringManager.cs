@@ -7,10 +7,7 @@ using Core.QRString.Managers;
 using Core.QRString.Repos;
 using Core.Shop.Repos;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.QRString.Managers
 {
@@ -64,7 +61,7 @@ namespace Infrastructure.QRString.Managers
                 };
                 return new ManagerResult<BuyerDto>(resultDto);
             }
-            return new ManagerResult<BuyerDto>(null,false);
+            return new ManagerResult<BuyerDto>(null, false);
         }
 
         public ManagerResult<string> GetCurrent(string userId)

@@ -1,5 +1,4 @@
 ﻿using Core.Base.Dto;
-using System.IO;
 
 namespace Core.File.Dto
 {

@@ -1,20 +1,15 @@
 ﻿using Core.Base.Dto;
-using Core.Base.Enums;
 using Core.Pack.Dto;
 using Core.Pack.Mapper;
 using Core.Pack.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Pack.Repos
 {
-    public class PackRepo : Repo<Core.Pack.Entities.Pack> , IPackRepo
+    public class PackRepo : Repo<Core.Pack.Entities.Pack>, IPackRepo
     {
         public PackRepo(OffDbContext offDbContext) : base(offDbContext)
         {
