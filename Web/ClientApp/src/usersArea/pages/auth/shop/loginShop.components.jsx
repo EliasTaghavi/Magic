@@ -163,34 +163,45 @@ const LoginShop = () => {
     sendShopLoginCode({mobile, code})
        .then((response) => {
          console.log(response);
-         let {result: {token, status, shop}, success} = response;
-         if (response) {
+         let {result, success} = response;
+         if (response?.code) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
-           } else if (success) {
-             if (status !== 4) {
-               if (status === 3) {
-                 TokenStore.setShopToken(token);
-                 dispatch(UserStore.actions.setUserData({...shop, token}));
-                 setBtnLoader(false);
-                 history.replace('/shop-panel');
-               } else if (status === 6) {
-                 setWaitingModal(2);
+           } else if (response === false) {
+             setBtnLoader(false);
+             toast.error('خطای سرور', toastOptions);
+           } else {
+             if (success) {
+               if (result?.status !== 4) {
+                 if (result?.status === 3) {
+                   TokenStore.setShopToken(result?.token);
+                   dispatch(UserStore.actions.setUserData({...result?.shop, token: result?.token}));
+                   setBtnLoader(false);
+                   history.replace('/shop-panel');
+                 } else if (result?.status === 6) {
+                   setWaitingModal(2);
+                 } else {
+                   setWaitingModal(3);
+                 }
                } else {
-                 setWaitingModal(3);
+                 // setStep(3);
+                 // setToken(token);
+                 // setBtnLoader(false);
                }
              } else {
-               // setStep(3);
-               // setToken(token);
-               // setBtnLoader(false);
+               if (response?.result === null) {
+                 setBtnLoader(false);
+                 toast.error('فروشگاه ثبت نشده است', toastOptions);
+               }
              }
            }
          } else {
-           toast.error('خطای سرور', toastOptions);
            setBtnLoader(false);
+           toast.error('خطای سرور', toastOptions);
          }
        })
-       .catch(() => {
+       .catch((error) => {
+         console.log(4545, error, error.response);
          setBtnLoader(false);
          toast.error('خطای سرور', toastOptions);
        });
