@@ -45,18 +45,15 @@ const AdminPcks = () => {
 			size: data?.pageSize ?? pageSize,
 			title: data?.searchValue ?? searchValue,
 		};
-		console.log(filteredData);
 		adminGetAllPcks(filteredData)
 			.then((response) => {
 				let {success, result: {count, items}} = response
-				console.log(response);
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
 					} else if (success) {
 						PageNumberGenerator(count, data?.pageSize ?? pageSize)
 							.then((res) => {
-								console.log(res);
 								setPagesNumber(res);
 							});
 						setTotalCount(count);
@@ -94,7 +91,6 @@ const AdminPcks = () => {
 		deletePck(deleteItemModal)
 			.then((response) => {
 				let {success} = response
-				console.log(response);
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system

@@ -5,7 +5,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {supportDetails} from "../../../../utils/supportDetails";
 
 const RenderUserWaitingModal = ({waitingModal, resetToHome}) => {
-	console.log(waitingModal);
 	return (
 		<Modal
 			size="lg"

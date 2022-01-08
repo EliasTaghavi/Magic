@@ -32,7 +32,6 @@ export const getPcksData = () => {
 }
 
 export const sendBuyDetails = (packId) => {
-	console.log(packId);
 	const token = tokenStore.getUserToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -50,7 +49,6 @@ export const sendBuyDetails = (packId) => {
 		}
 	})
 		.catch((error) => {
-			console.log(error, error.response);
 			if (error.response.status === 401) {
 				return 401;
 			} else {

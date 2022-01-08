@@ -3,7 +3,6 @@ const PageNumberGenerator = (totalCount, pageSize) => {
 		totalCount = 1;
 	}
 	return new Promise(result => {
-		console.log(12, totalCount, pageSize, pageSize >= totalCount);
 		let value;
 		if (pageSize >= totalCount) {
 			result([1]);
@@ -12,14 +11,12 @@ const PageNumberGenerator = (totalCount, pageSize) => {
 				value = totalCount / pageSize;
 				generateNumbers(value)
 					.then((response) => {
-						console.log(1, response, value);
 						result(response);
 					})
 			} else {
 				value =  totalCount / pageSize + 1;
 				generateNumbers(value)
 					.then((response) => {
-						console.log(2, response);
 						result(response);
 					})
 			}

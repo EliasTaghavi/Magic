@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal} from "react-bootstrap";
 import Loader from "react-loader-spinner";
 
-const ScannedUserDetails = ({data, onClose}) => {
+const ScannedUserDetailsModal = ({data, onClose}) => {
 	let tt = '1400/01/01';
 	return (
 		<Modal
@@ -13,7 +13,7 @@ const ScannedUserDetails = ({data, onClose}) => {
 			<div className="modal-header w-100 d-flex align-items-center justify-content-start fs22 text-dark">
 				وضعیت حساب مشتری
 			</div>
-			<div className="modal-body py-5 transition">
+			<div className="modal-body py-5">
 				{data && <div className="d-flex centered">
 					<div className="packageContainerNoHover shadow w-100 pckBorder">
 						<p className="fs34 textSecondary1 m-0">شهاب طالبی</p>
@@ -41,4 +41,4 @@ const ScannedUserDetails = ({data, onClose}) => {
 	);
 }
 
-export default ScannedUserDetails;
+export default ScannedUserDetailsModal;

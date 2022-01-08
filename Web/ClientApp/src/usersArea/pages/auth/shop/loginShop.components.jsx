@@ -135,8 +135,8 @@ const LoginShop = () => {
     setBtnLoader(true);
     sendShopLoginSms(mobile)
        .then((response) => {
-         let {success} = response;
          console.log(response);
+         let {success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
@@ -201,7 +201,6 @@ const LoginShop = () => {
          }
        })
        .catch((error) => {
-         console.log(4545, error, error.response);
          setBtnLoader(false);
          toast.error('خطای سرور', toastOptions);
        });

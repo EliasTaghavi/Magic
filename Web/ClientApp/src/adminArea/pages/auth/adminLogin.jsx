@@ -56,7 +56,6 @@ const AdminLogin  = () => {
 		setLoader(true);
 		sendAdminLogin({userName, password})
 			.then((response) => {
-				console.log(response);
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
