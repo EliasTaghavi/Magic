@@ -28,7 +28,7 @@ namespace Infrastructure.QRString.Repos
 
         public string GetCurrent(string userId)
         {
-            var enableQRs = GetSet().Where(x => x.UserId == userId && x.Enable.Value == true).Select(x => x.Id).FirstOrDefault();
+            var enableQRs = GetSet().Where(x => x.UserId == userId && x.Enable.Value == true).Select(x => x.QR).FirstOrDefault();
             return enableQRs;
         }
 

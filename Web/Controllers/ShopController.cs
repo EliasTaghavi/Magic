@@ -33,7 +33,7 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public IActionResult GetBuyer([FromBody] GetBuyerViewModel viewModel) 
         {
