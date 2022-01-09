@@ -7,16 +7,20 @@ import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {Link} from 'react-router-dom';
+import {getAdminLastTransactions} from "../../../api/dashboard";
 
 const AdminDashboard = () => {
 	const node1 = useRef(null);
 	const [node1BigLoader, setNode1BigLoader] = useState(false);
 	const [newUsersLoader, setNewUsersLoader] = useState(false);
 	const [newUsers, setNewUsers] = useState([]);
+	const [transactionsLoader, setTransactionsLoader] = useState(false);
+	const [transactions, setTransactions] = useState([]);
 
 	useEffect(() => {
 		renderEarnChart();
 		getNewUsers();
+		getTransactions();
 	}, []);
 
 	const getNewUsers = () => {
@@ -41,6 +45,32 @@ const AdminDashboard = () => {
 			.catch((error) => {
 				toast.error('خطای سرور', toastOptions);
 				setNewUsersLoader(false);
+			})
+	}
+
+	const getTransactions = () => {
+		setTransactionsLoader(true);
+		getAdminLastTransactions()
+			.then((response) => {
+				console.log(78787, response);
+				let {success, result: {items}} = response;
+				if (response) {
+					if (response === 401) {
+						// do nothing FIXME
+					}
+					else if (success) {
+						setTransactions(items);
+						setTransactionsLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setTransactionsLoader(false);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+				toast.error('خطای سرور', toastOptions);
+				setTransactionsLoader(false);
 			})
 	}
 
@@ -120,7 +150,7 @@ const AdminDashboard = () => {
 				<div className="col-7 pl-1 pr-0">
 					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
 						<div className="card-header bg-transparent">
-							<p className="card-title fs22 my-2">درآمد ماهیانه</p>
+							<p className="card-title fs22 my-1">درآمد ماهیانه</p>
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
 							{node1BigLoader && <div className="w-100 d-flex centered">
@@ -135,7 +165,7 @@ const AdminDashboard = () => {
 				<div className="col-5 pr-1 pl-0">
 					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-							<p className="card-title fs22">رتبه بندی فروشگاه ها</p>
+							<p className="card-title fs22 my-1">رتبه بندی فروشگاه ها</p>
 							<Link to="/admin/panel/shops" className="routeBtns">
 								همه فروشگاه ها
 							</Link>
@@ -150,25 +180,7 @@ const AdminDashboard = () => {
 				<div className="col-6 pl-1 pr-0">
 					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-							<p className="card-title fs22 my-2">آخرین تراکنش ها</p>
-							<Link to="/admin/panel/shops" className="routeBtns">
-								همه تراکنش ها
-							</Link>
-						</div>
-						<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
-							{node1BigLoader && <div className="w-100 d-flex centered">
-								<Loader type="Oval" color='gray' height={40} width={40} className="loader"/>
-							</div>}
-							{!node1BigLoader && <div className="position-relative pb-3 h-100">
-								<canvas className="mt-4" ref={node1}/>
-							</div>}
-						</div>
-					</div>
-				</div>
-				<div className="col-6 pr-1 pl-0">
-					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
-						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-							<p className="card-title fs22 my-2">جدیدترین کاربران</p>
+							<p className="card-title fs22 my-1">آخرین تراکنش ها</p>
 							<Link to="/admin/panel/shops" className="routeBtns">
 								همه تراکنش ها
 							</Link>
@@ -179,7 +191,51 @@ const AdminDashboard = () => {
 									<table className="w-100 h-100">
 										<thead>
 										<tr>
-											<th style={{minWidth: 120}}>ردیف</th>
+											<th style={{minWidth: 50}}>ردیف</th>
+											<th style={{minWidth: 120}}>نام و نام خانوادگی</th>
+											<th style={{minWidth: 120}}>تاریخ</th>
+											<th style={{minWidth: 120}}>مبلغ</th>
+										</tr>
+										</thead>
+										<tbody className="w-100">
+										{newUsers?.length > 0 && newUsers?.map((item, index) => {
+											return (
+												<tr className="customTr">
+													<td>{index + 1}</td>
+													<td>{item?.userFullName ?? '-----'}</td>
+													<td>{item?.payDate ?? '-----'}</td>
+													<td>{item?.price}</td>
+												</tr>
+											);
+										})}
+										</tbody>
+									</table>
+									{(newUsers?.length < 1 && !newUsersLoader) && <div className="w-100 d-flex centered py-3">
+										<span className="text-danger">داده ای وجود ندارد.</span>
+									</div>}
+									{newUsersLoader && <div className="w-100 d-flex centered py-3">
+										<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+									</div>}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="col-6 pr-1 pl-0">
+					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
+						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
+							<p className="card-title fs22 my-1">جدیدترین کاربران</p>
+							<Link to="/admin/panel/shops" className="routeBtns">
+								همه کاربران
+							</Link>
+						</div>
+						<div className="w-100 d-flex align-items-start justify-content-start h-100">
+							<div className="w-100 d-flex align-items-start justify-content-start px-3 py-4 h-100">
+								<div className="table-responsive h-100">
+									<table className="w-100 h-100">
+										<thead>
+										<tr>
+											<th style={{minWidth: 50}}>ردیف</th>
 											<th style={{minWidth: 120}}>نام و نام خانوادگی</th>
 											<th style={{minWidth: 120}}>تاریخ ثبت نام</th>
 											<th style={{minWidth: 120}}>وضعیت</th>

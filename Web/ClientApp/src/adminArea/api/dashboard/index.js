@@ -23,3 +23,26 @@ export const getAdminNewUsers = () => {
 			}
 		})
 }
+
+export const getAdminLastTransactions = () => {
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+
+	return axios.get('/api/payment/getLastFiveNewPayment',{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
