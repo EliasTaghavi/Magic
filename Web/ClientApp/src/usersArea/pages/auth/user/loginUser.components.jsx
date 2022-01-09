@@ -103,7 +103,6 @@ const LoginUser = () => {
             uri => {
               uri.lastModifiedDate = new Date();
               uri.name = blobName;
-              console.log(uri);
               reader.readAsDataURL(uri);
               setSelfiImage(uri);
             },
@@ -149,7 +148,6 @@ const LoginUser = () => {
             100,
             0,
             uri => {
-              console.log(uri);
               uri.lastModifiedDate = new Date();
               uri.name = blobName;
               reader.readAsDataURL(uri);
@@ -244,7 +242,6 @@ const LoginUser = () => {
       }
       SignupUserValidation(data)
          .then((response) => {
-           console.log(response);
            if (Object.entries(response).length < 1) {
              sendSignupUserData(data);
            } else {
@@ -255,7 +252,6 @@ const LoginUser = () => {
            }
          })
          .catch((e) => {
-           console.log(e, e.response);
            setBtnLoader(false);
            setProgressBarModal(false);
            toast.error('خطای سرور', toastOptions)
@@ -267,8 +263,8 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginSms(mobile)
        .then((response) => {
-         let {success} = response;
          console.log(response);
+         let {success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
@@ -295,7 +291,6 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginCode({mobile, code})
        .then((response) => {
-         console.log(response);
          let {result: {token, status}, success} = response;
          if (response) {
            if (response === 401) {
@@ -334,7 +329,6 @@ const LoginUser = () => {
     setProgressBarModal(true);
     signupUser(data)
        .then((response) => {
-         console.log(response);
          let {success} = response;
          if (response) {
            if (response === 401) {
@@ -351,7 +345,6 @@ const LoginUser = () => {
          }
        })
        .catch((e) => {
-         console.log(e, e.response);
          toast.error('خطای سرور', toastOptions);
          setBtnLoader(false);
          setProgressBarModal(false);
@@ -369,7 +362,7 @@ const LoginUser = () => {
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
               <label htmlFor="mobile" className={`transition fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
-                شماره موبایل
+                شماره موبایل<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="mobile"
@@ -393,7 +386,7 @@ const LoginUser = () => {
           {step === 2 && (
             <div className="codeContainer">
               <label htmlFor="code" className={`transition fs14 ${focused === 'code' ? 'textMain' : 'textThird'}`}>
-                {`لطفا کد ارسالی به ${mobile} را وارد کنید`}
+                {`لطفا کد ارسالی به ${mobile} را وارد کنید`}<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="code"
@@ -418,7 +411,7 @@ const LoginUser = () => {
             <div className="w-100">
               <div className="d-flex flex-column align-items-start justify-content-center w-100">
                 <label htmlFor="firstName" className={`transition fs14 mb-0 ${focused === 'firstName' ? 'textMain' : 'textThird'}`}>
-                  نام
+                  نام<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <input
                   id="firstName"
@@ -439,7 +432,7 @@ const LoginUser = () => {
               </div>
               <div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
                 <label htmlFor="lastName" className={`transition fs14 mb-0 ${focused === 'lastName' ? 'textMain' : 'textThird'}`}>
-                  نام خانوادگی
+                  نام خانوادگی<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <input
                   id="lastName"
@@ -460,7 +453,7 @@ const LoginUser = () => {
               </div>
               <div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
                 <label htmlFor="birthday" className={`transition fs14 mb-0 ${focused === 'birthday' ? 'textMain' : 'textThird'}`}>
-                  تاریخ تولد
+                  تاریخ تولد<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <DatePicker
                   value={birthday}
@@ -478,7 +471,7 @@ const LoginUser = () => {
                 }}>{errors['birthday']}</span>
               </div>
               <label htmlFor="address" className={`transition fs14 mt-4 ${focused === 'address' ? 'textMain' : 'textThird'}`}>
-                آدرس
+                آدرس<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <textarea
                 id="address"
@@ -497,7 +490,7 @@ const LoginUser = () => {
               }}>{errors['address']}</span>
               <div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
                 <label htmlFor="selfiImage" className="transition fs14 mb-0 textThird">
-                  عکس سلفی
+                  عکس سلفی<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <div id="selfiImage" className="w-100 d-flex align-items-center justify-content-center rounded p-0 mt-2">
                   <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => document?.getElementById('getSelfiImage')?.click()}>
@@ -516,7 +509,7 @@ const LoginUser = () => {
               </div>
               <div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
                 <label htmlFor="image" className="transition fs14 mb-0 textThird">
-                  مدرک شناسایی شغلی
+                  شغل (اختیاری)
                 </label>
                 <div id="image" className="w-100 d-flex align-items-center justify-content-center rounded p-0 mt-2">
                   <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => document?.getElementById('getImage')?.click()}>

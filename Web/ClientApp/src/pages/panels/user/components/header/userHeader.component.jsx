@@ -18,59 +18,60 @@ const UserHeader = ({open, setOpen, children}) => {
   const token = TokenStore.getUserToken();
 
   return (
-    <div className="w-100">
-      <div className="d-none d-md-flex">
+     <div className="d-flex">
         <MdDrawer token={token} open={open} setOpen={setOpen} />
         <div className="flex">
-          <div className="userHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
-            <div className="d-flex align-items-center justify-content-start h-100">
-              <button type="button"
-                      className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"
-                      style={{cursor: 'pointer'}} onClick={() => setOpen(!open)}>
-                <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
-              </button>
-              <div className="d-flex align-items-center">
-                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
+           <div className="userHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
+              <div className="d-flex align-items-center justify-content-start h-100">
+                 <button type="button"
+                         className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"
+                         style={{cursor: 'pointer'}} onClick={() => setOpen(!open)}>
+                    <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
+                 </button>
+                 <div className="d-flex align-items-center">
+                    <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
+                 </div>
               </div>
-            </div>
-            <div className="logoContainer">
-              <img alt="magicOff" src={logo} className="logo" />
-            </div>
-          </div>
-          <div className="bg-light panelGlobalContainer">
-            {children}
-          </div>
-        </div>
-      </div>
-      <div className="position-relative d-flex d-md-none" onClick={(e) => {if (e.target.id === 'drawerFather') setOpen(false)}}>
-        <div id="drawerFather" className="DrawerFather p-0 border-0 z1022"
-             style={{display: open ? 'flex' : 'none'}}/>
-
-        <div className="d-flex flex-column w-100 align-items-start justify-content-start">
-          <div className="userHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
-            <div className="d-flex align-items-center justify-content-start h-100">
-              <button type="button"
-                      className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"
-                      style={{cursor: 'pointer'}} onClick={() => setOpen(!open)}>
-                <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
-              </button>
-              <div className="d-flex align-items-center">
-                <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
+              <div className="logoContainer">
+                 <img alt="magicOff" src={logo} className="logo" />
               </div>
-            </div>
-            <div className="logoContainer">
-              <img alt="magicOff" src={logo} className="logo" />
-            </div>
-          </div>
-          <div className="bg-light panelGlobalContainer">
-            {children}
-          </div>
+           </div>
+           <div className="bg-light panelGlobalContainer">
+              {children}
+           </div>
+           <div className="position-relative d-flex d-md-none" onClick={(e) => {
+              if (e.target.id === 'drawerFather') {
+                 setOpen(false);
+              }
+           }}>
+              <div id="drawerFather" className="DrawerFather p-0 border-0 z1022"
+                   style={{display: open ? 'flex' : 'none'}}/>
+              {/* <div className="flex">*/}
+              {/*  <div className="shopHeaderMainNav shadow1" style={{height: 63}}>*/}
+              {/*    <div className="d-flex align-items-center justify-content-start h-100">*/}
+              {/*      <button type="button"*/}
+              {/*              className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"*/}
+              {/*              style={{cursor: 'pointer'}} onClick={() => setOpen(!open)}>*/}
+              {/*        <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>*/}
+              {/*      </button>*/}
+              {/*      <div className="d-flex align-items-center">*/}
+              {/*        <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>*/}
+              {/*      </div>*/}
+              {/*    </div>*/}
+              {/*    <div className="logoContainer">*/}
+              {/*      <img alt="magicOff" src={logo} className="logo" />*/}
+              {/*    </div>*/}
+              {/*  </div>*/}
+              {/*  <div className="bg-light panelGlobalContainer">*/}
+              {/*    {children}*/}
+              {/*  </div>*/}
+              {/*</div>*/}
+              <div id="drawer" className="d-flex panelDrawer sticky-top" style={open ? {right: 0} : {right: '-100%'}}>
+                 <Drawer token={token} open={open} setOpen={setOpen} extraClassName="d-flex" />
+              </div>
+           </div>
         </div>
-        <div id="drawer" className="d-flex panelDrawer sticky-top" style={open ? {right: 0} : {right: '-100%'}}>
-          <Drawer token={token} open={open} setOpen={setOpen} extraClassName="d-flex" />
-        </div>
-      </div>
-    </div>
+     </div>
   );
 }
 

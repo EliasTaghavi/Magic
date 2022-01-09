@@ -13,7 +13,6 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 	useEffect(() => {
 		sendBuyDetails(item?.id)
 			.then((response) => {
-				console.log(response);
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system

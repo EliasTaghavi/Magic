@@ -3,15 +3,15 @@ import {useHistory} from "react-router-dom";
 import {getUserDetailsInShop} from "../../../api/shop/scannedUser";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
-import ScannedUserDetails from "./components/scannedUserDetails";
+import ScannedUserDetailsModal from "./components/scannedUserDetails";
 
 const ShopDashboard = () => {
 	const history = useHistory();
+	let userId = history?.location?.pathname?.replace('/shop-panel/', '');
 	const [scannedUserDetailsModal, setScannedUserDetailsModal] = useState(false);
 	const [currentPck, setCurrentPck] = useState(null);
 
 	useEffect(() => {
-		let userId = history?.location?.pathname?.replace('/shop-panel/', '');
 		if (userId.length > 0) {
 			setScannedUserDetailsModal(true);
 			getUserDetails(userId);
@@ -21,6 +21,7 @@ const ShopDashboard = () => {
 	const getUserDetails = (userId) => {
 		getUserDetailsInShop(userId)
 			.then((response) => {
+				console.log(response);
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
@@ -38,14 +39,16 @@ const ShopDashboard = () => {
 	};
 
 	return (
-		<div className="card cardPrimary px-3">
-			<div className="card-header bg-transparent">
+		<div>
+			<div className="card cardPrimary px-3">
+				<div className="card-header bg-transparent">
 
-			</div>
-			<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
+				</div>
+				<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
 
+				</div>
 			</div>
-			{scannedUserDetailsModal && <ScannedUserDetails data={currentPck} onClose={() => setScannedUserDetailsModal(false)} />}
+			{scannedUserDetailsModal && <ScannedUserDetailsModal data={currentPck} onClose={() => setScannedUserDetailsModal(false)} />}
 		</div>
 	);
 }

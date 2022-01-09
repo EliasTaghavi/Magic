@@ -37,7 +37,6 @@ export const sendShopLoginCode = ({mobile, code}) => {
 		}
 	})
 		.catch((error) => {
-			console.log(error, error.response);
 			if (error.response.status === 401) {
 				return 401;
 			} else {

@@ -70,11 +70,9 @@ const AdminAllUsers = () => {
 			status: lastStatus === 'null' ? null : lastStatus,
 			mobile: data?.searchValue ?? searchValue,
 		};
-		console.log(filteredData);
 		adminGetAllUsers(filteredData)
 			.then((response) => {
 				const {result: {count, items}, success} = response;
-				console.log(9999, response);
 				if (response) {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal(true));
@@ -131,7 +129,6 @@ const AdminAllUsers = () => {
 
 	const changeStatus = (val) => {
 		let {value} = val;
-		console.log(value);
 		setStatus(value);
 		getData({status: value !== null ? value : 'null'});
 	}

@@ -1,16 +1,14 @@
 import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
 
-export const getUserDetailsInShop = (userId) => {
-	const token = tokenStore.getShopToken();
+export const getAdminNewUsers = () => {
+	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
-	let body = JSON.stringify({userId});
-	console.log(body);
 
-	return axios.post('/api/shop/getBuyer', body,{headers}).then((res) => {
+	return axios.get('/api/user/GetLastFiveNewUser',{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
