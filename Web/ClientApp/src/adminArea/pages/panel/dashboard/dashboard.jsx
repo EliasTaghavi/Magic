@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {Link} from 'react-router-dom';
 import {getAdminLastTransactions} from "../../../api/dashboard";
+import NumberFormat from "react-number-format";
 
 const AdminDashboard = () => {
 	const node1 = useRef(null);
@@ -181,13 +182,13 @@ const AdminDashboard = () => {
 					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
 							<p className="card-title fs22 my-1">آخرین تراکنش ها</p>
-							<Link to="/admin/panel/shops" className="routeBtns">
+							<Link to="/admin/panel/transactions" className="routeBtns">
 								همه تراکنش ها
 							</Link>
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start h-100">
 							<div className="w-100 d-flex align-items-start justify-content-start px-3 py-4 h-100">
-								<div className="table-responsive h-100">
+								<div className="table-responsive h-100 table-striped">
 									<table className="w-100 h-100">
 										<thead>
 										<tr>
@@ -198,22 +199,24 @@ const AdminDashboard = () => {
 										</tr>
 										</thead>
 										<tbody className="w-100">
-										{newUsers?.length > 0 && newUsers?.map((item, index) => {
+										{transactions?.length > 0 && transactions?.map((item, index) => {
 											return (
 												<tr className="customTr">
 													<td>{index + 1}</td>
 													<td>{item?.userFullName ?? '-----'}</td>
-													<td>{item?.payDate ?? '-----'}</td>
-													<td>{item?.price}</td>
+													<td style={{letterSpacing: 1}}>{item?.payDate ?? '-----'}</td>
+													<td className="font-weight-bold">
+														<NumberFormat value={item?.price} displayType={'text'} thousandSeparator={true} className="font-weight-bold fontSizePreSmall" /> تومان
+													</td>
 												</tr>
 											);
 										})}
 										</tbody>
 									</table>
-									{(newUsers?.length < 1 && !newUsersLoader) && <div className="w-100 d-flex centered py-3">
+									{(transactions?.length < 1 && !transactionsLoader) && <div className="w-100 d-flex centered py-3">
 										<span className="text-danger">داده ای وجود ندارد.</span>
 									</div>}
-									{newUsersLoader && <div className="w-100 d-flex centered py-3">
+									{transactionsLoader && <div className="w-100 d-flex centered py-3">
 										<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
 									</div>}
 								</div>
@@ -225,13 +228,13 @@ const AdminDashboard = () => {
 					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
 							<p className="card-title fs22 my-1">جدیدترین کاربران</p>
-							<Link to="/admin/panel/shops" className="routeBtns">
+							<Link to="/admin/panel/all-users" className="routeBtns">
 								همه کاربران
 							</Link>
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start h-100">
 							<div className="w-100 d-flex align-items-start justify-content-start px-3 py-4 h-100">
-								<div className="table-responsive h-100">
+								<div className="table-responsive h-100 table-striped">
 									<table className="w-100 h-100">
 										<thead>
 										<tr>
@@ -247,7 +250,7 @@ const AdminDashboard = () => {
 												<tr className="customTr">
 													<td>{index + 1}</td>
 													<td>{(item?.firstName && item?.lastName) ? item?.firstName + '\xa0' + item?.lastName : item?.mobile ?? '-----'}</td>
-													<td>{item?.createdData ?? '-----'}</td>
+													<td style={{letterSpacing: 1}}>{item?.createdData ? item?.createdDate.replace(/\//gm, '\xa0/\xa0') : '-----'}</td>
 													<td>{item?.status === 3 ? (
 														<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
 													) : item?.status === 5 ? (
