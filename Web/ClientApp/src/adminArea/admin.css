@@ -125,6 +125,20 @@
     background-color: #ff521d !important;
 }
 
+.routeBtns {
+    border: 1px solid #ff521d;
+    border-radius: 4px;
+    color: #ff521d;
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.routeBtns:hover {
+    background-color: #ff521d;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
 @media screen and (min-width: 768px) {
     .adminPanelDrawer {
         display: flex;
