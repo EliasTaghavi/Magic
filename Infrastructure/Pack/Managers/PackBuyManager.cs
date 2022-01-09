@@ -1,4 +1,5 @@
-﻿using Core.Base.Dto;
+﻿using Core;
+using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Identity.Repos;
 using Core.Pack.Dto;
@@ -6,9 +7,12 @@ using Core.Pack.Entities;
 using Core.Pack.Managers;
 using Core.Pack.Repos;
 using Core.QRString.Managers;
+using Microsoft.EntityFrameworkCore;
 using Parbad;
 using Parbad.Gateway.ZarinPal;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Infrastructure.Pack.Managers
@@ -74,6 +78,22 @@ namespace Infrastructure.Pack.Managers
                 SortField = "PayDate"
             };
             return Search(dto);
+        }
+
+        public ManagerResult<List<LineChartDto<decimal>>> GetPaymentLineChart()
+        {
+            var chartData = new List<LineChartDto<decimal>>();
+            PersianCalendar pc = new();
+            int year = pc.GetYear(DateTime.UtcNow);
+            for (int i = 0; i < 12; i++)
+            {
+                DateTime start = new(year, 1 + i, 1, pc);
+                DateTime end = i < 11 ? new DateTime(year, 2 + i, 1, pc) : new DateTime(year + 1, 1, 1, pc);
+                var _month = packBuyRepo.Bucket().Where(x => x.PayDate >= start && x.PayDate < end && x.PayStatus == true);
+                decimal _paid = _month.Include(x => x.Pack).Sum(x => x.Pack.Price);
+                chartData.Add(new LineChartDto<decimal> { Data = _paid, Label = Utils.GetPersianMonthName(i + 1) });
+            }
+            return new ManagerResult<List<LineChartDto<decimal>>>(chartData);
         }
 
         public ManagerResult<PagedListDto<PackBuyListDto>> Search(PageRequestDto<PackBuyListFilterDto> dto)

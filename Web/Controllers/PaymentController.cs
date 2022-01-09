@@ -51,5 +51,13 @@ namespace Web.Controllers
             var response = packBuyManager.GetLastFiveNewPayment();
             return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetPaymentLineChart()
+        {
+            var response = packBuyManager.GetPaymentLineChart();
+            return Ok(response.CreateViewModel(x => x.ToViewModel()));
+        }
     }
 }

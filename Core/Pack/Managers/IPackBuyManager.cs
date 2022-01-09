@@ -3,6 +3,7 @@ using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Pack.Dto;
 using Parbad;
+using System.Collections.Generic;
 
 namespace Core.Pack.Managers
 {
@@ -12,5 +13,6 @@ namespace Core.Pack.Managers
         ManagerResult<bool> Verify(IPaymentVerifyResult result);
         ManagerResult<PagedListDto<PackBuyListDto>> Search(PageRequestDto<PackBuyListFilterDto> dto);
         ManagerResult<PagedListDto<PackBuyListDto>> GetLastFiveNewPayment();
+        ManagerResult<List<LineChartDto<decimal>>> GetPaymentLineChart();
     }
 }

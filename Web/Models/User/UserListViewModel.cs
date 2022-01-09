@@ -17,5 +17,6 @@ namespace Web.Models.User
         public string Mobile { get; set; }
         public string SelfieURL { get; set; }
         public string IdentityURL { get; set; }
+        public DateTime CeatedDate { get; set; }
     }
 }

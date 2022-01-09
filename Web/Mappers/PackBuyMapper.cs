@@ -1,4 +1,7 @@
-﻿using Core.Pack.Dto;
+﻿using Core.Base.Dto;
+using Core.Pack.Dto;
+using System.Collections.Generic;
+using Web.Models;
 using Web.Models.Payment;
 
 namespace Web.Mappers
@@ -15,5 +18,7 @@ namespace Web.Mappers
                 UserFullName = dto.UserFullName,
             };
         }
+
+        
     }
 }

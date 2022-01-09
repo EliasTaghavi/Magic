@@ -30,6 +30,7 @@ namespace Core.Identity.Mappers
                 SelfieURL = string.Empty,
                 Address = user.Address,
                 Birthday = user.Birthday,
+                CreatedDate = user.CreatedDate,
             };
         }
 
