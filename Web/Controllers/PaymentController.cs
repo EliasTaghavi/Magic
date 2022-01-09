@@ -49,7 +49,7 @@ namespace Web.Controllers
         public IActionResult GetLastFiveNewPayment()
         {
             var response = packBuyManager.GetLastFiveNewPayment();
-            return Ok(response.Result);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
     }
 }
