@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import NumberFormat from "react-number-format";
 import DeleteItemModal from "../../../../components/shared/deleteItemModal";
+import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const AdminPcks = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -145,9 +146,18 @@ const AdminPcks = () => {
 									<td>{item?.dayCount ?? '-----'}</td>
 									<td>{item?.description?.length > 0 ? item?.description : '-----'}</td>
 									<td>
-										<button type="button" className="btn bg-transparent border-0 outline" onClick={() => setDeleteItemModal(item)}>
-											<FontAwesomeIcon icon={faTrash} className="text-danger fs18" />
-										</button>
+										<OverlayTrigger
+											key='details'
+											placement='left'
+											overlay={
+												<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+													حذف
+												</Tooltip>
+											}>
+											<button type="button" className="btn bg-transparent border-0 outline" onClick={() => setDeleteItemModal(item)}>
+												<FontAwesomeIcon icon={faTrash} className="text-danger fs18" />
+											</button>
+										</OverlayTrigger>
 									</td>
 								</tr>
 							);
