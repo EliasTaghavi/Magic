@@ -1,8 +1,10 @@
-﻿namespace Web.Models
+﻿using System.Collections.Generic;
+
+namespace Web.Models
 {
     public class LineChartViewModel<T>
     {
-        public T Data { get; set; }
-        public string Label { get; set; }
+        public List<T> Data { get; set; }
+        public List<string> Label { get; set; }
     }
 }

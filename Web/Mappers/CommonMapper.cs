@@ -29,18 +29,13 @@ namespace Web.Mappers
             };
         }
 
-        public static LineChartViewModel<T> ToViewModel<T>(this LineChartDto<T> dto)
+        public static LineChartViewModel<T> ToDataLabelViewModel<T>(this List<LineChartDto<T>> dto)
         {
             return new LineChartViewModel<T>
             {
-                Data = dto.Data,
-                Label = dto.Label,
+                Data = dto.Select(x => x.Data).ToList(),
+                Label = dto.Select(x => x.Label).ToList(),
             };
-        }
-
-        public static List<LineChartViewModel<T>> ToViewModel<T>(this List<LineChartDto<T>> dto)
-        {
-            return dto.Select(x => x.ToViewModel()).ToList();
         }
     }
 }

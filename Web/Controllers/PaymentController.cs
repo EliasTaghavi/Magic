@@ -57,7 +57,7 @@ namespace Web.Controllers
         public IActionResult GetPaymentLineChart()
         {
             var response = packBuyManager.GetPaymentLineChart();
-            return Ok(response.CreateViewModel(x => x.ToViewModel()));
+            return Ok(response.CreateViewModel(x => x.ToDataLabelViewModel()));
         }
     }
 }
