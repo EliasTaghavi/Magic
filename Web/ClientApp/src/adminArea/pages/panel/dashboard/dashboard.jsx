@@ -7,19 +7,19 @@ import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {Link} from 'react-router-dom';
-import {getAdminLastTransactions} from "../../../api/dashboard";
+import {getAdminLastTransactions, getAdminChartData} from "../../../api/dashboard";
 import NumberFormat from "react-number-format";
 
 const AdminDashboard = () => {
 	const node1 = useRef(null);
-	const [node1BigLoader, setNode1BigLoader] = useState(false);
 	const [newUsersLoader, setNewUsersLoader] = useState(false);
 	const [newUsers, setNewUsers] = useState([]);
 	const [transactionsLoader, setTransactionsLoader] = useState(false);
 	const [transactions, setTransactions] = useState([]);
+	const [chartLoader, setChartLoader] = useState(false);
 
 	useEffect(() => {
-		renderEarnChart();
+		getChartData();
 		getNewUsers();
 		getTransactions();
 	}, []);
@@ -28,7 +28,6 @@ const AdminDashboard = () => {
 		setNewUsersLoader(true);
 		getAdminNewUsers()
 			.then((response) => {
-				console.log(response);
 				let {success, result: {items}} = response;
 				if (response) {
 					if (response === 401) {
@@ -53,7 +52,6 @@ const AdminDashboard = () => {
 		setTransactionsLoader(true);
 		getAdminLastTransactions()
 			.then((response) => {
-				console.log(78787, response);
 				let {success, result: {items}} = response;
 				if (response) {
 					if (response === 401) {
@@ -68,19 +66,100 @@ const AdminDashboard = () => {
 					setTransactionsLoader(false);
 				}
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
 				toast.error('خطای سرور', toastOptions);
 				setTransactionsLoader(false);
 			})
 	}
 
-	const renderEarnChart = () => {
-		// new Chart(node1, {
-		// 	type: 'bar',
+	const getChartData = () => {
+		getAdminChartData()
+			.then((response) => {
+				console.log(447846, response);
+				let {success, result} = response;
+				if (response) {
+					if (response === 401) {
+						// do nothing FIXME
+					}
+					else if (success) {
+						renderEarnChart(result);
+						setChartLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setChartLoader(false);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+				toast.error('خطای سرور', toastOptions);
+				setChartLoader(false);
+			})
+	}
+
+	const renderEarnChart = (result) => {
+		const data = {
+			labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+			datasets: [{
+				label: 'My First Dataset',
+				data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40],
+				fill: false,
+				borderColor: 'rgb(0, 123, 255)',
+				tension: 0.1
+			}]
+		};
+		new Chart(node1.current, {
+			type: 'line',
+			data: data,
+			options: {
+				legend: {
+					display: true,
+				},
+				maintainAspectRatio: false,
+				tooltips: {
+					enabled: true,
+					position: 'nearest',
+					intersect: false,
+					fontFamily: "IranSans",
+					titleFontFamily: 'IranSans',
+					bodyFontFamily: 'IranSans',
+					callbacks: {
+						label: (tooltipItems, data) => {
+							return tooltipItems.yLabel;
+						}
+					}
+				},
+				scales: {
+					xAxes: [{
+						type: 'category',
+						labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+						ticks: {
+							fontFamily: 'Vazir',
+						},
+						gridLines : {
+							display : false
+						}
+					}],
+					yAxes: [{
+						gridLines: {
+							color: "rgba(0, 0, 0, 0)",
+						},
+						ticks: {
+							min: 0,
+							callback: (value, index, values) => {
+								return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ریال ';
+							},
+							fontFamily: 'IranSans'
+						}
+					}],
+				}
+			}
+		});
+		// new Chart(node1.current, {
+		// 	type: 'line',
 		// 	data: {
 		// 		labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-		// 		datasets: this.state.lineChart1.map((item, index) => {
+		// 		datasets: newResult.map((item, index) => {
 		// 			let bg = index === 0 ? '#3692ed55' : '#ED6D3755';
 		// 			let border = index === 0 ? '#3692ed' : '#ED6D37';
 		// 			let point = index === 0 ? '#3692ed' : '#ED6D37';
@@ -154,11 +233,11 @@ const AdminDashboard = () => {
 							<p className="card-title fs22 my-1">درآمد ماهیانه</p>
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
-							{node1BigLoader && <div className="w-100 d-flex centered">
+							{chartLoader && <div className="w-100 d-flex centered">
 								<Loader type="Oval" color='gray' height={40} width={40} className="loader"/>
 							</div>}
-							{!node1BigLoader && <div className="position-relative pb-3 h-100">
-								<canvas className="mt-4" ref={node1}/>
+							{!chartLoader && <div className="position-relative pb-3 w-100" style={{height: 300}}>
+								<canvas className="mt-4 w-100" ref={node1}/>
 							</div>}
 						</div>
 					</div>
