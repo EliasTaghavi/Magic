@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using Web.JsonConverter;
 
 namespace Web.Models.Payment
 {
@@ -7,6 +9,7 @@ namespace Web.Models.Payment
         public string Id { get; set; }
         public string UserFullName { get; set; }
         public decimal Price { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime PayDate { get; set; }
     }
 }
