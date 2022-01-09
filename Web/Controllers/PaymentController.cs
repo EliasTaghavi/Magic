@@ -43,5 +43,13 @@ namespace Web.Controllers
 
             return Redirect($"../../user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetLastFiveNewPayment()
+        {
+            var response = packBuyManager.GetLastFiveNewPayment();
+            return Ok(response.Result);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.Identity.Repos;
 using Core.Pack.Dto;
 using Core.Pack.Entities;
@@ -55,6 +56,30 @@ namespace Infrastructure.Pack.Managers
                 Message = result.IsSucceed ? "Successful" : result.Message,
                 Code = result.IsSucceed ? 200 : 19
             };
+        }
+
+        public ManagerResult<PagedListDto<PackBuyListDto>> GetLastFiveNewPayment()
+        {
+            var dto = new PageRequestDto<PackBuyListFilterDto>
+            {
+                Index = 1,
+                MetaData = new PackBuyListFilterDto
+                {
+                    Status = true,
+                    FromToPayDate = new FromToDto<DateTime?>(),
+                    KeywordDto = new KeywordDto()
+                },
+                Order = Core.Base.Enums.SortOrder.DESC,
+                Size = 5,
+                SortField = "PayDate"
+            };
+            return Search(dto);
+        }
+
+        public ManagerResult<PagedListDto<PackBuyListDto>> Search(PageRequestDto<PackBuyListFilterDto> dto)
+        {
+            var list = packBuyRepo.Search(dto);
+            return new ManagerResult<PagedListDto<PackBuyListDto>>(list);
         }
 
         public ManagerResult<bool> Verify(IPaymentVerifyResult result)
