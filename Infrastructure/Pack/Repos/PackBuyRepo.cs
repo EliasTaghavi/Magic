@@ -48,7 +48,15 @@ namespace Infrastructure.Pack.Repos
             }
             if (!string.IsNullOrEmpty(dto.SortField))
             {
+                if (dto.Order == Core.Base.Enums.SortOrder.ASC)
+                {
                 query = query.OrderBy(dto.SortField);
+
+                }
+                else
+                {
+                    query = query.OrderBy($"{dto.SortField} DESC");
+                }
             }
             int count = query.Count();
             var result = query.Include(x => x.User).Include(x => x.Pack).Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();

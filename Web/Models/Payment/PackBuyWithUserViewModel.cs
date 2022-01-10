@@ -13,5 +13,6 @@ namespace Web.Models.Payment
         public DateTime PayDate { get; set; }
         public bool? Status { get; set; }
         public string PackTitle { get; set; }
+        public string UserMobile { get; set; }
     }
 }
