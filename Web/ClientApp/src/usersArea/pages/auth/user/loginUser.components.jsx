@@ -21,6 +21,12 @@ import * as UserStore from '../../../../store/user';
 let interval;
 let timer;
 
+export const maximumDate = {
+  year: 1400,
+  month: 10,
+  day: 6,
+}
+
 const LoginUser = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -43,12 +49,6 @@ const LoginUser = () => {
   const [token, setToken] = useState('');
   const [progressBarModal, setProgressBarModal] = useState(false);
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
-
-  const maximumDate = {
-    year: 1400,
-    month: 10,
-    day: 6,
-  }
 
   useEffect(() => {
     timer = setTimeout(() => {
