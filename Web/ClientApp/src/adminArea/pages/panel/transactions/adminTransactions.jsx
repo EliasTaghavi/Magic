@@ -2,6 +2,14 @@ import React, {useCallback, useEffect, useState} from 'react';
 import SearchBox from "../components/SearchBox";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../components/RenderPageButtons";
+import {getAdminTransactions} from "../../../api/transactions";
+import Select from "react-select";
+import {theme} from "../../../../components/shared/theme";
+import makeAnimated from "react-select/animated/dist/react-select.esm";
+import DatePicker from "react-modern-calendar-datepicker";
+import {maximumDate} from "../../../../usersArea/pages/auth/user/loginUser.components";
+
+const animatedComponents = makeAnimated();
 
 const AdminTransactions = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -11,6 +19,24 @@ const AdminTransactions = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const [totalCount, setTotalCount] = useState(0);
 	const [data, setData] = useState([]);
+	const [errors, setErrors] = useState({});
+	const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
+	const [from, setFrom] = useState('');
+	const [to, setTo] = useState('');
+	const statusTypes = [
+		{
+			value: null,
+			label: 'همه',
+		},
+		{
+			value: true,
+			label: 'پرداخت شده',
+		},
+		{
+			value: false,
+			label: 'پرداخت نشده',
+		},
+	];
 
 	const searchData = (e) => {
 		e.preventDefault();
@@ -28,7 +54,21 @@ const AdminTransactions = () => {
 	}, []);
 
 	const getData = (data) => {
-		// do nothing
+		setBigLoader(true);
+		let lastStatus = data?.status ?? status;
+		let filteredData = {
+			index: data?.currentPage ?? currentPage,
+			size: data?.pageSize ?? pageSize,
+			status: lastStatus === 'null' ? null : lastStatus,
+			mobile: data?.searchValue ?? searchValue,
+		};
+		getAdminTransactions()
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error);
+			})
 	}
 
 	const changePageFn = (newPage) => {
@@ -47,13 +87,75 @@ const AdminTransactions = () => {
 		getData({currentPage: 1, pageSize: target.value});
 	}, []);
 
+	const changeStatus = (val) => {
+		let {value} = val;
+		setStatus(value);
+		getData({status: value !== null ? value : 'null'});
+	}
+
+	const selectDay = (type, data) => {
+		delete errors[type];
+		switch (type) {
+			case 'from':
+				setFrom(data);
+				break;
+			case 'to':
+				setTo(data);
+				break;
+			default:
+				break;
+		}
+	};
+
 	return (
 		<div className="card cardPrimary px-3 w-100">
 			<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
 				<p className="card-title fs22 my-2">لیست تراکنش ها</p>
 			</div>
 			<div className="card-body w-100 d-flex flex-column px-3">
-				<div className="w-100 d-flex flex-row flex-wrap align-items-center justify-content-end">
+				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
+					<div className="flex form-group mt-4 d-flex flex-column flex-md-row align-items-start justify-content-start">
+						<div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+							<Select
+								defaultValue={statusTypes[0]}
+								options={statusTypes}
+								isClearable={false}
+								components={animatedComponents}
+								isRtl={true}
+								isMulti={false}
+								isSearchable={false}
+								maxMenuHeight={200}
+								placeholder=""
+								onChange={(value) => changeStatus(value)}
+								styles={theme.customStyles}/>
+						</div>
+						<div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+							<DatePicker
+								value={from}
+								onChange={selectDay}
+								shouldHighlightWeekends
+								calendarClassName="responsive-calendar"
+								locale="fa"
+								inputPlaceholder="از تاریخ..."
+								maximumDate={maximumDate}
+								wrapperClassName="w-100"
+								inputClassName={`w-100 text-right fs16 form-control input ${errors['from'] && 'is-invalid'}`}
+							/>
+						</div>
+						<div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+							<DatePicker
+								value={to}
+								onChange={selectDay}
+								shouldHighlightWeekends
+								calendarClassName="responsive-calendar"
+								locale="fa"
+								inputPlaceholder="تا تاریخ..."
+								maximumDate={maximumDate}
+								wrapperClassName="w-100"
+								inputClassName={`w-100 text-right fs16 form-control mr-3 input ${errors['to'] && 'is-invalid'}`}
+							/>
+						</div>
+					</div>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
 				<div className="table-responsive">
@@ -64,7 +166,8 @@ const AdminTransactions = () => {
 							<th style={{minWidth: 120}}>تاریخ تراکنش</th>
 							<th style={{minWidth: 120}}>مبلغ تراکنش</th>
 							<th style={{minWidth: 120}}>نوع پکیج</th>
-							<th style={{minWidth: 120}}>توضیحات</th>
+							<th style={{minWidth: 120}}>شماره موبایل</th>
+							<th style={{minWidth: 120}}>وضعیت</th>
 						</tr>
 						</thead>
 						<tbody className="w-100">

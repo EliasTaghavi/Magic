@@ -75,13 +75,11 @@ const AdminDashboard = () => {
 	const getChartData = () => {
 		getAdminChartData()
 			.then((response) => {
-				console.log(447846, response);
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
 						// do nothing FIXME
-					}
-					else if (success) {
+					} else if (success) {
 						renderEarnChart(result);
 						setChartLoader(false);
 					}
@@ -90,8 +88,7 @@ const AdminDashboard = () => {
 					setChartLoader(false);
 				}
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
 				toast.error('خطای سرور', toastOptions);
 				setChartLoader(false);
 			})
@@ -99,10 +96,10 @@ const AdminDashboard = () => {
 
 	const renderEarnChart = (result) => {
 		const data = {
-			labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+			labels: result?.label,
 			datasets: [{
 				label: 'My First Dataset',
-				data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40],
+				data: result?.data,
 				fill: false,
 				borderColor: 'rgb(0, 123, 255)',
 				tension: 0.1
@@ -113,7 +110,7 @@ const AdminDashboard = () => {
 			data: data,
 			options: {
 				legend: {
-					display: true,
+					display: false,
 				},
 				maintainAspectRatio: false,
 				tooltips: {
@@ -125,7 +122,7 @@ const AdminDashboard = () => {
 					bodyFontFamily: 'IranSans',
 					callbacks: {
 						label: (tooltipItems, data) => {
-							return tooltipItems.yLabel;
+							return tooltipItems?.yLabel.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
 						}
 					}
 				},
@@ -147,81 +144,14 @@ const AdminDashboard = () => {
 						ticks: {
 							min: 0,
 							callback: (value, index, values) => {
-								return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ریال ';
+								return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
 							},
 							fontFamily: 'IranSans'
 						}
 					}],
 				}
 			}
-		});
-		// new Chart(node1.current, {
-		// 	type: 'line',
-		// 	data: {
-		// 		labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-		// 		datasets: newResult.map((item, index) => {
-		// 			let bg = index === 0 ? '#3692ed55' : '#ED6D3755';
-		// 			let border = index === 0 ? '#3692ed' : '#ED6D37';
-		// 			let point = index === 0 ? '#3692ed' : '#ED6D37';
-		// 			return {
-		// 				label: item.label,
-		// 				lineTension: 0,
-		// 				data: item.data,
-		// 				backgroundColor: bg,
-		// 				borderColor: border,
-		// 				borderWidth: 2,
-		// 				pointBackgroundColor: point,
-		// 				pointBorderColor: point,
-		// 			}
-		// 		}),
-		// 	},
-		// 	options: {
-		// 		maintainAspectRatio: false,
-		// 		tooltips: {
-		// 			enabled: true,
-		// 			mode: 'x',
-		// 			intersect: false,
-		// 			fontFamily: "arial",
-		// 			titleFontFamily: 'Vazir',
-		// 			bodyFontFamily: 'Vazir',
-		// 			callbacks: {
-		// 				label: (tooltipItems, data) => {
-		// 					return data.datasets[tooltipItems.datasetIndex].label + '\xa0:\xa0' + tooltipItems.value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ریال ';
-		// 				}
-		// 			}
-		// 		},
-		// 		legend: {
-		// 			position: 'bottom',
-		// 			labels: {
-		// 				fontFamily: 'Vazir'
-		// 			}
-		// 		},
-		// 		scales: {
-		// 			xAxes: [{
-		// 				type: 'category',
-		// 				labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-		// 				ticks: {
-		// 					fontFamily: 'Vazir',
-		// 				},
-		// 				gridLines : {
-		// 					display : false
-		// 				}
-		// 			}],
-		// 			yAxes: [{
-		// 				gridLines: {
-		// 					color: "rgba(0, 0, 0, 0)",
-		// 				},
-		// 				ticks: {
-		// 					min: 0,
-		// 					callback: (value, index, values) => {
-		// 						return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ریال ';
-		// 					},
-		// 					fontFamily: 'Vazir'
-		// 				}
-		// 			}],
-		// 		}
-		// 	}
-		// });
+		})
 	}
 
 	return (
