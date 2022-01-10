@@ -7,11 +7,16 @@ import Select from "react-select";
 import {theme} from "../../../../components/shared/theme";
 import makeAnimated from "react-select/animated/dist/react-select.esm";
 import DatePicker from "react-modern-calendar-datepicker";
-import {maximumDate} from "../../../../usersArea/pages/auth/user/loginUser.components";
+import * as MainStore from "../../../../store/main";
+import PageNumberGenerator from "../components/PageNumberGenerator";
+import {toast} from "react-toastify";
+import toastOptions from "../../../../components/ToastOptions";
+import {useDispatch} from "react-redux";
 
 const animatedComponents = makeAnimated();
 
 const AdminTransactions = () => {
+	const dispatch = useDispatch();
 	const [bigLoader, setBigLoader] = useState(false);
 	const [pageSize, setPageSize] = useState(5);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -60,14 +65,34 @@ const AdminTransactions = () => {
 			index: data?.currentPage ?? currentPage,
 			size: data?.pageSize ?? pageSize,
 			status: lastStatus === 'null' ? null : lastStatus,
-			mobile: data?.searchValue ?? searchValue,
+			keyword: data?.searchValue ?? searchValue,
+			from,
+			to,
 		};
-		getAdminTransactions()
+		getAdminTransactions(filteredData)
 			.then((response) => {
-				console.log(response);
+				console.log(1, response);
+				const {result: {count, items}, success} = response;
+				if (response) {
+					if (response === 401) {
+						dispatch(MainStore.actions.setLogoutModal(true));
+					} else if (success) {
+						PageNumberGenerator(count, data?.pageSize ?? pageSize)
+							.then((res) => {
+								setPagesNumber(res);
+							});
+						setTotalCount(count);
+						setData(items);
+						setBigLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setBigLoader(false);
+				}
 			})
 			.catch((error) => {
-				console.log(error);
+				toast.error('خطای سرور', toastOptions);
+				setBigLoader(false);
 			})
 	}
 
@@ -75,8 +100,9 @@ const AdminTransactions = () => {
 		if (newPage === currentPage || newPage < 1 || newPage > pagesNumber[pagesNumber.length - 1]) {
 			// do nothing
 		} else {
+			console.log(newPage);
 			setCurrentPage(newPage);
-			// getData(newPage);
+			getData({currentPage: newPage});
 		}
 	};
 
@@ -137,7 +163,6 @@ const AdminTransactions = () => {
 								calendarClassName="responsive-calendar"
 								locale="fa"
 								inputPlaceholder="از تاریخ..."
-								maximumDate={maximumDate}
 								wrapperClassName="w-100"
 								inputClassName={`w-100 text-right fs16 form-control input ${errors['from'] && 'is-invalid'}`}
 							/>
@@ -150,7 +175,6 @@ const AdminTransactions = () => {
 								calendarClassName="responsive-calendar"
 								locale="fa"
 								inputPlaceholder="تا تاریخ..."
-								maximumDate={maximumDate}
 								wrapperClassName="w-100"
 								inputClassName={`w-100 text-right fs16 form-control mr-3 input ${errors['to'] && 'is-invalid'}`}
 							/>
@@ -171,14 +195,14 @@ const AdminTransactions = () => {
 						</tr>
 						</thead>
 						<tbody className="w-100">
-						{data.length > 0 && data.map((item, index) => {
+						{!bigLoader && data.length > 0 && data.map((item, index) => {
 							return (
-								<tr className="customTr">
+								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
-									<td>{item?.date}</td>
+									<td>{item?.payDate}</td>
 									<td>{item?.price}</td>
-									<td>{item?.pckType}</td>
-									<td>{item?.description}</td>
+									<td>{item?.status}</td>
+									<td>{item?.status}</td>
 								</tr>
 							);
 						})}
