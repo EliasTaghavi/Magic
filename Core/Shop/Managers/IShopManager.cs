@@ -8,5 +8,6 @@ namespace Core.Shop.Managers
     {
         ManagerResult<bool> AddPhotos(AddPhotosForShopDto dto);
         ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto);
+        ManagerResult<bool> Create(CreateShopDto dto);
     }
 }

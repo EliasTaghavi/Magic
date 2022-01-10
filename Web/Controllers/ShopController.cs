@@ -41,5 +41,14 @@ namespace Web.Controllers
             var response = qRStringManager.GetBuyer(dto);
             return Ok(response);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Create([FromBody] CreateShopViewModel viewModel)
+        {
+            var dto = viewModel.ToDto();
+            var response = shopManager.Create(dto);
+            return Ok(response);
+        }
     }
 }

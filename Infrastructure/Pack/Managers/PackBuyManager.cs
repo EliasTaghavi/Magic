@@ -48,7 +48,7 @@ namespace Infrastructure.Pack.Managers
                 ObjectState = Core.Base.Enums.ObjectState.Added,
                 PackId = pack.Id,
                 Pack = pack,
-                PayStatus = null,
+                PayStatus = false,
                 TrackingNumber = result.TrackingNumber,
                 GatewayName = result.GatewayName,
                 User = user,

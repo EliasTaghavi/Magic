@@ -5,6 +5,7 @@ using Core.Identity.Managers;
 using Core.Services;
 using Core.Shop.Dto;
 using Core.Shop.Managers;
+using Core.Shop.Mappers;
 using Core.Shop.Repos;
 using System;
 using System.Linq;
@@ -14,13 +15,15 @@ namespace Infrastructure.Shop.Managers
     public class ShopManager : IShopManager
     {
         private readonly IShopRepo shopRepo;
+        private readonly IUserManager userManager;
         private readonly IAppFileRepo appFileRepo;
         private readonly IFileService fileService;
         private readonly ISessionManager sessionManager;
 
-        public ShopManager(IShopRepo shopRepo, IAppFileRepo appFileRepo, IFileService fileService, ISessionManager sessionManager)
+        public ShopManager(IShopRepo shopRepo, IUserManager userManager, IAppFileRepo appFileRepo, IFileService fileService, ISessionManager sessionManager)
         {
             this.shopRepo = shopRepo;
+            this.userManager = userManager;
             this.appFileRepo = appFileRepo;
             this.fileService = fileService;
             this.sessionManager = sessionManager;
@@ -29,6 +32,22 @@ namespace Infrastructure.Shop.Managers
         public ManagerResult<bool> AddPhotos(AddPhotosForShopDto dto)
         {
             throw new NotImplementedException();
+        }
+
+        public ManagerResult<bool> Create(CreateShopDto dto)
+        {
+            var userDto = new CreateUserDto
+            {
+                FirstName = dto.UserName,
+                Lastname = dto.UserSurname,
+                Phone = dto.UserMobile
+            };
+            var user = userManager.CreateByPhone(userDto).Result;
+
+            var shop = dto.ToDataModel();
+            shop.UserId = user.Id;
+            shopRepo.Create(shop);
+            return new ManagerResult<bool>(true);
         }
 
         public ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto)

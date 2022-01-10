@@ -1,6 +1,6 @@
-﻿namespace Core.Shop.Dto
+﻿namespace Web.Models.Shop
 {
-    public class CreateShopDto
+    public class CreateShopViewModel
     {
         public string Name { get; set; }
         public string Phone { get; set; }

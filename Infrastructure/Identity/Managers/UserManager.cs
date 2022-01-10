@@ -142,17 +142,17 @@ namespace Infrastructure.Identity.Managers
             throw new NotImplementedException();
         }
 
-        public ManagerResult<bool> CreateByPhone(CreateUserDto dto)
+        public ManagerResult<User> CreateByPhone(CreateUserDto dto)
         {
             try
             {
                 User model = dto.ToModel();
                 User mangerResult = UserRepo.Create(model);
-                return new ManagerResult<bool>(true);
+                return new ManagerResult<User>(mangerResult);
             }
             catch (Exception ex)
             {
-                return new ManagerResult<bool>(false)
+                return new ManagerResult<User>(null)
                 {
                     Success = false,
                     Errors = new List<string>() { ex.Message },
