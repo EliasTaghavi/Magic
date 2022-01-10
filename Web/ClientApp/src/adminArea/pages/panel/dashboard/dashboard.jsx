@@ -42,7 +42,8 @@ const AdminDashboard = () => {
 					setNewUsersLoader(false);
 				}
 			})
-			.catch((error) => {
+			.catch((e) => {
+				console.log(22, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setNewUsersLoader(false);
 			})
@@ -66,29 +67,33 @@ const AdminDashboard = () => {
 					setTransactionsLoader(false);
 				}
 			})
-			.catch(() => {
+			.catch((e) => {
+				console.log(11, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setTransactionsLoader(false);
 			})
 	}
 
 	const getChartData = () => {
+		setChartLoader(true);
 		getAdminChartData()
 			.then((response) => {
+				console.log(response);
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
 						// do nothing FIXME
 					} else if (success) {
-						renderEarnChart(result);
 						setChartLoader(false);
+						renderEarnChart(result);
 					}
 				} else {
 					toast.error('خطای سرور', toastOptions);
 					setChartLoader(false);
 				}
 			})
-			.catch(() => {
+			.catch((e) => {
+				console.log(33, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setChartLoader(false);
 			})
@@ -105,7 +110,7 @@ const AdminDashboard = () => {
 				tension: 0.1
 			}]
 		};
-		new Chart(node1.current, {
+		new Chart(node1?.current, {
 			type: 'line',
 			data: data,
 			options: {
@@ -164,7 +169,7 @@ const AdminDashboard = () => {
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
 							{chartLoader && <div className="w-100 d-flex centered">
-								<Loader type="Oval" color='gray' height={40} width={40} className="loader"/>
+								<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
 							</div>}
 							{!chartLoader && <div className="position-relative pb-3 w-100" style={{height: 300}}>
 								<canvas className="mt-4 w-100" ref={node1}/>
@@ -210,7 +215,7 @@ const AdminDashboard = () => {
 										<tbody className="w-100">
 										{transactions?.length > 0 && transactions?.map((item, index) => {
 											return (
-												<tr className="customTr">
+												<tr key={item?.id} className="customTr">
 													<td>{index + 1}</td>
 													<td>{item?.userFullName ?? '-----'}</td>
 													<td style={{letterSpacing: 1}}>{item?.payDate ?? '-----'}</td>
@@ -256,7 +261,7 @@ const AdminDashboard = () => {
 										<tbody className="w-100">
 										{newUsers?.length > 0 && newUsers?.map((item, index) => {
 											return (
-												<tr className="customTr">
+												<tr key={item?.id} className="customTr">
 													<td>{index + 1}</td>
 													<td>{(item?.firstName && item?.lastName) ? item?.firstName + '\xa0' + item?.lastName : item?.mobile ?? '-----'}</td>
 													<td style={{letterSpacing: 1}}>{item?.createdData ? item?.createdDate.replace(/\//gm, '\xa0/\xa0') : '-----'}</td>
