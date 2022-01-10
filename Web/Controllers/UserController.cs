@@ -29,7 +29,7 @@ namespace Web.Controllers
         public IActionResult Create([FromBody] CreateUserViewModel viewModel)
         {
             Core.Identity.Dto.CreateUserDto dto = viewModel.ToDto();
-            Core.Base.Entities.ManagerResult<bool> response = UserManager.CreateByPhone(dto);
+            var response = UserManager.CreateByPhone(dto);
             return Utils.BuildResult(response);
         }
 
