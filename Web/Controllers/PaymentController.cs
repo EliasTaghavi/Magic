@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Parbad;
 using Web.Helper;
 using Web.Mappers;
+using Web.Models;
 using Web.Models.Pack;
+using Web.Models.Payment;
 
 namespace Web.Controllers
 {
@@ -58,6 +60,15 @@ namespace Web.Controllers
         {
             var response = packBuyManager.GetPaymentLineChart();
             return Ok(response.CreateViewModel(x => x.ToDataLabelViewModel()));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Search(PageRequestViewModel<PackBuyListFilterViewModel> viewModel)
+        {
+            var dto = viewModel.ToDto(x => x.ToDto());
+            var response = packBuyManager.Search(dto);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
     }
 }

@@ -37,5 +37,22 @@ namespace Web.Mappers
                 Label = dto.Select(x => x.Label).ToList(),
             };
         }
+
+        public static FromToDto<T> ToDto<T>(this FromToViewModel<T> viewModel)
+        {
+            return new FromToDto<T>
+            {
+                From = viewModel.From,
+                To = viewModel.To,
+            };
+        }
+
+        public static KeywordDto ToDto(this KeywordViewModel viewModel)
+        {
+            return new KeywordDto
+            {
+                Keyword = viewModel.Keyword,
+            };
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace Web.Models.Payment
         public decimal Price { get; set; }
         [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime PayDate { get; set; }
+        public bool? Status { get; set; }
+        public string PackTitle { get; set; }
     }
 }

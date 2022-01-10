@@ -1,7 +1,4 @@
-﻿using Core.Base.Dto;
-using Core.Pack.Dto;
-using System.Collections.Generic;
-using Web.Models;
+﻿using Core.Pack.Dto;
 using Web.Models.Payment;
 
 namespace Web.Mappers
@@ -16,9 +13,19 @@ namespace Web.Mappers
                 PayDate = dto.PayDate,
                 Price = dto.Price,
                 UserFullName = dto.UserFullName,
+                Status = dto.Status,
+                PackTitle = dto.PackTitle
             };
         }
 
-        
+        public static PackBuyListFilterDto ToDto(this PackBuyListFilterViewModel viewModel)
+        {
+            return new PackBuyListFilterDto
+            {
+                FromToPayDate = viewModel.FromToPayDate.ToDto(),
+                KeywordDto = viewModel.Keyword.ToDto(),
+                Status = viewModel.Status,
+            };
+        }
     }
 }

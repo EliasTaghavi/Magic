@@ -17,6 +17,7 @@ namespace Core.Pack.Mapper
                 Status = packBuy.PayStatus,
                 UserFullName = $"{packBuy.User.Name} {packBuy.User.Surname}",
                 UserMobile = packBuy.User.Mobile,
+                PackTitle = packBuy.Pack.Title,
             };
         }
 
