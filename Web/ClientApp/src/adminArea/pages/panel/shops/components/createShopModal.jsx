@@ -103,7 +103,7 @@ const CreateShopModal = ({item, setOpen}) => {
 		>
 			<div className="modal-content">
 				<div className="modal-header fs16 font-weight-bold">
-					افزودن پکیج جدید
+					افزودن فروشگاه جدید
 				</div>
 				<form noValidate={true} autoComplete="off" onSubmit={(e) => handleValidate(e)}>
 					<div className="modal-body d-flex flex-wrap align-items-start justify-content-start pt-5">
