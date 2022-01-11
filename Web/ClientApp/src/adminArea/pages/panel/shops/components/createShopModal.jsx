@@ -6,7 +6,7 @@ import toastOptions from "../../../../../components/ToastOptions";
 import CreateShopValidation from "../../../../validations/createShopValidation";
 import {SendCreateShopData} from "../../../../api/shop";
 
-const CreateShopModal = ({item, setOpen}) => {
+const CreateShopModal = ({refreshData, setOpen}) => {
 	const [errors, setErrors] = useState({});
 	const [name, setName] = useState('');
 	const [phone, setPhone] = useState('');
@@ -78,6 +78,7 @@ const CreateShopModal = ({item, setOpen}) => {
 	}
 
 	const sendData = () => {
+		setLoader(true);
 		let data = {
 			name,
 			phone,
@@ -88,10 +89,23 @@ const CreateShopModal = ({item, setOpen}) => {
 		};
 		SendCreateShopData(data)
 			.then((response) => {
-
+				let {success} = response
+				if (response) {
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else if (success) {
+						refreshData();
+						setOpen();
+						setLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setLoader(false);
+				}
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
+				toast.error('خطای سرور', toastOptions);
+				setLoader(false);
 			})
 	};
 

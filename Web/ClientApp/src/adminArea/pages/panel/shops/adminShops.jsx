@@ -142,13 +142,13 @@ const AdminShops = () => {
 						<tbody className="w-100">
 						{!bigLoader && data.length > 0 && data.map((item, index) => {
 							return (
-								<tr className="customTr">
+								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
 									<td>{item?.name ?? '-----'}</td>
 									<td>{item?.phone ?? '-----'}</td>
-									<td>{item?.userfullName ?? '-----'}</td>
+									<td>{item?.userFullName?.trim().length > 0 ? item?.userFullName : '-----'}</td>
 									<td>{item?.userMobile ?? '-----'}</td>
-									<td>{item?.userMobile ?? '-----'}</td>
+									<td>{item?.createdDate ?? '-----'}</td>
 									<td>{item?.address ?? '-----'}</td>
 									<td>
 										<OverlayTrigger
@@ -189,8 +189,8 @@ const AdminShops = () => {
 					<span className="mt-3 mt-md-0">{`(\xa0${totalCount}\xa0آیتم\xa0)`}</span>
 				</div>
 			</div>
-			{createShopModal && <CreateShopModal setOpen={() => setCreateShopModal(false)} />}
-			{deleteItemModal && <DeleteItemModal item={{type: 'فروشگاه', name: deleteItemModal?.title}} setOpen={() => setDeleteItemModal(null)} deleteItem={deleteItem} />}
+			{createShopModal && <CreateShopModal setOpen={() => setCreateShopModal(false)} refreshData={() => getData()} />}
+			{deleteItemModal && <DeleteItemModal item={{type: 'فروشگاه', name: deleteItemModal?.name ?? '-----'}} setOpen={() => setDeleteItemModal(null)} deleteItem={deleteItem} />}
 		</div>
 	);
 }

@@ -180,6 +180,9 @@ const AdminTransactions = () => {
 								inputClassName={`w-100 text-right fs16 form-control mr-3 input ${errors['to'] && 'is-invalid'}`}
 							/>
 						</div>
+						<button type="button" className="btn bgMain border-0 text-white mr-3" onClick={() => getData()}>
+							اعمال فیلتر
+						</button>
 					</div>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>

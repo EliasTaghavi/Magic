@@ -11,8 +11,8 @@ export const adminGetAllShops = (data) => {
 	let body = JSON.stringify({
 		index,
 		size,
-		sortField: 'name',
-		order: 0,
+		sortField: 'createdDate',
+		order: 1,
 		metaData: {
 			keyword: {
 				keyword,
