@@ -50,6 +50,7 @@ namespace Web.Mappers
                 Phone = dto.Phone,
                 UserFullName = dto.UserFullName,
                 UserMobile = dto.UserMobile,
+                CreatedDate = dto.CreatedDate,
             };
         }
 

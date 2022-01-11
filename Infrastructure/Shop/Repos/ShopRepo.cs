@@ -26,7 +26,7 @@ namespace Infrastructure.Shop.Repos
         {
             var query = GetSet();
             string keyword = filterDto.MetaData.Keyword.Keyword;
-            if (string.IsNullOrEmpty(keyword))
+            if (!string.IsNullOrEmpty(keyword))
             {
                 query = query.Where(x => x.Name.Contains(keyword) || x.User.Name.Contains(keyword) || x.User.Surname.Contains(keyword) || x.User.Mobile.Contains(keyword));
             }

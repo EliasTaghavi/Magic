@@ -29,6 +29,7 @@ namespace Core.Shop.Mappers
                 Phone = shop.Phone,
                 UserFullName = $"{shop.User.Name} {shop.User.Surname}",
                 UserMobile = shop.User.Mobile,
+                CreatedDate = shop.CreatedDate,
             };
         }
 
