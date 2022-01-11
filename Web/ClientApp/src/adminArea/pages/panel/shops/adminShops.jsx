@@ -46,7 +46,7 @@ const AdminShops = () => {
 			// do nothing
 		} else {
 			setCurrentPage(newPage);
-			// getData(newPage);
+			getData({currentPage: newPage});
 		}
 	};
 

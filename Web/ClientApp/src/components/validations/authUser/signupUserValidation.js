@@ -12,9 +12,9 @@ const SignupUserValidation = (data) => {
       errors['birthday'] = 'تاریخ تولد اشتباه است.'
     }
 
-    if (!data?.image || data?.image.length < 1) {
-      errors['image'] = 'لطفا عکس مورد نظر را انتخاب کنید.'
-    }
+    // if (!data?.image || data?.image.length < 1) {
+    //   errors['image'] = 'لطفا عکس مورد نظر را انتخاب کنید.'
+    // }
 
     if (!data?.selfiImage || data?.selfiImage.length < 1) {
       errors['selfiImage'] = 'لطفا عکس سلفی خود را انتخاب کنید.'

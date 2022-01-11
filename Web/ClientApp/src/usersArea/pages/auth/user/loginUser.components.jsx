@@ -17,6 +17,7 @@ import RenderProgressBarModal from "../../../../components/shared/renderProgress
 import RenderUserWaitingModal from "./renderUserWaitingModal";
 import {useDispatch} from "react-redux";
 import * as UserStore from '../../../../store/user';
+import {checkReferralCode} from "../../../api/auth/user";
 
 let interval;
 let timer;
@@ -30,7 +31,7 @@ export const maximumDate = {
 const LoginUser = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [step, setStep] = useState(1); // 1=mobile 2= code
+  const [step, setStep] = useState(3); // 1=mobile 2=code 3=signup
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09137658795');
   const [btnLoader, setBtnLoader] = useState(false);
@@ -41,6 +42,8 @@ const LoginUser = () => {
   const [address, setAddress] = useState('خیابان ابوذر');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
+  const [referralCode, setReferralCode] = useState('');
+  const [referralCodeLoader, setReferralCodeLoader] = useState(false);
   const [loader, setLoader] = useState(true);
   const [image, setImage] = useState('');
   const [selfiImage, setSelfiImage] = useState('');
@@ -201,6 +204,9 @@ const LoginUser = () => {
       case 'address':
         setAddress(target.value);
         break;
+      case 'referralCode':
+        setReferralCode(target.value);
+        break;
       default:
         break;
     }
@@ -353,6 +359,29 @@ const LoginUser = () => {
 
   const resetToHome = () => {
     history.replace('/');
+  };
+
+  const checkReferralCodeFn = () => {
+    setReferralCodeLoader(true);
+    checkReferralCode({code: referralCode})
+       .then((response) => {
+         let {success} = response;
+         if (response) {
+           if (response === 401) {
+             // do nothing but in another api's should logout from system
+           } else if (success) {
+             // fixme
+             setProgressBarModal(false);
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setReferralCodeLoader(false);
+         }
+       })
+       .catch((e) => {
+         toast.error('خطای سرور', toastOptions);
+         setReferralCodeLoader(false);
+       })
   };
 
   return (
@@ -525,6 +554,31 @@ const LoginUser = () => {
                     <FontAwesomeIcon icon={faTimes} color="red"/>
                   </button>
                 </div>}
+              </div>
+              <div className="w-100 mt-5" style={{height: 1, backgroundColor: '#ff521d55'}} />
+              <div className="flex-column align-items-start justify-content-end w-100 my-5">
+                <label htmlFor="referralCode" className={`transition fs16 noWrapText mb-0 ${focused === 'referralCode' ? 'textMain' : 'textThird'}`}>
+                  کد معرف
+                </label>
+                <div className="w-100 d-flex centered">
+                  <input
+                     id="referralCode"
+                     name="referralCode"
+                     type="text"
+                     autoFocus={false}
+                     required={true}
+                     className="form-control input"
+                     value={referralCode}
+                     onChange={changeValue}
+                     placeholder="..."
+                     onFocus={focusedFn}
+                     onBlur={unfocusedFn}
+                  />
+                  <button type="button" className="btn bgMain border-0 text-white fs12 mr-3" onClick={() => checkReferralCodeFn()}>
+                    {!referralCodeLoader && <span>بررسی</span>}
+                    {referralCodeLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={5} width={70} className="loader"/>}
+                  </button>
+                </div>
               </div>
             </div>
           )}
