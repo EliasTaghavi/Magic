@@ -2,20 +2,22 @@ import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
 
 export const SendCreateShopData = (data) => {
-	const {dayCount, title, price, description} = data;
+	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, address} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
 	let body = JSON.stringify({
-		dayCount,
-		title,
-		price,
-		description,
+		name,
+		phone,
+		address,
+		userMobile: ownerMobile,
+		userName: ownerFirstName,
+		userSurname: ownerLastName,
 	});
 
-	return axios.post('/api/pack/create', body,{headers}).then((res) => {
+	return axios.post('/api/shop/create', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

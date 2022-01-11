@@ -106,7 +106,7 @@ const Home = () => {
               <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={sendReport}>
                 <div className="d-flex flex-column w90p align-items-start justify-content-center">
                   <label htmlFor="email" className={`transition fs14 mt-4 mb-0 ${focused === 'email' ? 'textMain' : 'textThird'}`}>
-                    ایمیل
+                    ایمیل<span style={{color: 'red'}}>{`\xa0*`}</span>
                   </label>
                   <input
                     id="email"
@@ -128,7 +128,7 @@ const Home = () => {
                 </div>
                 <div className="d-flex flex-column w90p  align-items-start justify-content-center mt-3">
                   <label htmlFor="description" className={`transition fs14 mt-4 mb-0 ${focused === 'description' ? 'textMain' : 'textThird'}`}>
-                    نظر شما
+                    نظر شما<span style={{color: 'red'}}>{`\xa0*`}</span>
                   </label>
                   <textarea
                     id="description"

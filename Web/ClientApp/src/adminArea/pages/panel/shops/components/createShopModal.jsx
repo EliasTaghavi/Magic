@@ -78,7 +78,15 @@ const CreateShopModal = ({item, setOpen}) => {
 	}
 
 	const sendData = () => {
-		SendCreateShopData()
+		let data = {
+			name,
+			phone,
+			ownerFirstName,
+			ownerLastName,
+			ownerMobile,
+			address,
+		};
+		SendCreateShopData(data)
 			.then((response) => {
 
 			})

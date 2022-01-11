@@ -66,7 +66,7 @@ const RejectSmsModal = ({item, setOpen, refreshTable}) => {
 						<div className="col-12">
 							<div className="d-flex align-items-center justify-content-between mb-1">
 								<label className="p-0 m-0">
-									متن پیام
+									متن پیام<span style={{color: 'red'}}>{`\xa0*`}</span>
 									{`\xa0${description.length}/${SMSMaxChar(description)}\xa0`}
 									{`(تعداد پیامک: ${smsCounter(description)})`}
 								</label>

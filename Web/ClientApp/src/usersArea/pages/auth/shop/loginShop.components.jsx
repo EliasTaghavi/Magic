@@ -217,7 +217,7 @@ const LoginShop = () => {
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
               <label htmlFor="mobile" className={`transition fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
-                شماره موبایل
+                شماره موبایل<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="mobile"
@@ -238,7 +238,7 @@ const LoginShop = () => {
           {step === 2 && (
             <div className="codeContainer">
               <label htmlFor="code" className={`transition fs14 ${focused === 'code' ? 'textMain' : 'textThird'}`}>
-                {`لطفا کد ارسالی به ${mobile} را وارد کنید`}
+                {`لطفا کد ارسالی به ${mobile} را وارد کنید`}<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="code"
@@ -260,7 +260,7 @@ const LoginShop = () => {
             <div>
               <label htmlFor="shopName"
                      className={`transition fs14 mb-0 ${focused === 'shopName' ? 'textMain' : 'textThird'}`}>
-                نام فروشگاه
+                نام فروشگاه<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="shopName"
@@ -280,7 +280,7 @@ const LoginShop = () => {
               }}>{errors['shopName']}</span>
               <label htmlFor="shopPhone"
                      className={`transition fs14 mt-4 mb-0 ${focused === 'shopPhone' ? 'textMain' : 'textThird'}`}>
-                شماره تلفن
+                شماره تلفن<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="shopPhone"
@@ -300,7 +300,7 @@ const LoginShop = () => {
               }}>{errors['shopPhone']}</span>
               <label htmlFor="shopPassword"
                      className={`transition fs14 mt-4 mb-0 ${focused === 'shopPassword' ? 'textMain' : 'textThird'}`}>
-                کلمه عبور
+                کلمه عبور<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
                 id="shopPassword"
@@ -320,7 +320,7 @@ const LoginShop = () => {
               }}>{errors['shopPassword']}</span>
               <label id="address" htmlFor="shopAddress"
                      className={`transition fs14 mt-4 mb-0 ${focused === 'shopAddress' ? 'textMain' : 'textThird'}`}>
-                آدرس
+                آدرس<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <textarea
                 id="shopAddress"

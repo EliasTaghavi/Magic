@@ -112,7 +112,7 @@ const NewPckModal = ({setOpen, refreshList}) => {
 					<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5 px-4">
 						<div className="d-flex flex-column align-items-start justify-content-center w-100">
 							<label htmlFor="name" className={`transition fs14 mb-0 ${focused === 'name' ? 'textMain' : 'textThird'}`}>
-								نام پکیج
+								نام پکیج<span style={{color: 'red'}}>{`\xa0*`}</span>
 							</label>
 							<input
 								id="name"
@@ -133,7 +133,7 @@ const NewPckModal = ({setOpen, refreshList}) => {
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
 							<label htmlFor="price" className={`transition fs14 mb-0 ${focused === 'price' ? 'textMain' : 'textThird'}`}>
-								قیمت (به تومان)
+								قیمت (به تومان)<span style={{color: 'red'}}>{`\xa0*`}</span>
 							</label>
 							<NumberFormat
 								id="price"
@@ -155,7 +155,7 @@ const NewPckModal = ({setOpen, refreshList}) => {
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
 							<label htmlFor="duration" className={`transition fs14 mb-0 ${focused === 'duration' ? 'textMain' : 'textThird'}`}>
-								مدت زمان (به روز)
+								مدت زمان (به روز)<span style={{color: 'red'}}>{`\xa0*`}</span>
 							</label>
 							<input
 								id="duration"
