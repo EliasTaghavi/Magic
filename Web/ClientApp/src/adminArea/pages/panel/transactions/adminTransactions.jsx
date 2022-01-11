@@ -121,6 +121,7 @@ const AdminTransactions = () => {
 
 	const selectDay = (type, data) => {
 		delete errors[type];
+		console.log(data);
 		switch (type) {
 			case 'from':
 				setFrom(data);
@@ -158,7 +159,7 @@ const AdminTransactions = () => {
 						<div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
 							<DatePicker
 								value={from}
-								onChange={selectDay}
+								onChange={(value) => selectDay('from', value)}
 								shouldHighlightWeekends
 								calendarClassName="responsive-calendar"
 								locale="fa"
@@ -170,7 +171,7 @@ const AdminTransactions = () => {
 						<div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
 							<DatePicker
 								value={to}
-								onChange={selectDay}
+								onChange={(value) => selectDay('to', value)}
 								shouldHighlightWeekends
 								calendarClassName="responsive-calendar"
 								locale="fa"
@@ -201,8 +202,13 @@ const AdminTransactions = () => {
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
 									<td>{item?.payDate}</td>
 									<td>{item?.price}</td>
-									<td>{item?.status}</td>
-									<td>{item?.status}</td>
+									<td>{item?.packTitle}</td>
+									<td>{item?.userMobile}</td>
+									<td>{item?.status === true ? (
+										<p className="font-weight-bold text-success">پرداخت شده</p>
+									) : (
+										<p className="font-weight-bold text-danger">پرداخت نشده</p>
+									)}</td>
 								</tr>
 							);
 						})}
