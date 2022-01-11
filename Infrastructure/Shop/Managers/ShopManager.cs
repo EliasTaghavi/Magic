@@ -45,9 +45,19 @@ namespace Infrastructure.Shop.Managers
             };
             var user = userManager.CreateByPhone(userDto).Result;
 
+            Random random = new();
+            var code = random.Next(1000, 10000);
+
             var shop = dto.ToDataModel();
             shop.UserId = user.Id;
+            shop.ReferralCode = code.ToString();
             shopRepo.Create(shop);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Delete(string id)
+        {
+            shopRepo.Delete(id);
             return new ManagerResult<bool>(true);
         }
 

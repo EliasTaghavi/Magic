@@ -67,6 +67,8 @@ namespace Infrastructure.Data
                      .ValueGeneratedOnAdd();
                 shop.HasKey(x => x.Id);
                 shop.Ignore(x => x.ObjectState);
+                shop.HasIndex(x => x.ReferralCode)
+                .IsUnique();
             });
         }
 

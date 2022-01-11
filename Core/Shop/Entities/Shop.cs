@@ -13,5 +13,6 @@ namespace Core.Shop.Entities
         public string Phone { get; set; }
         public string Address { get; set; }
         public ICollection<AppFile> Photos { get; set; }
+        public string ReferralCode { get; set; }
     }
 }

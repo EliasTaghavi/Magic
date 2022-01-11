@@ -59,7 +59,14 @@ namespace Web.Controllers
             var dto = viewModel.ToDto(x => x.ToDto());
             var response = shopManager.Search(dto);
             return Ok(response.CreateViewModel(x => x.ToViewModel(x => x.ToViewModel())));
+        }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult Delete([FromQuery] string id)
+        {
+            var response = shopManager.Delete(id);
+            return Ok(response);
         }
     }
 }

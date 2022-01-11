@@ -11,5 +11,6 @@ namespace Core.Shop.Managers
         ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto);
         ManagerResult<bool> Create(CreateShopDto dto);
         ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto);
+        ManagerResult<bool> Delete(string id);
     }
 }
