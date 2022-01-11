@@ -16,7 +16,7 @@ const CreateShopValidation = (data) => {
 		if (!ownerLastName || ownerLastName?.length < 1) {
 			errors['ownerLastName'] = 'نام خانوادگی صاحب فروشگاه اشتباه است.';
 		}
-		if (!ownerMobile || mobileRegex.test(ownerMobile)) {
+		if (!ownerMobile || !mobileRegex.test(ownerMobile)) {
 			errors['ownerMobile'] = 'شماره موبایل صاحب فروشگاه اشتباه است.';
 		}
 		if (!address || address?.length < 1) {

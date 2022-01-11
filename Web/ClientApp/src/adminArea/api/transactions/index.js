@@ -19,8 +19,8 @@ export const getAdminTransactions = (data) => {
 				keyword,
 			},
 			fromToPayDate: {
-				from,
-				to,
+				from: from ? `${from?.year}/${from?.month}/${from?.day}` : null,
+				to: to ? `${to?.year}/${to?.month}/${to?.day}` : null,
 			}
 		}
 	});
