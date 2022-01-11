@@ -1,4 +1,5 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Shop.Dto;
 
@@ -9,5 +10,6 @@ namespace Core.Shop.Managers
         ManagerResult<bool> AddPhotos(AddPhotosForShopDto dto);
         ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto);
         ManagerResult<bool> Create(CreateShopDto dto);
+        ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto);
     }
 }

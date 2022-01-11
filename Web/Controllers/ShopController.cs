@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Helper;
 using Web.Mappers;
+using Web.Models;
 using Web.Models.Session;
 using Web.Models.Shop;
 
@@ -49,6 +50,16 @@ namespace Web.Controllers
             var dto = viewModel.ToDto();
             var response = shopManager.Create(dto);
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Search([FromBody] PageRequestViewModel<ShopListFilterViewModel> viewModel)
+        {
+            var dto = viewModel.ToDto(x => x.ToDto());
+            var response = shopManager.Search(dto);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(x => x.ToViewModel())));
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.File.Repos;
 using Core.Identity.Dto;
 using Core.Identity.Managers;
@@ -48,6 +49,17 @@ namespace Infrastructure.Shop.Managers
             shop.UserId = user.Id;
             shopRepo.Create(shop);
             return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
+        {
+            var result = shopRepo.Search(filterDto);
+            var dto = new PagedListDto<ShopWithUserDto>
+            {
+                Count = result.Count,
+                Items = result.Items.ToDto()
+            };
+            return new ManagerResult<PagedListDto<ShopWithUserDto>>(dto);
         }
 
         public ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto)
