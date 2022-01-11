@@ -3,8 +3,9 @@ import SearchBox from "../components/SearchBox";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../components/RenderPageButtons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEllipsisV} from "@fortawesome/free-solid-svg-icons";
+import {faEllipsisV, faPlus} from "@fortawesome/free-solid-svg-icons";
 import AdminShopDetailsModal from "./components/adminShopDetailsModal";
+import CreateShopModal from "./components/createShopModal";
 
 const AdminShops = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -15,6 +16,7 @@ const AdminShops = () => {
 	const [totalCount, setTotalCount] = useState(0);
 	const [data, setData] = useState([]);
 	const [detailsModal, setDetailsModal] = useState(false);
+	const [createShopModal, setCreateShopModal] = useState(false);
 
 	const openDetailsModal = (item) => {
 		setDetailsModal(item);
@@ -61,7 +63,11 @@ const AdminShops = () => {
 				<p className="card-title fs22 my-2">لیست فروشگاه ها</p>
 			</div>
 			<div className="card-body w-100 d-flex flex-column px-3">
-				<div className="w-100 d-flex flex-row flex-wrap align-items-center justify-content-end">
+				<div className="w-100 d-flex flex-row flex-wrap align-items-center justify-content-between" onClick={() => setCreateShopModal(true)}>
+					<button type="button" className="btn bgMain text-white d-flex centered">
+						<FontAwesomeIcon icon={faPlus} className="fs18 text-white ml-2" />
+						<span>ایجاد فروشگاه</span>
+					</button>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
 				<div className="table-responsive">
@@ -114,6 +120,7 @@ const AdminShops = () => {
 				</div>
 			</div>
 			{detailsModal && <AdminShopDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} />}
+			{createShopModal && <CreateShopModal setOpen={() => setCreateShopModal(false)} />}
 		</div>
 	);
 }
