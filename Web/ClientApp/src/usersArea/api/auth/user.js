@@ -93,7 +93,7 @@ export const checkReferralCode = ({code}) => {
     'Content-Type': 'application/json',
   };
 
-  return axios.post(`/api/shop/findByRef?id=${code}`, null,{headers}).then((res) => {
+  return axios.post(`/api/shop/findByRef?refCode=${code}`, null,{headers}).then((res) => {
     if (res?.data?.code === '401') {
       return 401;
     } else {
