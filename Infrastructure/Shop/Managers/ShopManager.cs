@@ -64,7 +64,7 @@ namespace Infrastructure.Shop.Managers
         public ManagerResult<string> FindByRef(string refCode)
         {
             var shopName = shopRepo.GetSet().Where(x => x.ReferralCode == refCode).FirstOrDefault()?.Name;
-            return new ManagerResult<string>(shopRepo);
+            return new ManagerResult<string>(shopName);
         }
 
         public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
