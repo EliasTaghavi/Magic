@@ -27,27 +27,27 @@ namespace Web.JsonConverter
         }
     }
 
-    public class FromToDateTimeJsonConverter : JsonConverter<FromToViewModel<DateTime?>>
+    public class FromToDateTimeJsonConverter : JsonConverter<FromToViewModel<DateTime>>
     {
         private readonly CultureInfo persianCulture = new("fa-IR");
 
-        public override FromToViewModel<DateTime?> ReadJson(JsonReader reader, Type objectType, FromToViewModel<DateTime?> existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override FromToViewModel<DateTime> ReadJson(JsonReader reader, Type objectType, FromToViewModel<DateTime> existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new FromToViewModel<DateTime?>
+            return new FromToViewModel<DateTime>
             {
-                From = existingValue?.From != null ? TimeZoneInfo.ConvertTimeToUtc(existingValue.From.Value) : null,
-                To = existingValue?.To != null ? TimeZoneInfo.ConvertTimeToUtc(existingValue.From.Value) : null,
+                From = existingValue.From,
+                To = existingValue.To,
             };
         }
 
-        public override void WriteJson(JsonWriter writer, FromToViewModel<DateTime?> value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, FromToViewModel<DateTime> value, JsonSerializer serializer)
         {
             try
             {
                 var result = new
                 {
-                    From = value?.From.Value.ToString("yyyy/MM/dd", persianCulture),
-                    To = value?.To.Value.ToString("yyyy/MM/dd", persianCulture),
+                    From = value?.From.ToString("yyyy/MM/dd", persianCulture),
+                    To = value?.To.ToString("yyyy/MM/dd", persianCulture),
                 };
 
                 writer.WriteValue(result);

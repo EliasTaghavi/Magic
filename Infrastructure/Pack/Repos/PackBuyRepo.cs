@@ -50,7 +50,7 @@ namespace Infrastructure.Pack.Repos
             {
                 if (dto.Order == Core.Base.Enums.SortOrder.ASC)
                 {
-                query = query.OrderBy(dto.SortField);
+                    query = query.OrderBy(dto.SortField);
 
                 }
                 else

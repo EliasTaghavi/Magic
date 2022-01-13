@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using Web.JsonConverter;
 
 namespace Web.Models.Payment
 {
@@ -6,6 +8,8 @@ namespace Web.Models.Payment
     {
         public bool? Status { get; set; }
         public KeywordViewModel Keyword { get; set; }
+
+        [JsonConverter(typeof(FromToDateTimeJsonConverter))]
         public FromToViewModel<DateTime?> FromToPayDate { get; set; }
     }
 }

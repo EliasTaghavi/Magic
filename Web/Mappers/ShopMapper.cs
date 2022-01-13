@@ -1,9 +1,7 @@
-﻿using Core.Base.Dto;
-using Core.QRString.Dto;
+﻿using Core.QRString.Dto;
 using Core.Shop.Dto;
 using System.Collections.Generic;
 using System.Linq;
-using Web.Models;
 using Web.Models.Shop;
 
 namespace Web.Mappers
