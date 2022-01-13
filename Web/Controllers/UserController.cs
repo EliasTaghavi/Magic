@@ -113,5 +113,13 @@ namespace Web.Controllers
             var response = UserManager.GetLastFiveNewUser();
             return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetRank()
+        {
+            var response = UserManager.GetRank();
+            return Ok(response);
+        }
     }
 }

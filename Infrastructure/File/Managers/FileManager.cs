@@ -22,7 +22,7 @@ namespace Infrastructure.File.Managers
 
         public ManagerResult<bool> UploadIdentities(IdentityFileDto dto)
         {
-            if (dto.SelfieDto == null || dto.IdentityDto == null)
+            if (dto.SelfieDto == null)
             {
                 return new ManagerResult<bool>
                 {
@@ -43,17 +43,20 @@ namespace Infrastructure.File.Managers
             };
             fileRepo.Create(idFile);
 
-            var selfieFileName = fileService.SaveIdentity(dto.SelfieDto);
-            var SelfieFile = new AppFile
+            if (dto.IdentityDto != null)
             {
-                Id = selfieFileName,
-                Enable = true,
-                FileExtension = dto.SelfieDto.Extension,
-                ObjectState = ObjectState.Added,
-                Type = FileType.Selfie,
-                UserId = dto.UserId,
-            };
-            fileRepo.Create(SelfieFile);
+                var selfieFileName = fileService.SaveIdentity(dto.SelfieDto);
+                var SelfieFile = new AppFile
+                {
+                    Id = selfieFileName,
+                    Enable = true,
+                    FileExtension = dto.SelfieDto.Extension,
+                    ObjectState = ObjectState.Added,
+                    Type = FileType.Selfie,
+                    UserId = dto.UserId,
+                };
+                fileRepo.Create(SelfieFile); 
+            }
 
             return new ManagerResult<bool>
             {

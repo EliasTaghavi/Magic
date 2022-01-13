@@ -227,5 +227,10 @@ namespace Infrastructure.Identity.Managers
             };
             return Search(dto);
         }
+
+        public ManagerResult<Dictionary<string, int>> GetRank()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
