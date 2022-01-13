@@ -68,5 +68,12 @@ namespace Web.Controllers
             var response = shopManager.Delete(id);
             return Ok(response);
         }
+
+        [HttpPost]
+        public IActionResult FindByRef([FromQuery] string refCode)
+        {
+            var response = shopManager.FindByRef(refCode);
+            return Ok(response);
+        }
     }
 }
