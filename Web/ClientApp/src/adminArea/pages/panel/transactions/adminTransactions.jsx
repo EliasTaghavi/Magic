@@ -12,6 +12,8 @@ import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {useDispatch} from "react-redux";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 const animatedComponents = makeAnimated();
 
@@ -66,8 +68,8 @@ const AdminTransactions = () => {
 			size: data?.pageSize ?? pageSize,
 			status: lastStatus === 'null' ? null : lastStatus,
 			keyword: data?.searchValue ?? searchValue,
-			from,
-			to,
+			from: data?.from ?? from,
+			to: data?.to ?? to,
 		};
 		getAdminTransactions(filteredData)
 			.then((response) => {
@@ -125,9 +127,11 @@ const AdminTransactions = () => {
 		switch (type) {
 			case 'from':
 				setFrom(data);
+				getData({from: data});
 				break;
 			case 'to':
 				setTo(data);
+				getData({to: data});
 				break;
 			default:
 				break;
@@ -167,8 +171,12 @@ const AdminTransactions = () => {
 								wrapperClassName="w-100"
 								inputClassName={`w-100 text-right fs16 form-control input ${errors['from'] && 'is-invalid'}`}
 							/>
+							{from && <button type="button" className="btn bg-transparent position-absolute"
+										style={{left: 0, zIndex: 100}} onClick={() => selectDay('from', '')}>
+								<FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
+							</button>}
 						</div>
-						<div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+						<div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative" style={{maxWidth: 280}}>
 							<DatePicker
 								value={to}
 								onChange={(value) => selectDay('to', value)}
@@ -179,10 +187,11 @@ const AdminTransactions = () => {
 								wrapperClassName="w-100"
 								inputClassName={`w-100 text-right fs16 form-control mr-3 input ${errors['to'] && 'is-invalid'}`}
 							/>
+							{to && <button type="button" className="btn bg-transparent position-absolute"
+										style={{left: 0, zIndex: 100}} onClick={() => selectDay('to', '')}>
+								<FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
+							</button>}
 						</div>
-						<button type="button" className="btn bgMain border-0 text-white mr-3" onClick={() => getData()}>
-							اعمال فیلتر
-						</button>
 					</div>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>

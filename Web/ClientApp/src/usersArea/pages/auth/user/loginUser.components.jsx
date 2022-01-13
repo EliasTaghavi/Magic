@@ -31,7 +31,7 @@ export const maximumDate = {
 const LoginUser = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [step, setStep] = useState(1); // 1=mobile 2=code 3=signup
+  const [step, setStep] = useState(3); // 1=mobile 2=code 3=signup
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09137658795');
   const [btnLoader, setBtnLoader] = useState(false);
@@ -365,13 +365,14 @@ const LoginUser = () => {
     setReferralCodeLoader(true);
     checkReferralCode({code: referralCode})
        .then((response) => {
+         console.log(response);
          let {success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
              // fixme
-             setProgressBarModal(false);
+             setReferralCodeLoader(false);
            }
          } else {
            toast.error('خطای سرور', toastOptions);

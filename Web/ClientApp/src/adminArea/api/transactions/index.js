@@ -1,5 +1,6 @@
 import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
+import moment from 'moment-jalaali';
 
 export const getAdminTransactions = (data) => {
 	let {index, size, status, keyword, from, to} = data;
@@ -19,8 +20,8 @@ export const getAdminTransactions = (data) => {
 				keyword,
 			},
 			fromToPayDate: {
-				from: from ? `${from?.year}/${from?.month}/${from?.day}` : null,
-				to: to ? `${to?.year}/${to?.month}/${to?.day}` : null,
+				from: from ? moment(`${from?.year}/${from?.month}/${from?.day}`, 'jYYYY/jMM/jDD').format('YYYY/MM/DD') : null,
+				to: to ? moment(`${to?.year}/${to?.month}/${to?.day}`, 'jYYYY/jMM/jDD').format('YYYY/MM/DD') : null,
 			}
 		}
 	});
