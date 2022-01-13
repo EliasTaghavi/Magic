@@ -31,7 +31,7 @@ export const maximumDate = {
 const LoginUser = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [step, setStep] = useState(3); // 1=mobile 2=code 3=signup
+  const [step, setStep] = useState(1); // 1=mobile 2=code 3=signup
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09137658795');
   const [btnLoader, setBtnLoader] = useState(false);
@@ -51,6 +51,7 @@ const LoginUser = () => {
   const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState('');
   const [token, setToken] = useState('');
   const [progressBarModal, setProgressBarModal] = useState(false);
+  const [resultData, setResultData] = useState('');
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
 
   useEffect(() => {
@@ -205,6 +206,7 @@ const LoginUser = () => {
         setAddress(target.value);
         break;
       case 'referralCode':
+        setResultData('');
         setReferralCode(target.value);
         break;
       default:
@@ -245,6 +247,8 @@ const LoginUser = () => {
         selfiImage,
         address,
         token,
+        referralCode,
+        resultData,
       }
       SignupUserValidation(data)
          .then((response) => {
@@ -366,12 +370,15 @@ const LoginUser = () => {
     checkReferralCode({code: referralCode})
        .then((response) => {
          console.log(response);
-         let {success} = response;
+         let {success, result} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
-             // fixme
+             setResultData(result);
+             setReferralCodeLoader(false);
+           } else {
+             setResultData('1');
              setReferralCodeLoader(false);
            }
          } else {
@@ -379,7 +386,7 @@ const LoginUser = () => {
            setReferralCodeLoader(false);
          }
        })
-       .catch((e) => {
+       .catch(() => {
          toast.error('خطای سرور', toastOptions);
          setReferralCodeLoader(false);
        })
@@ -568,7 +575,7 @@ const LoginUser = () => {
                      type="text"
                      autoFocus={false}
                      required={true}
-                     className="form-control input"
+                     className={`form-control input ${resultData && resultData !== '1' ? 'is-valid border-success' : resultData === '1' ? 'is-invalid' : ''}`}
                      value={referralCode}
                      onChange={changeValue}
                      placeholder="..."
@@ -580,6 +587,8 @@ const LoginUser = () => {
                     {referralCodeLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={5} width={70} className="loader"/>}
                   </button>
                 </div>
+                {resultData && resultData !== '1' && <p className="fs12 text-success mt-1">{`فروشگاه\xa0${resultData}`}</p>}
+                {resultData === '1' && <p className="fs12 text-danger mt-1">کد نامعتبر است</p>}
               </div>
             </div>
           )}
