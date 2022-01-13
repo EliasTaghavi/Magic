@@ -10,7 +10,7 @@ namespace Core
         private static readonly string _defaultMimeType = "application/octet-stream";
 
         // http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
-        private static readonly Lazy<Dictionary<string, string>> _mimeTypeMap = new(() => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Lazy<Dictionary<string, string>> _mimeTypeMap = new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["ez"] = "application/andrew-inset",
             ["aw"] = "application/applixware",
@@ -796,6 +796,7 @@ namespace Core
             ["gif"] = "image/gif",
             ["ief"] = "image/ief",
             ["jpeg"] = "image/jpeg",
+            ["jpg"] = "image/jpeg",
             ["jpg"] = "image/jpg",
             ["jpe"] = "image/jpeg",
             ["ktx"] = "image/ktx",
@@ -1013,7 +1014,7 @@ namespace Core
             var ind = ext.LastIndexOf('.');
             if (ind != -1 && ext.Length > ind + 1)
             {
-                ext = fileName[(ind + 1)..].ToLower();
+                ext = fileName.Substring(ind + 1).ToLower();
             }
             if (_mimeTypeMap.Value.TryGetValue(ext, out string result))
             {
