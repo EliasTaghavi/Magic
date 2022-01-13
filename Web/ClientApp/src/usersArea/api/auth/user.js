@@ -46,7 +46,7 @@ export const sendUserLoginCode = ({mobile, code}) => {
 }
 
 export const signupUser = (data) => {
-  let {firstName, lastName, birthday, image, selfiImage, address, token, referralCode, resultData} = data;
+  let {firstName, lastName, birthday, image, selfiImage, address, token, referralCode} = data;
   let headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + token,
@@ -58,7 +58,7 @@ export const signupUser = (data) => {
     LastName: lastName,
     Birthday: `${birthday?.year}/${birthday?.month}/${birthday?.day}`,
     Address: address,
-    refCode: resultData === '1' || resultData.length < 1 ? null : referralCode,
+    refCode: referralCode,
   };
 
   for (let [key, value] of Object.entries(textData)) {

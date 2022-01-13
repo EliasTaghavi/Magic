@@ -248,7 +248,6 @@ const LoginUser = () => {
         address,
         token,
         referralCode,
-        resultData,
       }
       SignupUserValidation(data)
          .then((response) => {
