@@ -125,7 +125,7 @@ const AdminShops = () => {
 					</button>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
-				<div className="table-responsive">
+				<div className="table-responsive table-striped">
 					<table className="w-100 mt-5">
 						<thead>
 						<tr>
