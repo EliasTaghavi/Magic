@@ -167,6 +167,7 @@ namespace Infrastructure.Identity.Managers
             user.Surname = dto.LastName;
             user.Address = dto.Address;
             user.Birthday = dto.Birthday;
+            user.RefCode = dto.RefCode;
             user.UserStatus = UserStatus.NotConfirmed;
             UserRepo.Update(user);
             return new ManagerResult<bool>(true)

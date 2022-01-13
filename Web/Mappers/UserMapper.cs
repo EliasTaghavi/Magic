@@ -24,6 +24,7 @@ namespace Web.Mappers
                 Birthday = viewModel.Birthday,
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
+                RefCode = viewModel.RefCode,
             };
         }
 
