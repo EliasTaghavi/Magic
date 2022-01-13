@@ -31,31 +31,33 @@ namespace Infrastructure.File.Managers
                     Success = false
                 };
             }
-            var identityFileName = fileService.SaveIdentity(dto.IdentityDto);
-            var idFile = new AppFile
+            var selfieFileName = fileService.SaveIdentity(dto.SelfieDto);
+            var SelfieFile = new AppFile
             {
-                Id = identityFileName,
+                Id = selfieFileName,
                 Enable = true,
-                FileExtension = dto.IdentityDto.Extension,
+                FileExtension = dto.SelfieDto.Extension,
                 ObjectState = ObjectState.Added,
-                Type = FileType.Identity,
+                Type = FileType.Selfie,
                 UserId = dto.UserId,
             };
-            fileRepo.Create(idFile);
+            fileRepo.Create(SelfieFile);
 
             if (dto.IdentityDto != null)
             {
-                var selfieFileName = fileService.SaveIdentity(dto.SelfieDto);
-                var SelfieFile = new AppFile
+                
+
+                var identityFileName = fileService.SaveIdentity(dto.IdentityDto);
+                var idFile = new AppFile
                 {
-                    Id = selfieFileName,
+                    Id = identityFileName,
                     Enable = true,
-                    FileExtension = dto.SelfieDto.Extension,
+                    FileExtension = dto.IdentityDto.Extension,
                     ObjectState = ObjectState.Added,
-                    Type = FileType.Selfie,
+                    Type = FileType.Identity,
                     UserId = dto.UserId,
                 };
-                fileRepo.Create(SelfieFile); 
+                fileRepo.Create(idFile);
             }
 
             return new ManagerResult<bool>
