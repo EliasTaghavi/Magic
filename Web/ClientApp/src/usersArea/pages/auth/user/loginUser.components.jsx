@@ -83,7 +83,7 @@ const LoginUser = () => {
   };
 
   const sendImage = async (e, type) => {
-    console.log(e);
+    console.log(e, type);
     let newErrors = errors;
     if (type === 'selfi') {
       if (e.target.files && e.target.files[0]) {
@@ -93,7 +93,7 @@ const LoginUser = () => {
 
         let reader = new FileReader();
         let data = e.target.files[0];
-        let blobName = data.name;
+        let blobName = data?.name ?? `${(Math.random() * 100).toFixed(0).toString()}.jpg`;
         let tempImage = new Image();
         let _URL = window.URL || window.webkitURL;
 
@@ -142,7 +142,7 @@ const LoginUser = () => {
 
         let reader = new FileReader();
         let data = e.target.files[0];
-        let blobName = data.name;
+        let blobName = data?.name ?? `${(Math.random() * 100).toFixed(0).toString()}.jpg`;
         let tempImage = new Image();
         let _URL = window.URL || window.webkitURL;
 
@@ -545,7 +545,7 @@ const LoginUser = () => {
                   عکس سلفی<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <div id="selfiImage" className="w-100 d-flex align-items-center justify-content-center rounded p-0 mt-2">
-                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => setSelectMediaModal('selfie')}>
+                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => setSelectMediaModal('selfi')}>
                     انتخاب
                   </button>
                   <input type="file" id="getSelfiImage" accept="image/jpg" className="form-control d-none" onChange={(e) => sendImage(e, 'selfi')}/>
@@ -626,7 +626,7 @@ const LoginUser = () => {
         {progressBarModal && <RenderProgressBarModal />}
         {waitingModal !== 0 && <RenderUserWaitingModal waitingModal={waitingModal} resetToHome={resetToHome} />}
         {selectMediaModal !== '' && <RenderSelectMediaModal onGallery={() => {
-          if (selectMediaModal === 'selfie') {
+          if (selectMediaModal === 'selfi') {
             return document?.getElementById('getSelfiImage')?.click();
           } else {
             return document?.getElementById('getImage')?.click()
@@ -638,15 +638,13 @@ const LoginUser = () => {
         }}
         setScreenShot={async (data) => {
           const blob = await fetch(data).then((res) => res.blob());
-          if (selectMediaModal === 'selfie') {
-            sendImage({target: {files: [blob]}}, selectMediaModal)
+          if (selectMediaModal === 'selfi') {
+            await sendImage({target: {files: [blob]}}, 'selfi')
           } else {
-
+            await sendImage({target: {files: [blob]}}, 'image')
           }
-          console.log(blob);
-          // setScreenShot(data);
-          // setSelectMediaModal('');
-          // setCamera(false);
+          setSelectMediaModal('');
+          setCamera(false);
         }}/>}
       </FadeComponent>
     </div>
