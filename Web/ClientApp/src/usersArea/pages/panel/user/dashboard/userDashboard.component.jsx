@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 import {getActiveUserPck, getUserQrCode} from "../../../../api/user/main";
 import NumberFormat from "react-number-format";
 import {toast} from "react-toastify";
@@ -46,6 +46,9 @@ const UserDashboard = () => {
                } else if (success) {
                   setCurrentPck(result);
                   setCurrentPckLoader(0);
+               } else {
+                  setCurrentPck(result);
+                  setCurrentPckLoader(0);
                }
             } else {
                toast.error('خطای سرور', toastOptions);
@@ -62,6 +65,7 @@ const UserDashboard = () => {
       setQrLoader(true);
       getUserQrCode()
          .then((response) => {
+            console.log(response);
             if (response) {
                let {success, result} = response
                if (response === 401) {
@@ -82,8 +86,8 @@ const UserDashboard = () => {
    };
 
    return (
-    <div className="w-100 d-flex align-items-start justify-content-between">
-       <div className="col-6 ml-1 card cardPrimary px-3">
+    <div className="col-12 d-flex align-items-start justify-content-between pr-0">
+       <div className="col-6 ml-1 card cardPrimary">
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">پنل کاربری</p>
           </div>
@@ -101,7 +105,7 @@ const UserDashboard = () => {
                    <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
                 </div>
              )}
-             {!qrLoader && qrId.length > 0 && (
+             {!qrLoader && qrId?.length > 0 && (
                 <div className="w-100 d-flex flex-column centered">
                    <QRCode value={qrCodePreUrl(qrId)} renderAs="svg" size={250} level="H" />
                    <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18" style={{maxWidth: 300}}>
@@ -112,43 +116,46 @@ const UserDashboard = () => {
           </div>
        </div>
        <div className="col-3 mr-1 card cardPrimary px-3">
-                <div className="card-header bg-transparent">
-                   <p className="card-title fs22 my-2">پکیج فعال شما</p>
+          <div className="card-header bg-transparent">
+             <p className="card-title fs22 my-2">پکیج فعال شما</p>
+          </div>
+          <div className="d-flex centered my-4 mh360">
+             {currentPckLoader === 0 && currentPck && <div className="packageContainerNoHover shadow w-100 pckBorder">
+                <p className="fs34 textSecondary1 m-0">{currentPck?.title}</p>
+                <p className="fs14 textThird m-0 mt-2">{`مدت اعتبار:\xa0${currentPck?.daysCount}\xa0روز`}</p>
+                {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
+                <hr className="w-100 cDivider"/>
+                <NumberFormat value={currentPck?.price / 1000} displayType={'text'} thousandSeparator={true}
+                              className="fs60 m-0 textSecondary1 text-center cNumber mt-1" style={{height: 80}}/>
+                <p className="fs14 textThird text-center">هزار تومان</p>
+                <hr className="w-100 cDivider"/>
+                <p className="fs14 textThird m-0 mt-1">مدت اعتبار باقی مانده: <span className="textMain fs20 font-weight-bold">{currentPck?.daysRemain}</span> روز</p>
+                <p className="fs14 textThird m-0 mt-1">{`تاریخ انقضا:\xa0${currentPck?.endDate}`}</p>
+             </div>}
+             {currentPckLoader === 0 && !currentPck && (
+                <div className="w-100 d-flex flex-column centered">
+                   <p className="textMain fs16">شما پکیج فعال ندارید.</p>
+                   <Link to="/user-panel/packages" className="btn border-0 bgMain text-white fs16">
+                      خرید پکیج
+                   </Link>
                 </div>
-                <div className="d-flex centered my-4 mh360">
-                   {currentPckLoader === 0 && currentPck && <div className="packageContainerNoHover shadow w-100 pckBorder">
-                      <p className="fs34 textSecondary1 m-0">{currentPck?.title}</p>
-                      <p className="fs14 textThird m-0 mt-2">{`مدت اعتبار:\xa0${currentPck?.daysCount}\xa0روز`}</p>
-                      {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
-                      <hr className="w-100 cDivider"/>
-                      <NumberFormat value={currentPck?.price / 1000} displayType={'text'} thousandSeparator={true}
-                                    className="fs60 m-0 textSecondary1 text-center cNumber mt-1" style={{height: 80}}/>
-                      <p className="fs14 textThird text-center">هزار تومان</p>
-                      <hr className="w-100 cDivider"/>
-                      <p className="fs14 textThird m-0 mt-1">مدت اعتبار باقی مانده: <span className="textMain fs20 font-weight-bold">{currentPck?.daysRemain}</span> روز</p>
-                      <p className="fs14 textThird m-0 mt-1">{`تاریخ انقضا:\xa0${currentPck?.endDate}`}</p>
-                   </div>}
-                   {currentPckLoader === 0 && !currentPck && (
-                      <div className="w-100 d-flex centered">
-                         <p className="text-danger">شما پکیج فعال ندارید.</p>
-                      </div>
-                   )}
-                   {currentPckLoader === 1 && (
-                      <div className="w-100 d-flex centered">
-                         <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
-                      </div>
-                   )}
-                   {currentPckLoader === 2 && (
-                      <div className="w-100 d-flex flex-column centered">
-                         <p className="text-danger fs16">دریافت اطلاعات با مشکل مواجه شد</p>
-                         <button type="button" className="btn btn-outline-danger" onClick={() => getActivePck()}>
-                            <FontAwesomeIcon icon={faRedo} className="fs12 ml-2" />
-                            <span className="fs14">تلاش مجدد</span>
-                         </button>
-                      </div>
-                   )}
+             )}
+             {currentPckLoader === 1 && (
+                <div className="w-100 d-flex centered">
+                   <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
                 </div>
-             </div>
+             )}
+             {currentPckLoader === 2 && (
+                <div className="w-100 d-flex flex-column centered">
+                   <p className="text-danger fs16">دریافت اطلاعات با مشکل مواجه شد</p>
+                   <button type="button" className="btn btn-outline-danger" onClick={() => getActivePck()}>
+                      <FontAwesomeIcon icon={faRedo} className="fs12 ml-2" />
+                      <span className="fs14">تلاش مجدد</span>
+                   </button>
+                </div>
+             )}
+          </div>
+       </div>
     </div>
   );
 }

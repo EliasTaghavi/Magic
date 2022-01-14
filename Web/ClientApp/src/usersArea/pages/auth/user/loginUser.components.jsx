@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import LoginUserValidation from "../../../../components/validations/authUser/loginUserValidation";
 import toastOptions from "../../../../components/ToastOptions";
 import {toast} from "react-toastify";
@@ -14,10 +14,12 @@ import SupportModal from "../../../../components/shared/supportModal.component";
 import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../api/auth/user';
 import Loader from 'react-loader-spinner';
 import RenderProgressBarModal from "../../../../components/shared/renderProgressBarModal";
-import RenderUserWaitingModal from "./renderUserWaitingModal";
+import RenderUserWaitingModal from "./components/renderUserWaitingModal";
 import {useDispatch} from "react-redux";
 import * as UserStore from '../../../../store/user';
 import {checkReferralCode} from "../../../api/auth/user";
+import RenderSelectMediaModal from "./components/renderSelectMediaModal";
+import RenderCamera from "./components/renderCamera";
 
 let interval;
 let timer;
@@ -31,7 +33,7 @@ export const maximumDate = {
 const LoginUser = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [step, setStep] = useState(1); // 1=mobile 2=code 3=signup
+  const [step, setStep] = useState(3); // 1=mobile 2=code 3=signup
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09137658795');
   const [btnLoader, setBtnLoader] = useState(false);
@@ -53,6 +55,9 @@ const LoginUser = () => {
   const [progressBarModal, setProgressBarModal] = useState(false);
   const [resultData, setResultData] = useState('');
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
+  const [selectMediaModal, setSelectMediaModal] = useState('');
+  const [camera, setCamera] = useState(false);
+  const [screenShot, setScreenShot] = useState('');
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -78,6 +83,7 @@ const LoginUser = () => {
   };
 
   const sendImage = async (e, type) => {
+    console.log(e);
     let newErrors = errors;
     if (type === 'selfi') {
       if (e.target.files && e.target.files[0]) {
@@ -109,6 +115,7 @@ const LoginUser = () => {
               uri.name = blobName;
               reader.readAsDataURL(uri);
               setSelfiImage(uri);
+              setSelectMediaModal('');
             },
             'blob'
           );
@@ -121,6 +128,7 @@ const LoginUser = () => {
             0,
             uri => {
               setSelfiImagePreviewUrl(uri);
+              setSelectMediaModal('');
             },
             'base64'
           );
@@ -156,6 +164,7 @@ const LoginUser = () => {
               uri.name = blobName;
               reader.readAsDataURL(uri);
               setImage(uri);
+              setSelectMediaModal('');
             },
             'blob'
           );
@@ -168,6 +177,7 @@ const LoginUser = () => {
             0,
             uri => {
               setImagePreviewUrl(uri);
+              setSelectMediaModal('');
             },
             'base64'
           );
@@ -301,7 +311,7 @@ const LoginUser = () => {
     sendUserLoginCode({mobile, code})
        .then((response) => {
          console.log(response);
-         let {result: {token, status}, success} = response;
+         let {result: {token, status, hasActivePack}, success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
@@ -311,7 +321,12 @@ const LoginUser = () => {
                  TokenStore.setUserToken(token);
                  dispatch(UserStore.actions.setUserData(response.result));
                  setBtnLoader(false);
-                 history.replace('/user-panel');
+                 if (hasActivePack) {
+                   history.replace('/user-panel');
+                 } else {
+                   history.replace('/user-panel');
+                   history.push('/user-panel/packages');
+                 }
                } else if (status === 6) {
                  setWaitingModal(2);
                } else {
@@ -405,7 +420,7 @@ const LoginUser = () => {
                 id="mobile"
                 name="mobile"
                 type="number"
-                autoFocus={false}
+                autoFocus={true}
                 required={true}
                 className={`form-control input ${errors['mobile'] && 'is-invalid'}`}
                 value={mobile}
@@ -429,7 +444,7 @@ const LoginUser = () => {
                 id="code"
                 name="code"
                 type="number"
-                autoFocus={false}
+                autoFocus={true}
                 required={true}
                 className={`form-control input ${errors['code'] && 'is-invalid'}`}
                 value={code}
@@ -454,7 +469,7 @@ const LoginUser = () => {
                   id="firstName"
                   name="firstName"
                   type="text"
-                  autoFocus={false}
+                  autoFocus={true}
                   required={true}
                   className={`form-control input ${errors['firstName'] && 'is-invalid'}`}
                   value={firstName}
@@ -530,7 +545,7 @@ const LoginUser = () => {
                   عکس سلفی<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <div id="selfiImage" className="w-100 d-flex align-items-center justify-content-center rounded p-0 mt-2">
-                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => document?.getElementById('getSelfiImage')?.click()}>
+                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => setSelectMediaModal('selfie')}>
                     انتخاب
                   </button>
                   <input type="file" id="getSelfiImage" accept="image/jpg" className="form-control d-none" onChange={(e) => sendImage(e, 'selfi')}/>
@@ -549,7 +564,8 @@ const LoginUser = () => {
                   شغل (اختیاری)
                 </label>
                 <div id="image" className="w-100 d-flex align-items-center justify-content-center rounded p-0 mt-2">
-                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => document?.getElementById('getImage')?.click()}>
+
+                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => setSelectMediaModal('image')}>
                     انتخاب
                   </button>
                   <input type="file" id="getImage" accept="image/jpg" className="form-control d-none" onChange={(e) => sendImage(e, 'image')}/>
@@ -609,6 +625,29 @@ const LoginUser = () => {
         {supportModal && <SupportModal setOpen={() => setSupportModal(false)} />}
         {progressBarModal && <RenderProgressBarModal />}
         {waitingModal !== 0 && <RenderUserWaitingModal waitingModal={waitingModal} resetToHome={resetToHome} />}
+        {selectMediaModal !== '' && <RenderSelectMediaModal onGallery={() => {
+          if (selectMediaModal === 'selfie') {
+            return document?.getElementById('getSelfiImage')?.click();
+          } else {
+            return document?.getElementById('getImage')?.click()
+          }
+        }} onCamera={() => setCamera(true)} onClose={() => setSelectMediaModal('')} />}
+        {camera && <RenderCamera onClose={() => {
+          setSelectMediaModal('');
+          setCamera(false);
+        }}
+        setScreenShot={async (data) => {
+          const blob = await fetch(data).then((res) => res.blob());
+          if (selectMediaModal === 'selfie') {
+            sendImage({target: {files: [blob]}}, selectMediaModal)
+          } else {
+
+          }
+          console.log(blob);
+          // setScreenShot(data);
+          // setSelectMediaModal('');
+          // setCamera(false);
+        }}/>}
       </FadeComponent>
     </div>
   );

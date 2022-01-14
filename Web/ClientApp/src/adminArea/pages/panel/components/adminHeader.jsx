@@ -3,7 +3,7 @@ import '../../../admin.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
 	faBars, faBoxes,
-	faHome,
+	faHome, faList,
 	faMoneyBill,
 	faSignOutAlt, faStore,
 	faUser,
@@ -217,6 +217,28 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 						<FontAwesomeIcon icon={faStore} className="fs18"/>
 						<span
 							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
+					</Link>
+				)}
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							رتبه بندی
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/rate" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faList} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/rate" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faList} className="fs18"/>
+						<span
+							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
 					</Link>
 				)}
 			</li>

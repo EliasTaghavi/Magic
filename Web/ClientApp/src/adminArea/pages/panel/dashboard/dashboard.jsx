@@ -110,53 +110,55 @@ const AdminDashboard = () => {
 				tension: 0.1
 			}]
 		};
-		new Chart(node1?.current, {
-			type: 'line',
-			data: data,
-			options: {
-				legend: {
-					display: false,
-				},
-				maintainAspectRatio: false,
-				tooltips: {
-					enabled: true,
-					position: 'nearest',
-					intersect: false,
-					fontFamily: "IranSans",
-					titleFontFamily: 'IranSans',
-					bodyFontFamily: 'IranSans',
-					callbacks: {
-						label: (tooltipItems, data) => {
-							return tooltipItems?.yLabel.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
+		if (node1?.current) {
+			new Chart(node1?.current, {
+				type: 'line',
+				data: data,
+				options: {
+					legend: {
+						display: false,
+					},
+					maintainAspectRatio: false,
+					tooltips: {
+						enabled: true,
+						position: 'nearest',
+						intersect: false,
+						fontFamily: "IranSans",
+						titleFontFamily: 'IranSans',
+						bodyFontFamily: 'IranSans',
+						callbacks: {
+							label: (tooltipItems, data) => {
+								return tooltipItems?.yLabel.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
+							}
 						}
-					}
-				},
-				scales: {
-					xAxes: [{
-						type: 'category',
-						labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-						ticks: {
-							fontFamily: 'Vazir',
-						},
-						gridLines : {
-							display : false
-						}
-					}],
-					yAxes: [{
-						gridLines: {
-							color: "rgba(0, 0, 0, 0)",
-						},
-						ticks: {
-							min: 0,
-							callback: (value, index, values) => {
-								return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
+					},
+					scales: {
+						xAxes: [{
+							type: 'category',
+							labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+							ticks: {
+								fontFamily: 'Vazir',
 							},
-							fontFamily: 'IranSans'
-						}
-					}],
+							gridLines : {
+								display : false
+							}
+						}],
+						yAxes: [{
+							gridLines: {
+								color: "rgba(0, 0, 0, 0)",
+							},
+							ticks: {
+								min: 0,
+								callback: (value, index, values) => {
+									return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
+								},
+								fontFamily: 'IranSans'
+							}
+						}],
+					}
 				}
-			}
-		})
+			})
+		}
 	}
 
 	return (

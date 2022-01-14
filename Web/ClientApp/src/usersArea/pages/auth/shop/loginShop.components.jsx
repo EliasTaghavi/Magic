@@ -10,7 +10,7 @@ import Loader from "react-loader-spinner";
 import {sendShopLoginSms, sendShopLoginCode} from "../../../api/auth/shop";
 import * as UserStore from "../../../../store/user";
 import {useDispatch} from "react-redux";
-import RenderUserWaitingModal from "../user/renderUserWaitingModal";
+import RenderUserWaitingModal from "../user/components/renderUserWaitingModal";
 import SupportModal from "../../../../components/shared/supportModal.component";
 // import {sendMobile} from "../../../../../api/auth/auth";
 
