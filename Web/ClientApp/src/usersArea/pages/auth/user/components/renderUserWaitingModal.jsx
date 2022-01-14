@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal} from "react-bootstrap";
 import {faBan, faCheckCircle, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {supportDetails} from "../../../../utils/supportDetails";
+import {supportDetails} from "../../../../../utils/supportDetails";
 
 const RenderUserWaitingModal = ({waitingModal, resetToHome}) => {
 	return (
