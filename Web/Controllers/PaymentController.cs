@@ -70,5 +70,13 @@ namespace Web.Controllers
             var response = packBuyManager.Search(dto);
             return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetRank()
+        {
+            var response = packBuyManager.GetRank();
+            return Ok(response);
+        }
     }
 }

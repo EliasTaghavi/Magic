@@ -7,6 +7,8 @@ using Core.Pack.Entities;
 using Core.Pack.Managers;
 using Core.Pack.Repos;
 using Core.QRString.Managers;
+using Core.Shop.Dto;
+using Core.Shop.Repos;
 using Microsoft.EntityFrameworkCore;
 using Parbad;
 using Parbad.Gateway.ZarinPal;
@@ -20,14 +22,16 @@ namespace Infrastructure.Pack.Managers
     public class PackBuyManager : IPackBuyManager
     {
         private readonly IQRStringManager qRStringManager;
+        private readonly IShopRepo shopRepo;
         private readonly IPackBuyRepo packBuyRepo;
         private readonly IPackRepo packRepo;
         private readonly IUserRepo userRepo;
         private readonly IOnlinePayment onlinePayment;
 
-        public PackBuyManager(IQRStringManager qRStringManager, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
+        public PackBuyManager(IQRStringManager qRStringManager, IShopRepo shopRepo, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
         {
             this.qRStringManager = qRStringManager;
+            this.shopRepo = shopRepo;
             this.packBuyRepo = packBuyRepo;
             this.packRepo = packRepo;
             this.userRepo = userRepo;
@@ -94,6 +98,31 @@ namespace Infrastructure.Pack.Managers
                 chartData.Add(new LineChartDto<decimal> { Data = _paid, Label = Utils.GetPersianMonthName(i + 1) });
             }
             return new ManagerResult<List<LineChartDto<decimal>>>(chartData);
+        }
+
+        public ManagerResult<List<ShopRefCodeCountDto>> GetRank()
+        {
+            PersianCalendar pc = new();
+            int year = pc.GetYear(DateTime.UtcNow);
+            int month = pc.GetMonth(DateTime.UtcNow);
+            DateTime start = new(year, month, 1, pc);
+            DateTime end = month < 11 ? new DateTime(year, month + 1, 1, pc) : new DateTime(year + 1, 1, 1, pc);
+
+            var refCountList = packBuyRepo.GetSet()
+                .Where(x => x.PayStatus == true && x.PayDate < end && x.PayDate >= start)
+                .Include(x => x.User)
+                .Select(x => new { name = x.User.Name, x.User.RefCode })
+                .GroupBy(x => x.RefCode)
+                .Select(g => new { refCode = g.Key, count = g.Count() });
+            var result = refCountList.Join(shopRepo.GetSet(),
+                refCount => refCount.refCode,
+                shop => shop.ReferralCode,
+                (refCount, shop) => new
+                {
+                    shop.Name,
+                    refCount.count
+                }).Select(x => new ShopRefCodeCountDto { Count = x.count, Name = x.Name }).ToList();
+            return new ManagerResult<List<ShopRefCodeCountDto>>(result);
         }
 
         public ManagerResult<PagedListDto<PackBuyListDto>> Search(PageRequestDto<PackBuyListFilterDto> dto)

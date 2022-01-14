@@ -13,6 +13,8 @@ using Core.Identity.Repos;
 using Core.QRString.Repos;
 using Core.Services;
 using Core.Services.Dto;
+using Core.Shop.Dto;
+using Core.Shop.Repos;
 using Infrastructure.Identity.Exceptions;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -32,6 +34,7 @@ namespace Infrastructure.Identity.Managers
         private readonly IAppFileRepo appFileRepo;
         private readonly ISMSService sMSService;
         private readonly IQRStringRepo qRStringRepo;
+        private readonly IShopRepo shopRepo;
         protected ITokenRepo TokenRepo;
 
         protected IUserRepo UserRepo;
@@ -42,7 +45,7 @@ namespace Infrastructure.Identity.Managers
                            ITokenRepo tokenRepo,
                            ITokenManager tokenManager,
                            IRoleRepo roleRepo,
-                           IAppFileRepo appFileRepo, ISMSService sMSService, IQRStringRepo qRStringRepo)
+                           IAppFileRepo appFileRepo, ISMSService sMSService, IQRStringRepo qRStringRepo, IShopRepo shopRepo)
         {
             UserRepo = userRepo;
             JwtTokenHandler = jwtTokenHandler;
@@ -53,6 +56,7 @@ namespace Infrastructure.Identity.Managers
             this.appFileRepo = appFileRepo;
             this.sMSService = sMSService;
             this.qRStringRepo = qRStringRepo;
+            this.shopRepo = shopRepo;
         }
 
         public ManagerResult<bool> Create(User User, string Password)
@@ -240,9 +244,19 @@ namespace Infrastructure.Identity.Managers
             return Search(dto);
         }
 
-        public ManagerResult<Dictionary<string, int>> GetRank()
+        public ManagerResult<List<ShopRefCodeCountDto>> GetRank()
         {
-            throw new NotImplementedException();
+            var refCountList = UserRepo.GetSet().GroupBy(x => x.RefCode)
+                .Select(g => new { refCode = g.Key, count = g.Count() });
+            var result = refCountList.Join(shopRepo.GetSet(),
+                refCount => refCount.refCode,
+                shop => shop.ReferralCode,
+                (refCount, shop) => new
+                {
+                    shop.Name,
+                    refCount.count
+                }).Select(x => new ShopRefCodeCountDto {Count = x.count, Name = x.Name }).ToList();
+            return new ManagerResult<List<ShopRefCodeCountDto>>(result);
         }
     }
 }

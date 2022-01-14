@@ -63,7 +63,7 @@ namespace Web.Controllers
 
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
             var responsePack = packManager.GetCurrent(response.Result.UserId);
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(response.Success)));
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success)));
         }
     }
 }

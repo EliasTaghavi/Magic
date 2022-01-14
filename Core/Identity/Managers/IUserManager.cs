@@ -3,6 +3,7 @@ using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
 using Core.Services.Dto;
+using Core.Shop.Dto;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 
@@ -28,6 +29,6 @@ namespace Core.Identity.Managers
         ManagerResult<bool> Lock(string id);
         ManagerResult<bool> Reject(RejectMessageDto dto);
         ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser();
-        ManagerResult<Dictionary<string,int>> GetRank();
+        ManagerResult<List<ShopRefCodeCountDto>> GetRank();
     }
 }
