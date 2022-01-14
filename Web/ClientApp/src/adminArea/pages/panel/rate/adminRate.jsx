@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import React, {useState, useEffect} from 'react';
 import Loader from "react-loader-spinner";
+import {getRatedShopsList} from "../../../api/rate";
 
 const AdminRate = () => {
 	const [errors, setErrors] = useState({});
@@ -10,6 +8,20 @@ const AdminRate = () => {
 	const [focused, setFocused] = useState(false);
 	const [bigLoader, setBigLoader] = useState(false);
 	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		getRatedShopsListFn();
+	}, []);
+
+	const getRatedShopsListFn = () => {
+		getRatedShopsList()
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error, error.response);
+			})
+	};
 
 	const handleValidate = (e) => {
 		e.preventDefault();
