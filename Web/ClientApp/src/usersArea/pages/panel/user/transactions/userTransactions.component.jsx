@@ -1,7 +1,4 @@
 import React from 'react';
-import './userTransactions.css';
-import {faEllipsisV, faUser} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const UserTransactions = () => {
   const transactions = [

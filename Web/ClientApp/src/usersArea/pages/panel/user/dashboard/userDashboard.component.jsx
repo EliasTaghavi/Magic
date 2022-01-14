@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {getActiveUserPck, getUserQrCode} from "../../../../usersArea/api/user/main";
+import {getActiveUserPck, getUserQrCode} from "../../../../api/user/main";
 import NumberFormat from "react-number-format";
 import {toast} from "react-toastify";
-import toastOptions from "../../../../components/ToastOptions";
+import toastOptions from "../../../../../components/ToastOptions";
 import Loader from "react-loader-spinner";
 import {faRedo} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import QRCode from 'qrcode.react';
-import {qrCodePreUrl} from "../../../../usersArea/api/imagePreUrl";
+import {qrCodePreUrl} from "../../../../api/imagePreUrl";
 
 const UserDashboard = () => {
    const history = useHistory();

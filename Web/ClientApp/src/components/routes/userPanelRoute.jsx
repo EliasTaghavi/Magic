@@ -1,10 +1,10 @@
 import React from 'react';
 import {Route, Switch} from "react-router";
-import UserDashboard from "../../pages/panels/user/dashboard/userDashboard.component";
-import Panel from "../../pages/panels/panel.component";
-import UserProfile from "../../pages/panels/user/userProfile/userProfile.component";
-import UserTransactions from "../../pages/panels/user/transactions/userTransactions.component";
-import UserPackages from "../../pages/panels/user/pcks/userPcks.component";
+import UserDashboard from "../../usersArea/pages/panel/user/dashboard/userDashboard.component";
+import Panel from "../../usersArea/pages/panel/panel.component";
+import UserProfile from "../../usersArea/pages/panel/user/userProfile/userProfile.component";
+import UserTransactions from "../../usersArea/pages/panel/user/transactions/userTransactions.component";
+import UserPackages from "../../usersArea/pages/panel/user/pcks/userPcks.component";
 
 const UserPanelRoute = () => {
   return (
