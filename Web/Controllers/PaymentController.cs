@@ -1,7 +1,12 @@
-﻿using Core.Pack.Managers;
+﻿using Core.Base;
+using Core.Base.Entities;
+using Core.Base.Settings;
+using Core.Pack.Managers;
+using Core.Shop.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Parbad;
+using System.Collections.Generic;
 using Web.Helper;
 using Web.Mappers;
 using Web.Models;
@@ -14,11 +19,13 @@ namespace Web.Controllers
     {
         private readonly IPackBuyManager packBuyManager;
         private readonly IOnlinePayment onlinePayment;
+        private readonly IWritableOptions<MinSettings> writableOptions;
 
-        public PaymentController(IPackBuyManager packBuyManager, IOnlinePayment onlinePayment)
+        public PaymentController(IPackBuyManager packBuyManager, IOnlinePayment onlinePayment, IWritableOptions<MinSettings> writableOptions)
         {
             this.packBuyManager = packBuyManager;
             this.onlinePayment = onlinePayment;
+            this.writableOptions = writableOptions;
         }
 
         [HttpPost]
@@ -76,7 +83,8 @@ namespace Web.Controllers
         public IActionResult GetRank()
         {
             var response = packBuyManager.GetRank();
-            return Ok(response);
+            (int, List<ShopRefCodeCountDto>) xResponse = (writableOptions.Value.Min, response.Result);
+            return Ok(new ManagerResult<(int, List<ShopRefCodeCountDto>)>(xResponse));
         }
     }
 }
