@@ -60,6 +60,8 @@ namespace Infrastructure.Pack.Managers
             {
                 return new ManagerResult<CurrentPackDto>()
                 {
+                    Success = false,
+                    Result = null,
                     Code = 20,
                     Message = "NoPackage"
                 };
