@@ -16,5 +16,6 @@ namespace Web.Models.Session
         [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime Birthday { get; set; }
         public string SelfieURL { get; set; }
+        public bool HasActivePack { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Core.Identity.Managers;
+using Core.Pack.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace Web.Controllers
     public class SessionController : BaseController
     {
         private readonly ISessionManager SessionManager;
+        private readonly IPackManager packManager;
         private readonly IHttpContextAccessor Accessor;
 
-        public SessionController(ISessionManager sessionManager, IHttpContextAccessor accessor)
+        public SessionController(ISessionManager sessionManager, IPackManager packManager, IHttpContextAccessor accessor)
         {
             SessionManager = sessionManager;
+            this.packManager = packManager;
             Accessor = accessor;
         }
 
@@ -34,7 +37,7 @@ namespace Web.Controllers
             string ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.CreateByUP(model.ToDto(ip));
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel()));
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(false)));
         }
 
         [Authorize]
@@ -59,7 +62,8 @@ namespace Web.Controllers
             string ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel()));
+            var responsePack = packManager.GetCurrent(response.Result.UserId);
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(response.Success)));
         }
     }
 }

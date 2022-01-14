@@ -10,6 +10,7 @@ using Core.Identity.Interfaces;
 using Core.Identity.Managers;
 using Core.Identity.Mappers;
 using Core.Identity.Repos;
+using Core.QRString.Repos;
 using Core.Services;
 using Core.Services.Dto;
 using Infrastructure.Identity.Exceptions;
@@ -30,6 +31,7 @@ namespace Infrastructure.Identity.Managers
         private readonly IRoleRepo RoleRepo;
         private readonly IAppFileRepo appFileRepo;
         private readonly ISMSService sMSService;
+        private readonly IQRStringRepo qRStringRepo;
         protected ITokenRepo TokenRepo;
 
         protected IUserRepo UserRepo;
@@ -40,7 +42,7 @@ namespace Infrastructure.Identity.Managers
                            ITokenRepo tokenRepo,
                            ITokenManager tokenManager,
                            IRoleRepo roleRepo,
-                           IAppFileRepo appFileRepo, ISMSService sMSService)
+                           IAppFileRepo appFileRepo, ISMSService sMSService, IQRStringRepo qRStringRepo)
         {
             UserRepo = userRepo;
             JwtTokenHandler = jwtTokenHandler;
@@ -50,6 +52,7 @@ namespace Infrastructure.Identity.Managers
             RoleRepo = roleRepo;
             this.appFileRepo = appFileRepo;
             this.sMSService = sMSService;
+            this.qRStringRepo = qRStringRepo;
         }
 
         public ManagerResult<bool> Create(User User, string Password)
@@ -170,6 +173,15 @@ namespace Infrastructure.Identity.Managers
             user.RefCode = dto.RefCode;
             user.UserStatus = UserStatus.NotConfirmed;
             UserRepo.Update(user);
+            qRStringRepo.DisableAllUserQR(userId);
+            var qr = new Core.QRString.Entities.QRString
+            {
+                Enable = true,
+                QR = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                UserId = userId,
+            };
+            qRStringRepo.Create(qr);
             return new ManagerResult<bool>(true)
             {
                 Code = 16
