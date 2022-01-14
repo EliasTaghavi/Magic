@@ -10,9 +10,9 @@ import {
   faSignOutAlt,
   faList, faCubes
 } from "@fortawesome/free-solid-svg-icons";
-import TokenStore from "../../../../../utils/tokenStore";
-import Divider from "../../../../../components/divider";
-import logo from '../../../../../assets/images/logo.png';
+import TokenStore from "../../../../../../utils/tokenStore";
+import Divider from "../../../../../../components/divider";
+import logo from '../../../../../../assets/images/logo.png';
 
 const UserHeader = ({open, setOpen, children}) => {
   const token = TokenStore.getUserToken();

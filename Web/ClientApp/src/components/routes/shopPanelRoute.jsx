@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from "react-router";
-import Panel from "../../pages/panels/panel.component";
+import Panel from "../../usersArea/pages/panel/panel.component";
 import ShopDashboard from "../../usersArea/pages/panel/shop/shopDashboard.component";
 
 const ShopPanelRoute = () => {

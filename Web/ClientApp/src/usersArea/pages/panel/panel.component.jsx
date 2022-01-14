@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import UserHeader from './user/components/header/userHeader.component';
-import ShopHeader from './shop/components/header/shopHeader.component';
+import ShopHeader from '../../../pages/panels/shop/components/header/shopHeader.component';
 
 const Panel = ({children, type}) => {
   const [open, setOpen] = useState(false);

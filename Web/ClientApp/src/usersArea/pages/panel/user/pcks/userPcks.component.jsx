@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import './userPcks.css';
 import {toast} from "react-toastify";
-import toastOptions from "../../../../components/ToastOptions";
-import {getPcksData} from "../../../../usersArea/api/user/pcks";
+import toastOptions from "../../../../../components/ToastOptions";
+import {getPcksData} from "../../../../api/user/pcks";
 import NumberFormat from "react-number-format";
 import ConfirmBuyPckModal from "./components/confirmBuyPckModal";
 import Loader from "react-loader-spinner";

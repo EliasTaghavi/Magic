@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {Modal} from "react-bootstrap";
 import NumberFormat from "react-number-format";
 import Loader from "react-loader-spinner";
-import {sendBuyDetails} from "../../../../../usersArea/api/user/pcks";
+import {sendBuyDetails} from "../../../../../api/user/pcks";
 import {toast} from "react-toastify";
-import toastOptions from "../../../../../components/ToastOptions";
+import toastOptions from "../../../../../../components/ToastOptions";
 
 const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 	const [bigLoader, setBigLoader] = useState(true);

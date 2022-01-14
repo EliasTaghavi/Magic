@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import './userProfile.css';
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useShallowPickerSelector} from "../../../../store/selectors";
+import {useShallowPickerSelector} from "../../../../../store/selectors";
 import EditUserProfileModal from "./components/editUserProfileModal";
 
 const UserProfile = () => {

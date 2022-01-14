@@ -300,6 +300,7 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginCode({mobile, code})
        .then((response) => {
+         console.log(response);
          let {result: {token, status}, success} = response;
          if (response) {
            if (response === 401) {
