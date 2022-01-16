@@ -94,6 +94,22 @@ a:hover {
   color: #bbbbbb !important;
 }
 
+.textGold {
+  color: #ffc100;
+}
+
+.textSilver {
+  color: #c3bfb1;
+}
+
+.textBronze {
+  color: #ab4c00;
+}
+
+.textBronze1 {
+  color: #621e00;
+}
+
 .textShadowLight {
   text-shadow: 0 0 10px #00000099;
 }

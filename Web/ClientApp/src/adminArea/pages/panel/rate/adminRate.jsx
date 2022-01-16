@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import Loader from "react-loader-spinner";
-import {getRatedShopsList} from "../../../api/rate";
+import {getRatedShopsList, setMinRate} from "../../../api/rate";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
+import {generateMedal} from "./component/generateMedal";
 
 const AdminRate = () => {
 	const [error, setError] = useState('');
@@ -18,6 +19,7 @@ const AdminRate = () => {
 	}, []);
 
 	const getRatedShopsListFn = () => {
+		setBigLoader(true);
 		getRatedShopsList()
 			.then((response) => {
 				let {success, result: {item1, item2}} = response
@@ -46,8 +48,30 @@ const AdminRate = () => {
 		if (rate?.length < 1) {
 			setError('مقدار نامعتبر است');
 		} else {
+			let rateToSet = rate;
 			setLoader(true);
-			// send data to server FIXME
+			setMinRate(rate)
+				.then((response) => {
+					console.log(response);
+					let {success} = response
+					if (response) {
+						if (response === 401) {
+							// do nothing but in another api's should logout from system
+						} else if (success) {
+							setPrevRate(rateToSet);
+							setRate('');
+							getRatedShopsListFn();
+						}
+					} else {
+						toast.error('خطای سرور', toastOptions);
+						setLoader(false);
+					}
+				})
+				.catch((e) => {
+					console.log(12, e, e.response);
+					toast.error('خطای سرور', toastOptions);
+					setLoader(false);
+				})
 		}
 	}
 
@@ -103,15 +127,18 @@ const AdminRate = () => {
 								<th style={{minWidth: 60}}>ردیف</th>
 								<th style={{minWidth: 120}}>نام فروشگاه</th>
 								<th style={{minWidth: 120}}>تعداد معرفی</th>
+								<th style={{minWidth: 120}}>رتبه</th>
 							</tr>
 							</thead>
 							<tbody className="w-100">
 							{!bigLoader && shops.length > 0 && shops.map((item, index) => {
+								let inRank = item?.count > prevRate && index < 4;
 								return (
-									<tr key={item?.id} className="customTr text-center">
+									<tr key={Math.random().toString()} className="customTr text-center">
 										<td>{index + 1}</td>
 										<td>{item?.name ?? '-----'}</td>
 										<td className="fs18 font-weight-bold textMain">{item?.count ?? '-----'}</td>
+										<td>{inRank ? generateMedal(index) : '----'}</td>
 									</tr>
 								);
 							})}
