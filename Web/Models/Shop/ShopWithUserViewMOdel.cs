@@ -14,5 +14,6 @@ namespace Web.Models.Shop
         public string UserMobile { get; set; }
         [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime CreatedDate { get; set; }
+        public int LatestOff { get; set; }
     }
 }

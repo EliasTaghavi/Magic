@@ -52,6 +52,7 @@ namespace Web.Mappers
                 UserFullName = dto.UserFullName,
                 UserMobile = dto.UserMobile,
                 CreatedDate = dto.CreatedDate,
+                LatestOff =  dto.LatestOff,
             };
         }
 
