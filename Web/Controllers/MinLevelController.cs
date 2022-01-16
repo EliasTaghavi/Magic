@@ -1,4 +1,5 @@
 ﻿using Core.Base;
+using Core.Base.Entities;
 using Core.Base.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,8 @@ namespace Web.Controllers
         public IActionResult Set(int min)
         {
             writableOptions.Update(x => x.Min = min);
-            return Ok();
+            var result = new ManagerResult<bool>(true);
+            return Ok(result);
         }
     }
 }

@@ -75,5 +75,13 @@ namespace Web.Controllers
             var response = shopManager.FindByRef(refCode);
             return Ok(response);
         }
+
+        [HttpPost]
+        public IActionResult UpdateOff(UpdateShopOffViewModel viewModel)
+        {
+            var dto = viewModel.ToDto();
+            var response = shopManager.UpdateOff(dto);
+            return Ok(response);
+        }
     }
 }
