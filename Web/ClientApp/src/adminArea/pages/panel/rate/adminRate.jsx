@@ -1,13 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import Loader from "react-loader-spinner";
 import {getRatedShopsList} from "../../../api/rate";
+import {toast} from "react-toastify";
+import toastOptions from "../../../../components/ToastOptions";
 
 const AdminRate = () => {
-	const [errors, setErrors] = useState({});
-	const [rate, setRate] = useState({});
+	const [error, setError] = useState('');
+	const [rate, setRate] = useState('');
 	const [focused, setFocused] = useState(false);
 	const [bigLoader, setBigLoader] = useState(false);
-	const [data, setData] = useState([]);
+	const [prevRate, setPrevRate] = useState('-');
+	const [shops, setShops] = useState([]);
+	const [loader, setLoader] = useState(false);
 
 	useEffect(() => {
 		getRatedShopsListFn();
@@ -16,15 +20,35 @@ const AdminRate = () => {
 	const getRatedShopsListFn = () => {
 		getRatedShopsList()
 			.then((response) => {
-				console.log(response);
+				let {success, result: {item1, item2}} = response
+				if (response) {
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else if (success) {
+						setPrevRate(item1.toString());
+						setShops(item2);
+						setBigLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setBigLoader(false);
+				}
 			})
 			.catch((error) => {
-				console.log(error, error.response);
-			})
+				toast.error('خطای سرور', toastOptions);
+				setBigLoader(false);
+			});
 	};
 
 	const handleValidate = (e) => {
+		console.log('here');
 		e.preventDefault();
+		if (rate?.length < 1) {
+			setError('مقدار نامعتبر است');
+		} else {
+			setLoader(true);
+			// send data to server FIXME
+		}
 	}
 
 	return (
@@ -32,64 +56,74 @@ const AdminRate = () => {
 			<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
 				<p className="card-title fs22 my-2">رتبه بندی</p>
 			</div>
-			<div className="card-body w-100 d-flex flex-column px-3">
+			<div className="card-body w-100 d-flex flex-column px-0">
 				<p className="text-secondary fs16">تعیین حداقل رتبه بندی به معنی این است که اگر تعداد کاربران معرفی شده از طرف یک فروشگاه، در ماه جاری از حداقل تعیین شده بیشتر خرید کنند، فروشگاه به لیست رتبه بندی وارد شده و با توجه به رتبه، درصدی از مجموع مبالغ خریداری شده کاربران خود را دریافت می کند.</p>
-				<form noValidate={true} autoComplete="off" onSubmit={(e) => handleValidate(e)}>
-					<div className="d-flex flex-column align-items-start justify-content-center mt-4 col-12 col-md-3">
-						<label htmlFor="rate" className={`transition fs14 mb-0 ${focused ? 'textMain' : 'textThird'}`}>
-							حداقل رتبه بندی<span style={{color: 'red'}}>{`\xa0*`}</span>
-						</label>
-						<div className="w-100 d-flex flex-column flex-md-row centered">
-							<input
-								id="rate"
-								name="rate"
-								type="number"
-								autoFocus={false}
-								required={true}
-								min={0}
-								className={`form-control input ${errors['rate'] && 'is-invalid'}`}
-								value={rate}
-								onChange={(e) => setRate(e.target.value)}
-								placeholder="..."
-								onFocus={() => setFocused(true)}
-								onBlur={() => setFocused(false)}
-							/>
-							<button type="button" className="btn border-0 bgMain text-white mr-2">
-								ثبت
-							</button>
+				<div className="w-100 d-flex flex-column flex-lg-row flex-wrap align-items-center justify-content-between">
+					<form noValidate={true} autoComplete="off" className="col-12 col-lg-6 px-0" onSubmit={(e) => handleValidate(e)} style={{minWidth: 250, maxWidth: 500}}>
+						<div className="w-100 d-flex flex-column align-items-start justify-content-center mt-4 col-12">
+							<label htmlFor="rate" className={`transition fs14 mb-0 ${focused ? 'textMain' : 'textThird'}`}>
+								حداقل رتبه بندی<span style={{color: 'red'}}>{`\xa0*`}</span>
+							</label>
+							<div className="w-100 d-flex centered">
+								<input
+									id="rate"
+									name="rate"
+									type="number"
+									autoFocus={false}
+									required={true}
+									min={0}
+									className={`form-control input ${error.length > 0 && 'is-invalid'}`}
+									value={rate}
+									onChange={(e) => {
+										setError('');
+										setRate(e.target.value);
+									}}
+									placeholder="..."
+									onFocus={() => setFocused(true)}
+									onBlur={() => setFocused(false)}
+								/>
+								<button type="submit" className="btn border-0 bgMain text-white mr-2">
+									{!loader && <span>ثبت</span>}
+									{loader && <Loader type="ThreeDots" color='white' height={7}/>}
+								</button>
+							</div>
+							<span className="invalid-feedback mt-2 fs14" style={{
+								display: error?.length > 0 ? 'block' : 'none',
+							}}>{error}</span>
+							<div className="mt-4 d-flex centered">
+								<p className="fs16">حداقل رتبه بندی قبل:</p>
+								<p className="fs20 font-weight-bold textMain mx-3">{prevRate}</p>
+							</div>
 						</div>
-						<span className="invalid-feedback mt-2 fs14" style={{
-							display: errors['rate'] ? 'block' : 'none',
-						}}>{errors['rate']}</span>
+					</form>
+					<div className="col-12 col-lg-6 table-responsive table-striped mt-3 px-0" style={{minWidth: 250}}>
+						<table className="col-12 mt-5">
+							<thead>
+							<tr className="text-center">
+								<th style={{minWidth: 60}}>ردیف</th>
+								<th style={{minWidth: 120}}>نام فروشگاه</th>
+								<th style={{minWidth: 120}}>تعداد معرفی</th>
+							</tr>
+							</thead>
+							<tbody className="w-100">
+							{!bigLoader && shops.length > 0 && shops.map((item, index) => {
+								return (
+									<tr key={item?.id} className="customTr text-center">
+										<td>{index + 1}</td>
+										<td>{item?.name ?? '-----'}</td>
+										<td className="fs18 font-weight-bold textMain">{item?.count ?? '-----'}</td>
+									</tr>
+								);
+							})}
+							</tbody>
+						</table>
+						{(shops?.length < 1 && !bigLoader) && <div className="col-12 col-md-5 d-flex centered py-3">
+							<span className="text-danger">داده ای وجود ندارد.</span>
+						</div>}
+						{bigLoader && <div className="col-12 col-md-5 d-flex centered py-3">
+							<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+						</div>}
 					</div>
-				</form>
-				<div className="table-responsive table-striped mt-3">
-					<table className="col-12 col-md-5 mt-5">
-						<thead>
-						<tr>
-							<th style={{minWidth: 60}}>ردیف</th>
-							<th style={{minWidth: 120}}>نام فروشگاه</th>
-							<th style={{minWidth: 120}}>تعداد معرفی</th>
-						</tr>
-						</thead>
-						<tbody className="w-100">
-						{!bigLoader && data.length > 0 && data.map((item, index) => {
-							return (
-								<tr key={item?.id} className="customTr">
-									<td>{index}</td>
-									<td>{item?.name ?? '-----'}</td>
-									<td>{item?.rate ?? '-----'}</td>
-								</tr>
-							);
-						})}
-						</tbody>
-					</table>
-					{(data?.length < 1 && !bigLoader) && <div className="col-12 col-md-5 d-flex centered py-3">
-						<span className="text-danger">داده ای وجود ندارد.</span>
-					</div>}
-					{bigLoader && <div className="col-12 col-md-5 d-flex centered py-3">
-						<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
-					</div>}
 				</div>
 			</div>
 		</div>
