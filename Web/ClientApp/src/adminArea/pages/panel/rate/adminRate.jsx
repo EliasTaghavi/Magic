@@ -43,7 +43,6 @@ const AdminRate = () => {
 	};
 
 	const handleValidate = (e) => {
-		console.log('here');
 		e.preventDefault();
 		if (rate?.length < 1) {
 			setError('مقدار نامعتبر است');
@@ -52,7 +51,6 @@ const AdminRate = () => {
 			setLoader(true);
 			setMinRate(rate)
 				.then((response) => {
-					console.log(response);
 					let {success} = response
 					if (response) {
 						if (response === 401) {
@@ -60,6 +58,7 @@ const AdminRate = () => {
 						} else if (success) {
 							setPrevRate(rateToSet);
 							setRate('');
+							setLoader(false);
 							getRatedShopsListFn();
 						}
 					} else {
