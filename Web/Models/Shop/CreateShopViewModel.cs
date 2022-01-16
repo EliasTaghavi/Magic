@@ -8,6 +8,5 @@
         public string UserMobile { get; set; }
         public string UserName { get; set; }
         public string UserSurname { get; set; }
-        public int LatestOff { get; set; }
     }
 }

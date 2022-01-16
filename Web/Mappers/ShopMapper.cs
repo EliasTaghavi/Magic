@@ -29,7 +29,6 @@ namespace Web.Mappers
                 UserMobile = viewModel.UserMobile,
                 UserName = viewModel.UserName,
                 UserSurname = viewModel.UserSurname,
-                LatestOff = viewModel.LatestOff,
             };
         }
 
@@ -58,15 +57,6 @@ namespace Web.Mappers
         public static List<ShopWithUserViewModel> ToViewModel(this List<ShopWithUserDto> dto)
         {
             return dto.Select(x => x.ToViewModel()).ToList();
-        }
-
-        public static UpdateShopOffDto ToDto(this UpdateShopOffViewModel viewModel)
-        {
-            return new UpdateShopOffDto
-            {
-                Percentage = viewModel.Percentage,
-                ShopId = viewModel.ShopId,
-            };
         }
     }
 }

@@ -13,6 +13,5 @@ namespace Core.Shop.Managers
         ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto);
         ManagerResult<bool> Delete(string id);
         ManagerResult<string> FindByRef(string refCode);
-        ManagerResult<bool> UpdateOff(UpdateShopOffDto dto);
     }
 }
