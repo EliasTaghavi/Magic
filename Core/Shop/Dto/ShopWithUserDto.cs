@@ -11,6 +11,5 @@ namespace Core.Shop.Dto
         public string UserFullName { get; set; }
         public string UserMobile { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int LatestOff { get; set; }
     }
 }

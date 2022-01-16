@@ -30,7 +30,6 @@ namespace Core.Shop.Mappers
                 UserFullName = $"{shop.User.Name} {shop.User.Surname}",
                 UserMobile = shop.User.Mobile,
                 CreatedDate = shop.CreatedDate,
-                LatestOff = shop.Offs?.FirstOrDefault().Percentage ?? 0,
             };
         }
 

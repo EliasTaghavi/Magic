@@ -5,7 +5,6 @@ using Core.Identity.Dto;
 using Core.Identity.Managers;
 using Core.Services;
 using Core.Shop.Dto;
-using Core.Shop.Entities;
 using Core.Shop.Managers;
 using Core.Shop.Mappers;
 using Core.Shop.Repos;
@@ -17,16 +16,14 @@ namespace Infrastructure.Shop.Managers
     public class ShopManager : IShopManager
     {
         private readonly IShopRepo shopRepo;
-        private readonly IShopOffRepo shopOffRepo;
         private readonly IUserManager userManager;
         private readonly IAppFileRepo appFileRepo;
         private readonly IFileService fileService;
         private readonly ISessionManager sessionManager;
 
-        public ShopManager(IShopRepo shopRepo, IShopOffRepo shopOffRepo, IUserManager userManager, IAppFileRepo appFileRepo, IFileService fileService, ISessionManager sessionManager)
+        public ShopManager(IShopRepo shopRepo, IUserManager userManager, IAppFileRepo appFileRepo, IFileService fileService, ISessionManager sessionManager)
         {
             this.shopRepo = shopRepo;
-            this.shopOffRepo = shopOffRepo;
             this.userManager = userManager;
             this.appFileRepo = appFileRepo;
             this.fileService = fileService;
@@ -55,12 +52,6 @@ namespace Infrastructure.Shop.Managers
             shop.UserId = user.Id;
             shop.ReferralCode = code.ToString();
             shopRepo.Create(shop);
-            var shopOff = new ShopOff
-            {
-                Percentage = dto.LatestOff,
-                ShopId = shop.Id
-            };
-            shopOffRepo.Create(shopOff);
             return new ManagerResult<bool>(true);
         }
 
@@ -85,17 +76,6 @@ namespace Infrastructure.Shop.Managers
                 Items = result.Items.ToDto()
             };
             return new ManagerResult<PagedListDto<ShopWithUserDto>>(dto);
-        }
-
-        public ManagerResult<bool> UpdateOff(UpdateShopOffDto dto)
-        {
-            var shopOff = new ShopOff
-            {
-                Percentage = dto.Percentage,
-                ShopId = dto.ShopId
-            };
-            shopOffRepo.Create(shopOff);
-            return new ManagerResult<bool>(true);
         }
 
         public ManagerResult<VerifiedUserWithShopDto> VerifyTokenByPhoneForShop(VerifyTokenPhoneDto verifyTokenPhoneDto)

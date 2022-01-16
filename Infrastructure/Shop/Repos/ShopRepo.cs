@@ -43,7 +43,7 @@ namespace Infrastructure.Shop.Repos
                 }
             }
             int count = query.Count();
-            var result = query.Include(x => x.User).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).FirstOrDefault()).Skip((filterDto.Index - 1) * filterDto.Size).Take(filterDto.Size).ToList();
+            var result = query.Include(x => x.User).Include(x => x.User).Skip((filterDto.Index - 1) * filterDto.Size).Take(filterDto.Size).ToList();
             return new PagedListDto<Core.Shop.Entities.Shop>
             {
                 Count = count,
