@@ -72,8 +72,6 @@ export const signupUser = (data) => {
     formData.append('Selfie', selfiImage);
   }
 
-  console.log(textData);
-
 
   return axios.post('/api/user/fillData', formData, {headers}).then((res) => {
     if (res?.data?.code === '401') {
