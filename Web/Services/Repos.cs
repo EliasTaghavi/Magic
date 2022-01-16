@@ -26,6 +26,7 @@ namespace Web.Services
             services.AddTransient<IPackBuyRepo, PackBuyRepo>();
             services.AddTransient<IQRStringRepo, QRStringRepo>();
             services.AddTransient<IShopRepo, ShopRepo>();
+            services.AddTransient<IShopOffRepo, ShopOffRepo>();
         }
     }
 }
