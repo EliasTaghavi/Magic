@@ -10,37 +10,66 @@ import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import {confirmUser} from "../../../../api/users";
+import Select from "react-select";
+import {theme} from "../../../../../components/shared/theme";
+import makeAnimated from "react-select/animated/dist/react-select.esm";
+
+const animatedComponents = makeAnimated();
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	const prevItem = item;
 	const [loader, setLoader] = useState(false);
 	const [locked, setLocked] = useState(item?.status === 2);
 	const [lockLoader, setLockLoader] = useState(false);
+	const [status, setStatus] = useState(null);
+	const [statusError, setStatusError] = useState(false);
+	const statusTypes = [
+		{
+			value: null,
+			label: 'انتخاب کنید...',
+		},
+		{
+			value: 'all',
+			label: 'آزاد',
+		},
+		{
+			value: 'student',
+			label: 'دانشجو',
+		},
+		{
+			value: 'worker',
+			label: 'کارگر',
+		},
+	];
 
 	const sendVerification = (state) => {
 		if (state) {
-			setLoader(true);
-			confirmUser(item?.id)
-				.then((response) => {
-					let {success} = response;
-					if (response) {
-						if (response === 401) {
-							// do nothing
-						} else if (success) {
-							setOpen(false);
+			if (status === null) {
+				setStatusError(true);
+			} else {
+				setLoader(true);
+				confirmUser(item?.id)
+					.then((response) => {
+						let {success} = response;
+						if (response) {
+							if (response === 401) {
+								// do nothing
+							} else if (success) {
+								setOpen(false);
+								setLoader(false);
+								refreshTable();
+								toast.success('وضعیت کاربر با موفقیت تغییر یافت', toastOptions);
+							}
+						} else {
+							toast.error('خطای سرور', toastOptions);
 							setLoader(false);
-							refreshTable();
-							toast.success('وضعیت کاربر با موفقیت تغییر یافت', toastOptions);
 						}
-					} else {
+					})
+					.catch(() => {
 						toast.error('خطای سرور', toastOptions);
 						setLoader(false);
-					}
-				})
-				.catch(() => {
-					toast.error('خطای سرور', toastOptions);
-					setLoader(false);
-				})
+					})
+			}
 		} else {
 			sendSmsModal(true);
 		}
@@ -74,6 +103,11 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 				toast.error('خطای سرور', toastOptions);
 				setLockLoader(false);
 			})
+	}
+
+	const changeStatus = (val) => {
+		let {value} = val;
+		setStatus(value);
 	}
 
 	return (
@@ -124,9 +158,9 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 						)}
 					</div>
 				</div>
-				<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5">
-					<div className="d-flex flex-column align-items-start justify-content-start flex-md-row">
-						<div className="mr-3">
+				<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5 w-100">
+					<div className="d-flex flex-column align-items-start justify-content-start flex-md-row w-100">
+						<div className="mr-3 w-100">
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">نام: </p>
 								<p className="fs18 mr-md-3">{item?.firstName ?? '-----'}</p>
@@ -147,9 +181,29 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 								<p className="fs16 textThird">آدرس: </p>
 								<p className="fs18 mr-md-3">{item?.address ?? '-----'}</p>
 							</div>
+							<div className="w-100 d-flex flex-column align-items-start justify-content-start">
+								<div className="w-100 d-flex flex-column flex-md-row align-items-start justify-content-start align-items-md-center">
+									<p className="m-0 fs16 textThird">نوع شغل: </p>
+									<div className="col-12 col-md-6">
+										<Select
+											defaultValue={statusTypes[0]}
+											options={statusTypes}
+											isClearable={false}
+											components={animatedComponents}
+											isRtl={true}
+											isMulti={false}
+											isSearchable={false}
+											maxMenuHeight={200}
+											placeholder=""
+											onChange={(value) => changeStatus(value)}
+											styles={theme.customStyles}/>
+									</div>
+								</div>
+								{statusError && <p className="text-danger">لطفا نوع شغل را مشخص کنید</p>}
+							</div>
 						</div>
 					</div>
-					<div className="w-100 d-flex flex-wrap align-items-start justify-content-start">
+					<div className="w-100 d-flex flex-wrap align-items-start justify-content-start mt-5">
 						<div style={{flex: 1}} className="d-flex flex-column align-items-start justify-content-start">
 							<p className="mt-3">عکس سلفی:</p>
 							<div className="adminUserImages">

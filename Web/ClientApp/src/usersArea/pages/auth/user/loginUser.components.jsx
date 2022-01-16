@@ -33,7 +33,7 @@ export const maximumDate = {
 const LoginUser = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [step, setStep] = useState(3); // 1=mobile 2=code 3=signup
+  const [step, setStep] = useState(1); // 1=mobile 2=code 3=signup
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('09137658795');
   const [btnLoader, setBtnLoader] = useState(false);
