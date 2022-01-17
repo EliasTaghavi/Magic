@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,7 @@ import {sendLockUserData} from "../../../../api/users";
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
-import {confirmUser} from "../../../../api/users";
+import {confirmUser, getUserJobType} from "../../../../api/users";
 import Select from "react-select";
 import {theme} from "../../../../../components/shared/theme";
 import makeAnimated from "react-select/animated/dist/react-select.esm";
@@ -41,6 +41,34 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 			label: 'کارگر',
 		},
 	];
+
+	useEffect(() => {
+		getUserJobTypeFn();
+	}, []);
+
+	const getUserJobTypeFn = () => {
+		getUserJobType()
+			.then((response) => {
+				console.log(response);
+				// if (response) {
+				// 	if (response === 401) {
+				// 		// do nothing
+				// 	} else if (success) {
+				// 		setOpen(false);
+				// 		setLoader(false);
+				// 		refreshTable();
+				// 		toast.success('وضعیت کاربر با موفقیت تغییر یافت', toastOptions);
+				// 	}
+				// } else {
+				// 	toast.error('خطای سرور', toastOptions);
+				// 	setLoader(false);
+				// }
+			})
+			.catch((error) => {
+				toast.error('خطای سرور', toastOptions);
+				setLoader(false);
+			})
+	};
 
 	const sendVerification = (state) => {
 		if (state) {

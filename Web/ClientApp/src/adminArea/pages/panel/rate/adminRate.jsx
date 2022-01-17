@@ -143,10 +143,10 @@ const AdminRate = () => {
 							})}
 							</tbody>
 						</table>
-						{(shops?.length < 1 && !bigLoader) && <div className="col-12 col-md-5 d-flex centered py-3">
+						{(shops?.length < 1 && !bigLoader) && <div className="w-100 d-flex centered py-3">
 							<span className="text-danger">داده ای وجود ندارد.</span>
 						</div>}
-						{bigLoader && <div className="col-12 col-md-5 d-flex centered py-3">
+						{bigLoader && <div className="w-100 d-flex centered py-3">
 							<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
 						</div>}
 					</div>
