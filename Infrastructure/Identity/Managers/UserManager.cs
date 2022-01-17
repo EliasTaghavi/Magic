@@ -205,10 +205,11 @@ namespace Infrastructure.Identity.Managers
             return new ManagerResult<PagedListDto<UserListDto>>(result);
         }
 
-        public ManagerResult<bool> Confirm(string id)
+        public ManagerResult<bool> Confirm(ConfirmUserDto dto)
         {
-            var user = UserRepo.Read(id);
+            var user = UserRepo.Read(dto.UserId);
             user.UserStatus = UserStatus.Confirmed;
+            user.UserType = dto.Type;
             UserRepo.Update(user);
             sMSService.SendConfirm(user.Mobile);
             return new ManagerResult<bool>(true);

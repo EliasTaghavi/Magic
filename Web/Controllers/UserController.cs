@@ -83,9 +83,10 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm([FromQuery] string id)
+        public IActionResult Confirm([FromBody] ConfirmUserViewModel viewModel)
         {
-            var response = UserManager.Confirm(id);
+            var dto = viewModel.ToDto();
+            var response = UserManager.Confirm(dto);
             return Ok(response);
         }
 

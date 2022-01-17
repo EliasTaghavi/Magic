@@ -2,6 +2,7 @@
 {
     public enum UserType
     {
+        Other,
         Worker,
         Student
     }

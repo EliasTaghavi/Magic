@@ -25,7 +25,7 @@ namespace Core.Identity.Managers
         ManagerResult<User> CreateByPhone(CreateUserDto dto);
         ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
         ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto);
-        ManagerResult<bool> Confirm(string id);
+        ManagerResult<bool> Confirm(ConfirmUserDto dto);
         ManagerResult<bool> Lock(string id);
         ManagerResult<bool> Reject(RejectMessageDto dto);
         ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser();
