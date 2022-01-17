@@ -19,13 +19,11 @@ namespace Web.Controllers
     {
         private readonly IPackBuyManager packBuyManager;
         private readonly IOnlinePayment onlinePayment;
-        private readonly IWritableOptions<MinSettings> writableOptions;
 
-        public PaymentController(IPackBuyManager packBuyManager, IOnlinePayment onlinePayment, IWritableOptions<MinSettings> writableOptions)
+        public PaymentController(IPackBuyManager packBuyManager, IOnlinePayment onlinePayment)
         {
             this.packBuyManager = packBuyManager;
             this.onlinePayment = onlinePayment;
-            this.writableOptions = writableOptions;
         }
 
         [HttpPost]
@@ -83,8 +81,15 @@ namespace Web.Controllers
         public IActionResult GetRank()
         {
             var response = packBuyManager.GetRank();
-            (int, List<ShopRefCodeCountDto>) xResponse = (writableOptions.Value.Min, response.Result);
-            return Ok(new ManagerResult<(int, List<ShopRefCodeCountDto>)>(xResponse));
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles ="Admin,God")]
+        public IActionResult SetMinLevel([FromQuery] int min)
+        {
+            var response = packBuyManager.SetMinLevel(min);
+            return Ok(response);
         }
     }
 }

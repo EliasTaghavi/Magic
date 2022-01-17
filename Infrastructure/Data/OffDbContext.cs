@@ -1,4 +1,5 @@
-﻿using Core.File.Entities;
+﻿using Core.Base.Entities;
+using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Pack.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -8,16 +9,12 @@ namespace Infrastructure.Data
 {
     public class OffDbContext : DbContext
     {
+        public DbSet<Setting> Settings { get; set; }
         public DbSet<AppFile> AppFiles { get; set; }
-
         public DbSet<Cache> Caches { get; set; }
-
         public DbSet<Code> Codes { get; set; }
-
         public DbSet<Role> Roles { get; set; }
-
         public DbSet<AccessToken> Tokens { get; set; }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Core.Pack.Entities.Pack> Packs { get; set; }
         public DbSet<PackBuy> PackBuys { get; set; }
@@ -40,8 +37,8 @@ namespace Infrastructure.Data
             builder.ShopValidation();
             builder.PackBuyValidation();
             builder.QRValidation();
-
             builder.AppFileValidation();
+            builder.SettingValidation();
             builder.Seed();
         }
     }

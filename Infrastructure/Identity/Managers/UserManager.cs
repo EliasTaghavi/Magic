@@ -258,5 +258,12 @@ namespace Infrastructure.Identity.Managers
                 }).Select(x => new ShopRefCodeCountDto {Count = x.count, Name = x.Name }).ToList();
             return new ManagerResult<List<ShopRefCodeCountDto>>(result);
         }
+
+        public ManagerResult<List<string>> GetTypes()
+        {
+            var result = new List<string>();
+            result.AddRange(Enum.GetNames(typeof(UserType)));
+            return new ManagerResult<List<string>>(result);
+        }
     }
 }

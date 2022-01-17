@@ -1,4 +1,5 @@
-﻿using Core.File.Entities;
+﻿using Core.Base.Entities;
+using Core.File.Entities;
 using Core.Identity.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,16 @@ namespace Infrastructure.Data
                 file.HasKey(x => x.Id);
                 file.Ignore(x => x.FullName);
                 file.Ignore(x => x.ObjectState);
+            });
+        }
+
+        public static void SettingValidation(this ModelBuilder builder)
+        {
+            builder?.Entity<Setting>(setting =>
+            {
+                setting.Property(x => x.Id).ValueGeneratedOnAdd();
+                setting.HasKey(x => x.Id);
+                setting.Ignore(x => x.ObjectState);
             });
         }
 

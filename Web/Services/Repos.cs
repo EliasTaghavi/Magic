@@ -1,8 +1,10 @@
-﻿using Core.File.Repos;
+﻿using Core.Base.Repos;
+using Core.File.Repos;
 using Core.Identity.Repos;
 using Core.Pack.Repos;
 using Core.QRString.Repos;
 using Core.Shop.Repos;
+using Infrastructure.Base.Repos;
 using Infrastructure.File.Repos;
 using Infrastructure.Identity.Repos;
 using Infrastructure.Pack.Repos;
@@ -27,6 +29,7 @@ namespace Web.Services
             services.AddTransient<IQRStringRepo, QRStringRepo>();
             services.AddTransient<IShopRepo, ShopRepo>();
             services.AddTransient<IShopOffRepo, ShopOffRepo>();
+            services.AddTransient<ISettingRepo, SettingRepo>();
         }
     }
 }

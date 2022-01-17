@@ -1,6 +1,7 @@
 ﻿using Core;
 using Core.Base.Dto;
 using Core.Base.Entities;
+using Core.Base.Repos;
 using Core.Identity.Repos;
 using Core.Pack.Dto;
 using Core.Pack.Entities;
@@ -22,15 +23,17 @@ namespace Infrastructure.Pack.Managers
     public class PackBuyManager : IPackBuyManager
     {
         private readonly IQRStringManager qRStringManager;
+        private readonly ISettingRepo settingRepo;
         private readonly IShopRepo shopRepo;
         private readonly IPackBuyRepo packBuyRepo;
         private readonly IPackRepo packRepo;
         private readonly IUserRepo userRepo;
         private readonly IOnlinePayment onlinePayment;
 
-        public PackBuyManager(IQRStringManager qRStringManager, IShopRepo shopRepo, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
+        public PackBuyManager(IQRStringManager qRStringManager, ISettingRepo settingRepo, IShopRepo shopRepo, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
         {
             this.qRStringManager = qRStringManager;
+            this.settingRepo = settingRepo;
             this.shopRepo = shopRepo;
             this.packBuyRepo = packBuyRepo;
             this.packRepo = packRepo;
@@ -100,7 +103,7 @@ namespace Infrastructure.Pack.Managers
             return new ManagerResult<List<LineChartDto<decimal>>>(chartData);
         }
 
-        public ManagerResult<List<ShopRefCodeCountDto>> GetRank()
+        public ManagerResult<ShopRankWithMinDto> GetRank()
         {
             PersianCalendar pc = new();
             int year = pc.GetYear(DateTime.UtcNow);
@@ -122,13 +125,24 @@ namespace Infrastructure.Pack.Managers
                     shop.Name,
                     refCount.count
                 }).Select(x => new ShopRefCodeCountDto { Count = x.count, Name = x.Name }).ToList();
-            return new ManagerResult<List<ShopRefCodeCountDto>>(result);
+            var xResult = new ShopRankWithMinDto
+            {
+                shops = result,
+                Min = settingRepo.GetByName<int>("MinimumRef")
+            };
+            return new ManagerResult<ShopRankWithMinDto>(xResult);
         }
 
         public ManagerResult<PagedListDto<PackBuyListDto>> Search(PageRequestDto<PackBuyListFilterDto> dto)
         {
             var list = packBuyRepo.Search(dto);
             return new ManagerResult<PagedListDto<PackBuyListDto>>(list);
+        }
+
+        public ManagerResult<bool> SetMinLevel(int min)
+        {
+            settingRepo.Save("MinimumRef", min);
+            return new ManagerResult<bool>(true);
         }
 
         public ManagerResult<bool> Verify(IPaymentVerifyResult result)

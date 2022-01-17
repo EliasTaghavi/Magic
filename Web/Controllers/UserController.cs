@@ -121,5 +121,13 @@ namespace Web.Controllers
             var response = UserManager.GetRank();
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetTypes()
+        {
+            var response = UserManager.GetTypes();
+            return Ok(response);
+        }
     }
 }
