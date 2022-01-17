@@ -80,6 +80,7 @@ namespace Infrastructure.Data
                 shop.Ignore(x => x.ObjectState);
                 shop.HasIndex(x => x.ReferralCode)
                 .IsUnique();
+                shop.HasMany(x => x.Offs).WithOne(x => x.Shop).OnDelete(DeleteBehavior.Cascade);
             });
         }
 
@@ -91,6 +92,9 @@ namespace Infrastructure.Data
                      .ValueGeneratedOnAdd();
                 shopOff.HasKey(x => x.Id);
                 shopOff.Ignore(x => x.ObjectState);
+                shopOff.HasOne(e => e.Shop)
+        .WithMany(e => e.Offs)
+        .OnDelete(DeleteBehavior.ClientCascade);
             });
         }
 
