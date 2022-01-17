@@ -1,3 +1,18 @@
+.adminLogin {
+    height: 100vh;
+    background-image: url("../assets/images/pattern.png");
+}
+
+.adminLoginBox {
+    max-width: 550px;
+    box-shadow: 0 0 20px 10px #cccccc99;
+    border-radius: 10px;
+}
+
+.adminLoginMainText {
+    font-size: 38px;
+}
+
 .adminHeaderNav {
     width: 100%;
     padding: 0;
@@ -108,6 +123,20 @@
 }
 .searchBtn:hover {
     background-color: #ff521d !important;
+}
+
+.routeBtns {
+    border: 1px solid #ff521d;
+    border-radius: 4px;
+    color: #ff521d;
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.routeBtns:hover {
+    background-color: #ff521d;
+    color: #ffffff;
+    transition: 0.3s;
 }
 
 @media screen and (min-width: 768px) {

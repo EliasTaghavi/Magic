@@ -1,7 +1,3 @@
-import {createSelector} from "@reduxjs/toolkit";
+import {shallowEqual, useSelector} from "react-redux";
 
-const selectSelf = (state) => state
-export const useShallowPickerSelector = createSelector(
-  selectSelf,
-  (state) => state.value
-)
+export const useShallowPickerSelector = (store, properties) => useSelector((state) => state[store][properties], shallowEqual);

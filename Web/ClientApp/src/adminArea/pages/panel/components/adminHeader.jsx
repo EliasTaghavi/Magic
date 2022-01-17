@@ -2,19 +2,18 @@ import React from 'react';
 import '../../../admin.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faBars,
-	faHome,
-	faList,
-	faSignOutAlt,
+	faBars, faBoxes,
+	faHome, faList,
+	faMoneyBill,
+	faSignOutAlt, faStore,
 	faUser,
-	faChevronDown,
-	faCircle,
 	faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import {Link, useHistory} from "react-router-dom";
 import logo from "../../../../assets/images/logo.png";
 import Divider from "../../../../components/divider";
 import TokenStore from "../../../../utils/tokenStore";
+import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const AdminHeader = ({open, setOpen, children}) => {
 
@@ -108,70 +107,162 @@ const Drawer = ({extraClassName, open, setOpen}) => {
 const MenuItems = ({open, setOpen, noOpacity}) => {
 	const history = useHistory();
 	const logout = () => {
-		TokenStore.remove();
+		TokenStore.removeAdminToken();
 		history.replace('/admin');
 	}
 
 	return (
 		<ul className="list-unstyled p-0 w-100">
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
-				<Link to="/admin/panel" className="menuLink cpx-12">
-					<FontAwesomeIcon icon={faHome} className="fs18"/>
-					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
-				</Link>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							داشبورد
+						</Tooltip>
+					}>
+					<Link to="/admin/panel" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faHome} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faHome} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+					</Link>
+				)}
 			</li>
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
-				<Link to="/admin/panel/all-users" className="menuLink cpx-12">
-					<FontAwesomeIcon icon={faUsers} className="fs18"/>
-					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
-				</Link>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							لیست کاربران
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/all-users" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faUsers} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/all-users" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faUsers} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
+					</Link>
+				)}
 			</li>
-			{/*<li className="menuItem rounded">*/}
-			{/*	<button type="button" className="border-0 menuLink cpx-12 collapsed" data-toggle="collapse" data-target="#submenu">*/}
-			{/*		<div className="w-100 d-flex align-items-center">*/}
-			{/*			<FontAwesomeIcon icon={faUsers} className="fs18"/>*/}
-			{/*			<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>*/}
-			{/*		</div>*/}
-			{/*		<FontAwesomeIcon icon={faChevronDown} className={`chevron ${!noOpacity && !open ? 'opacity0' : ''}`}/>*/}
-			{/*	</button>*/}
-				{/*<div className="collapse w-100" id="submenu">*/}
-				{/*	<ul className="nav p-0 d-flex flex-column list-unstyled">*/}
-				{/*		<li className="nav-item subMenuItem"*/}
-				{/*			 onClick={() => setOpen(false)}>*/}
-				{/*			<Link to="/admin/panel/all-users" className="menuLink d-flex flex-row align-items-center justify-content-start">*/}
-				{/*				<FontAwesomeIcon icon={faCircle} className="p-0 my-0 fs4" style={{margin: '0 20px'}} />*/}
-				{/*				<span className="nav-link pr-3">همه کاربران</span>*/}
-				{/*			</Link>*/}
-				{/*		</li>*/}
-				{/*		<li className="nav-item subMenuItem"*/}
-				{/*			 onClick={() => setOpen(false)}>*/}
-				{/*			<Link to="/admin/panel/verified-users" className="menuLink d-flex flex-row align-items-center justify-content-start">*/}
-				{/*				<FontAwesomeIcon icon={faCircle} className="p-0 my-0 fs4" style={{margin: '0 20px'}} />*/}
-				{/*				<span className="nav-link pr-3">تایید شده</span>*/}
-				{/*			</Link>*/}
-				{/*		</li>*/}
-				{/*		<li className="nav-item subMenuItem"*/}
-				{/*			 onClick={() => setOpen(false)}>*/}
-				{/*			<Link to="/admin/panel/waiting-users" className="menuLink d-flex flex-row align-items-center justify-content-start">*/}
-				{/*				<FontAwesomeIcon icon={faCircle} className="p-0 my-0 fs4" style={{margin: '0 20px'}} />*/}
-				{/*				<span className="nav-link pr-3">در انتظار تایید</span>*/}
-				{/*			</Link>*/}
-				{/*		</li>*/}
-				{/*	</ul>*/}
-				{/*</div>*/}
-			{/*</li>*/}
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
-				<Link to="/admin/panel/transactions" className="menuLink cpx-12">
-					<FontAwesomeIcon icon={faList} className="fs18"/>
-					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
-				</Link>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							لیست پکیج ها
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/packages" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faBoxes} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/packages" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faBoxes} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
+					</Link>
+				)}
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							لیست تراکنش ها
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/transactions" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faMoneyBill} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/transactions" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faMoneyBill} className="fs18"/>
+						<span
+							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
+					</Link>
+				)}
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							لیست فروشگاه ها
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/shops" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faStore} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/shops" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faStore} className="fs18"/>
+						<span
+							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
+					</Link>
+				)}
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							رتبه بندی
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/rate" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faList} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/rate" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faList} className="fs18"/>
+						<span
+							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
+					</Link>
+				)}
 			</li>
 			<Divider />
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
-				<button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
-					<FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
-					<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
-				</button>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							خروج
+						</Tooltip>
+					}>
+					<button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
+						<FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
+					</button>
+				</OverlayTrigger>}
+				{open && (
+					<button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
+						<FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
+					</button>
+				)}
 			</li>
 		</ul>
 	);

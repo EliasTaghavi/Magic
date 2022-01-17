@@ -3,11 +3,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons";
 import './layout.css';
 import {useHistory} from "react-router-dom";
+import {useShallowPickerSelector} from "../../store/selectors";
 
 const Layout = ({children}) => {
   const history = useHistory();
   const [scrollButton, setScrollButton] = useState(false);
   const [isPanel, setIsPanel] = useState(false);
+  const {logoutModal} = useShallowPickerSelector('main', ['logoutModal']);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -41,6 +43,7 @@ const Layout = ({children}) => {
           <FontAwesomeIcon icon={faChevronUp} color="white" fontSize={29}/>
         </button>
       )}
+      {/*{logoutModal && <RenderLogoutModal />}*/}
     </div>
   );
 };

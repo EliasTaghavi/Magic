@@ -17,6 +17,24 @@ namespace Infrastructure.Services
             settings = options.CurrentValue;
         }
 
+        public void SendConfirm(string mobile)
+        {
+            if (settings.Enable)
+            {
+                KavenegarApi api = new("65377137336C466436754671364B716C54496972356B45587269325076706669");
+                api.Send("10008663", mobile, "Confirm").Wait();
+            }
+        }
+
+        public void SendReject(string mobile, string message)
+        {
+            if (settings.Enable)
+            {
+                KavenegarApi api = new("65377137336C466436754671364B716C54496972356B45587269325076706669");
+                api.Send("10008663", mobile, message).Wait();
+            }
+        }
+
         public async Task Verification(string Message, string Phone)
         {
             if (settings.Enable)

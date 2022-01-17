@@ -1,4 +1,5 @@
-﻿using Core.File.Entities;
+﻿using Core.Base.Dto;
+using Core.File.Entities;
 using Core.Services;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,12 @@ namespace Infrastructure.Services
 {
     public class FileService : IFileService
     {
-        public string SaveIdentity(Stream idStream, string identityExt)
+        public string SaveIdentity(InputFileDto inputFileDto)
         {
             string fileName = Guid.NewGuid().ToString();
-            using (FileStream idFileStream = new($"ids/{fileName}.{identityExt}", FileMode.Create))
+            using (FileStream idFileStream = new($"ids/{fileName}.{inputFileDto.Extension}", FileMode.Create))
             {
-                idStream.CopyTo(idFileStream);
+                inputFileDto.Stream.CopyTo(idFileStream);
             }
             return fileName;
         }

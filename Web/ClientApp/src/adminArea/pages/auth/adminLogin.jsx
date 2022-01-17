@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import Loader from 'react-loader-spinner';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-import './adminLogin.css';
 import loginAdminValidation from '../../validations/loginAdminValidation';
 import {toast} from "react-toastify";
 import toastOptions from "../../../components/ToastOptions";
 import {sendAdminLogin} from '../../api/auth/auth';
 import TokenStore from "../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
-import SupportModal from "../../../components/shared/suportModal/supportModal.component";
+import SupportModal from "../../../components/shared/supportModal.component";
 
 const AdminLogin  = () => {
 	const history = useHistory();
@@ -57,7 +56,6 @@ const AdminLogin  = () => {
 		setLoader(true);
 		sendAdminLogin({userName, password})
 			.then((response) => {
-				console.log(response);
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
@@ -92,7 +90,7 @@ const AdminLogin  = () => {
 				<form noValidate={true} autoComplete="off" className="bg-white col-10 col-md-6 d-flex flex-column align-items-center justify-content-center px-5 py-5 adminLoginBox" onSubmit={(e) => validation(e)}>
 					<div className="w-100 form-group mt-3">
 						<label htmlFor="userName" className={`transition fs14 mb-0 ${focused === 'userName' ? 'textMain' : 'textThird'}`}>
-							نام کاربری
+							نام کاربری<span style={{color: 'red'}}>{`\xa0*`}</span>
 						</label>
 						<input
 							disabled={loader}
@@ -112,7 +110,7 @@ const AdminLogin  = () => {
 					</div>
 					<div className="w-100 form-group mt-3">
 						<label htmlFor="password" className={`transition fs14 mb-0 ${focused === 'password' ? 'textMain' : 'textThird'}`}>
-							کلمه عبور
+							کلمه عبور<span style={{color: 'red'}}>{`\xa0*`}</span>
 						</label>
 						<div className="position-relative">
 							<input

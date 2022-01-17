@@ -1,6 +1,5 @@
 ﻿using Core.Identity.Dto;
 using Core.Identity.Entities;
-using Core.Identity.Enums;
 using Web.Models.Session;
 
 namespace Web.Mappers
@@ -27,7 +26,7 @@ namespace Web.Mappers
             };
         }
 
-        public static VerifiedUserViewModel ToVerifiedUserViewModel(this AccessToken token)
+        public static VerifiedUserViewModel ToVerifiedUserViewModel(this AccessToken token, bool hasActivePack)
         {
             if (token == null)
             {
@@ -37,12 +36,13 @@ namespace Web.Mappers
             {
                 Address = token.User.Address,
                 Birthday = token.User.Birthday,
-                Confirmed = token.User.UserStatus == UserStatus.Confirmed,
+                Status = token.User.UserStatus,
                 FirstName = token.User.Name,
                 LastName = token.User.Surname,
                 Mobile = token.User.Mobile,
                 SelfieURL = string.Empty,
-                Token = token.JWT
+                Token = token.JWT,
+                HasActivePack = hasActivePack
             };
         }
     }

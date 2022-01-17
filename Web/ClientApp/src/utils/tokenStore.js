@@ -1,9 +1,17 @@
-const setToken = (token) => {
-  return localStorage.setItem('token', token);
+const setUserToken = (token) => {
+  return localStorage.setItem('userToken', token);
 }
 
-const getToken = () => {
-  return localStorage.getItem('token');
+const getUserToken = () => {
+  return localStorage.getItem('userToken');
+}
+
+const setShopToken = (token) => {
+  return localStorage.setItem('shopToken', token);
+}
+
+const getShopToken = () => {
+  return localStorage.getItem('shopToken');
 }
 
 const setAdminToken = (token) => {
@@ -14,26 +22,26 @@ const getAdminToken = () => {
   return localStorage.getItem('adminToken');
 }
 
-const setUserType = (userType) => {
-  return localStorage.setItem('userType', userType);
-}
+const removeUserToken = () => {
+  localStorage.removeItem('userToken');
+};
 
-const getUserType = () => {
-  return localStorage.getItem('userType');
-}
+const removeShopToken = () => {
+  localStorage.removeItem('shopToken');
+};
 
-const remove = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('userType');
+const removeAdminToken = () => {
   localStorage.removeItem('adminToken');
 };
 
 export default {
-  setToken,
-  getToken,
+  setUserToken,
+  getUserToken,
+  setShopToken,
+  getShopToken,
   setAdminToken,
   getAdminToken,
-  setUserType,
-  getUserType,
-  remove,
+  removeUserToken,
+  removeAdminToken,
+  removeShopToken,
 }

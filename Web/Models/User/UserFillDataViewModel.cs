@@ -14,5 +14,6 @@ namespace Web.Models.User
         public DateTime Birthday { get; set; }
         public IFormFile Selfie { get; set; }
         public IFormFile Identity { get; set; }
+        public string RefCode { get; set; }
     }
 }

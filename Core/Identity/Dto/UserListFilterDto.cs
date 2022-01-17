@@ -1,8 +1,10 @@
-﻿namespace Core.Identity.Dto
+﻿using Core.Identity.Enums;
+
+namespace Core.Identity.Dto
 {
     public class UserListFilterDto
     {
-        public bool? Confirmed { get; set; }
+        public UserStatus? Status { get; set; }
         public string Mobile { get; set; }
     }
 }

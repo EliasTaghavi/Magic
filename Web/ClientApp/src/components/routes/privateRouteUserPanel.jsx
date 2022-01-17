@@ -4,15 +4,11 @@ import TokenStore from "../../utils/tokenStore";
 
 const PrivateRouteUserPanel = (props) => {
   let {component: Component, ...restProps} = props;
-  const token = TokenStore.getToken();
-  const type = TokenStore.getUserType();
+  const userToken = TokenStore.getUserToken();
   return (
     <Route {...restProps} render={(props) => (
-      token ?
-        type === 'user' ? (
+       userToken ? (
         <Component {...props} />
-      ) : (
-        <Redirect to={{pathname: '/shop-panel', state: {from: props?.location}}}/>
       ) : (
         <Redirect to={{pathname: '/login', state: {from: props?.location}}}/>
       )

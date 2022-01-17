@@ -10,6 +10,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Identity.Repos
 {
@@ -68,23 +69,22 @@ namespace Infrastructure.Identity.Repos
         public PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto)
         {
             var query = GetSet();
-            if (dto.MetaData.Confirmed.HasValue)
+            if (dto.MetaData.Status.HasValue)
             {
-                if (dto.MetaData.Confirmed.Value)
-                {
-                    query = query.Where(x => x.UserStatus == UserStatus.Confirmed);
-                }
-                else
-                {
-                    query = query.Where(x => x.UserStatus != UserStatus.Confirmed);
-                }
+
+                query = query.Where(x => x.UserStatus == dto.MetaData.Status.Value);
+
             }
-            if (string.IsNullOrEmpty(dto.MetaData.Mobile))
+            if (!string.IsNullOrEmpty(dto.MetaData.Mobile))
             {
                 query = query.Where(x => x.Mobile.Contains(dto.MetaData.Mobile));
             }
+            if (!string.IsNullOrEmpty(dto.SortField))
+            {
+                query = query.OrderBy(dto.SortField);
+            }
             int count = query.Count();
-            var result = query.Skip(dto.Index * dto.Size).Take(dto.Size).ToList();
+            var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
             return new PagedListDto<UserListDto>
             {
                 Count = count,

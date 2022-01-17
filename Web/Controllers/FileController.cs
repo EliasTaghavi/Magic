@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
+using Web.Helper;
 using Web.Mappers;
 using Web.Models.File;
 
@@ -27,7 +26,7 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult UploadIdentity([FromForm] IdentityFileModel model)
         {
-            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData).Value;
+            var userId = User.GetUserId();
             var dto = model.ToDto(userId);
             var response = fileManager.UploadIdentities(dto);
             return Ok(response);

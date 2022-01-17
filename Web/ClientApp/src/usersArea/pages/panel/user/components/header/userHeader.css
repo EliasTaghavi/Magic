@@ -1,0 +1,99 @@
+.userLogo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 40px;
+}
+
+.userPanelDrawer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 100vh;
+    box-shadow: 0 0 10px #444444;
+    overflow: hidden;
+    background-color: #343a40;
+}
+
+.z1022 {
+    z-index: 1022;
+}
+
+.w0 {
+    width: 0;
+}
+
+.w60 {
+    width: 60px;
+}
+
+.w280 {
+    width: 280px;
+}
+
+.opacity0 {
+    opacity: 0;
+}
+
+.menuItem {
+    padding: 0 0.5rem;
+}
+
+.menuLink {
+    width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.menuLink:hover {
+    color: white;
+    background-color: #ffffff11;
+}
+
+.nav-link {
+    white-space: nowrap !important;
+}
+
+.logoContainer {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    height: 50px;
+    object-fit: contain;
+}
+
+.userHeaderMainNav {
+    width: 100%;
+    padding: 0;
+    background-color: white;
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.panelDrawer {
+    position: fixed;
+    width: 280px;
+    z-index: 2520;
+    top: 0;
+    right: -80%;
+    overflow-y: auto;
+    transition: 0.3s;
+}
+.z521 {
+    z-index: 520;
+}

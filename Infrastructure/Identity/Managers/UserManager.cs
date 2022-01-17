@@ -1,5 +1,6 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
+using Core.Base.Enums;
 using Core.File.Enums;
 using Core.File.Repos;
 using Core.Identity.Dto;
@@ -9,6 +10,11 @@ using Core.Identity.Interfaces;
 using Core.Identity.Managers;
 using Core.Identity.Mappers;
 using Core.Identity.Repos;
+using Core.QRString.Repos;
+using Core.Services;
+using Core.Services.Dto;
+using Core.Shop.Dto;
+using Core.Shop.Repos;
 using Infrastructure.Identity.Exceptions;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -26,6 +32,9 @@ namespace Infrastructure.Identity.Managers
         protected ITokenManager TokenManager;
         private readonly IRoleRepo RoleRepo;
         private readonly IAppFileRepo appFileRepo;
+        private readonly ISMSService sMSService;
+        private readonly IQRStringRepo qRStringRepo;
+        private readonly IShopRepo shopRepo;
         protected ITokenRepo TokenRepo;
 
         protected IUserRepo UserRepo;
@@ -36,7 +45,7 @@ namespace Infrastructure.Identity.Managers
                            ITokenRepo tokenRepo,
                            ITokenManager tokenManager,
                            IRoleRepo roleRepo,
-                           IAppFileRepo appFileRepo)
+                           IAppFileRepo appFileRepo, ISMSService sMSService, IQRStringRepo qRStringRepo, IShopRepo shopRepo)
         {
             UserRepo = userRepo;
             JwtTokenHandler = jwtTokenHandler;
@@ -45,6 +54,9 @@ namespace Infrastructure.Identity.Managers
             TokenManager = tokenManager;
             RoleRepo = roleRepo;
             this.appFileRepo = appFileRepo;
+            this.sMSService = sMSService;
+            this.qRStringRepo = qRStringRepo;
+            this.shopRepo = shopRepo;
         }
 
         public ManagerResult<bool> Create(User User, string Password)
@@ -137,17 +149,17 @@ namespace Infrastructure.Identity.Managers
             throw new NotImplementedException();
         }
 
-        public ManagerResult<bool> CreateByPhone(CreateUserDto dto)
+        public ManagerResult<User> CreateByPhone(CreateUserDto dto)
         {
             try
             {
                 User model = dto.ToModel();
                 User mangerResult = UserRepo.Create(model);
-                return new ManagerResult<bool>(true);
+                return new ManagerResult<User>(mangerResult);
             }
             catch (Exception ex)
             {
-                return new ManagerResult<bool>(false)
+                return new ManagerResult<User>(null)
                 {
                     Success = false,
                     Errors = new List<string>() { ex.Message },
@@ -162,8 +174,18 @@ namespace Infrastructure.Identity.Managers
             user.Surname = dto.LastName;
             user.Address = dto.Address;
             user.Birthday = dto.Birthday;
+            user.RefCode = dto.RefCode;
             user.UserStatus = UserStatus.NotConfirmed;
             UserRepo.Update(user);
+            qRStringRepo.DisableAllUserQR(userId);
+            var qr = new Core.QRString.Entities.QRString
+            {
+                Enable = true,
+                QR = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                UserId = userId,
+            };
+            qRStringRepo.Create(qr);
             return new ManagerResult<bool>(true)
             {
                 Code = 16
@@ -187,7 +209,54 @@ namespace Infrastructure.Identity.Managers
         {
             var user = UserRepo.Read(id);
             user.UserStatus = UserStatus.Confirmed;
+            UserRepo.Update(user);
+            sMSService.SendConfirm(user.Mobile);
             return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Lock(string id)
+        {
+            var user = UserRepo.Read(id);
+            user.UserStatus = user.UserStatus == UserStatus.Locked ? UserStatus.Confirmed : UserStatus.Locked;
+            UserRepo.Update(user);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Reject(RejectMessageDto dto)
+        {
+            var user = UserRepo.Read(dto.UserId);
+            user.UserStatus = UserStatus.Rejected;
+            UserRepo.Update(user);
+            sMSService.SendReject(user.Mobile, dto.Message);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser()
+        {
+            var dto = new PageRequestDto<UserListFilterDto>
+            {
+                Index = 1,
+                MetaData = new UserListFilterDto(),
+                Order = SortOrder.ASC,
+                Size = 5,
+                SortField = "CreatedDate"
+            };
+            return Search(dto);
+        }
+
+        public ManagerResult<List<ShopRefCodeCountDto>> GetRank()
+        {
+            var refCountList = UserRepo.GetSet().GroupBy(x => x.RefCode)
+                .Select(g => new { refCode = g.Key, count = g.Count() });
+            var result = refCountList.Join(shopRepo.GetSet(),
+                refCount => refCount.refCode,
+                shop => shop.ReferralCode,
+                (refCount, shop) => new
+                {
+                    shop.Name,
+                    refCount.count
+                }).Select(x => new ShopRefCodeCountDto {Count = x.count, Name = x.Name }).ToList();
+            return new ManagerResult<List<ShopRefCodeCountDto>>(result);
         }
     }
 }

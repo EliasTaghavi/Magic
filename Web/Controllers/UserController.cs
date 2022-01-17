@@ -29,7 +29,7 @@ namespace Web.Controllers
         public IActionResult Create([FromBody] CreateUserViewModel viewModel)
         {
             Core.Identity.Dto.CreateUserDto dto = viewModel.ToDto();
-            Core.Base.Entities.ManagerResult<bool> response = UserManager.CreateByPhone(dto);
+            var response = UserManager.CreateByPhone(dto);
             return Utils.BuildResult(response);
         }
 
@@ -78,14 +78,47 @@ namespace Web.Controllers
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = UserManager.Search(dto);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Confirm([FromQuery] string id)
+        {
+            var response = UserManager.Confirm(id);
             return Ok(response);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm(string id)
+        public IActionResult Lock([FromQuery] string id)
         {
-            var response = UserManager.Confirm(id);
+            var response = UserManager.Lock(id);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult Reject([FromBody] RejectMessageViewModel viewModel)
+        {
+            var dto = viewModel.ToDto();
+            var response = UserManager.Reject(dto);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetLastFiveNewUser()
+        {
+            var response = UserManager.GetLastFiveNewUser();
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetRank()
+        {
+            var response = UserManager.GetRank();
             return Ok(response);
         }
     }

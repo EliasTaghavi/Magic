@@ -30,6 +30,8 @@ namespace Core.Identity.Entities
         public bool MobileConfirmed { get; set; }
         public string Address { get; set; }
         public UserStatus UserStatus { get; set; }
+        public UserType UserType { get; set; }
+        public string RefCode { get; set; }
 
         public User()
         {

@@ -1,4 +1,5 @@
 ﻿using Core.Identity.Dto;
+using Core.Services.Dto;
 using Web.Models.User;
 
 namespace Web.Mappers
@@ -23,6 +24,7 @@ namespace Web.Mappers
                 Birthday = viewModel.Birthday,
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
+                RefCode = viewModel.RefCode,
             };
         }
 
@@ -30,8 +32,33 @@ namespace Web.Mappers
         {
             return new UserListFilterDto
             {
-                Confirmed = viewModel.Confirmed,
+                Status = viewModel.Status,
                 Mobile = viewModel.Mobile,
+            };
+        }
+
+        public static UserListViewModel ToViewModel(this UserListDto dto)
+        {
+            return new UserListViewModel
+            {
+                Address = dto.Address,
+                Birthday = dto.Birthday,
+                FirstName = dto.FirstName,
+                Id = dto.Id,
+                IdentityURL = dto.IdentityURL,
+                LastName = dto.LastName,
+                Mobile = dto.Mobile,
+                SelfieURL = dto.SelfieURL,
+                Status = dto.Status,
+                CeatedDate = dto.CreatedDate
+            };
+        }
+        public static RejectMessageDto ToDto(this RejectMessageViewModel viewModel)
+        {
+            return new RejectMessageDto
+            {
+                Message = viewModel.Message,
+                UserId = viewModel.UserId,
             };
         }
     }

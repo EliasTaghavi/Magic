@@ -22,7 +22,7 @@ namespace Infrastructure.File.Managers
 
         public ManagerResult<bool> UploadIdentities(IdentityFileDto dto)
         {
-            if (dto.Selfie == null || dto.Identity == null)
+            if (dto.SelfieDto == null)
             {
                 return new ManagerResult<bool>
                 {
@@ -31,29 +31,34 @@ namespace Infrastructure.File.Managers
                     Success = false
                 };
             }
-            var identityFileName = fileService.SaveIdentity(dto.Identity, dto.IdentityExt);
-            var idFile = new AppFile
-            {
-                Id = identityFileName,
-                Enable = true,
-                FileExtension = dto.IdentityExt,
-                ObjectState = ObjectState.Added,
-                Type = FileType.Identity,
-                UserId = dto.UserId,
-            };
-            fileRepo.Create(idFile);
-
-            var selfieFileName = fileService.SaveIdentity(dto.Selfie, dto.SelfieExt);
+            var selfieFileName = fileService.SaveIdentity(dto.SelfieDto);
             var SelfieFile = new AppFile
             {
                 Id = selfieFileName,
                 Enable = true,
-                FileExtension = dto.SelfieExt,
+                FileExtension = dto.SelfieDto.Extension,
                 ObjectState = ObjectState.Added,
                 Type = FileType.Selfie,
                 UserId = dto.UserId,
             };
             fileRepo.Create(SelfieFile);
+
+            if (dto.IdentityDto != null)
+            {
+                
+
+                var identityFileName = fileService.SaveIdentity(dto.IdentityDto);
+                var idFile = new AppFile
+                {
+                    Id = identityFileName,
+                    Enable = true,
+                    FileExtension = dto.IdentityDto.Extension,
+                    ObjectState = ObjectState.Added,
+                    Type = FileType.Identity,
+                    UserId = dto.UserId,
+                };
+                fileRepo.Create(idFile);
+            }
 
             return new ManagerResult<bool>
             {

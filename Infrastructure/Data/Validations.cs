@@ -48,6 +48,42 @@ namespace Infrastructure.Data
             });
         }
 
+        public static void PackValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Pack.Entities.Pack>(pack =>
+            {
+                pack.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                pack.HasKey(x => x.Id);
+                pack.Ignore(x => x.ObjectState);
+            });
+        }
+
+        public static void ShopValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Shop.Entities.Shop>(shop =>
+            {
+                shop.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                shop.HasKey(x => x.Id);
+                shop.Ignore(x => x.ObjectState);
+                shop.HasIndex(x => x.ReferralCode)
+                .IsUnique();
+            });
+        }
+
+        public static void PackBuyValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Pack.Entities.PackBuy>(packBuy =>
+            {
+                packBuy.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                packBuy.HasKey(x => x.Id);
+                packBuy.HasIndex(x => new { x.TrackingNumber, x.GatewayName }).IsUnique();
+                packBuy.Ignore(x => x.ObjectState);
+            });
+        }
+
         public static void RoleValidation(this ModelBuilder builder)
         {
             builder?.Entity<Role>(role =>
@@ -84,6 +120,17 @@ namespace Infrastructure.Data
         {
             builder?.Entity<UserRole>()
                     .HasKey(ur => new { ur.UserId, ur.RoleId });
+        }
+
+        public static void QRValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.QRString.Entities.QRString>(qrs =>
+            {
+                qrs.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                qrs.HasKey(x => x.Id);
+                qrs.Ignore(x => x.ObjectState);
+            });
         }
     }
 }

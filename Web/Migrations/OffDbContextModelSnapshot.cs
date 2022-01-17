@@ -33,6 +33,9 @@ namespace Web.Migrations
                     b.Property<string>("FileExtension")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ShopId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<byte>("Type")
                         .HasColumnType("tinyint");
 
@@ -40,6 +43,8 @@ namespace Web.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
 
                     b.HasIndex("UserId");
 
@@ -147,7 +152,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "b72799ea-f2b8-4528-9387-2f1f339dcd1c",
-                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(6454),
+                            CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
                             EnName = "Admin",
                             Enable = true,
                             Name = "مدیر سیستم"
@@ -155,7 +160,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "f62ebb43-e65d-493d-965a-1c0bbf94b15f",
-                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7962),
+                            CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
                             EnName = "God",
                             Enable = true,
                             Name = "بالای بالا"
@@ -163,7 +168,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "815cc1c6-de17-46e7-a3e5-f73dfc818da3",
-                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7966),
+                            CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
                             EnName = "Support",
                             Enable = true,
                             Name = "پشتیبان"
@@ -171,7 +176,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = "3f7566d3-7a9e-4fdb-8267-eceba8cfb024",
-                            CreatedDate = new DateTime(2021, 12, 31, 19, 36, 33, 42, DateTimeKind.Utc).AddTicks(7969),
+                            CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
                             EnName = "User",
                             Enable = true,
                             Name = "کاربر"
@@ -242,6 +247,9 @@ namespace Web.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("RefCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Serial")
                         .HasColumnType("nvarchar(max)");
 
@@ -249,6 +257,9 @@ namespace Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserType")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -292,8 +303,174 @@ namespace Web.Migrations
                     b.ToTable("UserRole");
                 });
 
+            modelBuilder.Entity("Core.Pack.Entities.Pack", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Packs");
+                });
+
+            modelBuilder.Entity("Core.Pack.Entities.PackBuy", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("GatewayName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PackId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("PayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("PayStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("TrackingNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PackId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("TrackingNumber", "GatewayName")
+                        .IsUnique()
+                        .HasFilter("[GatewayName] IS NOT NULL");
+
+                    b.ToTable("PackBuys");
+                });
+
+            modelBuilder.Entity("Core.QRString.Entities.QRString", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QRs");
+                });
+
+            modelBuilder.Entity("Core.Shop.Entities.Shop", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferralCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReferralCode")
+                        .IsUnique()
+                        .HasFilter("[ReferralCode] IS NOT NULL");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Shops");
+                });
+
+            modelBuilder.Entity("Core.Shop.Entities.ShopOff", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<byte>("ObjectState")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShopId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("ShopOff");
+                });
+
             modelBuilder.Entity("Core.File.Entities.AppFile", b =>
                 {
+                    b.HasOne("Core.Shop.Entities.Shop", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("ShopId");
+
                     b.HasOne("Core.Identity.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -338,11 +515,60 @@ namespace Web.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Core.Pack.Entities.PackBuy", b =>
+                {
+                    b.HasOne("Core.Pack.Entities.Pack", "Pack")
+                        .WithMany()
+                        .HasForeignKey("PackId");
+
+                    b.HasOne("Core.Identity.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Pack");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.QRString.Entities.QRString", b =>
+                {
+                    b.HasOne("Core.Identity.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Shop.Entities.Shop", b =>
+                {
+                    b.HasOne("Core.Identity.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Shop.Entities.ShopOff", b =>
+                {
+                    b.HasOne("Core.Shop.Entities.Shop", "Shop")
+                        .WithMany("Offs")
+                        .HasForeignKey("ShopId");
+
+                    b.Navigation("Shop");
+                });
+
             modelBuilder.Entity("Core.Identity.Entities.User", b =>
                 {
                     b.Navigation("AccessTokens");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Core.Shop.Entities.Shop", b =>
+                {
+                    b.Navigation("Offs");
+
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

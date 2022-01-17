@@ -21,15 +21,10 @@ namespace Web.Services
                         {
                             accounts.AddInMemory(account =>
                             {
-                                account.Name = "Mellat"; // optional if there is only 1 account for this gateway
-                                account.MerchantId = "";
+                                account.MerchantId = "cdf6b9b5-97b4-488b-ab35-44b0bdd79bbd";
                                 account.IsSandbox = true;
                             });
                         });
-
-                    gateways
-                        .AddParbadVirtual()
-                        .WithOptions(options => options.GatewayPath = "/MyVirtualGateway");
                 })
                 .ConfigureHttpContext(builder => builder.UseDefaultAspNetCore())
                 .ConfigureStorage(builder => builder.UseEfCore(options =>

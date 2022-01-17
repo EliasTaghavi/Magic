@@ -1,4 +1,5 @@
-﻿using Core.File.Entities;
+﻿using Core.Base.Dto;
+using Core.File.Entities;
 using System.Collections.Generic;
 using System.IO;
 
@@ -6,7 +7,7 @@ namespace Core.Services
 {
     public interface IFileService
     {
-        string SaveIdentity(Stream idStream, string identityExt);
+        string SaveIdentity(InputFileDto inputFileDto);
 
         List<AppFile> SaveSignUpFile(List<FileStream> Pics);
     }

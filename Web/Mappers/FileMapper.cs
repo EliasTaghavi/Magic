@@ -11,10 +11,16 @@ namespace Web.Mappers
             return new IdentityFileDto
             {
                 UserId = userId,
-                Identity = model.Identity.OpenReadStream(),
-                IdentityExt = MimeTypesMap.GetExtension(model.Identity.ContentType),
-                Selfie = model.Selfie.OpenReadStream(),
-                SelfieExt = MimeTypesMap.GetExtension(model.Selfie.ContentType)
+                IdentityDto = model?.Identity != null ? new Core.Base.Dto.InputFileDto
+                {
+                    Stream = model?.Identity?.OpenReadStream(),
+                    Extension = MimeTypesMap.GetExtension(model?.Identity?.ContentType)
+                } : null,
+                SelfieDto = model?.Selfie != null ? new Core.Base.Dto.InputFileDto
+                {
+                    Stream = model?.Selfie?.OpenReadStream(),
+                    Extension = MimeTypesMap.GetExtension(model?.Selfie?.ContentType)
+                } : null
             };
         }
     }

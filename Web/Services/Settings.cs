@@ -10,6 +10,7 @@ namespace Web.Services
         {
             services.Configure<SMSSettings>(configuration?.GetSection("SMS"));
             services.Configure<FileSettings>(configuration?.GetSection("File"));
+            services.Configure<FileSettings>(configuration?.GetSection("Min"));
         }
     }
 }
