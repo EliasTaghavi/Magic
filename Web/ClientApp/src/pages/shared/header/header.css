@@ -1,7 +1,7 @@
 .headerMainContainer {
     width: 100%;
     display: flex;
-    position: absolute;
+    position: fixed;
     z-index: 250;
     height: 65px;
     align-items: center;

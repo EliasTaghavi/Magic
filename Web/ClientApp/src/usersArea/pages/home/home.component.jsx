@@ -163,7 +163,7 @@ const Home = () => {
             {/*</p>*/}
             <p className="text-white mb-1 fs30 text-center text-md-right lh26">برای دریافت اشتراک <span className="textSecondary fs30 font-weight-bold">کلیک </span>کنید.</p>
           </div>
-          <Link to="" className="signUpLink centered textMain">
+          <Link to="/login" className="signUpLink centered textMain">
             <p className="noBreak m-0">ثبت نام</p>
             <span className="p-2 bgMain rounded-circle d-flex centered mr-4">
               <FontAwesomeIcon icon={faArrowLeft} color="white" className="fs16"/>
