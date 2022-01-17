@@ -13,6 +13,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 	const [ownerFirstName, setOwnerFirstName] = useState('');
 	const [ownerLastName, setOwnerLastName] = useState('');
 	const [ownerMobile, setOwnerMobile] = useState('');
+	const [discount, setDiscount] = useState('');
 	const [address, setAddress] = useState('');
 	const [focused, setFocused] = useState('');
 	const [loader, setLoader] = useState(false);
@@ -45,6 +46,9 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 			case 'ownerMobile':
 				setOwnerMobile(target.value);
 				break;
+			case 'discount':
+				setDiscount(target.value);
+				break;
 			case 'address':
 				setAddress(target.value);
 				break;
@@ -62,6 +66,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 			ownerLastName,
 			ownerMobile,
 			address,
+			discount,
 		}
 		CreateShopValidation(data)
 			.then((response) => {
@@ -85,6 +90,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 			ownerFirstName,
 			ownerLastName,
 			ownerMobile,
+			discount,
 			address,
 		};
 		SendCreateShopData(data)
@@ -225,6 +231,27 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 							<span className="invalid-feedback mt-2 fs14" style={{
 								display: errors['ownerMobile'] ? 'block' : 'none',
 							}}>{errors['ownerMobile']}</span>
+						</div>
+						<div className="d-flex flex-column align-items-start justify-content-center col-12 col-md-6 mt-4">
+							<label htmlFor="discount" className={`transition fs14 ${focused === 'discount' ? 'textMain' : 'textThird'}`}>
+								درصد تخفیف قابل ارائه<span style={{color: 'red'}}>{`\xa0*`}</span>
+							</label>
+							<input
+								id="discount"
+								name="discount"
+								type="text"
+								autoFocus={false}
+								required={true}
+								className={`form-control input ${errors['discount'] && 'is-invalid'}`}
+								value={discount}
+								onChange={changeValue}
+								placeholder="..."
+								onFocus={focusedFn}
+								onBlur={unfocusedFn}
+							/>
+							<span className="invalid-feedback mt-2 fs14" style={{
+								display: errors['discount'] ? 'block' : 'none',
+							}}>{errors['discount']}</span>
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-center col-12 mt-4">
 							<label htmlFor="address" className={`transition fs14 ${focused === 'address' ? 'textMain' : 'textThird'}`}>

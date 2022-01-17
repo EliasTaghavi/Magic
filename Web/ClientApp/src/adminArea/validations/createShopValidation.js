@@ -1,6 +1,7 @@
 const CreateShopValidation = (data) => {
-	let {name, phone, ownerFirstName, ownerLastName, ownerMobile, address} = data;
+	let {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address} = data;
 	let onlyNumbersRegex = /^[0-9]+$/;
+	let onlyFloatNumber = /^-?\d*(\.\d+)?$/;
 	let mobileRegex = /^(09)\d{9}$/;
 	let errors = {};
 	return new Promise((value) => {
@@ -18,6 +19,12 @@ const CreateShopValidation = (data) => {
 		}
 		if (!ownerMobile || !mobileRegex.test(ownerMobile)) {
 			errors['ownerMobile'] = 'شماره موبایل صاحب فروشگاه اشتباه است.';
+		}
+		if (!ownerMobile || !mobileRegex.test(ownerMobile)) {
+			errors['ownerMobile'] = 'شماره موبایل صاحب فروشگاه اشتباه است.';
+		}
+		if (!discount || discount.length < 1 || !onlyFloatNumber.test(discount)) {
+			errors['discount'] = 'تخفیف اشتباه است.';
 		}
 		if (!address || address?.length < 1) {
 			errors['address'] = 'آدرس فروشگاه اشتباه است.';

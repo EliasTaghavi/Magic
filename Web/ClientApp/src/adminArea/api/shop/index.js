@@ -63,7 +63,7 @@ export const deleteShop = (data) => {
 };
 
 export const SendCreateShopData = (data) => {
-	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, address} = data;
+	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -76,6 +76,7 @@ export const SendCreateShopData = (data) => {
 		userMobile: ownerMobile,
 		userName: ownerFirstName,
 		userSurname: ownerLastName,
+		discount,
 	});
 
 	return axios.post('/api/shop/create', body,{headers}).then((res) => {

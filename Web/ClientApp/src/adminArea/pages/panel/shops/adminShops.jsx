@@ -3,7 +3,7 @@ import SearchBox from "../components/SearchBox";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../components/RenderPageButtons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faTrash, faEdit, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import CreateShopModal from "./components/createShopModal";
 import {adminGetAllShops, deleteShop} from "../../../api/shop";
 import PageNumberGenerator from "../components/PageNumberGenerator";
@@ -22,6 +22,9 @@ const AdminShops = () => {
 	const [data, setData] = useState([]);
 	const [deleteItemModal, setDeleteItemModal] = useState(null);
 	const [createShopModal, setCreateShopModal] = useState(false);
+	const [discountEditEnable, setDiscountEditEnable] = useState(undefined);
+	const [discount, setDiscount] = useState('');
+	const [discountError, setDiscountError] = useState(false);
 
 	const searchData = (e) => {
 		e.preventDefault();
@@ -45,10 +48,8 @@ const AdminShops = () => {
 			size: data?.pageSize ?? pageSize,
 			keyword: data?.searchValue ?? searchValue,
 		};
-		console.log(filteredData);
 		adminGetAllShops(filteredData)
 			.then((response) => {
-				console.log(77, response);
 				let {success, result: {count, items}} = response
 				if (response) {
 					if (response === 401) {
@@ -112,6 +113,15 @@ const AdminShops = () => {
 			});
 	};
 
+	const validateDiscount = () => {
+		let onlyFloatNumber = /^-?\d*(\.\d+)?$/;
+		if (!discount || discount.length < 1 || !onlyFloatNumber.test(discount)) {
+			setDiscountError(true);
+		} else {
+
+		}
+	}
+
 	return (
 		<div className="card cardPrimary px-3 w-100">
 			<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
@@ -136,11 +146,13 @@ const AdminShops = () => {
 							<th style={{minWidth: 120}}>شماره تماس مدیر</th>
 							<th style={{minWidth: 120}}>تاریخ عضویت</th>
 							<th style={{minWidth: 120}}>آدرس</th>
+							<th style={{minWidth: 120}}>درصد تخفیف</th>
 							<th style={{minWidth: 120}}>عملیات</th>
 						</tr>
 						</thead>
 						<tbody className="w-100">
 						{!bigLoader && data.length > 0 && data.map((item, index) => {
+							console.log(12121, discountEditEnable, item);
 							return (
 								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
@@ -150,6 +162,63 @@ const AdminShops = () => {
 									<td>{item?.userMobile ?? '-----'}</td>
 									<td>{item?.createdDate ?? '-----'}</td>
 									<td>{item?.address ?? '-----'}</td>
+									<td className="discount">
+										<div className="d-flex align-items-center justify-content-start">
+											{discountEditEnable?.id !== item?.id && <p className="fs18 m-0">{'25%'}</p>}
+											{discountEditEnable?.id === item?.id && (
+												<input
+													id="discount"
+													name="discount"
+													type="text"
+													autoFocus={true}
+													required={true}
+													className={`form-control input ${discountError && 'is-invalid'}`}
+													value={discount}
+													onChange={(e) => {
+														setDiscountError(false);
+														setDiscount(e.target.value);
+													}}
+													placeholder="..."
+												/>
+											)}
+											{(discountEditEnable?.id !== item?.id) && <OverlayTrigger
+												placement='left'
+												overlay={
+													<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir'}}>
+														ویرایش
+													</Tooltip>
+												}>
+												<button type="button" className="btn btn-transparent outline" onClick={() => setDiscountEditEnable(item)}>
+													<FontAwesomeIcon icon={faEdit} className="fs14 text-secondary" />
+												</button>
+											</OverlayTrigger>}
+											{(discountEditEnable?.id === item?.id) && <OverlayTrigger
+												placement='left'
+												overlay={
+													<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir'}}>
+														تایید
+													</Tooltip>
+												}>
+												<button type="submit" className="btn btn-transparent outline" onClick={() => validateDiscount()}>
+													<FontAwesomeIcon icon={faCheck} className="text-success" />
+												</button>
+											</OverlayTrigger>}
+											{(discountEditEnable?.id === item?.id) && <OverlayTrigger
+												placement='left'
+												overlay={
+													<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir'}}>
+														انصراف
+													</Tooltip>
+												}>
+												<button type="submit" className="btn btn-transparent outline" onClick={() => {
+													setDiscountEditEnable(undefined);
+													// setPriceEditEnable(undefined);
+												}}>
+													<FontAwesomeIcon icon={faTimes} className="text-danger" />
+												</button>
+											</OverlayTrigger>}
+										</div>
+									</td>
 									<td>
 										<OverlayTrigger
 											key='details'
