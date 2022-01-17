@@ -83,6 +83,17 @@ namespace Infrastructure.Data
             });
         }
 
+        public static void ShopOffValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Shop.Entities.ShopOff>(shopOff =>
+            {
+                shopOff.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                shopOff.HasKey(x => x.Id);
+                shopOff.Ignore(x => x.ObjectState);
+            });
+        }
+
         public static void PackBuyValidation(this ModelBuilder builder)
         {
             builder.Entity<Core.Pack.Entities.PackBuy>(packBuy =>

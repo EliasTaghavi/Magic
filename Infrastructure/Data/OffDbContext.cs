@@ -2,6 +2,7 @@
 using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Pack.Entities;
+using Core.Shop.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -20,6 +21,7 @@ namespace Infrastructure.Data
         public DbSet<PackBuy> PackBuys { get; set; }
         public DbSet<Core.QRString.Entities.QRString> QRs { get; set; }
         public DbSet<Core.Shop.Entities.Shop> Shops { get; set; }
+        public DbSet<ShopOff> shopOffs { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
@@ -35,6 +37,7 @@ namespace Infrastructure.Data
             builder.CodeValidation();
             builder.PackValidation();
             builder.ShopValidation();
+            builder.ShopOffValidation();
             builder.PackBuyValidation();
             builder.QRValidation();
             builder.AppFileValidation();
