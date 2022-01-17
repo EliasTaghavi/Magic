@@ -94,3 +94,36 @@ export const SendCreateShopData = (data) => {
 			}
 		})
 }
+
+export const editDiscount = (data) => {
+	const {newDiscount, shopId} = data;
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+	let body = JSON.stringify({
+		// name,
+		// phone,
+		// address,
+		// userMobile: ownerMobile,
+		// userName: ownerFirstName,
+		// userSurname: ownerLastName,
+		// LatestOff: discount,
+	});
+
+	return axios.post('/api/shop/create', body,{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
