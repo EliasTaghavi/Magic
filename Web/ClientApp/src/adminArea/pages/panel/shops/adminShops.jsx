@@ -123,7 +123,7 @@ const AdminShops = () => {
 			setSubmitDiscountLoader(true);
 			let data = {
 				shopId: discountEditEnable?.id,
-				newDiscount: ,
+				newDiscount: discount,
 			}
 			editDiscount(data)
 				.then((response) => {
@@ -132,9 +132,11 @@ const AdminShops = () => {
 						if (response === 401) {
 							// do nothing but in another api's should logout from system
 						} else if (success) {
+							setDiscount('');
 							setDiscountEditEnable(undefined);
 							getData();
 							setSubmitDiscountLoader(false);
+							toast.success('آیتم مورد نظر با موفقیت آپدیت شد', toastOptions);
 						}
 					} else {
 						toast.error('خطای سرور', toastOptions);
@@ -199,7 +201,7 @@ const AdminShops = () => {
 													autoFocus={true}
 													required={true}
 													className={`form-control input ${discountError && 'is-invalid'}`}
-													value={item?.latestOff}
+													value={discount}
 													onChange={(e) => {
 														setDiscountError(false);
 														setDiscount(e.target.value);
@@ -214,7 +216,10 @@ const AdminShops = () => {
 														ویرایش
 													</Tooltip>
 												}>
-												<button type="button" className="btn btn-transparent outline" onClick={() => setDiscountEditEnable(item)}>
+												<button type="button" className="btn btn-transparent outline" onClick={() => {
+													setDiscount(item?.latestOff);
+													setDiscountEditEnable(item);
+												}}>
 													<FontAwesomeIcon icon={faEdit} className="fs14 text-secondary" />
 												</button>
 											</OverlayTrigger>}
@@ -227,7 +232,7 @@ const AdminShops = () => {
 												}>
 												<button type="submit" className="btn btn-transparent outline" onClick={() => validateDiscount()}>
 													{!submitDiscountLoader && <FontAwesomeIcon icon={faCheck} className="text-success"/>}
-													{submitDiscountLoader && <Loader type="ThreeDots" color='#ff521d' height={4} width={100} className="loader"/>}
+													{submitDiscountLoader && <Loader type="ThreeDots" color='#ff521d' height={6} width={20} className="loader"/>}
 												</button>
 											</OverlayTrigger>}
 											{(discountEditEnable?.id === item?.id) && <OverlayTrigger
@@ -238,6 +243,7 @@ const AdminShops = () => {
 													</Tooltip>
 												}>
 												<button type="submit" className="btn btn-transparent outline" disabled={submitDiscountLoader} onClick={() => {
+													setDiscount('');
 													setDiscountEditEnable(undefined);
 												}}>
 													<FontAwesomeIcon icon={faTimes} className="text-danger" />

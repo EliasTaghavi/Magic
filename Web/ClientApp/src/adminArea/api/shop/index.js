@@ -103,16 +103,11 @@ export const editDiscount = (data) => {
 		'Authorization': `Bearer ${token}`
 	};
 	let body = JSON.stringify({
-		// name,
-		// phone,
-		// address,
-		// userMobile: ownerMobile,
-		// userName: ownerFirstName,
-		// userSurname: ownerLastName,
-		// LatestOff: discount,
+		shopId,
+		percentage: newDiscount,
 	});
 
-	return axios.post('/api/shop/create', body,{headers}).then((res) => {
+	return axios.post('/api/shop/updateOff', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

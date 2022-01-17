@@ -131,7 +131,7 @@ const AdminRate = () => {
 							</thead>
 							<tbody className="w-100">
 							{!bigLoader && shops.length > 0 && shops.map((item, index) => {
-								let inRank = item?.count > prevRate && index < 4;
+								let inRank = item?.count > prevRate && index < 4; // FIXME
 								return (
 									<tr key={Math.random().toString()} className="customTr text-center">
 										<td>{index + 1}</td>

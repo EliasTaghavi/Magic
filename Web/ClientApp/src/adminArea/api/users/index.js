@@ -56,14 +56,18 @@ export const sendLockUserData = (userId) => {
 		})
 };
 
-export const confirmUser = (userId) => {
+export const confirmUser = (userId, status) => {
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
+	let body = JSON.stringify({
+		userId,
+		type: status,
+	});
 
-	return axios.post(`/api/user/confirm?id=${userId}`, null,{headers}).then((res) => {
+	return axios.post('/api/user/confirm', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
@@ -106,18 +110,14 @@ export const rejectUser = (userId, message) => {
 		})
 };
 
-export const getUserJobType = (userId, message) => {
+export const getUserJobType = () => {
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
-	let body = JSON.stringify({
-		userId,
-		message,
-	});
 
-	return axios.post('/api/user/reject', body,{headers}).then((res) => {
+	return axios.get('/api/user/getTypes', {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
