@@ -25,17 +25,17 @@ const Header = ({noLogin}) => {
                 </Link>
               </li>
               <li>
-                <Link to="/" className="menuBtn">
+                <Link to="/terms" className="menuBtn">
                   قوانین و مقررات
                 </Link>
               </li>
               <li>
-                <Link to="/" className="menuBtn">
+                <Link to="/about-us" className="menuBtn">
                   درباره ما
                 </Link>
               </li>
               <li>
-                <Link to="/" className="menuBtn">
+                <Link to="/contact-us" className="menuBtn">
                   تماس با ما
                 </Link>
               </li>
@@ -72,13 +72,13 @@ const Header = ({noLogin}) => {
               </Link>
             </li>
             <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
-              <Link to="/aboutus" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
+              <Link to="/about-us" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
                 <FontAwesomeIcon icon={faUsers} className="text-primary ml-3" style={{fontSize: 20}}/>
                 درباره ما
               </Link>
             </li>
             <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
-              <Link to="/contactus" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
+              <Link to="/contact-us" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
                 <FontAwesomeIcon icon={faPhone} className="text-primary ml-3" style={{fontSize: 20}}/>
                 تماس با ما
               </Link>

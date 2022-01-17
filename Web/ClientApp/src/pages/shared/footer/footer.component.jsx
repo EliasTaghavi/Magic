@@ -20,9 +20,10 @@ const Footer = () => {
             <Link to="" className="fs14 text-secondary py-2">فست فود داژو</Link>
           </div>
           <div className="parts mt-4 mt-md-0">
-            <p className="fs16 textMain font-weight-bold">تماس با ما</p>
-            <Link to="" className="fs14 text-secondary py-2">034-12345678</Link>
-            <Link to="" className="fs14 text-secondary py-2">test@gmail.com</Link>
+            <p className="fs16 textMain font-weight-bold">با مجیک آف</p>
+            <Link to="/about-us" className="fs14 text-secondary py-2">درباره ما</Link>
+            <Link to="/terms" className="fs14 text-secondary py-2">قوانین و مقررات</Link>
+            <Link to="/contact-us" className="fs14 text-secondary py-2">تماس با ما</Link>
           </div>
         </div>
         <div className="w-100 cmy5 d-flex flex-column-reverse flex-md-row align-items-center align-items-md-center justify-content-between">
