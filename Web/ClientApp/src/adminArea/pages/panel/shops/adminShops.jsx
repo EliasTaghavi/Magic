@@ -5,7 +5,7 @@ import RenderPageButtons from "../components/RenderPageButtons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTrash, faEdit, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import CreateShopModal from "./components/createShopModal";
-import {adminGetAllShops, deleteShop} from "../../../api/shop";
+import {adminGetAllShops, deleteShop, editDiscount} from "../../../api/shop";
 import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
@@ -25,6 +25,7 @@ const AdminShops = () => {
 	const [discountEditEnable, setDiscountEditEnable] = useState(undefined);
 	const [discount, setDiscount] = useState('');
 	const [discountError, setDiscountError] = useState(false);
+	const [submitDiscountLoader, setSubmitDiscountLoader] = useState(false);
 
 	const searchData = (e) => {
 		e.preventDefault();
@@ -119,7 +120,31 @@ const AdminShops = () => {
 		if (!discount || discount.length < 1 || !onlyFloatNumber.test(discount)) {
 			setDiscountError(true);
 		} else {
-
+			setSubmitDiscountLoader(true);
+			let data = {
+				shopId: discountEditEnable?.id,
+				newDiscount: ,
+			}
+			editDiscount(data)
+				.then((response) => {
+					let {success} = response
+					if (response) {
+						if (response === 401) {
+							// do nothing but in another api's should logout from system
+						} else if (success) {
+							setDiscountEditEnable(undefined);
+							getData();
+							setSubmitDiscountLoader(false);
+						}
+					} else {
+						toast.error('خطای سرور', toastOptions);
+						setSubmitDiscountLoader(false);
+					}
+				})
+				.catch(() => {
+					toast.error('خطای سرور', toastOptions);
+					setSubmitDiscountLoader(false);
+				});
 		}
 	}
 
@@ -174,7 +199,7 @@ const AdminShops = () => {
 													autoFocus={true}
 													required={true}
 													className={`form-control input ${discountError && 'is-invalid'}`}
-													value={discount}
+													value={item?.latestOff}
 													onChange={(e) => {
 														setDiscountError(false);
 														setDiscount(e.target.value);
@@ -201,7 +226,8 @@ const AdminShops = () => {
 													</Tooltip>
 												}>
 												<button type="submit" className="btn btn-transparent outline" onClick={() => validateDiscount()}>
-													<FontAwesomeIcon icon={faCheck} className="text-success" />
+													{!submitDiscountLoader && <FontAwesomeIcon icon={faCheck} className="text-success"/>}
+													{submitDiscountLoader && <Loader type="ThreeDots" color='#ff521d' height={4} width={100} className="loader"/>}
 												</button>
 											</OverlayTrigger>}
 											{(discountEditEnable?.id === item?.id) && <OverlayTrigger
@@ -211,9 +237,8 @@ const AdminShops = () => {
 														انصراف
 													</Tooltip>
 												}>
-												<button type="submit" className="btn btn-transparent outline" onClick={() => {
+												<button type="submit" className="btn btn-transparent outline" disabled={submitDiscountLoader} onClick={() => {
 													setDiscountEditEnable(undefined);
-													// setPriceEditEnable(undefined);
 												}}>
 													<FontAwesomeIcon icon={faTimes} className="text-danger" />
 												</button>
