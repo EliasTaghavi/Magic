@@ -22,13 +22,13 @@ const AdminRate = () => {
 		setBigLoader(true);
 		getRatedShopsList()
 			.then((response) => {
-				let {success, result: {item1, item2}} = response
+				let {success, result: {min, shops}} = response
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
 					} else if (success) {
-						setPrevRate(item1.toString());
-						setShops(item2);
+						setPrevRate(min.toString());
+						setShops(shops);
 						setBigLoader(false);
 					}
 				} else {

@@ -76,7 +76,7 @@ export const SendCreateShopData = (data) => {
 		userMobile: ownerMobile,
 		userName: ownerFirstName,
 		userSurname: ownerLastName,
-		discount,
+		LatestOff: discount,
 	});
 
 	return axios.post('/api/shop/create', body,{headers}).then((res) => {

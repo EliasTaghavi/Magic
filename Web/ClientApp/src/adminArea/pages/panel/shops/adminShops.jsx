@@ -50,6 +50,7 @@ const AdminShops = () => {
 		};
 		adminGetAllShops(filteredData)
 			.then((response) => {
+				console.log(response);
 				let {success, result: {count, items}} = response
 				if (response) {
 					if (response === 401) {
@@ -107,7 +108,7 @@ const AdminShops = () => {
 					setDeleteItemModal(null);
 				}
 			})
-			.catch((error) => {
+			.catch(() => {
 				toast.error('خطای سرور', toastOptions);
 				setDeleteItemModal(null);
 			});
@@ -164,7 +165,7 @@ const AdminShops = () => {
 									<td>{item?.address ?? '-----'}</td>
 									<td className="discount">
 										<div className="d-flex align-items-center justify-content-start">
-											{discountEditEnable?.id !== item?.id && <p className="fs18 m-0">{'25%'}</p>}
+											{discountEditEnable?.id !== item?.id && <p className="fs18 m-0">{`${item?.latestOff}%`}</p>}
 											{discountEditEnable?.id === item?.id && (
 												<input
 													id="discount"

@@ -31,7 +31,7 @@ export const setMinRate = (rate) => {
 		'Authorization': `Bearer ${token}`
 	};
 
-	return axios.get(`/api/minLevel/set?min=${rate}`,{headers}).then((res) => {
+	return axios.post(`/api/payment/setMinLevel?min=${rate}`, null,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
