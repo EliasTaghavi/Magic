@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OffDbContext))]
-    partial class OffDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220117171502_AddShopOffFix")]
+    partial class AddShopOffFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -486,7 +488,7 @@ namespace Web.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("ShopOffs");
+                    b.ToTable("ShopOff");
                 });
 
             modelBuilder.Entity("Core.File.Entities.AppFile", b =>

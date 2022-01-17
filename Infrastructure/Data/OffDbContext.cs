@@ -21,7 +21,7 @@ namespace Infrastructure.Data
         public DbSet<PackBuy> PackBuys { get; set; }
         public DbSet<Core.QRString.Entities.QRString> QRs { get; set; }
         public DbSet<Core.Shop.Entities.Shop> Shops { get; set; }
-        public DbSet<ShopOff> shopOffs { get; set; }
+        public DbSet<ShopOff> ShopOffs { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
