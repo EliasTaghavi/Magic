@@ -1,5 +1,6 @@
 ﻿using Core.Identity.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Core.Identity.Dto
 {
@@ -16,5 +17,6 @@ namespace Core.Identity.Dto
         public string IdentityURL { get; set; }
         public DateTime CreatedDate { get; set; }
         public string TypeId { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

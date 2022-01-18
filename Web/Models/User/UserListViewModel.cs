@@ -1,6 +1,7 @@
 ﻿using Core.Identity.Enums;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using Web.JsonConverter;
 
 namespace Web.Models.User
@@ -19,5 +20,6 @@ namespace Web.Models.User
         public string IdentityURL { get; set; }
         public DateTime CeatedDate { get; set; }
         public string TypeId { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

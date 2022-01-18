@@ -31,7 +31,8 @@ namespace Core.Identity.Mappers
                 Address = user.Address,
                 Birthday = user.Birthday,
                 CreatedDate = user.CreatedDate,
-                TypeId = user.UserTypeId
+                TypeId = user.UserTypeId,
+                Roles = user.Roles?.Select(x => x.Name)?.ToList(),
             };
         }
 

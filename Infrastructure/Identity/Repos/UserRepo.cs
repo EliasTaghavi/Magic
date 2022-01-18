@@ -88,7 +88,7 @@ namespace Infrastructure.Identity.Repos
                 query = query.OrderBy(dto.SortField);
             }
             int count = query.Count();
-            var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
+            var result = query.Include(x => x.Roles).Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
             return new PagedListDto<UserListDto>
             {
                 Count = count,
