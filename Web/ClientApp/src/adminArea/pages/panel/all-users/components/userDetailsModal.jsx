@@ -17,11 +17,12 @@ import makeAnimated from "react-select/animated/dist/react-select.esm";
 const animatedComponents = makeAnimated();
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
+	console.log(item);
 	const prevItem = item;
 	const [loader, setLoader] = useState(false);
 	const [locked, setLocked] = useState(item?.status === 2);
 	const [lockLoader, setLockLoader] = useState(false);
-	const [status, setStatus] = useState(null);
+	const [statusType, setStatusType] = useState(item?.typeId ?? null);
 	const [statusError, setStatusError] = useState(false);
 	const [statusTypes, setStatusTypes] = useState([]);
 	const [statusTypesLoader, setStatusTypesLoader] = useState(false);
@@ -34,17 +35,19 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 		setStatusTypesLoader(true);
 		getUserJobType()
 			.then((response) => {
+				console.log(response);
 				const {result, success} = response;
 				if (response) {
 					if (response === 401) {
 						// do nothing
 					} else if (success) {
-						let newResult = result.map((item, index) => {
+						let newResult = result.map((item) => {
 							return {
-								label: item,
-								value: index,
+								label: item.value,
+								value: item.key,
 							}
 						});
+						newResult = [{label: 'انتخاب کنید...', value: null}, ...newResult];
 						setStatusTypes(newResult);
 						setStatusTypesLoader(false);
 					}
@@ -61,11 +64,11 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 
 	const sendVerification = (state) => {
 		if (state) {
-			if (status === null) {
+			if (statusType === null) {
 				setStatusError(true);
 			} else {
 				setLoader(true);
-				confirmUser(item?.id, status)
+				confirmUser(item?.id, statusType)
 					.then((response) => {
 						let {success} = response;
 						if (response) {
@@ -123,9 +126,13 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	}
 
 	const changeStatus = (val) => {
+		setStatusError(false);
 		let {value} = val;
-		setStatus(value);
+		setStatusType(value);
 	}
+
+	let defaultValue = (item?.typeId && statusTypes.length > 0) ? statusTypes.filter((item) => item.value === item?.typeId) : {label: 'انتخاب کنید...', value: null};
+	console.log(defaultValue);
 
 	return (
 		<Modal
@@ -203,7 +210,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 									<p className="m-0 fs16 textThird">نوع شغل: </p>
 									<div className="col-12 col-md-6 position-relative">
 										<Select
-											defaultValue={statusTypes[0]}
+											defaultValue={defaultValue}
 											options={statusTypes}
 											isClearable={false}
 											components={animatedComponents}

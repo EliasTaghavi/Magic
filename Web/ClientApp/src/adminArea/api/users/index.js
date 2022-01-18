@@ -56,7 +56,7 @@ export const sendLockUserData = (userId) => {
 		})
 };
 
-export const confirmUser = (userId, status) => {
+export const confirmUser = (userId, statusType) => {
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const confirmUser = (userId, status) => {
 	};
 	let body = JSON.stringify({
 		userId,
-		type: status,
+		typeId: statusType,
 	});
 
 	return axios.post('/api/user/confirm', body,{headers}).then((res) => {
