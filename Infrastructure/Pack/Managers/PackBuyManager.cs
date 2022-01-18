@@ -40,8 +40,17 @@ namespace Infrastructure.Packs.Managers
 
         public ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto, string callBackUrl)
         {
+            if (packBuyRepo.GetCurrentByUserId(dto.UserId) != null)
+            {
+                return new ManagerResult<IPaymentRequestResult>(null, false)
+                {
+                    Code = 50,
+                    Message = "HasPackageBefore"
+                };
+            }
             var user = userRepo.Read(dto.UserId);
             var pack = packRepo.Read(dto.PackId);
+            
             var result = onlinePayment.Request(invoice =>
             {
                 invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test", "", "09304359576")

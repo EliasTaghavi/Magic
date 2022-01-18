@@ -29,6 +29,10 @@ namespace Web.Controllers
             var userId = User.GetUserId();
             var dto = viewModel.ToDto(userId);
             var response = packBuyManager.CreateInvoice(dto, callBackUrl);
+            if (!response.Success)
+            {
+                return Ok(response);
+            }
             return Ok(response.Result.GatewayTransporter.Descriptor.Url);
         }
 
