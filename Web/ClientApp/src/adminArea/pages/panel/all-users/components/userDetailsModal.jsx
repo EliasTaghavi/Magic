@@ -22,7 +22,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	const [loader, setLoader] = useState(false);
 	const [locked, setLocked] = useState(item?.status === 2);
 	const [lockLoader, setLockLoader] = useState(false);
-	const [statusType, setStatusType] = useState(item?.typeId ?? null);
+	const [statusType, setStatusType] = useState({label: 'انتخاب کنید...', value: null});
 	const [statusError, setStatusError] = useState(false);
 	const [statusTypes, setStatusTypes] = useState([]);
 	const [statusTypesLoader, setStatusTypesLoader] = useState(false);
@@ -48,6 +48,8 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 							}
 						});
 						newResult = [{label: 'انتخاب کنید...', value: null}, ...newResult];
+						let val = (item?.typeId && newResult?.length > 0) ? newResult?.filter((i) => i.value === item?.typeId)[0] : {label: 'انتخاب کنید...', value: null};
+						setStatusType(val);
 						setStatusTypes(newResult);
 						setStatusTypesLoader(false);
 					}
@@ -56,7 +58,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 					setStatusTypesLoader(false);
 				}
 			})
-			.catch((error) => {
+			.catch(() => {
 				toast.error('خطای سرور', toastOptions);
 				setStatusTypesLoader(false);
 			})
@@ -64,7 +66,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 
 	const sendVerification = (state) => {
 		if (state) {
-			if (statusType === null) {
+			if (statusType?.value === null) {
 				setStatusError(true);
 			} else {
 				setLoader(true);
@@ -127,12 +129,8 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 
 	const changeStatus = (val) => {
 		setStatusError(false);
-		let {value} = val;
-		setStatusType(value);
+		setStatusType(val);
 	}
-
-	let defaultValue = (item?.typeId && statusTypes.length > 0) ? statusTypes.filter((item) => item.value === item?.typeId) : {label: 'انتخاب کنید...', value: null};
-	console.log(defaultValue);
 
 	return (
 		<Modal
@@ -210,7 +208,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 									<p className="m-0 fs16 textThird">نوع شغل: </p>
 									<div className="col-12 col-md-6 position-relative">
 										<Select
-											defaultValue={defaultValue}
+											value={statusType}
 											options={statusTypes}
 											isClearable={false}
 											components={animatedComponents}

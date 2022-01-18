@@ -64,7 +64,7 @@ export const confirmUser = (userId, statusType) => {
 	};
 	let body = JSON.stringify({
 		userId,
-		typeId: statusType,
+		typeId: statusType?.value,
 	});
 
 	return axios.post('/api/user/confirm', body,{headers}).then((res) => {
