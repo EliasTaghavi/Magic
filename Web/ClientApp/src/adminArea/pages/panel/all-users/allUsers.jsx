@@ -178,7 +178,11 @@ const AdminAllUsers = () => {
 									<td>{item?.mobile ?? '-----'}</td>
 									<td>{item?.firstName ?? '-----'}</td>
 									<td>{item?.lastName ?? '-----'}</td>
-									<td>{item?.roles?.length > 0 ? generateRolesBadge(item?.roles) : '-----'}</td>
+									<td>
+										<div className="d-flex flex-wrap align-items-center justify-content-start h-100">
+											{item?.roles?.length > 0 ? generateRolesBadge(item?.roles) : '-----'}
+										</div>
+									</td>
 									<td>{item?.status === 3 ? (
 										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
 									) : item?.status === 5 ? (
