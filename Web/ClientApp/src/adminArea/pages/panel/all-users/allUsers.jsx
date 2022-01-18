@@ -15,6 +15,7 @@ import {theme} from "../../../../components/shared/theme";
 import Select from "react-select";
 import {useDispatch} from "react-redux";
 import * as MainStore from '../../../../store/main';
+import generateRolesBadge from "./components/generateRolesBadge";
 
 const animatedComponents = makeAnimated();
 
@@ -164,6 +165,7 @@ const AdminAllUsers = () => {
 							<th style={{minWidth: 120}}>شماره موبایل</th>
 							<th style={{minWidth: 120}}>نام</th>
 							<th style={{minWidth: 120}}>نام خانوادگی</th>
+							<th style={{minWidth: 120}}>نقش کاربر</th>
 							<th style={{minWidth: 120}}>وضعیت</th>
 							<th style={{minWidth: 120}}>جزئیات بیشتر</th>
 						</tr>
@@ -176,6 +178,7 @@ const AdminAllUsers = () => {
 									<td>{item?.mobile ?? '-----'}</td>
 									<td>{item?.firstName ?? '-----'}</td>
 									<td>{item?.lastName ?? '-----'}</td>
+									<td>{item?.roles?.length > 0 ? generateRolesBadge(item?.roles) : '-----'}</td>
 									<td>{item?.status === 3 ? (
 										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
 									) : item?.status === 5 ? (
