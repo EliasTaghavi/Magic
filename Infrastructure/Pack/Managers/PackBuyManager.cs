@@ -3,13 +3,12 @@ using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Base.Repos;
 using Core.Identity.Repos;
-using Core.Pack.Dto;
-using Core.Pack.Entities;
-using Core.Pack.Managers;
-using Core.Pack.Repos;
-using Core.QRString.Managers;
-using Core.Shop.Dto;
-using Core.Shop.Repos;
+using Core.Packs.Dto;
+using Core.Packs.Entities;
+using Core.Packs.Managers;
+using Core.Packs.Repos;
+using Core.Shops.Dto;
+using Core.Shops.Repos;
 using Microsoft.EntityFrameworkCore;
 using Parbad;
 using Parbad.Gateway.ZarinPal;
@@ -18,11 +17,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Infrastructure.Pack.Managers
+namespace Infrastructure.Packs.Managers
 {
     public class PackBuyManager : IPackBuyManager
     {
-        private readonly IQRStringManager qRStringManager;
         private readonly ISettingRepo settingRepo;
         private readonly IShopRepo shopRepo;
         private readonly IPackBuyRepo packBuyRepo;
@@ -30,9 +28,8 @@ namespace Infrastructure.Pack.Managers
         private readonly IUserRepo userRepo;
         private readonly IOnlinePayment onlinePayment;
 
-        public PackBuyManager(IQRStringManager qRStringManager, ISettingRepo settingRepo, IShopRepo shopRepo, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
+        public PackBuyManager(ISettingRepo settingRepo, IShopRepo shopRepo, IPackBuyRepo packBuyRepo, IPackRepo packRepo, IUserRepo userRepo, IOnlinePayment onlinePayment)
         {
-            this.qRStringManager = qRStringManager;
             this.settingRepo = settingRepo;
             this.shopRepo = shopRepo;
             this.packBuyRepo = packBuyRepo;
@@ -127,7 +124,7 @@ namespace Infrastructure.Pack.Managers
                 }).Select(x => new ShopRefCodeCountDto { Count = x.count, Name = x.Name }).ToList();
             var xResult = new ShopRankWithMinDto
             {
-                shops = result,
+                Shops = result,
                 Min = settingRepo.GetByName<int>("MinimumRef")
             };
             return new ManagerResult<ShopRankWithMinDto>(xResult);
@@ -151,11 +148,6 @@ namespace Infrastructure.Pack.Managers
             invoice.PayStatus = result.IsSucceed;
             invoice.PayDate = DateTime.UtcNow;
             packBuyRepo.Update(invoice);
-            qRStringManager.CreateNewQR(invoice.UserId);
-            if (result.IsSucceed)
-            {
-
-            }
             return new ManagerResult<bool>(true);
         }
     }

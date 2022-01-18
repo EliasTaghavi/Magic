@@ -13,7 +13,7 @@ namespace Core.Identity.Entities
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string Username { get; set; }
-        public ICollection<UserRole> UserRoles { get; private set; }
+        public ICollection<Role> Roles { get; private set; }
         public string Code { get; set; }
         public string NationalId { get; set; }
         public string Serial { get; set; }
@@ -31,12 +31,14 @@ namespace Core.Identity.Entities
         public string Address { get; set; }
         public UserStatus UserStatus { get; set; }
         public UserType UserType { get; set; }
+        public string UserTypeId { get; set; }
         public string RefCode { get; set; }
+        public string QRCode { get; set; }
 
         public User()
         {
             AccessTokens = new List<AccessToken>();
-            UserRoles = new List<UserRole>();
+            Roles = new List<Role>();
         }
     }
 }

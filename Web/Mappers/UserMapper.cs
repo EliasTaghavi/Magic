@@ -66,7 +66,7 @@ namespace Web.Mappers
         {
             return new ConfirmUserDto
             {
-                Type = viewModel.Type,
+                TypeId = viewModel.TypeId,
                 UserId = viewModel.UserId,
             };
         }

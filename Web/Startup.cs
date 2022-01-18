@@ -1,8 +1,8 @@
 using Core.Base.Entities;
 using Core.Identity.Repos;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -27,9 +27,9 @@ namespace Web
             Configuration = configuration;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserRepo userRepo)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, OffDbContext dbContext)
         {
-            DbSeeder.AdminSeeder(userRepo, Configuration);
+            DbSeeder.AdminSeeder(dbContext, Configuration);
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -88,8 +88,6 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddDbContext(Configuration);
             services.AddIdentity(Configuration);
             services.AddRepos();

@@ -27,6 +27,16 @@ namespace Infrastructure.Data
             });
         }
 
+        public static void UserTypeValidation(this ModelBuilder builder)
+        {
+            builder?.Entity<UserType>(yserType =>
+            {
+                yserType.Property(x => x.Id).ValueGeneratedOnAdd();
+                yserType.HasKey(x => x.Id);
+                yserType.Ignore(x => x.ObjectState);
+            });
+        }
+
         public static void TokenValidation(this ModelBuilder builder)
         {
             builder?.Entity<AccessToken>(token =>
@@ -61,18 +71,20 @@ namespace Infrastructure.Data
 
         public static void PackValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Pack.Entities.Pack>(pack =>
+            builder.Entity<Core.Packs.Entities.Pack>(pack =>
             {
                 pack.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
                 pack.HasKey(x => x.Id);
                 pack.Ignore(x => x.ObjectState);
+                pack.Property(i => i.Price)
+                .HasColumnType("money");
             });
         }
 
         public static void ShopValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Shop.Entities.Shop>(shop =>
+            builder.Entity<Core.Shops.Entities.Shop>(shop =>
             {
                 shop.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
@@ -86,7 +98,7 @@ namespace Infrastructure.Data
 
         public static void ShopOffValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Shop.Entities.ShopOff>(shopOff =>
+            builder.Entity<Core.Shops.Entities.ShopOff>(shopOff =>
             {
                 shopOff.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
@@ -100,7 +112,7 @@ namespace Infrastructure.Data
 
         public static void PackBuyValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Pack.Entities.PackBuy>(packBuy =>
+            builder.Entity<Core.Packs.Entities.PackBuy>(packBuy =>
             {
                 packBuy.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
@@ -120,6 +132,7 @@ namespace Infrastructure.Data
                 role.HasIndex(x => x.Name)
                     .IsUnique();
                 role.Ignore(x => x.ObjectState);
+                role.HasMany(x => x.Users).WithMany(x => x.Roles);
             });
         }
 
@@ -139,23 +152,7 @@ namespace Infrastructure.Data
                 user.Property(x => x.Mobile)
                     .HasMaxLength(12);
                 user.Ignore(x => x.ObjectState);
-            });
-        }
-
-        public static void UserRoleValidation(this ModelBuilder builder)
-        {
-            builder?.Entity<UserRole>()
-                    .HasKey(ur => new { ur.UserId, ur.RoleId });
-        }
-
-        public static void QRValidation(this ModelBuilder builder)
-        {
-            builder.Entity<Core.QRString.Entities.QRString>(qrs =>
-            {
-                qrs.Property(x => x.Id)
-                     .ValueGeneratedOnAdd();
-                qrs.HasKey(x => x.Id);
-                qrs.Ignore(x => x.ObjectState);
+                user.HasMany(x => x.Roles).WithMany(x => x.Users);
             });
         }
     }

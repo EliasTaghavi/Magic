@@ -1,12 +1,12 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
-using Core.Pack.Dto;
-using Core.Pack.Managers;
-using Core.Pack.Repos;
+using Core.Packs.Dto;
+using Core.Packs.Managers;
+using Core.Packs.Repos;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace Infrastructure.Pack.Managers
+namespace Infrastructure.Packs.Managers
 {
     public class PackManager : IPackManager
     {
@@ -19,7 +19,7 @@ namespace Infrastructure.Pack.Managers
             this.packBuyRepo = packBuyRepo;
         }
 
-        public ManagerResult<bool> Create(Core.Pack.Entities.Pack data)
+        public ManagerResult<bool> Create(Core.Packs.Entities.Pack data)
         {
             packRepo.Create(data);
             return new ManagerResult<bool>(true);
@@ -46,7 +46,7 @@ namespace Infrastructure.Pack.Managers
                         Message = "ExpirePackage"
                     };
                 }
-                CurrentPackDto dto = new CurrentPackDto
+                CurrentPackDto dto = new()
                 {
                     DaysCount = packBuy.Pack.DayCount,
                     Description = packBuy.Pack.Description,

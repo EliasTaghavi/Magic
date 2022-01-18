@@ -45,7 +45,7 @@ namespace Infrastructure.File.Managers
 
             if (dto.IdentityDto != null)
             {
-                
+
 
                 var identityFileName = fileService.SaveIdentity(dto.IdentityDto);
                 var idFile = new AppFile

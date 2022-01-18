@@ -92,8 +92,8 @@ namespace Infrastructure.Identity.Managers
 
         public ManagerResult<bool> RequsetSessionByPhone(string phone)
         {
-            bool userAlreadyExist = true;
             User user = UserRepo.ReadByPhone(phone);
+            bool userAlreadyExist;
             if (user == null)
             {
                 var newUser = new User
@@ -103,7 +103,6 @@ namespace Infrastructure.Identity.Managers
                     UserStatus = UserStatus.New,
                 };
                 user = UserRepo.Create(newUser);
-                userAlreadyExist = false;
             }
             userAlreadyExist = string.IsNullOrEmpty(user.Name?.Trim());
             Code code = CodeRepo.ReadByUserId(user.Id, TokenType.SMS);

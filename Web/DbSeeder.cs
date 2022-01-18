@@ -1,6 +1,7 @@
 ﻿using Core.Identity.Entities;
 using Core.Identity.Enums;
 using Core.Identity.Repos;
+using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,14 +11,15 @@ namespace Web
 {
     public static class DbSeeder
     {
-        public static void AdminSeeder(IUserRepo userRepo, IConfiguration configuration)
+        public static void AdminSeeder(OffDbContext dbContext, IConfiguration configuration)
         {
             bool addAdmin = bool.Parse(configuration["Identity:AddAdmin"]);
+            var roles = dbContext.Roles.Where(x => x.EnName == "God" || x.EnName == "Admin").ToList();
             if (!addAdmin)
             {
                 return;
             }
-            if (userRepo.Bucket().Any(u => u.Username == "admin"))
+            if (dbContext.Users.Any(u => u.Username == "admin"))
             {
                 return;
             }
@@ -52,9 +54,9 @@ namespace Web
                 PasswordHash = pass.PasswordHash,
                 PasswordSalt = pass.PasswordSalt,
             };
-            user.UserRoles.Add(new UserRole { RoleId = "f62ebb43-e65d-493d-965a-1c0bbf94b15f", CreatedDate = DateTime.UtcNow, Enable = true });
-            user.UserRoles.Add(new UserRole { RoleId = "b72799ea-f2b8-4528-9387-2f1f339dcd1c", CreatedDate = DateTime.UtcNow, Enable = true });
-            userRepo.Create(user);
+            roles.ForEach(x => user.Roles.Add(x));
+            dbContext.Users.Add(user);
+            dbContext.SaveChanges();
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Core.QRString.Managers;
-using Core.Shop.Managers;
+﻿using Core.Identity.Managers;
+using Core.Shops.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +15,13 @@ namespace Web.Controllers
     {
         private readonly IHttpContextAccessor accessor;
         private readonly IShopManager shopManager;
-        private readonly IQRStringManager qRStringManager;
+        private readonly IUserManager userManager;
 
-        public ShopController(IHttpContextAccessor accessor, IShopManager shopManager, IQRStringManager qRStringManager)
+        public ShopController(IHttpContextAccessor accessor, IShopManager shopManager, IUserManager userManager)
         {
             this.accessor = accessor;
             this.shopManager = shopManager;
-            this.qRStringManager = qRStringManager;
+            this.userManager = userManager;
         }
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace Web.Controllers
         {
             var shoperId = User.GetUserId();
             var dto = viewModel.ToDto(shoperId);
-            var response = qRStringManager.GetBuyer(dto);
+            var response = userManager.GetBuyer(dto);
             return Ok(response);
         }
 

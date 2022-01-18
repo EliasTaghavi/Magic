@@ -10,11 +10,11 @@ using Core.Identity.Interfaces;
 using Core.Identity.Managers;
 using Core.Identity.Mappers;
 using Core.Identity.Repos;
-using Core.QRString.Repos;
+using Core.Packs.Repos;
 using Core.Services;
 using Core.Services.Dto;
-using Core.Shop.Dto;
-using Core.Shop.Repos;
+using Core.Shops.Dto;
+using Core.Shops.Repos;
 using Infrastructure.Identity.Exceptions;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -31,31 +31,35 @@ namespace Infrastructure.Identity.Managers
 
         protected ITokenManager TokenManager;
         private readonly IRoleRepo RoleRepo;
+        private readonly IPackBuyRepo packBuyRepo;
         private readonly IAppFileRepo appFileRepo;
         private readonly ISMSService sMSService;
-        private readonly IQRStringRepo qRStringRepo;
         private readonly IShopRepo shopRepo;
         protected ITokenRepo TokenRepo;
 
         protected IUserRepo UserRepo;
+        private readonly IUserTypeRepo userTypeRepo;
 
         public UserManager(IUserRepo userRepo,
+            IUserTypeRepo userTypeRepo,
                            IJwtTokenHandler jwtTokenHandler,
                            IPasswordHandler passwordHandler,
                            ITokenRepo tokenRepo,
                            ITokenManager tokenManager,
                            IRoleRepo roleRepo,
-                           IAppFileRepo appFileRepo, ISMSService sMSService, IQRStringRepo qRStringRepo, IShopRepo shopRepo)
+                           IPackBuyRepo packBuyRepo,
+                           IAppFileRepo appFileRepo, ISMSService sMSService, IShopRepo shopRepo)
         {
             UserRepo = userRepo;
+            this.userTypeRepo = userTypeRepo;
             JwtTokenHandler = jwtTokenHandler;
             PasswordHandler = passwordHandler;
             TokenRepo = tokenRepo;
             TokenManager = tokenManager;
             RoleRepo = roleRepo;
+            this.packBuyRepo = packBuyRepo;
             this.appFileRepo = appFileRepo;
             this.sMSService = sMSService;
-            this.qRStringRepo = qRStringRepo;
             this.shopRepo = shopRepo;
         }
 
@@ -65,15 +69,7 @@ namespace Infrastructure.Identity.Managers
             User.PasswordHash = pass.PasswordHash;
             User.PasswordSalt = pass.PasswordSalt;
             Role userrole = RoleRepo.GetSet().First(x => x.EnName == "User");
-            User.UserRoles.Add(new UserRole()
-            {
-                User = User,
-                CreatedDate = DateTime.UtcNow,
-                Enable = true,
-                Role = userrole,
-                RoleId = userrole.Id,
-                UserId = User.Id
-            });
+            User.Roles.Add(userrole);
             if (User.Email != null)
             {
                 if (UserRepo.GetSet().Any(x => x.Email == User.Email))
@@ -176,16 +172,8 @@ namespace Infrastructure.Identity.Managers
             user.Birthday = dto.Birthday;
             user.RefCode = dto.RefCode;
             user.UserStatus = UserStatus.NotConfirmed;
+            user.QRCode = Guid.NewGuid().ToString();
             UserRepo.Update(user);
-            qRStringRepo.DisableAllUserQR(userId);
-            var qr = new Core.QRString.Entities.QRString
-            {
-                Enable = true,
-                QR = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                UserId = userId,
-            };
-            qRStringRepo.Create(qr);
             return new ManagerResult<bool>(true)
             {
                 Code = 16
@@ -209,7 +197,7 @@ namespace Infrastructure.Identity.Managers
         {
             var user = UserRepo.Read(dto.UserId);
             user.UserStatus = UserStatus.Confirmed;
-            user.UserType = dto.Type;
+            user.UserTypeId = dto.TypeId;
             UserRepo.Update(user);
             sMSService.SendConfirm(user.Mobile);
             return new ManagerResult<bool>(true);
@@ -256,15 +244,37 @@ namespace Infrastructure.Identity.Managers
                 {
                     shop.Name,
                     refCount.count
-                }).Select(x => new ShopRefCodeCountDto {Count = x.count, Name = x.Name }).ToList();
+                }).Select(x => new ShopRefCodeCountDto { Count = x.count, Name = x.Name }).ToList();
             return new ManagerResult<List<ShopRefCodeCountDto>>(result);
         }
 
-        public ManagerResult<List<string>> GetTypes()
+        public ManagerResult<List<KeyValueDto<string, string>>> GetTypes()
         {
-            var result = new List<string>();
-            result.AddRange(Enum.GetNames(typeof(UserType)));
-            return new ManagerResult<List<string>>(result);
+            var result = userTypeRepo.GetTypes();
+            return new ManagerResult<List<KeyValueDto<string, string>>>(result);
+        }
+
+        public ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto)
+        {
+            var buyer = UserRepo.ReadByQR(dto.UserId);
+            var shop = shopRepo.ReadByUserId(dto.ShoperId);
+            if (shop != null && buyer != null)
+            {
+                var selfie = appFileRepo.GetSet().FirstOrDefault(x => x.UserId == buyer.Id && x.Type == FileType.Selfie);
+                var packBuy = packBuyRepo.GetCurrentByUserId(buyer.Id);
+                var resultDto = new BuyerDto
+                {
+                    DayRemain = (packBuy.PayDate.Value.AddDays(packBuy.Pack.DayCount) - DateTime.UtcNow).Days,
+                    ExpireDate = packBuy.PayDate.Value.AddDays(packBuy.Pack.DayCount),
+                    Lastname = buyer.Surname,
+                    Name = buyer.Name,
+                    PackStatus = packBuy.PayStatus.Value,
+                    SelfieUrl = selfie?.FullName,
+                    UserType = buyer.UserType.Name
+                };
+                return new ManagerResult<BuyerDto>(resultDto);
+            }
+            return new ManagerResult<BuyerDto>(null, false);
         }
     }
 }

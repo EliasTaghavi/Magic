@@ -1,4 +1,4 @@
-﻿using Core.Pack.Dto;
+﻿using Core.Packs.Dto;
 using Web.Models.Payment;
 
 namespace Web.Mappers

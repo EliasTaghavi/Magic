@@ -50,6 +50,12 @@ namespace Infrastructure.Identity.Repos
             return GetSet().FirstOrDefault(x => x.Mobile == phone);
         }
 
+        public User ReadByQR(string userId)
+        {
+            var result = GetSet().Include(x => x.UserType).Where(x => x.QRCode == userId).FirstOrDefault();
+            return result;
+        }
+
         public User ReadByUsername(string UserName)
         {
             return GetSet().FirstOrDefault(x => x.Username == UserName);
@@ -59,10 +65,8 @@ namespace Infrastructure.Identity.Repos
         {
             string username = User.Username;
             return GetSet().Where(x => x.Username == username)
-                           .Include(x => x.UserRoles)
-                           .ThenInclude(y => y.Role)
-                           .First().UserRoles
-                           .Select(z => z.Role)
+                           .Include(x => x.Roles)
+                           .First().Roles
                            .ToList();
         }
 

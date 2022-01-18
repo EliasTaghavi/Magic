@@ -1,12 +1,7 @@
-﻿using Core.Base;
-using Core.Base.Entities;
-using Core.Base.Settings;
-using Core.Pack.Managers;
-using Core.Shop.Dto;
+﻿using Core.Packs.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Parbad;
-using System.Collections.Generic;
 using Web.Helper;
 using Web.Mappers;
 using Web.Models;
@@ -85,7 +80,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin,God")]
+        [Authorize(Roles = "Admin,God")]
         public IActionResult SetMinLevel([FromQuery] int min)
         {
             var response = packBuyManager.SetMinLevel(min);

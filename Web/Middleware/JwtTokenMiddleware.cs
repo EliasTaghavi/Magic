@@ -1,6 +1,5 @@
 ﻿using Core.Identity.Managers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 using System.Threading.Tasks;
 
 namespace Web.Middleware
@@ -8,20 +7,16 @@ namespace Web.Middleware
     public class JwtTokenMiddleware : IMiddleware
     {
         private readonly ITokenManager TokenManager;
-        private readonly IHttpContextAccessor Accessor;
-        private readonly StringValues authHeader;
-        private readonly string ip;
 
-        public JwtTokenMiddleware(ITokenManager tokenManager, IHttpContextAccessor accessor)
+        public JwtTokenMiddleware(ITokenManager tokenManager)
         {
             TokenManager = tokenManager;
-            Accessor = accessor;
-            authHeader = Accessor.HttpContext.Request.Headers["authorization"];
-            ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
+            var authHeader = context.Request.Headers["authorization"];
+            var ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (TokenManager.CurrentIsDisable(authHeader).Result)
             {
                 if (context.Response.ContentType == null)

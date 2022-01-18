@@ -4,32 +4,28 @@ using Core.File.Repos;
 using Core.Identity.Dto;
 using Core.Identity.Managers;
 using Core.Services;
-using Core.Shop.Dto;
-using Core.Shop.Entities;
-using Core.Shop.Managers;
-using Core.Shop.Mappers;
-using Core.Shop.Repos;
+using Core.Shops.Dto;
+using Core.Shops.Entities;
+using Core.Shops.Managers;
+using Core.Shops.Mappers;
+using Core.Shops.Repos;
 using System;
 using System.Linq;
 
-namespace Infrastructure.Shop.Managers
+namespace Infrastructure.Shops.Managers
 {
     public class ShopManager : IShopManager
     {
         private readonly IShopRepo shopRepo;
         private readonly IShopOffRepo shopOffRepo;
         private readonly IUserManager userManager;
-        private readonly IAppFileRepo appFileRepo;
-        private readonly IFileService fileService;
         private readonly ISessionManager sessionManager;
 
-        public ShopManager(IShopRepo shopRepo, IShopOffRepo shopOffRepo, IUserManager userManager, IAppFileRepo appFileRepo, IFileService fileService, ISessionManager sessionManager)
+        public ShopManager(IShopRepo shopRepo, IShopOffRepo shopOffRepo, IUserManager userManager, ISessionManager sessionManager)
         {
             this.shopRepo = shopRepo;
             this.shopOffRepo = shopOffRepo;
             this.userManager = userManager;
-            this.appFileRepo = appFileRepo;
-            this.fileService = fileService;
             this.sessionManager = sessionManager;
         }
 

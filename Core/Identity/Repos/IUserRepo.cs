@@ -22,5 +22,6 @@ namespace Core.Identity.Repos
         void UpdateProfile(User user);
         PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto);
         User Create(string phone);
+        User ReadByQR(string userId);
     }
 }

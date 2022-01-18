@@ -123,7 +123,7 @@ const AdminShops = () => {
 			setSubmitDiscountLoader(true);
 			let data = {
 				shopId: discountEditEnable?.id,
-				newDiscount: ,
+				newDiscount: discount,
 			}
 			editDiscount(data)
 				.then((response) => {

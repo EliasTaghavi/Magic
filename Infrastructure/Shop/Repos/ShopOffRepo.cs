@@ -1,9 +1,9 @@
-﻿using Core.Shop.Entities;
-using Core.Shop.Repos;
+﻿using Core.Shops.Entities;
+using Core.Shops.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
 
-namespace Infrastructure.Shop.Repos
+namespace Infrastructure.Shops.Repos
 {
     public class ShopOffRepo : Repo<ShopOff>, IShopOffRepo
     {

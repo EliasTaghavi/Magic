@@ -2,7 +2,7 @@
 {
     public class UpdateShopOffViewModel
     {
-        public string ShopId { get; set;}
+        public string ShopId { get; set; }
         public int Percentage { get; set; }
     }
 }

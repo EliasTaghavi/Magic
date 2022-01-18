@@ -1,5 +1,5 @@
-﻿using Core.Pack.Dto;
-using Core.Pack.Entities;
+﻿using Core.Packs.Dto;
+using Core.Packs.Entities;
 using Web.Models.Pack;
 
 namespace Web.Mappers
