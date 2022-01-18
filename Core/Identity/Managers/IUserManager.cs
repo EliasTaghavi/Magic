@@ -30,7 +30,7 @@ namespace Core.Identity.Managers
         ManagerResult<bool> Reject(RejectMessageDto dto);
         ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser();
         ManagerResult<List<ShopRefCodeCountDto>> GetRank();
-        ManagerResult<List<KeyValueDto<string,string>>> GetTypes();
+        ManagerResult<List<KeyValueDto<string, string>>> GetTypes();
         ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto);
     }
 }

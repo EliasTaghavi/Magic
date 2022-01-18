@@ -1,6 +1,4 @@
-﻿using Core.Identity.Enums;
-
-namespace Core.Identity.Dto
+﻿namespace Core.Identity.Dto
 {
     public class ConfirmUserDto
     {

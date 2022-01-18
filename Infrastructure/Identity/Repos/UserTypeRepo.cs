@@ -3,11 +3,8 @@ using Core.Identity.Entities;
 using Core.Identity.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Identity.Repos
 {
@@ -22,7 +19,7 @@ namespace Infrastructure.Identity.Repos
         {
             var types = GetSet()
                 .Where(x => x.Enable == true)
-                .Select(x => new KeyValueDto<string, string> { Key = x.Id, Value = x.Name} )
+                .Select(x => new KeyValueDto<string, string> { Key = x.Id, Value = x.Name })
                 .ToList();
             return types;
         }

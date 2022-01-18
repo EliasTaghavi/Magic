@@ -1,5 +1,4 @@
 using Core.Base.Entities;
-using Core.Identity.Repos;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

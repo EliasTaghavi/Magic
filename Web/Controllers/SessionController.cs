@@ -31,8 +31,8 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult CreateByUP([FromBody] UPSessionCreateModel model)
         {
-            
-            string ip = this.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.CreateByUP(model.ToDto(ip));
             return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(false)));
@@ -44,7 +44,7 @@ namespace Web.Controllers
         {
             try
             {
-                string authHeader = this.HttpContext.Request.Headers["authorization"];
+                string authHeader = HttpContext.Request.Headers["authorization"];
                 SessionManager.Delete(authHeader);
                 return Ok("Bye");
             }
@@ -57,7 +57,7 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult VerifyTokenByPhone([FromBody] VerifyTokenPhoneModel model)
         {
-            string ip = this.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
             var responsePack = packManager.GetCurrent(response.Result.UserId);

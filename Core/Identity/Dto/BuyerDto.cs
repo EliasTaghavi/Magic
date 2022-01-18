@@ -1,5 +1,4 @@
-﻿using Core.Identity.Enums;
-using System;
+﻿using System;
 
 namespace Core.Identity.Dto
 {

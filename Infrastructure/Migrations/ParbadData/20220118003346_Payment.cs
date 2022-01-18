@@ -1,9 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+
+#nullable disable
 
 namespace Infrastructure.Migrations.ParbadData
 {
-    public partial class Init : Migration
+    public partial class Payment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

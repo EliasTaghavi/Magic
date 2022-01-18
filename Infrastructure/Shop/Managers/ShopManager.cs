@@ -1,9 +1,7 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
-using Core.File.Repos;
 using Core.Identity.Dto;
 using Core.Identity.Managers;
-using Core.Services;
 using Core.Shops.Dto;
 using Core.Shops.Entities;
 using Core.Shops.Managers;

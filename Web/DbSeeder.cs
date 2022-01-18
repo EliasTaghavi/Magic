@@ -1,6 +1,5 @@
 ﻿using Core.Identity.Entities;
 using Core.Identity.Enums;
-using Core.Identity.Repos;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;

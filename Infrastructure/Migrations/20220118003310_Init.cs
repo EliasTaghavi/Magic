@@ -1,5 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+
+#nullable disable
 
 namespace Infrastructure.Migrations
 {
@@ -25,7 +27,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DayCount = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Enable = table.Column<bool>(type: "bit", nullable: true)
@@ -67,6 +69,20 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserTypes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Enable = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -92,7 +108,7 @@ namespace Infrastructure.Migrations
                     MobileConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserStatus = table.Column<int>(type: "int", nullable: false),
-                    UserType = table.Column<int>(type: "int", nullable: false),
+                    UserTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RefCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     QRCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -101,6 +117,11 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_UserTypes_UserTypeId",
+                        column: x => x.UserTypeId,
+                        principalTable: "UserTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -121,8 +142,7 @@ namespace Infrastructure.Migrations
                         name: "FK_Codes_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -146,14 +166,36 @@ namespace Infrastructure.Migrations
                         name: "FK_PackBuys_Packs_PackId",
                         column: x => x.PackId,
                         principalTable: "Packs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PackBuys_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleUser",
+                columns: table => new
+                {
+                    RolesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Roles_RolesId",
+                        column: x => x.RolesId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,8 +218,7 @@ namespace Infrastructure.Migrations
                         name: "FK_Shops_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -199,34 +240,7 @@ namespace Infrastructure.Migrations
                         name: "FK_Tokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRole",
-                columns: table => new
-                {
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Enable = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_UserRole_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRole_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -248,14 +262,12 @@ namespace Infrastructure.Migrations
                         name: "FK_AppFiles_Shops_ShopId",
                         column: x => x.ShopId,
                         principalTable: "Shops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AppFiles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -275,8 +287,7 @@ namespace Infrastructure.Migrations
                         name: "FK_ShopOffs_Shops_ShopId",
                         column: x => x.ShopId,
                         principalTable: "Shops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -284,10 +295,20 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "EnName", "Enable", "Name" },
                 values: new object[,]
                 {
-                    { "b72799ea-f2b8-4528-9387-2f1f339dcd1c", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "Admin", true, "مدیر سیستم" },
-                    { "f62ebb43-e65d-493d-965a-1c0bbf94b15f", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "God", true, "بالای بالا" },
+                    { "3f7566d3-7a9e-4fdb-8267-eceba8cfb024", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "User", true, "کاربر" },
                     { "815cc1c6-de17-46e7-a3e5-f73dfc818da3", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "Support", true, "پشتیبان" },
-                    { "3f7566d3-7a9e-4fdb-8267-eceba8cfb024", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "User", true, "کاربر" }
+                    { "b72799ea-f2b8-4528-9387-2f1f339dcd1c", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "Admin", true, "مدیر سیستم" },
+                    { "f62ebb43-e65d-493d-965a-1c0bbf94b15f", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "God", true, "بالای بالا" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserTypes",
+                columns: new[] { "Id", "CreatedDate", "Enable", "Name" },
+                values: new object[,]
+                {
+                    { "34e4a710-292d-4464-874a-bfcd739323e5", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), true, "سایر" },
+                    { "823a5500-e962-42b3-89d8-f5fb5b0270a9", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), true, "دانشجو" },
+                    { "bae26091-6fd0-4b43-8d68-f0610325b7d7", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), true, "کارگر" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -332,6 +353,11 @@ namespace Infrastructure.Migrations
                 filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoleUser_UsersId",
+                table: "RoleUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShopOffs_ShopId",
                 table: "ShopOffs",
                 column: "ShopId");
@@ -354,11 +380,6 @@ namespace Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId",
-                table: "UserRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -378,6 +399,11 @@ namespace Infrastructure.Migrations
                 column: "Username",
                 unique: true,
                 filter: "[Username] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserTypeId",
+                table: "Users",
+                column: "UserTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -395,6 +421,9 @@ namespace Infrastructure.Migrations
                 name: "PackBuys");
 
             migrationBuilder.DropTable(
+                name: "RoleUser");
+
+            migrationBuilder.DropTable(
                 name: "Settings");
 
             migrationBuilder.DropTable(
@@ -404,19 +433,19 @@ namespace Infrastructure.Migrations
                 name: "Tokens");
 
             migrationBuilder.DropTable(
-                name: "UserRole");
-
-            migrationBuilder.DropTable(
                 name: "Packs");
-
-            migrationBuilder.DropTable(
-                name: "Shops");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "Shops");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "UserTypes");
         }
     }
 }
