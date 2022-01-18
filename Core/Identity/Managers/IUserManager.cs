@@ -3,7 +3,7 @@ using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
 using Core.Services.Dto;
-using Core.Shop.Dto;
+using Core.Shops.Dto;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 
@@ -25,10 +25,12 @@ namespace Core.Identity.Managers
         ManagerResult<User> CreateByPhone(CreateUserDto dto);
         ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
         ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto);
-        ManagerResult<bool> Confirm(string id);
+        ManagerResult<bool> Confirm(ConfirmUserDto dto);
         ManagerResult<bool> Lock(string id);
         ManagerResult<bool> Reject(RejectMessageDto dto);
         ManagerResult<PagedListDto<UserListDto>> GetLastFiveNewUser();
         ManagerResult<List<ShopRefCodeCountDto>> GetRank();
+        ManagerResult<List<KeyValueDto<string, string>>> GetTypes();
+        ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto);
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Core.Identity.Managers;
-using Core.Pack.Managers;
+using Core.Packs.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using System;
 using Web.Helper;
 using Web.Mappers;
@@ -15,13 +14,11 @@ namespace Web.Controllers
     {
         private readonly ISessionManager SessionManager;
         private readonly IPackManager packManager;
-        private readonly IHttpContextAccessor Accessor;
 
-        public SessionController(ISessionManager sessionManager, IPackManager packManager, IHttpContextAccessor accessor)
+        public SessionController(ISessionManager sessionManager, IPackManager packManager)
         {
             SessionManager = sessionManager;
             this.packManager = packManager;
-            Accessor = accessor;
         }
 
         [HttpPost]
@@ -34,7 +31,8 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult CreateByUP([FromBody] UPSessionCreateModel model)
         {
-            string ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.CreateByUP(model.ToDto(ip));
             return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(false)));
@@ -46,7 +44,7 @@ namespace Web.Controllers
         {
             try
             {
-                StringValues authHeader = Accessor.HttpContext.Request.Headers["authorization"];
+                string authHeader = HttpContext.Request.Headers["authorization"];
                 SessionManager.Delete(authHeader);
                 return Ok("Bye");
             }
@@ -59,7 +57,7 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult VerifyTokenByPhone([FromBody] VerifyTokenPhoneModel model)
         {
-            string ip = Accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
             var responsePack = packManager.GetCurrent(response.Result.UserId);

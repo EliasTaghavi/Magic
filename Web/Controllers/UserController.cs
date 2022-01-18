@@ -83,9 +83,10 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm([FromQuery] string id)
+        public IActionResult Confirm([FromBody] ConfirmUserViewModel viewModel)
         {
-            var response = UserManager.Confirm(id);
+            var dto = viewModel.ToDto();
+            var response = UserManager.Confirm(dto);
             return Ok(response);
         }
 
@@ -119,6 +120,14 @@ namespace Web.Controllers
         public IActionResult GetRank()
         {
             var response = UserManager.GetRank();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetTypes()
+        {
+            var response = UserManager.GetTypes();
             return Ok(response);
         }
     }

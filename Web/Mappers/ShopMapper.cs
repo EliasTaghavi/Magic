@@ -1,9 +1,7 @@
-﻿using Core.Base.Dto;
-using Core.QRString.Dto;
-using Core.Shop.Dto;
+﻿using Core.Identity.Dto;
+using Core.Shops.Dto;
 using System.Collections.Generic;
 using System.Linq;
-using Web.Models;
 using Web.Models.Shop;
 
 namespace Web.Mappers
@@ -52,7 +50,7 @@ namespace Web.Mappers
                 UserFullName = dto.UserFullName,
                 UserMobile = dto.UserMobile,
                 CreatedDate = dto.CreatedDate,
-                LatestOff =  dto.LatestOff,
+                LatestOff = dto.LatestOff,
             };
         }
 

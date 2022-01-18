@@ -30,11 +30,9 @@ namespace Web.Services
                 .ConfigureStorage(builder => builder.UseEfCore(options =>
                 {
                     string connection = configuration.GetConnectionString("App");
-                    var migrationsAssemblyName = typeof(Startup).Assembly.GetName().Name; // An Assembly where your migrations files are in it. In this sample the files are in the same project.
-
                     options.ConfigureDbContext = db => db.UseSqlServer(connection, sql =>
                     {
-                        sql.MigrationsAssembly(migrationsAssemblyName);
+                        sql.MigrationsAssembly("Infrastructure");
                     });
                 }));
         }

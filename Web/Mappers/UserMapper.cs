@@ -61,5 +61,14 @@ namespace Web.Mappers
                 UserId = viewModel.UserId,
             };
         }
+
+        public static ConfirmUserDto ToDto(this ConfirmUserViewModel viewModel)
+        {
+            return new ConfirmUserDto
+            {
+                TypeId = viewModel.TypeId,
+                UserId = viewModel.UserId,
+            };
+        }
     }
 }

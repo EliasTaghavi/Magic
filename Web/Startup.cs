@@ -1,9 +1,7 @@
 using Core.Base.Entities;
-using Core.Base.Settings;
-using Core.Identity.Repos;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -12,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 using System.IO;
 using System.Linq;
 using Web.Middleware;
@@ -29,9 +26,9 @@ namespace Web
             Configuration = configuration;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserRepo userRepo)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, OffDbContext dbContext)
         {
-            DbSeeder.AdminSeeder(userRepo, Configuration);
+            DbSeeder.AdminSeeder(dbContext, Configuration);
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -90,9 +87,6 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == null ? "" : $".{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}";
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddDbContext(Configuration);
             services.AddIdentity(Configuration);
             services.AddRepos();
@@ -102,7 +96,6 @@ namespace Web
             services.AddCors();
             services.AddSwaggerGen();
             services.AddPayment(Configuration);
-            services.ConfigureWritable<MinSettings>(Configuration.GetSection("Min"), $"appsettings{envName}.json");
 
             services.AddControllersWithViews().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.Configure<ApiBehaviorOptions>(op =>

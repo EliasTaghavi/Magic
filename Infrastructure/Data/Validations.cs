@@ -1,4 +1,5 @@
-﻿using Core.File.Entities;
+﻿using Core.Base.Entities;
+using Core.File.Entities;
 using Core.Identity.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,26 @@ namespace Infrastructure.Data
                 file.HasKey(x => x.Id);
                 file.Ignore(x => x.FullName);
                 file.Ignore(x => x.ObjectState);
+            });
+        }
+
+        public static void SettingValidation(this ModelBuilder builder)
+        {
+            builder?.Entity<Setting>(setting =>
+            {
+                setting.Property(x => x.Id).ValueGeneratedOnAdd();
+                setting.HasKey(x => x.Id);
+                setting.Ignore(x => x.ObjectState);
+            });
+        }
+
+        public static void UserTypeValidation(this ModelBuilder builder)
+        {
+            builder?.Entity<UserType>(yserType =>
+            {
+                yserType.Property(x => x.Id).ValueGeneratedOnAdd();
+                yserType.HasKey(x => x.Id);
+                yserType.Ignore(x => x.ObjectState);
             });
         }
 
@@ -50,18 +71,20 @@ namespace Infrastructure.Data
 
         public static void PackValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Pack.Entities.Pack>(pack =>
+            builder.Entity<Core.Packs.Entities.Pack>(pack =>
             {
                 pack.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
                 pack.HasKey(x => x.Id);
                 pack.Ignore(x => x.ObjectState);
+                pack.Property(i => i.Price)
+                .HasColumnType("money");
             });
         }
 
         public static void ShopValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Shop.Entities.Shop>(shop =>
+            builder.Entity<Core.Shops.Entities.Shop>(shop =>
             {
                 shop.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
@@ -69,12 +92,27 @@ namespace Infrastructure.Data
                 shop.Ignore(x => x.ObjectState);
                 shop.HasIndex(x => x.ReferralCode)
                 .IsUnique();
+                shop.HasMany(x => x.Offs).WithOne(x => x.Shop).OnDelete(DeleteBehavior.Cascade);
+            });
+        }
+
+        public static void ShopOffValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Core.Shops.Entities.ShopOff>(shopOff =>
+            {
+                shopOff.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                shopOff.HasKey(x => x.Id);
+                shopOff.Ignore(x => x.ObjectState);
+                shopOff.HasOne(e => e.Shop)
+        .WithMany(e => e.Offs)
+        .OnDelete(DeleteBehavior.ClientCascade);
             });
         }
 
         public static void PackBuyValidation(this ModelBuilder builder)
         {
-            builder.Entity<Core.Pack.Entities.PackBuy>(packBuy =>
+            builder.Entity<Core.Packs.Entities.PackBuy>(packBuy =>
             {
                 packBuy.Property(x => x.Id)
                      .ValueGeneratedOnAdd();
@@ -94,6 +132,7 @@ namespace Infrastructure.Data
                 role.HasIndex(x => x.Name)
                     .IsUnique();
                 role.Ignore(x => x.ObjectState);
+                role.HasMany(x => x.Users).WithMany(x => x.Roles);
             });
         }
 
@@ -113,23 +152,7 @@ namespace Infrastructure.Data
                 user.Property(x => x.Mobile)
                     .HasMaxLength(12);
                 user.Ignore(x => x.ObjectState);
-            });
-        }
-
-        public static void UserRoleValidation(this ModelBuilder builder)
-        {
-            builder?.Entity<UserRole>()
-                    .HasKey(ur => new { ur.UserId, ur.RoleId });
-        }
-
-        public static void QRValidation(this ModelBuilder builder)
-        {
-            builder.Entity<Core.QRString.Entities.QRString>(qrs =>
-            {
-                qrs.Property(x => x.Id)
-                     .ValueGeneratedOnAdd();
-                qrs.HasKey(x => x.Id);
-                qrs.Ignore(x => x.ObjectState);
+                user.HasMany(x => x.Roles).WithMany(x => x.Users);
             });
         }
     }

@@ -63,7 +63,7 @@ export const deleteShop = (data) => {
 };
 
 export const SendCreateShopData = (data) => {
-	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, address} = data;
+	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -76,9 +76,38 @@ export const SendCreateShopData = (data) => {
 		userMobile: ownerMobile,
 		userName: ownerFirstName,
 		userSurname: ownerLastName,
+		LatestOff: discount,
 	});
 
 	return axios.post('/api/shop/create', body,{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
+
+export const editDiscount = (data) => {
+	const {newDiscount, shopId} = data;
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+	let body = JSON.stringify({
+		shopId,
+		percentage: newDiscount,
+	});
+
+	return axios.post('/api/shop/updateOff', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

@@ -1,4 +1,5 @@
 ﻿using Core.Base.Entities;
+using System.Collections.Generic;
 
 namespace Core.Identity.Entities
 {
@@ -6,5 +7,6 @@ namespace Core.Identity.Entities
     {
         public string EnName { get; set; }
         public string Name { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace Web.Services
 
             services.AddDbContext<OffDbContext>(options => options.UseSqlServer(connection, o =>
             {
-                o.MigrationsAssembly("Web");
+                o.MigrationsAssembly("Infrastructure");
                 o.UseNetTopologySuite();
             }));
         }

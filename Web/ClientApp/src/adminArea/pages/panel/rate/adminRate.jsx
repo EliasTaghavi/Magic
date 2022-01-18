@@ -22,13 +22,13 @@ const AdminRate = () => {
 		setBigLoader(true);
 		getRatedShopsList()
 			.then((response) => {
-				let {success, result: {item1, item2}} = response
+				let {success, result: {min, shops}} = response
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
 					} else if (success) {
-						setPrevRate(item1.toString());
-						setShops(item2);
+						setPrevRate(min.toString());
+						setShops(shops);
 						setBigLoader(false);
 					}
 				} else {
@@ -131,7 +131,7 @@ const AdminRate = () => {
 							</thead>
 							<tbody className="w-100">
 							{!bigLoader && shops.length > 0 && shops.map((item, index) => {
-								let inRank = item?.count > prevRate && index < 4;
+								let inRank = item?.count > prevRate && index < 4; // FIXME
 								return (
 									<tr key={Math.random().toString()} className="customTr text-center">
 										<td>{index + 1}</td>
@@ -143,10 +143,10 @@ const AdminRate = () => {
 							})}
 							</tbody>
 						</table>
-						{(shops?.length < 1 && !bigLoader) && <div className="col-12 col-md-5 d-flex centered py-3">
+						{(shops?.length < 1 && !bigLoader) && <div className="w-100 d-flex centered py-3">
 							<span className="text-danger">داده ای وجود ندارد.</span>
 						</div>}
-						{bigLoader && <div className="col-12 col-md-5 d-flex centered py-3">
+						{bigLoader && <div className="w-100 d-flex centered py-3">
 							<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
 						</div>}
 					</div>

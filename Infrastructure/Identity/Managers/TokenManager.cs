@@ -38,17 +38,12 @@ namespace Infrastructure.Identity.Managers
             return new ManagerResult<string>(result);
         }
 
-        public string GetIP(string ip)
-        {
-            return ip;
-        }
-
         public ManagerResult<bool> SameIP(StringValues header, string ip)
         {
             JwtSecurityTokenHandler handler = new();
             string jwt = GetCurrent(header).Result;
             JwtSecurityToken obj = handler.ReadToken(jwt) as JwtSecurityToken;
-            string ipFromRequest = GetIP(ip);
+            string ipFromRequest = ip;
             string ipFromJWT = obj.Claims.First(x => x.Type == "IP").Value;
             bool result = (ipFromRequest == ipFromJWT) || !settings.CheckIP;
             return new ManagerResult<bool>(result);

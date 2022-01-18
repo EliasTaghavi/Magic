@@ -3,9 +3,9 @@ import SearchBox from "../components/SearchBox";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../components/RenderPageButtons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faTrash, faEdit, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import CreateShopModal from "./components/createShopModal";
-import {adminGetAllShops, deleteShop} from "../../../api/shop";
+import {adminGetAllShops, deleteShop, editDiscount} from "../../../api/shop";
 import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
@@ -22,6 +22,10 @@ const AdminShops = () => {
 	const [data, setData] = useState([]);
 	const [deleteItemModal, setDeleteItemModal] = useState(null);
 	const [createShopModal, setCreateShopModal] = useState(false);
+	const [discountEditEnable, setDiscountEditEnable] = useState(undefined);
+	const [discount, setDiscount] = useState('');
+	const [discountError, setDiscountError] = useState(false);
+	const [submitDiscountLoader, setSubmitDiscountLoader] = useState(false);
 
 	const searchData = (e) => {
 		e.preventDefault();
@@ -45,10 +49,9 @@ const AdminShops = () => {
 			size: data?.pageSize ?? pageSize,
 			keyword: data?.searchValue ?? searchValue,
 		};
-		console.log(filteredData);
 		adminGetAllShops(filteredData)
 			.then((response) => {
-				console.log(77, response);
+				console.log(response);
 				let {success, result: {count, items}} = response
 				if (response) {
 					if (response === 401) {
@@ -106,11 +109,46 @@ const AdminShops = () => {
 					setDeleteItemModal(null);
 				}
 			})
-			.catch((error) => {
+			.catch(() => {
 				toast.error('خطای سرور', toastOptions);
 				setDeleteItemModal(null);
 			});
 	};
+
+	const validateDiscount = () => {
+		let onlyFloatNumber = /^-?\d*(\.\d+)?$/;
+		if (!discount || discount.length < 1 || !onlyFloatNumber.test(discount)) {
+			setDiscountError(true);
+		} else {
+			setSubmitDiscountLoader(true);
+			let data = {
+				shopId: discountEditEnable?.id,
+				newDiscount: discount,
+			}
+			editDiscount(data)
+				.then((response) => {
+					let {success} = response
+					if (response) {
+						if (response === 401) {
+							// do nothing but in another api's should logout from system
+						} else if (success) {
+							setDiscount('');
+							setDiscountEditEnable(undefined);
+							getData();
+							setSubmitDiscountLoader(false);
+							toast.success('آیتم مورد نظر با موفقیت آپدیت شد', toastOptions);
+						}
+					} else {
+						toast.error('خطای سرور', toastOptions);
+						setSubmitDiscountLoader(false);
+					}
+				})
+				.catch(() => {
+					toast.error('خطای سرور', toastOptions);
+					setSubmitDiscountLoader(false);
+				});
+		}
+	}
 
 	return (
 		<div className="card cardPrimary px-3 w-100">
@@ -136,11 +174,13 @@ const AdminShops = () => {
 							<th style={{minWidth: 120}}>شماره تماس مدیر</th>
 							<th style={{minWidth: 120}}>تاریخ عضویت</th>
 							<th style={{minWidth: 120}}>آدرس</th>
+							<th style={{minWidth: 120}}>درصد تخفیف</th>
 							<th style={{minWidth: 120}}>عملیات</th>
 						</tr>
 						</thead>
 						<tbody className="w-100">
 						{!bigLoader && data.length > 0 && data.map((item, index) => {
+							console.log(12121, discountEditEnable, item);
 							return (
 								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
@@ -150,6 +190,67 @@ const AdminShops = () => {
 									<td>{item?.userMobile ?? '-----'}</td>
 									<td>{item?.createdDate ?? '-----'}</td>
 									<td>{item?.address ?? '-----'}</td>
+									<td className="discount">
+										<div className="d-flex align-items-center justify-content-start">
+											{discountEditEnable?.id !== item?.id && <p className="fs18 m-0">{`${item?.latestOff}%`}</p>}
+											{discountEditEnable?.id === item?.id && (
+												<input
+													id="discount"
+													name="discount"
+													type="text"
+													autoFocus={true}
+													required={true}
+													className={`form-control input ${discountError && 'is-invalid'}`}
+													value={discount}
+													onChange={(e) => {
+														setDiscountError(false);
+														setDiscount(e.target.value);
+													}}
+													placeholder="..."
+												/>
+											)}
+											{(discountEditEnable?.id !== item?.id) && <OverlayTrigger
+												placement='left'
+												overlay={
+													<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir'}}>
+														ویرایش
+													</Tooltip>
+												}>
+												<button type="button" className="btn btn-transparent outline" onClick={() => {
+													setDiscount(item?.latestOff);
+													setDiscountEditEnable(item);
+												}}>
+													<FontAwesomeIcon icon={faEdit} className="fs14 text-secondary" />
+												</button>
+											</OverlayTrigger>}
+											{(discountEditEnable?.id === item?.id) && <OverlayTrigger
+												placement='left'
+												overlay={
+													<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir'}}>
+														تایید
+													</Tooltip>
+												}>
+												<button type="submit" className="btn btn-transparent outline" onClick={() => validateDiscount()}>
+													{!submitDiscountLoader && <FontAwesomeIcon icon={faCheck} className="text-success"/>}
+													{submitDiscountLoader && <Loader type="ThreeDots" color='#ff521d' height={6} width={20} className="loader"/>}
+												</button>
+											</OverlayTrigger>}
+											{(discountEditEnable?.id === item?.id) && <OverlayTrigger
+												placement='left'
+												overlay={
+													<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir'}}>
+														انصراف
+													</Tooltip>
+												}>
+												<button type="submit" className="btn btn-transparent outline" disabled={submitDiscountLoader} onClick={() => {
+													setDiscount('');
+													setDiscountEditEnable(undefined);
+												}}>
+													<FontAwesomeIcon icon={faTimes} className="text-danger" />
+												</button>
+											</OverlayTrigger>}
+										</div>
+									</td>
 									<td>
 										<OverlayTrigger
 											key='details'

@@ -1,15 +1,15 @@
 ﻿using Core.Base.Dto;
-using Core.Pack.Dto;
-using Core.Pack.Entities;
-using Core.Pack.Mapper;
-using Core.Pack.Repos;
+using Core.Packs.Dto;
+using Core.Packs.Entities;
+using Core.Packs.Mapper;
+using Core.Packs.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
-namespace Infrastructure.Pack.Repos
+namespace Infrastructure.Packs.Repos
 {
     public class PackBuyRepo : Repo<PackBuy>, IPackBuyRepo
     {
@@ -50,7 +50,7 @@ namespace Infrastructure.Pack.Repos
             {
                 if (dto.Order == Core.Base.Enums.SortOrder.ASC)
                 {
-                query = query.OrderBy(dto.SortField);
+                    query = query.OrderBy(dto.SortField);
 
                 }
                 else

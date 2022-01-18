@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,7 @@ import {sendLockUserData} from "../../../../api/users";
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
-import {confirmUser} from "../../../../api/users";
+import {confirmUser, getUserJobType} from "../../../../api/users";
 import Select from "react-select";
 import {theme} from "../../../../../components/shared/theme";
 import makeAnimated from "react-select/animated/dist/react-select.esm";
@@ -23,24 +23,41 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	const [lockLoader, setLockLoader] = useState(false);
 	const [status, setStatus] = useState(null);
 	const [statusError, setStatusError] = useState(false);
-	const statusTypes = [
-		{
-			value: null,
-			label: 'انتخاب کنید...',
-		},
-		{
-			value: 'all',
-			label: 'آزاد',
-		},
-		{
-			value: 'student',
-			label: 'دانشجو',
-		},
-		{
-			value: 'worker',
-			label: 'کارگر',
-		},
-	];
+	const [statusTypes, setStatusTypes] = useState([]);
+	const [statusTypesLoader, setStatusTypesLoader] = useState(false);
+
+	useEffect(() => {
+		getUserJobTypeFn();
+	}, []);
+
+	const getUserJobTypeFn = () => {
+		setStatusTypesLoader(true);
+		getUserJobType()
+			.then((response) => {
+				const {result, success} = response;
+				if (response) {
+					if (response === 401) {
+						// do nothing
+					} else if (success) {
+						let newResult = result.map((item, index) => {
+							return {
+								label: item,
+								value: index,
+							}
+						});
+						setStatusTypes(newResult);
+						setStatusTypesLoader(false);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setStatusTypesLoader(false);
+				}
+			})
+			.catch((error) => {
+				toast.error('خطای سرور', toastOptions);
+				setStatusTypesLoader(false);
+			})
+	};
 
 	const sendVerification = (state) => {
 		if (state) {
@@ -48,7 +65,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 				setStatusError(true);
 			} else {
 				setLoader(true);
-				confirmUser(item?.id)
+				confirmUser(item?.id, status)
 					.then((response) => {
 						let {success} = response;
 						if (response) {
@@ -184,7 +201,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 							<div className="w-100 d-flex flex-column align-items-start justify-content-start">
 								<div className="w-100 d-flex flex-column flex-md-row align-items-start justify-content-start align-items-md-center">
 									<p className="m-0 fs16 textThird">نوع شغل: </p>
-									<div className="col-12 col-md-6">
+									<div className="col-12 col-md-6 position-relative">
 										<Select
 											defaultValue={statusTypes[0]}
 											options={statusTypes}
@@ -197,6 +214,9 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 											placeholder=""
 											onChange={(value) => changeStatus(value)}
 											styles={theme.customStyles}/>
+										{statusTypesLoader && <div className="position-absolute h-100 d-flex centered" style={{zIndex: 10, top: 0, left: 0, right: 0, backgroundColor: '#ffffffcc'}}>
+											<Loader type="ThreeDots" color='#ff521d' height={8}/>
+										</div>}
 									</div>
 								</div>
 								{statusError && <p className="text-danger">لطفا نوع شغل را مشخص کنید</p>}
