@@ -15,7 +15,7 @@ const UserPackages = () => {
   useEffect(() => {
     getPcksData()
        .then((response) => {
-         if (response) {
+          if (response) {
            let {success, result: {items}} = response
            if (response === 401) {
              // do nothing but in another api's should logout from system
@@ -29,7 +29,8 @@ const UserPackages = () => {
          }
        })
        .catch((error) => {
-         toast.error('خطای سرور', toastOptions);
+          console.log(error, error.response);
+          toast.error('خطای سرور', toastOptions);
          setBigLoader(false);
        })
   }, []);

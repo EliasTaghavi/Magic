@@ -34,11 +34,6 @@ const Header = ({noLogin}) => {
                   درباره ما
                 </Link>
               </li>
-              <li>
-                <Link to="/contact-us" className="menuBtn">
-                  تماس با ما
-                </Link>
-              </li>
             </ul>
           </div>
           <button type="button" className="bg-transparent outline d-flex d-md-none align-items-center justify-content-center border-0 mr-4"
@@ -75,12 +70,6 @@ const Header = ({noLogin}) => {
               <Link to="/about-us" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
                 <FontAwesomeIcon icon={faUsers} className="text-primary ml-3" style={{fontSize: 20}}/>
                 درباره ما
-              </Link>
-            </li>
-            <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
-              <Link to="/contact-us" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
-                <FontAwesomeIcon icon={faPhone} className="text-primary ml-3" style={{fontSize: 20}}/>
-                تماس با ما
               </Link>
             </li>
           </ul>

@@ -224,6 +224,10 @@ a:hover {
   line-height: 26px;
 }
 
+.lh30 {
+  line-height: 30px;
+}
+
 .lh40 {
   line-height: 40px;
 }
@@ -387,6 +391,19 @@ input::-webkit-inner-spin-button {
 
 .shadow3 {
   box-shadow: 0 5px 10px 0 #00000066;
+}
+
+.fade_rule {
+  height: 2px;
+  background-color: #ff521d;
+  width: 100%;
+  margin: 0 auto;
+  background-image: linear-gradient(left , white 2%, #ff521d 50%, white 98%);
+  background-image: -o-linear-gradient(left , white 2%, #ff521d 50%, white 98%);
+  background-image: -moz-linear-gradient(left , white 2%, #ff521d 50%, white 98%);
+  background-image: -webkit-linear-gradient(left , white 2%, #ff521d 50%, white 98%);
+  background-image: -ms-linear-gradient(left , white 2%, #ff521d 50%, white 98%);
+  background-image: -webkit-gradient( linear, left bottom, right bottom, color-stop(0.02, #ffffff), color-stop(0.5, #ff521d), color-stop(0.98, #ffffff) );
 }
 
 @media screen and (min-width: 768px) {

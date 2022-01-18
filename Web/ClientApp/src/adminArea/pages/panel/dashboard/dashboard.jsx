@@ -2,8 +2,6 @@ import React, {useRef, useState, useEffect} from 'react';
 import Chart from 'chart.js';
 import Loader from 'react-loader-spinner';
 import {getAdminNewUsers} from "../../../api/dashboard";
-import * as MainStore from "../../../../store/main";
-import PageNumberGenerator from "../components/PageNumberGenerator";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {Link} from 'react-router-dom';
@@ -68,7 +66,6 @@ const AdminDashboard = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(11, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setTransactionsLoader(false);
 			})
