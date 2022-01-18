@@ -2,6 +2,7 @@
 using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Managers;
+using Core.Identity.Repos;
 using Core.Shops.Dto;
 using Core.Shops.Entities;
 using Core.Shops.Managers;
@@ -15,13 +16,19 @@ namespace Infrastructure.Shops.Managers
     public class ShopManager : IShopManager
     {
         private readonly IShopRepo shopRepo;
+        private readonly IRoleRepo roleRepo;
         private readonly IShopOffRepo shopOffRepo;
         private readonly IUserManager userManager;
         private readonly ISessionManager sessionManager;
 
-        public ShopManager(IShopRepo shopRepo, IShopOffRepo shopOffRepo, IUserManager userManager, ISessionManager sessionManager)
+        public ShopManager(IShopRepo shopRepo,
+                           IRoleRepo roleRepo,
+                           IShopOffRepo shopOffRepo,
+                           IUserManager userManager,
+                           ISessionManager sessionManager)
         {
             this.shopRepo = shopRepo;
+            this.roleRepo = roleRepo;
             this.shopOffRepo = shopOffRepo;
             this.userManager = userManager;
             this.sessionManager = sessionManager;
@@ -96,6 +103,7 @@ namespace Infrastructure.Shops.Managers
         {
             var token = sessionManager.VerifyTokenByPhone(verifyTokenPhoneDto);
             var user = token.Result.User;
+            var roles = roleRepo.GetSet().Where(x => x.Users.Any(y => y.Id == user.Id));
             var shop = shopRepo.ReadByUserId(user.Id);
             if (shop == null)
             {
