@@ -130,5 +130,14 @@ namespace Web.Controllers
             var response = UserManager.GetTypes();
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetQR()
+        {
+            var userId = User.GetUserId();
+            var response = UserManager.GetQR(userId);
+            return Ok(response);
+        }
     }
 }

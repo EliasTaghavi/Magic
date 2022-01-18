@@ -276,5 +276,15 @@ namespace Infrastructure.Identity.Managers
             }
             return new ManagerResult<BuyerDto>(null, false);
         }
+
+        public ManagerResult<string> GetQR(string userId)
+        {
+            var result = UserRepo.Read(userId);
+            if (result == null)
+            {
+                return new ManagerResult<string>(null,false);
+            }
+            return new ManagerResult<string>(result.QRCode);
+        }
     }
 }
