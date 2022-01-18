@@ -50,7 +50,8 @@ namespace Web.Mappers
                 Mobile = dto.Mobile,
                 SelfieURL = dto.SelfieURL,
                 Status = dto.Status,
-                CeatedDate = dto.CreatedDate
+                CeatedDate = dto.CreatedDate,
+                TypeId = dto.TypeId
             };
         }
         public static RejectMessageDto ToDto(this RejectMessageViewModel viewModel)

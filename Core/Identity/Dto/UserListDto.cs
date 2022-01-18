@@ -15,5 +15,6 @@ namespace Core.Identity.Dto
         public string SelfieURL { get; set; }
         public string IdentityURL { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string TypeId { get; set; }
     }
 }

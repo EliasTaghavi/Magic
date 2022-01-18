@@ -18,5 +18,6 @@ namespace Web.Models.User
         public string SelfieURL { get; set; }
         public string IdentityURL { get; set; }
         public DateTime CeatedDate { get; set; }
+        public string TypeId { get; set; }
     }
 }

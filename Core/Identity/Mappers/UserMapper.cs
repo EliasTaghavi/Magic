@@ -31,6 +31,7 @@ namespace Core.Identity.Mappers
                 Address = user.Address,
                 Birthday = user.Birthday,
                 CreatedDate = user.CreatedDate,
+                TypeId = user.UserTypeId
             };
         }
 
