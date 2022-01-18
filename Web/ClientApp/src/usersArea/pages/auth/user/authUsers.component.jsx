@@ -38,12 +38,6 @@ const MenuItem = ({extraClass}) => {
           <FontAwesomeIcon icon={faHome} className="textMain fs10"/>
         </span>
       </Link>
-      <Link to="/" className="d-flex centered text-white text-decoration-none fs12 mt-3 mr-3">
-        تماس با ما
-        <span className="iconContainer">
-          <FontAwesomeIcon icon={faPhone} className="textMain fs10"/>
-        </span>
-      </Link>
     </div>
   );
 }

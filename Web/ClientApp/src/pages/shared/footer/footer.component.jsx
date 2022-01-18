@@ -23,7 +23,6 @@ const Footer = () => {
             <p className="fs16 textMain font-weight-bold">با مجیک آف</p>
             <Link to="/about-us" className="fs14 text-secondary py-2">درباره ما</Link>
             <Link to="/terms" className="fs14 text-secondary py-2">قوانین و مقررات</Link>
-            <Link to="/contact-us" className="fs14 text-secondary py-2">تماس با ما</Link>
           </div>
         </div>
         <div className="w-100 cmy5 d-flex flex-column-reverse flex-md-row align-items-center align-items-md-center justify-content-between">
