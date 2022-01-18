@@ -16,6 +16,10 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
+					} else if (response?.success === false) {
+						toast.error('شما پکیج فعال دارید', toastOptions);
+						setBigLoader(false);
+						onClose();
 					} else {
 						setBigLoader(false);
 						setBuyUrl(response);
