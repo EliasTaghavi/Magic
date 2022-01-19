@@ -145,7 +145,7 @@ namespace Infrastructure.Shops.Managers
                     PhotoUrl = shop?.Photos?.Where(x => x.Type == Core.File.Enums.FileType.Shop).Select(x => x.FullName).ToList(),
                     ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopLogo)?.FullName
                 },
-                Status = user.UserStatus,
+                Status = UserStatus.Confirmed,
                 Token = token.Result.JWT
             };
             return new ManagerResult<VerifiedUserWithShopDto>(resultDto);
