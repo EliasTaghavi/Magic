@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core.Packs.Dto
+﻿namespace Core.Packs.Dto
 {
     public class CurrentPackDto
     {

@@ -1,7 +1,5 @@
 ﻿using Core.Packs.Dto;
 using Core.Packs.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Packs.Mapper
 {

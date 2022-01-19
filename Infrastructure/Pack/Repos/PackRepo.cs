@@ -4,7 +4,6 @@ using Core.Packs.Mapper;
 using Core.Packs.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Packs.Repos

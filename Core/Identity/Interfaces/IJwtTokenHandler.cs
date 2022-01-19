@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Identity.Interfaces
+﻿namespace Core.Identity.Interfaces
 {
     public interface IJwtTokenHandler
     {

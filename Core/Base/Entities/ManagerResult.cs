@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Base.Entities
+﻿namespace Core.Base.Entities
 {
     public class ManagerResult<T>
     {

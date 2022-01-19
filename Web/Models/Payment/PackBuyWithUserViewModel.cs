@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using Web.JsonConverter;
 
 namespace Web.Models.Payment

@@ -1,6 +1,5 @@
 ﻿using Core.Base.Entities;
 using Core.Identity.Entities;
-using System;
 
 namespace Core.Packs.Entities
 {

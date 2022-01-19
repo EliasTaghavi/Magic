@@ -3,8 +3,6 @@ using Core.Shops.Dto;
 using Core.Shops.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Shops.Repos

@@ -1,10 +1,12 @@
-﻿using Core.Base.Entities;
+﻿global using Microsoft.EntityFrameworkCore;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+using Core.Base.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Packs.Entities;
 using Core.Shops.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Infrastructure.Data
 {

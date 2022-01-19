@@ -5,7 +5,6 @@ using Core.Identity.Entities;
 using Core.Services.Dto;
 using Core.Shops.Dto;
 using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
 
 namespace Core.Identity.Managers
 {

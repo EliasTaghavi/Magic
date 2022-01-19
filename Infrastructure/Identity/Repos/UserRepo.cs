@@ -7,9 +7,6 @@ using Core.Identity.Mappers;
 using Core.Identity.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Identity.Repos

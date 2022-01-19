@@ -3,7 +3,6 @@ using Core.Services;
 using Kavenegar;
 using Kavenegar.Core.Exceptions;
 using Microsoft.Extensions.Options;
-using System;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services

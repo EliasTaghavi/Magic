@@ -3,7 +3,6 @@ using Core.Packs.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using Web.Helper;
 using Web.Mappers;
 using Web.Models.Session;

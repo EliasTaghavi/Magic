@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Infrastructure.Identity.Exceptions
+﻿namespace Infrastructure.Identity.Exceptions
 {
     public class EmailExistException : Exception
     {

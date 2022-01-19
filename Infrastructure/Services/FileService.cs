@@ -1,8 +1,6 @@
 ﻿using Core.Base.Dto;
 using Core.File.Entities;
 using Core.Services;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Infrastructure.Services

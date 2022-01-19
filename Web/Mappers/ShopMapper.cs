@@ -1,7 +1,5 @@
 ﻿using Core.Identity.Dto;
 using Core.Shops.Dto;
-using System.Collections.Generic;
-using System.Linq;
 using Web.Models.Shop;
 
 namespace Web.Mappers

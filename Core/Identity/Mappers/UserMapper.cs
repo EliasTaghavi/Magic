@@ -1,7 +1,5 @@
 ﻿using Core.Identity.Dto;
 using Core.Identity.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Identity.Mappers
 {

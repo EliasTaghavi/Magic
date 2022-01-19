@@ -1,6 +1,5 @@
 ﻿using Core.Base.Repos;
 using Core.File.Entities;
-using System.Collections.Generic;
 
 namespace Core.File.Repos
 {

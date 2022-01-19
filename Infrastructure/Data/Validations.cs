@@ -1,7 +1,7 @@
 ﻿using Core.Base.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace Infrastructure.Data
 {

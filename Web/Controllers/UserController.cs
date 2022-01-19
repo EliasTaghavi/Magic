@@ -3,8 +3,6 @@ using Core.Identity.Entities;
 using Core.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 using System.Security.Claims;
 using Web.Helper;
 using Web.Mappers;

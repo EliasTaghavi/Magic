@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core.Shops.Dto
+﻿namespace Core.Shops.Dto
 {
     public class ShopWithUserDto
     {

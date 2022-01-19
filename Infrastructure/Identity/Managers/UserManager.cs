@@ -17,9 +17,6 @@ using Core.Shops.Dto;
 using Core.Shops.Repos;
 using Infrastructure.Identity.Exceptions;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Identity.Managers
 {
@@ -282,7 +279,7 @@ namespace Infrastructure.Identity.Managers
             var result = UserRepo.Read(userId);
             if (result == null)
             {
-                return new ManagerResult<string>(null,false);
+                return new ManagerResult<string>(null, false);
             }
             return new ManagerResult<string>(result.QRCode);
         }

@@ -5,7 +5,6 @@ using Core.Identity.Repos;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 
 namespace Infrastructure.Identity.Managers
 {

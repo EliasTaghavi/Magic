@@ -11,7 +11,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System.IO;
-using System.Linq;
 using Web.Middleware;
 using Web.Services;
 

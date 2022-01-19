@@ -1,6 +1,4 @@
 ﻿using Core.Identity.Enums;
-using System;
-using System.Collections.Generic;
 
 namespace Core.Identity.Dto
 {

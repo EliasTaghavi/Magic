@@ -9,9 +9,6 @@ using Core.Identity.Repos;
 using Core.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Identity.Managers
 {

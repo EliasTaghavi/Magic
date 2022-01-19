@@ -1,8 +1,10 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 using System.IO;
 
 namespace Web

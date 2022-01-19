@@ -1,7 +1,5 @@
 ﻿using Core.Identity.Enums;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using Web.JsonConverter;
 
 namespace Web.Models.User

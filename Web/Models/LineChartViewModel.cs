@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Web.Models
+﻿namespace Web.Models
 {
     public class LineChartViewModel<T>
     {

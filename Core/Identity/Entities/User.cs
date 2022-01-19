@@ -1,7 +1,5 @@
 ﻿using Core.Base.Entities;
 using Core.Identity.Enums;
-using System;
-using System.Collections.Generic;
 
 namespace Core.Identity.Entities
 {

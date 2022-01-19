@@ -8,8 +8,6 @@ using Core.Shops.Entities;
 using Core.Shops.Managers;
 using Core.Shops.Mappers;
 using Core.Shops.Repos;
-using System;
-using System.Linq;
 
 namespace Infrastructure.Shops.Managers
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Web.Models.Payment
+﻿namespace Web.Models.Payment
 {
     public class PackBuyListFilterViewModel
     {

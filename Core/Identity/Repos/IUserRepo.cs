@@ -2,7 +2,6 @@
 using Core.Base.Repos;
 using Core.Identity.Dto;
 using Core.Identity.Entities;
-using System.Collections.Generic;
 
 namespace Core.Identity.Repos
 {

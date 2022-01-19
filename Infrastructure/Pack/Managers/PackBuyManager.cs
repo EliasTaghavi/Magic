@@ -9,13 +9,9 @@ using Core.Packs.Managers;
 using Core.Packs.Repos;
 using Core.Shops.Dto;
 using Core.Shops.Repos;
-using Microsoft.EntityFrameworkCore;
 using Parbad;
 using Parbad.Gateway.ZarinPal;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace Infrastructure.Packs.Managers
 {
@@ -50,7 +46,7 @@ namespace Infrastructure.Packs.Managers
             }
             var user = userRepo.Read(dto.UserId);
             var pack = packRepo.Read(dto.PackId);
-            
+
             var result = onlinePayment.Request(invoice =>
             {
                 invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test", "", "09304359576")
