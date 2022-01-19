@@ -12,6 +12,7 @@ namespace Core.Identity.Mappers
                 Mobile = dto.Phone,
                 Name = dto.FirstName,
                 Surname = dto.Lastname,
+                UserStatus = dto.Status,
             };
         }
 

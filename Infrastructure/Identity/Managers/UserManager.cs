@@ -142,22 +142,17 @@ namespace Infrastructure.Identity.Managers
             throw new NotImplementedException();
         }
 
-        public ManagerResult<User> CreateByPhone(CreateUserDto dto)
+        public ManagerResult<User> CreateByPhone(CreateUserDto dto, string roleName = default)
         {
-            try
+            User model = dto.ToModel();
+            Role role = RoleRepo.GetByName(roleName);
+            if (role != null)
             {
-                User model = dto.ToModel();
-                User mangerResult = UserRepo.Create(model);
-                return new ManagerResult<User>(mangerResult);
+                model.Roles.Add(role);
             }
-            catch (Exception ex)
-            {
-                return new ManagerResult<User>(null)
-                {
-                    Success = false,
-                    Errors = new List<string>() { ex.Message },
-                };
-            }
+
+            User mangerResult = UserRepo.Create(model);
+            return new ManagerResult<User>(mangerResult);
         }
 
         public ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId)

@@ -1,6 +1,7 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Identity.Dto;
+using Core.Identity.Enums;
 using Core.Identity.Managers;
 using Core.Identity.Repos;
 using Core.Shops.Dto;
@@ -15,18 +16,21 @@ namespace Infrastructure.Shops.Managers
     {
         private readonly IShopRepo shopRepo;
         private readonly IRoleRepo roleRepo;
+        private readonly IUserRepo userRepo;
         private readonly IShopOffRepo shopOffRepo;
         private readonly IUserManager userManager;
         private readonly ISessionManager sessionManager;
 
         public ShopManager(IShopRepo shopRepo,
                            IRoleRepo roleRepo,
+                           IUserRepo userRepo,
                            IShopOffRepo shopOffRepo,
                            IUserManager userManager,
                            ISessionManager sessionManager)
         {
             this.shopRepo = shopRepo;
             this.roleRepo = roleRepo;
+            this.userRepo = userRepo;
             this.shopOffRepo = shopOffRepo;
             this.userManager = userManager;
             this.sessionManager = sessionManager;
@@ -39,17 +43,28 @@ namespace Infrastructure.Shops.Managers
 
         public ManagerResult<bool> Create(CreateShopDto dto)
         {
-            var userDto = new CreateUserDto
+            var user = userRepo.ReadByPhone(dto.UserMobile);
+            if (user == null)
             {
-                FirstName = dto.UserName,
-                Lastname = dto.UserSurname,
-                Phone = dto.UserMobile
-            };
-            var user = userManager.CreateByPhone(userDto).Result;
+                var userDto = new CreateUserDto
+                {
+                    FirstName = dto.UserName,
+                    Lastname = dto.UserSurname,
+                    Phone = dto.UserMobile,
+                    Status = UserStatus.NewUserFromShop
+                };
+                user = userManager.CreateByPhone(userDto, "Shop").Result;
+            }
+            else
+            {
+                var role = roleRepo.GetByName("Shop");
+                user.Roles.Add(role);
+                userRepo.Update(user);
+            }
 
             Random random = new();
             var code = random.Next(1000, 10000);
-
+            
             var shop = dto.ToDataModel();
             shop.UserId = user.Id;
             shop.ReferralCode = code.ToString();
