@@ -37,6 +37,8 @@ const UserPackages = () => {
        })
   }, []);
 
+  let disabled = userData?.hasActivePack;
+
   return (
     <div className="d-flex flex-column centered w-100">
       <div className="card cardPrimary px-3 w-100">
@@ -48,21 +50,21 @@ const UserPackages = () => {
           <div className="d-flex flex-wrap flex-column flex-md-row centered mt-5 ch">
             {!bigLoader && pcksData.length > 0 && pcksData.map((item) => {
               return (
-                 <div key={item?.id} className={`shadow ${!userData?.hasActivePack ? 'packageContainer' : 'packageContainerNoHover m-3'}`}>
-                   <p className="fs40 textSecondary1 m-0">{item?.title}</p>
+                 <div key={item?.id} className={`shadow ${!disabled ? 'packageContainer' : 'packageContainerNoHover m-3'}`}>
+                   <p className={`fs40 textSecondary1 m-0 ${disabled && 'textSilver'}`}>{item?.title}</p>
                    <p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
                    {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
                    <hr className="w-100 cDivider" />
-                   <p className="fs90 m-0 textSecondary1 text-center cNumber mt-2">
+                   <p className={`fs90 m-0 textSecondary1 text-center cNumber mt-2 ${disabled && 'textSilver'}`}>
                       <NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
                    </p>
                    <p className="fs18 textThird text-center">هزار تومان</p>
-                   {!userData?.hasActivePack && <button type="button" disabled={userData?.hasActivePack} className="button buyBtn border-0"
+                   {!disabled && <button type="button" disabled={disabled} className="button buyBtn border-0"
                              onClick={() => setConfirmBuyPckModal(item)}>
                       خرید
                    </button>}
-                    {userData?.hasActivePack && (
-                       <div className="button bg-secondary border-0">
+                    {disabled && (
+                       <div className="button bgSilver border-0 px-2 text-nowrap" style={{cursor: 'not-allowed', backgroundImage: 'none'}}>
                           شما پکیج فعال دارید
                        </div>
                     )}

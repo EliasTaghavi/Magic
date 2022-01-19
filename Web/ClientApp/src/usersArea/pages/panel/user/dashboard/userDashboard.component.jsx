@@ -91,8 +91,8 @@ const UserDashboard = () => {
    };
 
    return (
-    <div className="col-12 d-flex align-items-start justify-content-between pr-0" style={{maxHeight: 500}}>
-       <div className="col-6 ml-1 card cardPrimary">
+    <div className="col-12 d-flex align-items-start justify-content-between pr-0">
+       <div className="col-6 ml-1 card cardPrimary" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">پنل کاربری</p>
           </div>
@@ -100,7 +100,7 @@ const UserDashboard = () => {
              {paymentData && <PaymentResult data={paymentData}/>}
           </div>
        </div>
-       <div className="w-100 col-3 mx-1 card cardPrimary px-3" style={{maxHeight: 500}}>
+       <div className="w-100 col-3 mx-1 card cardPrimary px-3" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">کد QR شما</p>
           </div>
@@ -120,7 +120,7 @@ const UserDashboard = () => {
              )}
           </div>
        </div>
-       <div className="col-3 mr-1 card cardPrimary px-3" style={{maxHeight: 500}}>
+       <div className="col-3 mr-1 card cardPrimary px-3" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">پکیج فعال شما</p>
           </div>

@@ -314,6 +314,7 @@
 
 .eachParts {
     min-height: 500px;
+    padding: 3rem 0;
 }
 
 .eachPart1 {
@@ -323,7 +324,7 @@
 .inParts {
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
@@ -376,12 +377,13 @@
 
 .eachPartDesc {
     flex: 1;
-    display: none;
+    display: flex;
     position: relative;
     width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 3rem 0;
 }
 
 .number {
@@ -539,6 +541,12 @@ tr td:last-child {
     }
     .inFirstPart {
         min-height: 500px;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .cardFrame {
+        width: 85%;
     }
 }
 
