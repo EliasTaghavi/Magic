@@ -9,8 +9,4 @@
     <PackageReference Include="Parbad" Version="3.8.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Purchase\Entities\" />
-  </ItemGroup>
-
 </Project>

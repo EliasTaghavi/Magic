@@ -262,7 +262,8 @@ namespace Infrastructure.Identity.Managers
                     Name = buyer.Name,
                     PackStatus = packBuy.PayStatus.Value,
                     SelfieUrl = selfie?.FullName,
-                    UserType = buyer.UserType.Name
+                    UserType = buyer.UserType.Name,
+                    ShopOff = shop.Offs?.FirstOrDefault()?.Percentage ?? 0,
                 };
                 return new ManagerResult<BuyerDto>(resultDto);
             }

@@ -16,7 +16,7 @@ namespace Infrastructure.Shops.Repos
 
         public Core.Shops.Entities.Shop ReadByUserId(string userId)
         {
-            var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Photos).FirstOrDefault();
+            var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1)).Include(x => x.Photos).FirstOrDefault();
             return shop;
         }
 

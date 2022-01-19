@@ -65,5 +65,20 @@ namespace Web.Mappers
                 ShopId = viewModel.ShopId,
             };
         }
+
+        public static BuyerViewModel ToViewModel(this BuyerDto dto)
+        {
+            return new BuyerViewModel
+            {
+                DayRemain = dto.DayRemain,
+                ExpireDate = dto.ExpireDate,
+                Lastname = dto.Lastname,
+                Name = dto.Name,
+                PackStatus = dto.PackStatus,
+                SelfieUrl = dto.SelfieUrl,
+                Discount = dto.ShopOff,
+                UserType = dto.UserType,
+            };
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Web.Controllers
             var shoperId = User.GetUserId();
             var dto = viewModel.ToDto(shoperId);
             var response = userManager.GetBuyer(dto);
-            return Ok(response);
+            return Ok(response.CreateViewModel(x => x.ToViewModel()));
         }
 
         [HttpPost]
