@@ -175,6 +175,8 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 							<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
 						) : item?.status === 2 ? (
 							<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
+						) : item?.status === 7 ? (
+							<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده توسط ادمین</p>
 						) : (
 							<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 						)}

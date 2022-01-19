@@ -56,6 +56,10 @@ const AdminAllUsers = () => {
 			value: 6,
 			label: 'در انتظار بررسی',
 		},
+		{
+			value: 7,
+			label: 'تایید شده توسط ادمین',
+		},
 	];
 
 	useEffect(() => {
@@ -73,6 +77,7 @@ const AdminAllUsers = () => {
 		};
 		adminGetAllUsers(filteredData)
 			.then((response) => {
+				console.log(response);
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {
@@ -191,6 +196,8 @@ const AdminAllUsers = () => {
 										<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
 									) : item?.status === 2 ? (
 										<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
+									) : item?.status === 7 ? (
+										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده توسط ادمین</p>
 									) : (
 										<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 									)}</td>
