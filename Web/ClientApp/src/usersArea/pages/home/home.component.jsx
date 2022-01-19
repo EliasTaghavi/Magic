@@ -74,6 +74,11 @@ const Home = () => {
       </div>
       <div className="container-fluid thirdPart">
         <div className="container inParts eachParts">
+          <div className="flex w-100">
+            <p className="number fs40">2.</p>
+            <h2 className="font-weight-bold text-white fs30">رویای ما برآورده سازی انتظارات شماست</h2>
+            <p className="text-white fs18">نمونه خدمات</p>
+          </div>
           <div className="eachPartDesc">
             {/*<h4 className="font-weight-bold text-white cpt-7">یک تعامل سازنده بین مشتری و فروشگاه</h4>*/}
             {/*<p className="text-white mt-4 fs16 lh26">بالاترین درصد تخفیفی که برای شما کاربران عزیز جذاب باشه و برای فروشگاه ها هم صرفه اقتصادی داشته باشه رو ما گرفتیم براتون</p>*/}
@@ -81,11 +86,6 @@ const Home = () => {
             <div className="cardFrameContainer">
               <img alt="magicOff" src={tt12} className="cardFrame" />
             </div>
-          </div>
-          <div className="flex w-100">
-            <p className="number fs40">2.</p>
-            <h2 className="font-weight-bold text-white fs30">رویای ما برآورده سازی انتظارات شماست</h2>
-            <p className="text-white fs18">نمونه خدمات</p>
           </div>
         </div>
         {/*<img alt="magicOff" src={wow} className="wow pos8" />*/}
@@ -161,7 +161,7 @@ const Home = () => {
             {/*<p className="text-white fs24 font-weight-bold text-center">*/}
             {/*  جذاب‌ترین <span className="textSecondary fs40 font-weight-bold mr-1">تخفیف‌ها</span>*/}
             {/*</p>*/}
-            <p className="text-white mb-1 fs30 text-center text-md-right lh26">برای دریافت اشتراک <span className="textSecondary fs30 font-weight-bold">کلیک </span>کنید.</p>
+            <p className="text-white mb-1 fs30 text-center text-md-right clh26">برای دریافت اشتراک <span className="textSecondary fs30 font-weight-bold">کلیک </span>کنید.</p>
           </div>
           <Link to="/login" className="signUpLink centered textMain">
             <p className="noBreak m-0">ثبت نام</p>

@@ -90,6 +90,11 @@ a:hover {
   background-color: #ffc004;
 }
 
+.bgSilver {
+  background-color: #bbbbbb;
+}
+
+
 .textMain {
   color: #ff521d !important;
 }
@@ -222,6 +227,10 @@ a:hover {
 
 .lh26 {
   line-height: 26px;
+}
+
+.clh26 {
+  line-height: 50px;
 }
 
 .lh30 {
@@ -409,5 +418,8 @@ input::-webkit-inner-spin-button {
 @media screen and (min-width: 768px) {
   .resText {
     text-align: right;
+  }
+  .clh26 {
+    line-height: 26px;
   }
 }
