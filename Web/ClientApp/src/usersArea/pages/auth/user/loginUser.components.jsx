@@ -35,13 +35,13 @@ const LoginUser = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1); // 1=mobile 2=code 3=signup
   const [errors, setErrors] = useState({});
-  const [mobile, setMobile] = useState('09137658795');
+  const [mobile, setMobile] = useState('');
   const [btnLoader, setBtnLoader] = useState(false);
   const [code, setCode] = useState('');
-  const [firstName, setFirstName] = useState('شهاب');
-  const [lastName, setLastName] = useState('طالبی');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [address, setAddress] = useState('خیابان ابوذر');
+  const [address, setAddress] = useState('');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
   const [referralCode, setReferralCode] = useState('');
@@ -311,12 +311,12 @@ const LoginUser = () => {
     sendUserLoginCode({mobile, code})
        .then((response) => {
          console.log(response);
-         let {result: {token, status, hasActivePack}, success} = response;
+         let {result: {token, status, hasActivePack, firstName: responseFirstName, lastName: responseLatsName}, success} = response;
          if (response) {
            if (response === 401) {
              // do nothing but in another api's should logout from system
            } else if (success) {
-             if (status !== 4) {
+             if (status !== 4 && status !== 7) {
                if (status === 3) {
                  TokenStore.setUserToken(token);
                  dispatch(UserStore.actions.setUserData(response.result));
@@ -334,6 +334,8 @@ const LoginUser = () => {
                }
              } else {
                setStep(3);
+               setFirstName(responseFirstName);
+               setLastName(responseLatsName);
                setToken(token);
                setBtnLoader(false);
              }
