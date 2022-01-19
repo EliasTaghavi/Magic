@@ -9,14 +9,19 @@ import {faRedo} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import QRCode from 'qrcode.react';
 import {qrCodePreUrl} from "../../../../api/imagePreUrl";
+import * as UserStore from "../../../../../store/user";
+import {useDispatch} from "react-redux";
+import {useShallowPickerSelector} from "../../../../../store/selectors";
 
 const UserDashboard = () => {
    const history = useHistory();
+   const dispatch = useDispatch();
    const [paymentData, setPaymentData] = useState(null);
    const [currentPck, setCurrentPck] = useState(null);
    const [currentPckLoader, setCurrentPckLoader] = useState(0); // 0=false 1=true 2=fetchError
    const [qrId, setQrId] = useState('');
    const [qrLoader, setQrLoader] = useState(false);
+   const userData = useShallowPickerSelector('user', ['userData']);
 
    useEffect(() => {
       let url = history?.location?.search;
@@ -27,6 +32,7 @@ const UserDashboard = () => {
            status: data[1]?.replace('status=', ''),
          };
          setPaymentData(paymentData);
+         dispatch(UserStore.actions.setUserData({...userData, hasActivePack: true}));
       }
    }, [history]);
 
