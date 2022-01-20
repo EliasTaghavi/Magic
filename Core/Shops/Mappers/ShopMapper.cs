@@ -26,6 +26,7 @@ namespace Core.Shops.Mappers
                 UserMobile = shop.User.Mobile,
                 CreatedDate = shop.CreatedDate,
                 LatestOff = shop.Offs?.FirstOrDefault()?.Percentage ?? 0,
+                RefCode = shop.ReferralCode,
             };
         }
 

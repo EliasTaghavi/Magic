@@ -10,5 +10,6 @@
         public string UserMobile { get; set; }
         public DateTime CreatedDate { get; set; }
         public int LatestOff { get; set; }
+        public string RefCode { get; set; }
     }
 }
