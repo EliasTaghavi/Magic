@@ -4,8 +4,9 @@ import Loader from "react-loader-spinner";
 import NumberFormat from "react-number-format";
 import {faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {sendBuyData} from "../../../../api/shop/scannedUser";
 
-const ScannedUserDetailsModal = ({data, onClose}) => {
+const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 	let {dayRemain, expireDate, lastname, name, packStatus, userType, discount} = data;
 	const [error, setError] = useState('');
 	const [factorPrice, setFactorPrice] = useState('');
@@ -14,6 +15,20 @@ const ScannedUserDetailsModal = ({data, onClose}) => {
 
 	let priceToPay = factorPrice - ((factorPrice * discount) / 100);
 	console.log(discount, priceToPay);
+
+	const setBuyDataFn = () => {
+		let data = {
+			factorPrice,
+			userId,
+		};
+		sendBuyData(data)
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+	};
 
 	return (
 		<Modal
@@ -75,7 +90,7 @@ const ScannedUserDetailsModal = ({data, onClose}) => {
 					</div>
 				)}
 				{data && <div className="d-flex centered mt-3">
-					<button type="button" className="btn border-0 submitBtn" style={{maxWidth: 300}}>
+					<button type="button" className="btn border-0 submitBtn" style={{maxWidth: 300}} onClick={setBuyDataFn}>
 						ثبت خرید
 					</button>
 				</div>}
