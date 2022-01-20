@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Parbad;
+using Serilog;
 using Web.Helper;
 using Web.Mappers;
 using Web.Models;
@@ -39,6 +40,7 @@ namespace Web.Controllers
         [HttpGet, HttpPost]
         public IActionResult Verify()
         {
+            Log.Error("Verify Buy");
             var invoice = onlinePayment.Fetch();
 
 
