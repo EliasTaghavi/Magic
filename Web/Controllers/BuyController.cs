@@ -1,6 +1,7 @@
 ﻿using Core.Purchase.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Helper;
 using Web.Mappers;
 using Web.Models.Purchase;
 
@@ -19,7 +20,8 @@ namespace Web.Controllers
         [Authorize(Roles = "Shop")]
         public IActionResult Save(SaveBuyViewModel viewModel)
         {
-            var dto = viewModel.ToDto();
+            var shopKeeperId = User.GetUserId();
+            var dto = viewModel.ToDto(shopKeeperId);
             var response = buyManager.Save(dto);
             return Ok(response);
         }

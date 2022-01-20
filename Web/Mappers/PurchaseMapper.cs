@@ -5,12 +5,12 @@ namespace Web.Mappers
 {
     public static class PurchaseMapper
     {
-        public static SaveBuyDto ToDto(this SaveBuyViewModel viewModel)
+        public static SaveBuyDto ToDto(this SaveBuyViewModel viewModel, string shopKeeperId)
         {
             return new SaveBuyDto
             {
                 OrderAmount = viewModel.OrderAmount,
-                ShopKeeperId = viewModel.ShopKeeperId,
+                ShopKeeperId = shopKeeperId,
                 ShopperQR = viewModel.ShopperQR,
             };
         }
