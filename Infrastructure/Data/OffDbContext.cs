@@ -64,9 +64,9 @@ namespace Infrastructure.Data
             );
 
             modelBuilder.Entity<UserType>().HasData(
-                new UserType { Id = "34e4a710-292d-4464-874a-bfcd739323e5", CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), Enable = true, Name = "سایر" },
-                new UserType { Id = "bae26091-6fd0-4b43-8d68-f0610325b7d7", CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), Enable = true, Name = "کارگر" },
-                new UserType { Id = "823a5500-e962-42b3-89d8-f5fb5b0270a9", CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), Enable = true, Name = "دانشجو" }
+                new UserType { Id = "34e4a710-292d-4464-874a-bfcd739323e5", CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), Enable = true, Name = "سایر", Discount = 20 },
+                new UserType { Id = "bae26091-6fd0-4b43-8d68-f0610325b7d7", CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), Enable = true, Name = "کارگر", Discount = 30 },
+                new UserType { Id = "823a5500-e962-42b3-89d8-f5fb5b0270a9", CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), Enable = true, Name = "دانشجو", Discount = 45 }
             );
         }
     }

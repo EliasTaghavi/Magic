@@ -66,6 +66,12 @@ namespace Infrastructure.Identity.Repos
                            .ToList();
         }
 
+        public User ReadWithType(string userId)
+        {
+            var result = GetSet().Include(x => x.UserType).FirstOrDefault(x => x.Id == userId);
+            return result;
+        }
+
         public PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto)
         {
             var query = GetSet();

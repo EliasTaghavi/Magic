@@ -1,5 +1,6 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
+using Core.Identity.Repos;
 using Core.Packs.Dto;
 using Core.Packs.Managers;
 using Core.Packs.Repos;
@@ -10,11 +11,15 @@ namespace Infrastructure.Packs.Managers
     {
         private readonly IPackRepo packRepo;
         private readonly IPackBuyRepo packBuyRepo;
+        private readonly IUserRepo userRepo;
 
-        public PackManager(IPackRepo packRepo, IPackBuyRepo packBuyRepo)
+        public PackManager(IPackRepo packRepo,
+                           IPackBuyRepo packBuyRepo,
+                           IUserRepo userRepo)
         {
             this.packRepo = packRepo;
             this.packBuyRepo = packBuyRepo;
+            this.userRepo = userRepo;
         }
 
         public ManagerResult<bool> Create(Core.Packs.Entities.Pack data)
@@ -70,6 +75,18 @@ namespace Infrastructure.Packs.Managers
         {
             var result = packRepo.Search(dto);
             return new ManagerResult<PagedListDto<PackListDto>>(result);
+        }
+
+        public ManagerResult<PagedListPackWithUserTypeOffDto> List(PageRequestDto<PackFilterDto> dto, string userId)
+        {
+            var result = packRepo.Search(dto);
+            var user = userRepo.ReadWithType(userId);
+            var xResult = new PagedListPackWithUserTypeOffDto
+            {
+                Discount = user.UserType.Discount,
+                ListDto = result,
+            };
+            return new ManagerResult<PagedListPackWithUserTypeOffDto>(xResult);
         }
     }
 }

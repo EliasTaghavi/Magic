@@ -1,0 +1,11 @@
+﻿using Core.Base.Dto;
+using Core.Packs.Dto;
+
+namespace Web.Models.Pack
+{
+    public class PagedListPackWithUserTypeOffViewModel
+    {
+        public PageResponseViewModel<PackListViewModel> List { get; set; }
+        public int Discount { get; set; }
+    }
+}

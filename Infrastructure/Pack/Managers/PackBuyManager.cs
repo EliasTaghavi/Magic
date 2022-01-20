@@ -44,13 +44,17 @@ namespace Infrastructure.Packs.Managers
                     Message = "HasPackageBefore"
                 };
             }
-            var user = userRepo.Read(dto.UserId);
+            var user = userRepo.ReadWithType(dto.UserId);
             var pack = packRepo.Read(dto.PackId);
-
+            decimal afterDiscount = pack.Price - (pack.Price * user.UserType.Discount / 100);
+            var description = $"شما در حال خرید پکیج \"{pack.Title}\" در سامانه Magic Off هستید.";
             var result = onlinePayment.Request(invoice =>
             {
-                invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test", "", "09304359576")
-                .SetAmount(pack.Price).SetCallbackUrl(callBackUrl);
+                invoice.UseZarinPal()
+                       .UseAutoIncrementTrackingNumber()
+                       .SetZarinPalData(description, "info@magicoff.ir", "۰۹۱۰۱۴۱۹۱۳۰")
+                       .SetAmount(afterDiscount)
+                       .SetCallbackUrl(callBackUrl);
             });
             var packBuy = new PackBuy
             {
