@@ -212,9 +212,9 @@ const UserTransactions = () => {
                     <td>{item?.price ?? '-----'}</td>
                     <td>{item?.packTitle ?? '-----'}</td>
                     <td>{item?.status === true ? (
-                       <p className="font-weight-bold text-success">پرداخت شده</p>
+                       <p className="font-weight-bold text-success my-1">پرداخت شده</p>
                     ) : (
-                       <p className="font-weight-bold text-danger">پرداخت نشده</p>
+                       <p className="font-weight-bold text-danger my-1">پرداخت نشده</p>
                     )}</td>
                   </tr>
                );

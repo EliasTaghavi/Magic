@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 import {useShallowPickerSelector} from "../../../../../../store/selectors";
 import * as MainStore from '../../../../../../store/main';
 
-const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
+const ConfirmBuyPckModal = ({pckDetails: item, onClose, discount}) => {
 	const dispatch = useDispatch();
 	const userData = useShallowPickerSelector('user', ['userData']);
 	const [bigLoader, setBigLoader] = useState(1); //0=false 1=true 2=closeBtn
@@ -19,6 +19,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 	useEffect(() => {
 		sendBuyDetails(item?.id)
 			.then((response) => {
+				console.log(response);
 				if (response) {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
