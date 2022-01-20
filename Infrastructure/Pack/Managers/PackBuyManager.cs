@@ -36,7 +36,7 @@ namespace Infrastructure.Packs.Managers
 
         public ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto, string callBackUrl)
         {
-            if (packBuyRepo.GetCurrentByUserId(dto.UserId)?.PayStatus ?? false)
+            if (packBuyRepo.HasActivePack(dto.UserId))
             {
                 return new ManagerResult<IPaymentRequestResult>(null, false)
                 {

@@ -86,7 +86,7 @@ namespace Infrastructure.Packs.Managers
             {
                 Discount = user.UserType.Discount,
                 ListDto = result,
-                HasActivePack = hasActivePack.PayStatus ?? false,
+                HasActivePack = packBuyRepo.HasActivePack(userId),
             };
             return new ManagerResult<PagedListPackWithUserTypeOffDto>(xResult);
         }

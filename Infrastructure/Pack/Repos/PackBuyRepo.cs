@@ -18,8 +18,29 @@ namespace Infrastructure.Packs.Repos
 
         public PackBuy GetCurrentByUserId(string userId)
         {
-            var lastPackBuy = GetSet().Where(x => x.UserId == userId).Include(x => x.Pack).OrderByDescending(x => x.PayDate).FirstOrDefault();
+            var lastPackBuy = GetSet().Where(x => x.UserId == userId && x.PayStatus == true).Include(x => x.Pack).OrderByDescending(x => x.PayDate).FirstOrDefault();
             return lastPackBuy;
+        }
+
+        public bool HasActivePack(string userId)
+        {
+            var lastPackBuy = GetCurrentByUserId(userId);
+            if (lastPackBuy != null)
+            {
+                var isValid = (lastPackBuy.PayDate.Value.AddDays(lastPackBuy.Pack.DayCount) - DateTime.UtcNow) > TimeSpan.Zero;
+                if (isValid)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public PagedListDto<PackBuyListDto> Search(PageRequestDto<PackBuyListFilterDto> dto)
