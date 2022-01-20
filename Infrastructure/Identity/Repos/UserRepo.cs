@@ -60,8 +60,7 @@ namespace Infrastructure.Identity.Repos
 
         public List<Role> ReadUserAllRoles(User User)
         {
-            string username = User.Username;
-            return GetSet().Where(x => x.Username == username)
+            return GetSet().Where(x => x.Id == User.Id)
                            .Include(x => x.Roles)
                            .First().Roles
                            .ToList();
