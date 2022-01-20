@@ -1,6 +1,6 @@
 {
     "platform": "netcore",
-    "app": "moelias",
+    "app": "magicoff",
     "disks": [
       {
         "name": "log-disk",
