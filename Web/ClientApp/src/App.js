@@ -23,7 +23,7 @@ export default () => (
          <Route path='/admin' component={AdminAreaRoute} />
          <Route path='/about-us' component={AboutUs} />
          <Route path='/terms' component={Terms} />
-         <Route path="*" component={NoMatch}/>
+         {/*<Route path="*" component={NoMatch}/>*/}
       </Switch>
    </Layout>
 );
