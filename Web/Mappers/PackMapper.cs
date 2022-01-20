@@ -71,6 +71,7 @@ namespace Web.Mappers
             {
                 Discount = dto.Discount,
                 List = dto.ListDto.ToViewModel(x => x.ToViewModel()),
+                HasActivePack = dto.HasActivePack
             };
         }
     }
