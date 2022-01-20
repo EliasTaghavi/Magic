@@ -27,7 +27,6 @@ export const getUserTransactions = (data) => {
 	});
 
 	return axios.post('/api/payment/searchUser', body,{headers}).then((res) => {
-		console.log(res);
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
@@ -35,7 +34,6 @@ export const getUserTransactions = (data) => {
 		}
 	})
 		.catch((error) => {
-			console.log(error);
 			if (error.response.status === 401) {
 				return 401;
 			} else {

@@ -73,7 +73,6 @@ const UserTransactions = () => {
     };
     getUserTransactions(filteredData)
        .then((response) => {
-         console.log(1, response);
          const {result: {count, items}, success} = response;
          if (response) {
            if (response === 401) {
@@ -92,7 +91,7 @@ const UserTransactions = () => {
            setBigLoader(false);
          }
        })
-       .catch((error) => {
+       .catch(() => {
          toast.error('خطای سرور', toastOptions);
          setBigLoader(false);
        })
@@ -193,7 +192,7 @@ const UserTransactions = () => {
                </button>}
              </div>
            </div>
-           <SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
+           {/*<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />*/}
          </div>
          <div className="table-responsive table-striped">
            <table className="w-100 mt-5">
@@ -203,7 +202,6 @@ const UserTransactions = () => {
                <th style={{minWidth: 120}}>تاریخ تراکنش</th>
                <th style={{minWidth: 120}}>مبلغ تراکنش</th>
                <th style={{minWidth: 120}}>نوع پکیج</th>
-               <th style={{minWidth: 120}}>شماره موبایل</th>
                <th style={{minWidth: 120}}>وضعیت</th>
              </tr>
              </thead>
@@ -212,10 +210,9 @@ const UserTransactions = () => {
                return (
                   <tr key={item?.id} className="customTr">
                     <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
-                    <td>{item?.payDate}</td>
-                    <td>{item?.price}</td>
-                    <td>{item?.packTitle}</td>
-                    <td>{item?.userMobile}</td>
+                    <td>{item?.payDate ?? '-----'}</td>
+                    <td>{item?.price ?? '-----'}</td>
+                    <td>{item?.packTitle ?? '-----'}</td>
                     <td>{item?.status === true ? (
                        <p className="font-weight-bold text-success">پرداخت شده</p>
                     ) : (
