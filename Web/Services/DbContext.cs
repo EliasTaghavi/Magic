@@ -16,6 +16,7 @@ namespace Web.Services
             {
                 o.MigrationsAssembly("Infrastructure");
                 o.UseNetTopologySuite();
+                o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             }));
         }
     }
