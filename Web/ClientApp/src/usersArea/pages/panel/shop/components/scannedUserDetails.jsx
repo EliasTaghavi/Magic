@@ -36,7 +36,7 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 					} else if (success) {
 						setBuyLoader(false);
 						toast.success('خرید با موفقیت ثبت شد', toastOptions);
-						history.replace('/shopPanel');
+						history.replace('/shop-panel');
 					}
 				} else {
 					toast.error('خطای سرور', toastOptions);
