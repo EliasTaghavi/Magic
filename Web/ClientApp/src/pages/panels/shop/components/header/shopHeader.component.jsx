@@ -72,7 +72,7 @@ const ShopHeader = ({children}) => {
              {/*  </div>*/}
              {/*</div>*/}
              <div id="drawer" className="d-flex panelDrawer sticky-top" style={open ? {right: 0} : {right: '-100%'}}>
-                <Drawer token={token} open={open} setOpen={setOpen} extraClassName="d-flex" />
+                <Drawer token={token} open={open} setOpen={setOpen} logout={logout} extraClassName="d-flex" />
              </div>
           </div>
        </div>
@@ -95,7 +95,7 @@ const MdDrawer = ({token, open, setOpen, logout}) => {
    );
 }
 
-const Drawer = ({token, extraClassName, open, setOpen}) => {
+const Drawer = ({token, extraClassName, open, setOpen, logout}) => {
    return (
       <div className={`userPanelDrawer py-3 transition sticky-top w280 ${extraClassName}`}>
          <div className="d-flex centered px-2">
@@ -105,7 +105,7 @@ const Drawer = ({token, extraClassName, open, setOpen}) => {
             <span className="text-white transition mr-3 noWrapText">{token ? 'نام کاربری' : 'شما خارج شدید'}</span>
          </div>
          <Divider />
-         <MenuItems open={open} setOpen={setOpen} noOpacity={true} />
+         <MenuItems open={open} setOpen={setOpen} noOpacity={true} logout={logout} />
       </div>
    );
 }

@@ -5,8 +5,13 @@ import Loader from "react-loader-spinner";
 import {sendBuyDetails} from "../../../../../api/user/pcks";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../../components/ToastOptions";
+import * as UserStore from "../../../../../../store/user";
+import {useDispatch} from "react-redux";
+import {useShallowPickerSelector} from "../../../../../../store/selectors";
 
 const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
+	const dispatch = useDispatch();
+	const userData = useShallowPickerSelector('user', ['userData']);
 	const [bigLoader, setBigLoader] = useState(1); //0=false 1=true 2=closeBtn
 	const [buyUrl, setBuyUrl] = useState('');
 
@@ -18,6 +23,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 						// do nothing but in another api's should logout from system
 					} else if (response?.success === false) {
 						toast.error('شما پکیج فعال دارید', toastOptions);
+						dispatch(UserStore.actions.setUserData({...userData, hasActivePack: true}));
 						setBigLoader(2);
 					} else {
 						setBigLoader(0);

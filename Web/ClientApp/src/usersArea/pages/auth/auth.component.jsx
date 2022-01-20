@@ -16,8 +16,8 @@ const Login = (props) => {
       <div className="d-flex flex-column align-items-center justify-content-center position-relative sliderContainer w-100" style={{minHeight: 350}}>
         <img alt="magicOff.ir" src={logo} className="headerImage" />
         <p className="textMain fs24 mt-5">ورود به مجیک آف</p>
-        <div className="buttonsContainer d-flex flex-column flex-md-row">
-          <Link to="/login/shops" type="button" className="btn outline type">
+        <div className="buttonsContainer d-flex flex-column-reverse flex-md-row">
+          <Link to="/login/shops" type="button" className="btn outline type mt-5 mt-md-0">
             <span className="textMain font-weight-bold fs24">فروشگاه</span>
             <img alt="magicoff.ir" src={store} className="image" />
             <span className="d-none d-md-flex fs14 text-center">جهت ثبت فروشگاه خود برای ارائه تخفیف از این قسمت ثبت نام نمایید یا وارد شوید.</span>
@@ -26,7 +26,7 @@ const Login = (props) => {
               ورود
             </div>
           </Link>
-          <Link to="/login/users" type="button" className="btn outline type mt-5 mt-md-0">
+          <Link to="/login/users" type="button" className="btn outline type">
             <span className="textMain font-weight-bold fs24">کاربران</span>
             <img alt="magicoff.ir" src={cart} className="image" />
             <span className="d-none d-md-flex fs14 text-center">جهت استفاده از خدمات تخفیف، از این قسمت ثبت نام نمایید یا وارد شوید.</span>
