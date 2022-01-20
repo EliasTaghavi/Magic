@@ -11,5 +11,6 @@ namespace Core.Packs.Dto
     {
         public PagedListDto<PackListDto> ListDto { get; set; }
         public int Discount { get; set; }
+        public bool HasActivePack { get; set; }
     }
 }

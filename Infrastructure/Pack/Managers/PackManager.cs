@@ -81,10 +81,12 @@ namespace Infrastructure.Packs.Managers
         {
             var result = packRepo.Search(dto);
             var user = userRepo.ReadWithType(userId);
+            var hasActivePack = packBuyRepo.GetCurrentByUserId(userId);
             var xResult = new PagedListPackWithUserTypeOffDto
             {
                 Discount = user.UserType.Discount,
                 ListDto = result,
+                HasActivePack = hasActivePack.PayStatus ?? false,
             };
             return new ManagerResult<PagedListPackWithUserTypeOffDto>(xResult);
         }
