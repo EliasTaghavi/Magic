@@ -25,7 +25,6 @@ export const getAdminTransactions = (data) => {
 			}
 		}
 	});
-	console.log(JSON.parse(body));
 
 	return axios.post('/api/payment/search', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {

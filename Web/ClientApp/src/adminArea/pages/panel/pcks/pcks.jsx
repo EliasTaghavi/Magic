@@ -13,8 +13,10 @@ import NumberFormat from "react-number-format";
 import DeleteItemModal from "../../../../components/shared/deleteItemModal";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import * as MainStore from "../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const AdminPcks = () => {
+	const dispatch = useDispatch();
 	const [bigLoader, setBigLoader] = useState(false);
 	const [pageSize, setPageSize] = useState(5);
 	const [currentPage, setCurrentPage] = useState(1);

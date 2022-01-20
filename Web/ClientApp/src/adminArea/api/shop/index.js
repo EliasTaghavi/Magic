@@ -20,8 +20,6 @@ export const adminGetAllShops = (data) => {
 		}
 	});
 
-	console.log(JSON.parse(body));
-
 	return axios.post('/api/shop/search', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;

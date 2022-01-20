@@ -54,7 +54,6 @@ const AdminShops = () => {
 		};
 		adminGetAllShops(filteredData)
 			.then((response) => {
-				console.log(response);
 				let {success, result: {count, items}} = response
 				if (response) {
 					if (response === 401) {
@@ -184,7 +183,6 @@ const AdminShops = () => {
 						</thead>
 						<tbody className="w-100">
 						{!bigLoader && data.length > 0 && data.map((item, index) => {
-							console.log(12121, discountEditEnable, item);
 							return (
 								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>

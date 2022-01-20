@@ -83,7 +83,6 @@ const LoginUser = () => {
   };
 
   const sendImage = async (e, type) => {
-    console.log(e, type);
     let newErrors = errors;
     if (type === 'selfi') {
       if (e.target.files && e.target.files[0]) {
@@ -282,7 +281,6 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginSms(mobile)
        .then((response) => {
-         console.log(response);
          let {success} = response;
          if (response) {
            if (response === 401) {
@@ -310,7 +308,6 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginCode({mobile, code})
        .then((response) => {
-         console.log(response);
          let {result: {token, status, hasActivePack, firstName: responseFirstName, lastName: responseLatsName}, success} = response;
          if (response) {
            if (response === 401) {
@@ -386,7 +383,6 @@ const LoginUser = () => {
     setReferralCodeLoader(true);
     checkReferralCode({code: referralCode})
        .then((response) => {
-         console.log(response);
          let {success, result} = response;
          if (response) {
            if (response === 401) {

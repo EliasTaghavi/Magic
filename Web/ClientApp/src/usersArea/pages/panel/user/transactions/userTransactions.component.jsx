@@ -101,7 +101,6 @@ const UserTransactions = () => {
     if (newPage === currentPage || newPage < 1 || newPage > pagesNumber[pagesNumber.length - 1]) {
       // do nothing
     } else {
-      console.log(newPage);
       setCurrentPage(newPage);
       getData({currentPage: newPage});
     }
@@ -122,7 +121,6 @@ const UserTransactions = () => {
 
   const selectDay = (type, data) => {
     delete errors[type];
-    console.log(data);
     switch (type) {
       case 'from':
         setFrom(data);

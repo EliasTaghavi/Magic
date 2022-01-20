@@ -24,7 +24,6 @@ const ShopDashboard = () => {
 	const getUserDetails = (userId) => {
 		getUserDetailsInShop(userId)
 			.then((response) => {
-				console.log(response);
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
