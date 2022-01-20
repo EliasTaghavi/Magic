@@ -49,7 +49,7 @@ namespace Web.Controllers
             var response = packBuyManager.Verify(verifyResult);
 
 
-            return Redirect($"https://magicoff.ir/user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
+            return RedirectPermanent($"https://magicoff.ir/user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }
 
         [HttpGet]
@@ -101,6 +101,15 @@ namespace Web.Controllers
             var dto = viewModel.ToDto(x => x.ToDto(userId));
             var response = packBuyManager.Search(dto);
             return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
+        }
+
+        [HttpGet]
+        public IActionResult Test()
+        {
+
+            Log.Warning("fgsdfgsdfg");
+
+            return RedirectPermanent("../../user-panel?code=elias");
         }
     }
 }
