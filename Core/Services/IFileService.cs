@@ -1,6 +1,5 @@
 ﻿using Core.Base.Dto;
 using Core.File.Entities;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Core.Services

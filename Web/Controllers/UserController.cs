@@ -3,8 +3,6 @@ using Core.Identity.Entities;
 using Core.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 using System.Security.Claims;
 using Web.Helper;
 using Web.Mappers;
@@ -26,7 +24,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateUserViewModel viewModel)
+        public IActionResult Create(CreateUserViewModel viewModel)
         {
             Core.Identity.Dto.CreateUserDto dto = viewModel.ToDto();
             var response = UserManager.CreateByPhone(dto);
@@ -74,7 +72,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult List([FromBody] PageRequestViewModel<UserListFilterViewModel> viewModel)
+        public IActionResult List(PageRequestViewModel<UserListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = UserManager.Search(dto);
@@ -83,7 +81,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm([FromBody] ConfirmUserViewModel viewModel)
+        public IActionResult Confirm(ConfirmUserViewModel viewModel)
         {
             var dto = viewModel.ToDto();
             var response = UserManager.Confirm(dto);
@@ -100,7 +98,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Reject([FromBody] RejectMessageViewModel viewModel)
+        public IActionResult Reject(RejectMessageViewModel viewModel)
         {
             var dto = viewModel.ToDto();
             var response = UserManager.Reject(dto);
@@ -128,6 +126,15 @@ namespace Web.Controllers
         public IActionResult GetTypes()
         {
             var response = UserManager.GetTypes();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetQR()
+        {
+            var userId = User.GetUserId();
+            var response = UserManager.GetQR(userId);
             return Ok(response);
         }
     }

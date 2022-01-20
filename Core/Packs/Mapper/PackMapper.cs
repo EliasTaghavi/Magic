@@ -1,6 +1,4 @@
 ﻿using Core.Packs.Dto;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Packs.Mapper
 {

@@ -2,11 +2,7 @@
 using Core.Base.Enums;
 using Core.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Base.Repos
 {

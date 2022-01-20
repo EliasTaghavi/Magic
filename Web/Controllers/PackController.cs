@@ -19,7 +19,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult List([FromBody] PageRequestViewModel<PackFilterViewModel> viewModel)
+        public IActionResult List(PageRequestViewModel<PackFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = packManager.Search(dto);
@@ -28,7 +28,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Create([FromBody] CreatePackViewModel viewModel)
+        public IActionResult Create(CreatePackViewModel viewModel)
         {
             var data = viewModel.ToDataModel();
             var response = packManager.Create(data);

@@ -2,11 +2,13 @@
 using Core.File.Repos;
 using Core.Identity.Repos;
 using Core.Packs.Repos;
+using Core.Purchase.Repos;
 using Core.Shops.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.File.Repos;
 using Infrastructure.Identity.Repos;
 using Infrastructure.Packs.Repos;
+using Infrastructure.Purchase.Repos;
 using Infrastructure.Shops.Repos;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +29,7 @@ namespace Web.Services
             services.AddTransient<IPackBuyRepo, PackBuyRepo>();
             services.AddTransient<IShopRepo, ShopRepo>();
             services.AddTransient<IShopOffRepo, ShopOffRepo>();
+            services.AddTransient<IBuyRepo, BuyRepo>();
             services.AddTransient<ISettingRepo, SettingRepo>();
         }
     }

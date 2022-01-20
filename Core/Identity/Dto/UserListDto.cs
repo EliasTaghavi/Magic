@@ -1,5 +1,4 @@
 ﻿using Core.Identity.Enums;
-using System;
 
 namespace Core.Identity.Dto
 {
@@ -15,5 +14,7 @@ namespace Core.Identity.Dto
         public string SelfieURL { get; set; }
         public string IdentityURL { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string TypeId { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

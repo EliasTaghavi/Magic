@@ -1,6 +1,4 @@
 ﻿using Core.Shops.Dto;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Shops.Mappers
 {

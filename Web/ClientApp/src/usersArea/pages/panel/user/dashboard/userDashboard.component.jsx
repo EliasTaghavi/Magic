@@ -9,14 +9,19 @@ import {faRedo} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import QRCode from 'qrcode.react';
 import {qrCodePreUrl} from "../../../../api/imagePreUrl";
+import * as UserStore from "../../../../../store/user";
+import {useDispatch} from "react-redux";
+import {useShallowPickerSelector} from "../../../../../store/selectors";
 
 const UserDashboard = () => {
    const history = useHistory();
+   const dispatch = useDispatch();
    const [paymentData, setPaymentData] = useState(null);
    const [currentPck, setCurrentPck] = useState(null);
    const [currentPckLoader, setCurrentPckLoader] = useState(0); // 0=false 1=true 2=fetchError
    const [qrId, setQrId] = useState('');
    const [qrLoader, setQrLoader] = useState(false);
+   const userData = useShallowPickerSelector('user', ['userData']);
 
    useEffect(() => {
       let url = history?.location?.search;
@@ -27,6 +32,7 @@ const UserDashboard = () => {
            status: data[1]?.replace('status=', ''),
          };
          setPaymentData(paymentData);
+         dispatch(UserStore.actions.setUserData({...userData, hasActivePack: true}));
       }
    }, [history]);
 
@@ -65,7 +71,6 @@ const UserDashboard = () => {
       setQrLoader(true);
       getUserQrCode()
          .then((response) => {
-            console.log(response);
             if (response) {
                let {success, result} = response
                if (response === 401) {
@@ -87,7 +92,7 @@ const UserDashboard = () => {
 
    return (
     <div className="col-12 d-flex align-items-start justify-content-between pr-0">
-       <div className="col-6 ml-1 card cardPrimary">
+       <div className="col-6 ml-1 card cardPrimary" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">پنل کاربری</p>
           </div>
@@ -95,7 +100,7 @@ const UserDashboard = () => {
              {paymentData && <PaymentResult data={paymentData}/>}
           </div>
        </div>
-       <div className="w-100 col-3 mx-1 card cardPrimary px-3">
+       <div className="w-100 col-3 mx-1 card cardPrimary px-3" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">کد QR شما</p>
           </div>
@@ -115,7 +120,7 @@ const UserDashboard = () => {
              )}
           </div>
        </div>
-       <div className="col-3 mr-1 card cardPrimary px-3">
+       <div className="col-3 mr-1 card cardPrimary px-3" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">پکیج فعال شما</p>
           </div>

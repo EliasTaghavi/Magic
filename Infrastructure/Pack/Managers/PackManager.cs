@@ -3,8 +3,6 @@ using Core.Base.Entities;
 using Core.Packs.Dto;
 using Core.Packs.Managers;
 using Core.Packs.Repos;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructure.Packs.Managers
 {

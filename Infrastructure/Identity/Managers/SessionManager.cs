@@ -9,9 +9,6 @@ using Core.Identity.Repos;
 using Core.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Identity.Managers
 {
@@ -35,8 +32,10 @@ namespace Infrastructure.Identity.Managers
         private readonly ITokenRepo TokenRepo;
 
         private readonly IUserRepo UserRepo;
+        private readonly IRoleRepo roleRepo;
 
         public SessionManager(IUserRepo userRepo,
+            IRoleRepo roleRepo,
                               ITokenRepo tokenRepo,
                               IPasswordHandler passwordHandler,
                               IJwtTokenHandler tokenHandler,
@@ -47,6 +46,7 @@ namespace Infrastructure.Identity.Managers
                               IOptionsMonitor<SMSSettings> options)
         {
             UserRepo = userRepo;
+            this.roleRepo = roleRepo;
             TokenRepo = tokenRepo;
             PasswordHandler = passwordHandler;
             TokenHandler = tokenHandler;
@@ -102,6 +102,8 @@ namespace Infrastructure.Identity.Managers
                     Username = phone,
                     UserStatus = UserStatus.New,
                 };
+                var role = roleRepo.GetSet().FirstOrDefault(x => x.EnName == "User");
+                newUser.Roles.Add(role);
                 user = UserRepo.Create(newUser);
             }
             userAlreadyExist = string.IsNullOrEmpty(user.Name?.Trim());

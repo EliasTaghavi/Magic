@@ -1,5 +1,4 @@
 ﻿using Core.Base.Entities;
-using System.Collections.Generic;
 
 namespace Core.Identity.Entities
 {

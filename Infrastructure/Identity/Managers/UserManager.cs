@@ -17,9 +17,6 @@ using Core.Shops.Dto;
 using Core.Shops.Repos;
 using Infrastructure.Identity.Exceptions;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Identity.Managers
 {
@@ -145,22 +142,17 @@ namespace Infrastructure.Identity.Managers
             throw new NotImplementedException();
         }
 
-        public ManagerResult<User> CreateByPhone(CreateUserDto dto)
+        public ManagerResult<User> CreateByPhone(CreateUserDto dto, string roleName = default)
         {
-            try
+            User model = dto.ToModel();
+            Role role = RoleRepo.GetByName(roleName);
+            if (role != null)
             {
-                User model = dto.ToModel();
-                User mangerResult = UserRepo.Create(model);
-                return new ManagerResult<User>(mangerResult);
+                model.Roles.Add(role);
             }
-            catch (Exception ex)
-            {
-                return new ManagerResult<User>(null)
-                {
-                    Success = false,
-                    Errors = new List<string>() { ex.Message },
-                };
-            }
+
+            User mangerResult = UserRepo.Create(model);
+            return new ManagerResult<User>(mangerResult);
         }
 
         public ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId)
@@ -270,11 +262,22 @@ namespace Infrastructure.Identity.Managers
                     Name = buyer.Name,
                     PackStatus = packBuy.PayStatus.Value,
                     SelfieUrl = selfie?.FullName,
-                    UserType = buyer.UserType.Name
+                    UserType = buyer.UserType.Name,
+                    ShopOff = shop.Offs?.FirstOrDefault()?.Percentage ?? 0,
                 };
                 return new ManagerResult<BuyerDto>(resultDto);
             }
             return new ManagerResult<BuyerDto>(null, false);
+        }
+
+        public ManagerResult<string> GetQR(string userId)
+        {
+            var result = UserRepo.Read(userId);
+            if (result == null)
+            {
+                return new ManagerResult<string>(null, false);
+            }
+            return new ManagerResult<string>(result.QRCode);
         }
     }
 }

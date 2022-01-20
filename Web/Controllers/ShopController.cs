@@ -25,7 +25,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult VerifyTokenByPhone([FromBody] VerifyTokenPhoneModel model)
+        public IActionResult VerifyTokenByPhone(VerifyTokenPhoneModel model)
         {
             string ip = accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
@@ -35,17 +35,17 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult GetBuyer([FromBody] GetBuyerViewModel viewModel)
+        public IActionResult GetBuyer(GetBuyerViewModel viewModel)
         {
             var shoperId = User.GetUserId();
             var dto = viewModel.ToDto(shoperId);
             var response = userManager.GetBuyer(dto);
-            return Ok(response);
+            return Ok(response.CreateViewModel(x => x.ToViewModel()));
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create([FromBody] CreateShopViewModel viewModel)
+        public IActionResult Create(CreateShopViewModel viewModel)
         {
             var dto = viewModel.ToDto();
             var response = shopManager.Create(dto);
@@ -54,7 +54,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Search([FromBody] PageRequestViewModel<ShopListFilterViewModel> viewModel)
+        public IActionResult Search(PageRequestViewModel<ShopListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(x => x.ToDto());
             var response = shopManager.Search(dto);

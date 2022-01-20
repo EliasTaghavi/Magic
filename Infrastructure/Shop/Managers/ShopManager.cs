@@ -1,27 +1,36 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Identity.Dto;
+using Core.Identity.Enums;
 using Core.Identity.Managers;
+using Core.Identity.Repos;
 using Core.Shops.Dto;
 using Core.Shops.Entities;
 using Core.Shops.Managers;
 using Core.Shops.Mappers;
 using Core.Shops.Repos;
-using System;
-using System.Linq;
 
 namespace Infrastructure.Shops.Managers
 {
     public class ShopManager : IShopManager
     {
         private readonly IShopRepo shopRepo;
+        private readonly IRoleRepo roleRepo;
+        private readonly IUserRepo userRepo;
         private readonly IShopOffRepo shopOffRepo;
         private readonly IUserManager userManager;
         private readonly ISessionManager sessionManager;
 
-        public ShopManager(IShopRepo shopRepo, IShopOffRepo shopOffRepo, IUserManager userManager, ISessionManager sessionManager)
+        public ShopManager(IShopRepo shopRepo,
+                           IRoleRepo roleRepo,
+                           IUserRepo userRepo,
+                           IShopOffRepo shopOffRepo,
+                           IUserManager userManager,
+                           ISessionManager sessionManager)
         {
             this.shopRepo = shopRepo;
+            this.roleRepo = roleRepo;
+            this.userRepo = userRepo;
             this.shopOffRepo = shopOffRepo;
             this.userManager = userManager;
             this.sessionManager = sessionManager;
@@ -34,13 +43,24 @@ namespace Infrastructure.Shops.Managers
 
         public ManagerResult<bool> Create(CreateShopDto dto)
         {
-            var userDto = new CreateUserDto
+            var user = userRepo.ReadByPhone(dto.UserMobile);
+            if (user == null)
             {
-                FirstName = dto.UserName,
-                Lastname = dto.UserSurname,
-                Phone = dto.UserMobile
-            };
-            var user = userManager.CreateByPhone(userDto).Result;
+                var userDto = new CreateUserDto
+                {
+                    FirstName = dto.UserName,
+                    Lastname = dto.UserSurname,
+                    Phone = dto.UserMobile,
+                    Status = UserStatus.NewUserFromShop
+                };
+                user = userManager.CreateByPhone(userDto, "Shop").Result;
+            }
+            else
+            {
+                var role = roleRepo.GetByName("Shop");
+                user.Roles.Add(role);
+                userRepo.Update(user);
+            }
 
             Random random = new();
             var code = random.Next(1000, 10000);
@@ -96,6 +116,7 @@ namespace Infrastructure.Shops.Managers
         {
             var token = sessionManager.VerifyTokenByPhone(verifyTokenPhoneDto);
             var user = token.Result.User;
+            var roles = roleRepo.GetSet().Where(x => x.Users.Any(y => y.Id == user.Id));
             var shop = shopRepo.ReadByUserId(user.Id);
             if (shop == null)
             {
@@ -124,7 +145,7 @@ namespace Infrastructure.Shops.Managers
                     PhotoUrl = shop?.Photos?.Where(x => x.Type == Core.File.Enums.FileType.Shop).Select(x => x.FullName).ToList(),
                     ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopLogo)?.FullName
                 },
-                Status = user.UserStatus,
+                Status = UserStatus.Confirmed,
                 Token = token.Result.JWT
             };
             return new ManagerResult<VerifiedUserWithShopDto>(resultDto);

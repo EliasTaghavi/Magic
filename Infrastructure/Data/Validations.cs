@@ -1,7 +1,7 @@
 ﻿using Core.Base.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
-using Microsoft.EntityFrameworkCore;
+using Core.Purchase.Entities;
 
 namespace Infrastructure.Data
 {
@@ -107,6 +107,21 @@ namespace Infrastructure.Data
                 shopOff.HasOne(e => e.Shop)
         .WithMany(e => e.Offs)
         .OnDelete(DeleteBehavior.ClientCascade);
+            });
+        }
+
+        public static void BuyValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Buy>(buy =>
+            {
+                buy.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                buy.HasKey(x => x.Id);
+                buy.Ignore(x => x.ObjectState);
+                buy.Property(i => i.FullPrice)
+                .HasColumnType("money");
+                buy.Property(i => i.AfterDiscount)
+                .HasColumnType("money");
             });
         }
 

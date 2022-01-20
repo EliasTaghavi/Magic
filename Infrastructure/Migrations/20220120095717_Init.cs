@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -271,6 +271,33 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Buys",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ShopId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FullPrice = table.Column<decimal>(type: "money", nullable: false),
+                    AfterDiscount = table.Column<decimal>(type: "money", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Enable = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Buys_Shops_ShopId",
+                        column: x => x.ShopId,
+                        principalTable: "Shops",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Buys_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShopOffs",
                 columns: table => new
                 {
@@ -295,6 +322,7 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "EnName", "Enable", "Name" },
                 values: new object[,]
                 {
+                    { "3843d9eb-4ada-457e-8b63-c7e69f1a9f59", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "Shop", true, "کسب و کار" },
                     { "3f7566d3-7a9e-4fdb-8267-eceba8cfb024", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "User", true, "کاربر" },
                     { "815cc1c6-de17-46e7-a3e5-f73dfc818da3", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "Support", true, "پشتیبان" },
                     { "b72799ea-f2b8-4528-9387-2f1f339dcd1c", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), "Admin", true, "مدیر سیستم" },
@@ -319,6 +347,16 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AppFiles_UserId",
                 table: "AppFiles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Buys_ShopId",
+                table: "Buys",
+                column: "ShopId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Buys_UserId",
+                table: "Buys",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -410,6 +448,9 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AppFiles");
+
+            migrationBuilder.DropTable(
+                name: "Buys");
 
             migrationBuilder.DropTable(
                 name: "Caches");

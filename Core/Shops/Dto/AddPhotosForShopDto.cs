@@ -1,5 +1,4 @@
 ﻿using Core.Base.Dto;
-using System.Collections.Generic;
 
 namespace Core.Shops.Dto
 {

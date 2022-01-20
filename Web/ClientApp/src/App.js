@@ -11,7 +11,6 @@ import UserPanelRoute from "./components/routes/userPanelRoute";
 import ShopPanelRoute from "./components/routes/shopPanelRoute";
 import AdminAreaRoute from './adminArea/routes/adminAreaRoutes';
 import AboutUs from "./pages/shared/AboutUs";
-import ContactUs from "./pages/shared/ContactUs";
 import Terms from "./pages/shared/Terms";
 
 export default () => (
@@ -24,7 +23,6 @@ export default () => (
          <Route path='/admin' component={AdminAreaRoute} />
          <Route path='/about-us' component={AboutUs} />
          <Route path='/terms' component={Terms} />
-         <Route path='/contact-us' component={ContactUs} />
          <Route path="*" component={NoMatch}/>
       </Switch>
    </Layout>

@@ -1,7 +1,5 @@
 ﻿using Core.Identity.Dto;
 using Core.Shops.Dto;
-using System.Collections.Generic;
-using System.Linq;
 using Web.Models.Shop;
 
 namespace Web.Mappers
@@ -65,6 +63,21 @@ namespace Web.Mappers
             {
                 Percentage = viewModel.Percentage,
                 ShopId = viewModel.ShopId,
+            };
+        }
+
+        public static BuyerViewModel ToViewModel(this BuyerDto dto)
+        {
+            return new BuyerViewModel
+            {
+                DayRemain = dto.DayRemain,
+                ExpireDate = dto.ExpireDate,
+                Lastname = dto.Lastname,
+                Name = dto.Name,
+                PackStatus = dto.PackStatus,
+                SelfieUrl = dto.SelfieUrl,
+                Discount = dto.ShopOff,
+                UserType = dto.UserType,
             };
         }
     }

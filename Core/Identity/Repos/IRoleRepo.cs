@@ -5,5 +5,6 @@ namespace Core.Identity.Repos
 {
     public interface IRoleRepo : IRepo<Role>
     {
+        Role GetByName(string roleName);
     }
 }

@@ -31,7 +31,7 @@ export const getUserQrCode = () => {
 		'Authorization': `Bearer ${token}`
 	};
 
-	return axios.get('/api/qr/getCurrent',{headers}).then((res) => {
+	return axios.get('/api/user/getQr',{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

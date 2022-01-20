@@ -3,8 +3,6 @@ using Core.Shops.Dto;
 using Core.Shops.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Shops.Repos
@@ -18,7 +16,7 @@ namespace Infrastructure.Shops.Repos
 
         public Core.Shops.Entities.Shop ReadByUserId(string userId)
         {
-            var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Photos).FirstOrDefault();
+            var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1)).Include(x => x.Photos).FirstOrDefault();
             return shop;
         }
 

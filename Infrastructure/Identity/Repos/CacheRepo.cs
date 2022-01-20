@@ -1,7 +1,6 @@
 ﻿using Core.Identity.Entities;
 using Core.Identity.Repos;
 using Infrastructure.Data;
-using System.Linq;
 
 namespace Infrastructure.Identity.Repos
 {

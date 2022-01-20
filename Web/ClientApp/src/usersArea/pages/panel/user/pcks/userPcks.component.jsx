@@ -6,16 +6,18 @@ import {getPcksData} from "../../../../api/user/pcks";
 import NumberFormat from "react-number-format";
 import ConfirmBuyPckModal from "./components/confirmBuyPckModal";
 import Loader from "react-loader-spinner";
+import {useShallowPickerSelector} from "../../../../../store/selectors";
 
 const UserPackages = () => {
   const [bigLoader, setBigLoader] = useState(true);
   const [pcksData, setPcksData] = useState([]);
   const [confirmBuyPckModal, setConfirmBuyPckModal] = useState(null);
+   const userData = useShallowPickerSelector('user', ['userData']);
 
   useEffect(() => {
     getPcksData()
        .then((response) => {
-         if (response) {
+          if (response) {
            let {success, result: {items}} = response
            if (response === 401) {
              // do nothing but in another api's should logout from system
@@ -29,10 +31,13 @@ const UserPackages = () => {
          }
        })
        .catch((error) => {
-         toast.error('خطای سرور', toastOptions);
+          console.log(error, error.response);
+          toast.error('خطای سرور', toastOptions);
          setBigLoader(false);
        })
   }, []);
+
+  let disabled = userData?.hasActivePack;
 
   return (
     <div className="d-flex flex-column centered w-100">
@@ -45,18 +50,24 @@ const UserPackages = () => {
           <div className="d-flex flex-wrap flex-column flex-md-row centered mt-5 ch">
             {!bigLoader && pcksData.length > 0 && pcksData.map((item) => {
               return (
-                 <div key={item?.id} className="packageContainer shadow">
-                   <p className="fs40 textSecondary1 m-0">{item?.title}</p>
+                 <div key={item?.id} className={`shadow ${!disabled ? 'packageContainer' : 'packageContainerNoHover m-3'}`}>
+                   <p className={`fs40 textSecondary1 m-0 ${disabled && 'textSilver'}`}>{item?.title}</p>
                    <p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
                    {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
                    <hr className="w-100 cDivider" />
-                   <p className="fs90 m-0 textSecondary1 text-center cNumber mt-2">
+                   <p className={`fs90 m-0 textSecondary1 text-center cNumber mt-2 ${disabled && 'textSilver'}`}>
                       <NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
                    </p>
                    <p className="fs18 textThird text-center">هزار تومان</p>
-                   <button type="button" className="button buyBtn border-0" onClick={() => setConfirmBuyPckModal(item)}>
-                     خرید
-                   </button>
+                   {!disabled && <button type="button" disabled={disabled} className="button buyBtn border-0"
+                             onClick={() => setConfirmBuyPckModal(item)}>
+                      خرید
+                   </button>}
+                    {disabled && (
+                       <div className="button bgSilver border-0 px-2 text-nowrap" style={{cursor: 'not-allowed', backgroundImage: 'none'}}>
+                          شما پکیج فعال دارید
+                       </div>
+                    )}
                  </div>
               );
             })}

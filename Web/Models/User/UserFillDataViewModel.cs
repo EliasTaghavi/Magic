@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System;
 using Web.JsonConverter;
 
 namespace Web.Models.User

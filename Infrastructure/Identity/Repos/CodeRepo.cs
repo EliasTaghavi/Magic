@@ -2,10 +2,6 @@
 using Core.Identity.Enums;
 using Core.Identity.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Identity.Repos
 {

@@ -1,7 +1,5 @@
 ﻿using Core.Base.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 using System.Security.Claims;
 
 namespace Web.Helper

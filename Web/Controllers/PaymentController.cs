@@ -23,12 +23,16 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult CreateInvoice([FromBody] CreateInvoiceViewModel viewModel)
+        public IActionResult CreateInvoice(CreateInvoiceViewModel viewModel)
         {
             string callBackUrl = Url.Action("Verify", "Payment", null, Request.Scheme);
             var userId = User.GetUserId();
             var dto = viewModel.ToDto(userId);
             var response = packBuyManager.CreateInvoice(dto, callBackUrl);
+            if (!response.Success)
+            {
+                return Ok(response);
+            }
             return Ok(response.Result.GatewayTransporter.Descriptor.Url);
         }
 
@@ -85,6 +89,16 @@ namespace Web.Controllers
         {
             var response = packBuyManager.SetMinLevel(min);
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult SearchUser(PageRequestViewModel<PackBuyListFilterViewModel> viewModel)
+        {
+            var userId = User.GetUserId();
+            var dto = viewModel.ToDto(x => x.ToDto(userId));
+            var response = packBuyManager.Search(dto);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
     }
 }

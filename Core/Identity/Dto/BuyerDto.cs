@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core.Identity.Dto
+﻿namespace Core.Identity.Dto
 {
     public class BuyerDto
     {
@@ -11,5 +9,6 @@ namespace Core.Identity.Dto
         public int DayRemain { get; set; }
         public DateTime ExpireDate { get; set; }
         public string SelfieUrl { get; set; }
+        public int ShopOff { get; set; }
     }
 }

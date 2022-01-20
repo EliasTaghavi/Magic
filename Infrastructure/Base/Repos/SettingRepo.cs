@@ -1,8 +1,6 @@
 ﻿using Core.Base.Entities;
 using Core.Base.Repos;
 using Infrastructure.Data;
-using System;
-using System.Linq;
 
 namespace Infrastructure.Base.Repos
 {

@@ -15,6 +15,7 @@ import {theme} from "../../../../components/shared/theme";
 import Select from "react-select";
 import {useDispatch} from "react-redux";
 import * as MainStore from '../../../../store/main';
+import generateRolesBadge from "./components/generateRolesBadge";
 
 const animatedComponents = makeAnimated();
 
@@ -55,6 +56,10 @@ const AdminAllUsers = () => {
 			value: 6,
 			label: 'در انتظار بررسی',
 		},
+		{
+			value: 7,
+			label: 'تایید شده توسط ادمین',
+		},
 	];
 
 	useEffect(() => {
@@ -72,6 +77,7 @@ const AdminAllUsers = () => {
 		};
 		adminGetAllUsers(filteredData)
 			.then((response) => {
+				console.log(response);
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {
@@ -164,6 +170,7 @@ const AdminAllUsers = () => {
 							<th style={{minWidth: 120}}>شماره موبایل</th>
 							<th style={{minWidth: 120}}>نام</th>
 							<th style={{minWidth: 120}}>نام خانوادگی</th>
+							<th style={{minWidth: 120}}>نقش کاربر</th>
 							<th style={{minWidth: 120}}>وضعیت</th>
 							<th style={{minWidth: 120}}>جزئیات بیشتر</th>
 						</tr>
@@ -176,6 +183,11 @@ const AdminAllUsers = () => {
 									<td>{item?.mobile ?? '-----'}</td>
 									<td>{item?.firstName ?? '-----'}</td>
 									<td>{item?.lastName ?? '-----'}</td>
+									<td>
+										<div className="d-flex flex-wrap align-items-center justify-content-start h-100">
+											{item?.roles?.length > 0 ? generateRolesBadge(item?.roles) : '-----'}
+										</div>
+									</td>
 									<td>{item?.status === 3 ? (
 										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
 									) : item?.status === 5 ? (
@@ -184,6 +196,8 @@ const AdminAllUsers = () => {
 										<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
 									) : item?.status === 2 ? (
 										<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
+									) : item?.status === 7 ? (
+										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده توسط ادمین</p>
 									) : (
 										<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 									)}</td>

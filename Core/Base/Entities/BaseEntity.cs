@@ -1,5 +1,7 @@
-﻿using Core.Base.Enums;
-using System;
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+using Core.Base.Enums;
 
 namespace Core.Base.Entities
 {

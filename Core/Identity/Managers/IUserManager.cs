@@ -5,7 +5,6 @@ using Core.Identity.Entities;
 using Core.Services.Dto;
 using Core.Shops.Dto;
 using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
 
 namespace Core.Identity.Managers
 {
@@ -22,7 +21,7 @@ namespace Core.Identity.Managers
         ManagerResult<bool> SignUp(User User, string Password);
         ManagerResult<User> GetProfileDetails(string userId);
         ManagerResult<bool> Update(User user);
-        ManagerResult<User> CreateByPhone(CreateUserDto dto);
+        ManagerResult<User> CreateByPhone(CreateUserDto dto, string roleName = default);
         ManagerResult<bool> FillUserData(UserFillDataDto dto, string userId);
         ManagerResult<PagedListDto<UserListDto>> Search(PageRequestDto<UserListFilterDto> dto);
         ManagerResult<bool> Confirm(ConfirmUserDto dto);
@@ -32,5 +31,6 @@ namespace Core.Identity.Managers
         ManagerResult<List<ShopRefCodeCountDto>> GetRank();
         ManagerResult<List<KeyValueDto<string, string>>> GetTypes();
         ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto);
+        ManagerResult<string> GetQR(string userId);
     }
 }

@@ -10,5 +10,11 @@ namespace Infrastructure.Identity.Repos
         public RoleRepo(OffDbContext Context) : base(Context)
         {
         }
+
+        public Role GetByName(string roleName)
+        {
+            var result = GetSet().FirstOrDefault(x => x.EnName.ToLower() == roleName.ToLower());
+            return result;
+        }
     }
 }

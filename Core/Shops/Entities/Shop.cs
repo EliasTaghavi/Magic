@@ -1,7 +1,6 @@
 ﻿using Core.Base.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
-using System.Collections.Generic;
 
 namespace Core.Shops.Entities
 {

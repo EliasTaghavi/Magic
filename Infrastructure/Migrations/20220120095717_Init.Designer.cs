@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(OffDbContext))]
-    [Migration("20220118003310_Init")]
+    [Migration("20220120095717_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,6 +211,14 @@ namespace Infrastructure.Migrations
                             EnName = "User",
                             Enable = true,
                             Name = "کاربر"
+                        },
+                        new
+                        {
+                            Id = "3843d9eb-4ada-457e-8b63-c7e69f1a9f59",
+                            CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
+                            EnName = "Shop",
+                            Enable = true,
+                            Name = "کسب و کار"
                         });
                 });
 
@@ -433,6 +441,39 @@ namespace Infrastructure.Migrations
                     b.ToTable("PackBuys");
                 });
 
+            modelBuilder.Entity("Core.Purchase.Entities.Buy", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("AfterDiscount")
+                        .HasColumnType("money");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("FullPrice")
+                        .HasColumnType("money");
+
+                    b.Property<string>("ShopId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Buys");
+                });
+
             modelBuilder.Entity("Core.Shops.Entities.Shop", b =>
                 {
                     b.Property<string>("Id")
@@ -562,6 +603,21 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Pack");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Purchase.Entities.Buy", b =>
+                {
+                    b.HasOne("Core.Shops.Entities.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId");
+
+                    b.HasOne("Core.Identity.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Shop");
 
                     b.Navigation("User");
                 });

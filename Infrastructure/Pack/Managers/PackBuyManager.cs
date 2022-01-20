@@ -9,13 +9,9 @@ using Core.Packs.Managers;
 using Core.Packs.Repos;
 using Core.Shops.Dto;
 using Core.Shops.Repos;
-using Microsoft.EntityFrameworkCore;
 using Parbad;
 using Parbad.Gateway.ZarinPal;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace Infrastructure.Packs.Managers
 {
@@ -40,8 +36,17 @@ namespace Infrastructure.Packs.Managers
 
         public ManagerResult<IPaymentRequestResult> CreateInvoice(CreateInvoiceDto dto, string callBackUrl)
         {
+            if (packBuyRepo.GetCurrentByUserId(dto.UserId) != null)
+            {
+                return new ManagerResult<IPaymentRequestResult>(null, false)
+                {
+                    Code = 50,
+                    Message = "HasPackageBefore"
+                };
+            }
             var user = userRepo.Read(dto.UserId);
             var pack = packRepo.Read(dto.PackId);
+
             var result = onlinePayment.Request(invoice =>
             {
                 invoice.UseZarinPal().UseAutoIncrementTrackingNumber().SetZarinPalData("elias test", "", "09304359576")

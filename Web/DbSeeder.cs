@@ -3,8 +3,6 @@ using Core.Identity.Enums;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Linq;
 
 namespace Web
 {

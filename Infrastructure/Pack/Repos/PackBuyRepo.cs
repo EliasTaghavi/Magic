@@ -5,8 +5,6 @@ using Core.Packs.Mapper;
 using Core.Packs.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Packs.Repos
@@ -27,6 +25,10 @@ namespace Infrastructure.Packs.Repos
         public PagedListDto<PackBuyListDto> Search(PageRequestDto<PackBuyListFilterDto> dto)
         {
             var query = GetSet();
+            if (dto.MetaData.UserId != default)
+            {
+                query = query.Where(x => x.UserId == dto.MetaData.UserId);
+            }
             if (dto.MetaData.Status.HasValue)
             {
                 query = query.Where(x => x.PayStatus == dto.MetaData.Status.Value);

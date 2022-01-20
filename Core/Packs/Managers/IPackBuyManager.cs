@@ -3,7 +3,6 @@ using Core.Base.Entities;
 using Core.Packs.Dto;
 using Core.Shops.Dto;
 using Parbad;
-using System.Collections.Generic;
 
 namespace Core.Packs.Managers
 {

@@ -1,7 +1,5 @@
 ﻿using Core.Identity.Dto;
 using Core.Identity.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Identity.Mappers
 {
@@ -14,6 +12,7 @@ namespace Core.Identity.Mappers
                 Mobile = dto.Phone,
                 Name = dto.FirstName,
                 Surname = dto.Lastname,
+                UserStatus = dto.Status,
             };
         }
 
@@ -31,6 +30,8 @@ namespace Core.Identity.Mappers
                 Address = user.Address,
                 Birthday = user.Birthday,
                 CreatedDate = user.CreatedDate,
+                TypeId = user.UserTypeId,
+                Roles = user.Roles?.Select(x => x.Name)?.ToList(),
             };
         }
 

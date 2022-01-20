@@ -2,8 +2,6 @@
 using Core.File.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.File.Repos
 {

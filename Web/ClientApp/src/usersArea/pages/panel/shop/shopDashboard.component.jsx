@@ -48,7 +48,7 @@ const ShopDashboard = () => {
 
 				</div>
 			</div>
-			{scannedUserDetailsModal && <ScannedUserDetailsModal data={currentPck} onClose={() => setScannedUserDetailsModal(false)} />}
+			{scannedUserDetailsModal && currentPck && <ScannedUserDetailsModal userId={userId ?? null} data={currentPck} onClose={() => setScannedUserDetailsModal(false)} />}
 		</div>
 	);
 }

@@ -2,8 +2,6 @@
 using Core.Identity.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructure.Identity.Repos
 {

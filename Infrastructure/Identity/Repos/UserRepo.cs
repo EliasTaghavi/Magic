@@ -7,9 +7,6 @@ using Core.Identity.Mappers;
 using Core.Identity.Repos;
 using Infrastructure.Base.Repos;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Identity.Repos
@@ -63,8 +60,7 @@ namespace Infrastructure.Identity.Repos
 
         public List<Role> ReadUserAllRoles(User User)
         {
-            string username = User.Username;
-            return GetSet().Where(x => x.Username == username)
+            return GetSet().Where(x => x.Id == User.Id)
                            .Include(x => x.Roles)
                            .First().Roles
                            .ToList();
@@ -88,7 +84,7 @@ namespace Infrastructure.Identity.Repos
                 query = query.OrderBy(dto.SortField);
             }
             int count = query.Count();
-            var result = query.Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
+            var result = query.Include(x => x.Roles).Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
             return new PagedListDto<UserListDto>
             {
                 Count = count,

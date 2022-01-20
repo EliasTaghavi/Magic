@@ -1,6 +1,5 @@
 ﻿using Core.Identity.Entities;
 using Core.Identity.Interfaces;
-using System;
 
 namespace Infrastructure.Identity
 {

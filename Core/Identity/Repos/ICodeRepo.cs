@@ -1,6 +1,5 @@
 ﻿using Core.Identity.Entities;
 using Core.Identity.Enums;
-using System.Collections.Generic;
 
 namespace Core.Identity.Repos
 {

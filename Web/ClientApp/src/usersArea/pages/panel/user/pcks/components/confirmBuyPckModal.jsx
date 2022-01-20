@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 import toastOptions from "../../../../../../components/ToastOptions";
 
 const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
-	const [bigLoader, setBigLoader] = useState(true);
+	const [bigLoader, setBigLoader] = useState(1); //0=false 1=true 2=closeBtn
 	const [buyUrl, setBuyUrl] = useState('');
 
 	useEffect(() => {
@@ -16,16 +16,21 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 				if (response) {
 					if (response === 401) {
 						// do nothing but in another api's should logout from system
+					} else if (response?.success === false) {
+						toast.error('شما پکیج فعال دارید', toastOptions);
+						setBigLoader(2);
 					} else {
-						setBigLoader(false);
+						setBigLoader(0);
 						setBuyUrl(response);
 					}
 				} else {
 					toast.error('خطای سرور', toastOptions);
+					setBigLoader(2);
 				}
 			})
 			.catch((error) => {
 				toast.error('خطای سرور', toastOptions);
+				setBigLoader(2);
 			})
 	}, []);
 
@@ -36,12 +41,12 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 			show={true}
 			onHide={onClose}>
 			<div className="modal-body p-4">
-				{bigLoader && (
+				{bigLoader === 1 && (
 					<div className="d-flex centered mH1">
 						<Loader type="ThreeDots" color='#ff521d' height={15} width={70} className="loader"/>
 					</div>
 				)}
-				{!bigLoader && (
+				{bigLoader === 0 && (
 					<div className="d-flex flex-row-reverse align-items-center justify-content-between">
 						<div key={item?.id} className="packageContainerNoHover shadow">
 							<p className="fs30 textSecondary1 m-0">{item?.title}</p>
@@ -63,6 +68,15 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 								<span>انصراف</span>
 							</button>
 						</div>
+					</div>
+				)}
+				{bigLoader === 2 && (
+					<div className="d-flex flex flex-column centered py-4">
+						<p className="fs18">شما در حال حاضر، پکیج فعال دارید.</p>
+						<p className="fs18">امکان خرید پکیج جدید برای شما وجود ندارد.</p>
+						<button type="button" className="btn btn-outline-secondary mt-3" onClick={onClose}>
+							بستن
+						</button>
 					</div>
 				)}
 			</div>

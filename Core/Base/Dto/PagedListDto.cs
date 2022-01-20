@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Base.Dto
+﻿namespace Core.Base.Dto
 {
     public class PagedListDto<T>
     {
