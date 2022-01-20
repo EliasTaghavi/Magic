@@ -47,7 +47,7 @@ namespace Web.Controllers
             var response = packBuyManager.Verify(verifyResult);
 
 
-            return Redirect($"../../user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
+            return Redirect($"https://magicoff.ir/user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }
 
         [HttpGet]
