@@ -90,5 +90,15 @@ namespace Web.Controllers
             var response = packBuyManager.SetMinLevel(min);
             return Ok(response);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult SearchUser(PageRequestViewModel<PackBuyListFilterViewModel> viewModel)
+        {
+            var userId = User.GetUserId();
+            var dto = viewModel.ToDto(x => x.ToDto(userId));
+            var response = packBuyManager.Search(dto);
+            return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
+        }
     }
 }

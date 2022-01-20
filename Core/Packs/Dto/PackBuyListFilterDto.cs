@@ -7,5 +7,6 @@ namespace Core.Packs.Dto
         public bool? Status { get; set; }
         public KeywordDto KeywordDto { get; set; }
         public FromToDto<DateTime?> FromToPayDate { get; set; }
+        public string UserId { get; set; }
     }
 }

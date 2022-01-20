@@ -25,6 +25,10 @@ namespace Infrastructure.Packs.Repos
         public PagedListDto<PackBuyListDto> Search(PageRequestDto<PackBuyListFilterDto> dto)
         {
             var query = GetSet();
+            if (dto.MetaData.UserId != default)
+            {
+                query = query.Where(x => x.UserId == dto.MetaData.UserId);
+            }
             if (dto.MetaData.Status.HasValue)
             {
                 query = query.Where(x => x.PayStatus == dto.MetaData.Status.Value);

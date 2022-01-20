@@ -19,13 +19,14 @@ namespace Web.Mappers
             };
         }
 
-        public static PackBuyListFilterDto ToDto(this PackBuyListFilterViewModel viewModel)
+        public static PackBuyListFilterDto ToDto(this PackBuyListFilterViewModel viewModel, string userId = default)
         {
             return new PackBuyListFilterDto
             {
                 FromToPayDate = viewModel.FromToPayDate.ToDto(),
                 KeywordDto = viewModel.Keyword.ToDto(),
                 Status = viewModel.Status,
+                UserId = userId,
             };
         }
     }
