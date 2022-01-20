@@ -81,7 +81,7 @@ const AdminAllUsers = () => {
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {
-						dispatch(MainStore.actions.setLogoutModal(true));
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						PageNumberGenerator(count, data?.pageSize ?? pageSize)
 							.then((res) => {

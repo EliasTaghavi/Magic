@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import '../../../assets/main.css';
 import Header from "../../../pages/shared/header/header.component";
 import tt from '../../../assets/images/tt.png';
@@ -19,6 +19,14 @@ const Home = () => {
   const [focused, setFocused] = useState('');
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
+
+  const container = useRef(null);
+
+  useEffect(() => {
+    if (container?.current) {
+      container.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   const changeValue = (e) => {
     let target = e.target;
@@ -41,7 +49,7 @@ const Home = () => {
   return (
     <div className="homeMainContainer">
       <Header />
-      <div className="container-fluid firstPart main">
+      <div className="container-fluid firstPart main" ref={container}>
         <div className="container pb-2 d-flex flex-column flex-md-row align-items-center inFirstPart">
           <div className="d-flex flex-column align-items-start justify-content-center flex px-3">
             <h1 className="fs34 font-weight-bold text-dark lh50 mainTitle">اینجا <span className="textMain fs40">سودش</span> کجاست؟</h1>

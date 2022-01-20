@@ -8,6 +8,7 @@ import {sendBuyData} from "../../../../api/shop/scannedUser";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import {useHistory} from "react-router-dom";
+import * as MainStore from "../../../../../store/main";
 
 const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 	const history = useHistory();
@@ -32,7 +33,7 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
 					} else if (success) {
 						setBuyLoader(false);
 						toast.success('خرید با موفقیت ثبت شد', toastOptions);

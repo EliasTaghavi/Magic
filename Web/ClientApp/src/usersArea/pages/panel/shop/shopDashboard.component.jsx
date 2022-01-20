@@ -4,9 +4,12 @@ import {getUserDetailsInShop} from "../../../api/shop/scannedUser";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import ScannedUserDetailsModal from "./components/scannedUserDetails";
+import * as MainStore from "../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const ShopDashboard = () => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	let userId = history?.location?.pathname?.replace('/shop-panel/', '');
 	const [scannedUserDetailsModal, setScannedUserDetailsModal] = useState(false);
 	const [currentPck, setCurrentPck] = useState(null);
@@ -25,7 +28,7 @@ const ShopDashboard = () => {
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
 					} else if (success) {
 						setCurrentPck(result);
 					}

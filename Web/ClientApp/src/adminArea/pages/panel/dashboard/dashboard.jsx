@@ -7,8 +7,11 @@ import toastOptions from "../../../../components/ToastOptions";
 import {Link} from 'react-router-dom';
 import {getAdminLastTransactions, getAdminChartData} from "../../../api/dashboard";
 import NumberFormat from "react-number-format";
+import * as MainStore from "../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const AdminDashboard = () => {
+	const dispatch = useDispatch();
 	const node1 = useRef(null);
 	const [newUsersLoader, setNewUsersLoader] = useState(false);
 	const [newUsers, setNewUsers] = useState([]);
@@ -29,7 +32,7 @@ const AdminDashboard = () => {
 				let {success, result: {items}} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing FIXME
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					}
 					else if (success) {
 						setNewUsers(items);
@@ -54,7 +57,7 @@ const AdminDashboard = () => {
 				let {success, result: {items}} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing FIXME
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					}
 					else if (success) {
 						setTransactions(items);
@@ -79,7 +82,7 @@ const AdminDashboard = () => {
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing FIXME
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						setChartLoader(false);
 						renderEarnChart(result);

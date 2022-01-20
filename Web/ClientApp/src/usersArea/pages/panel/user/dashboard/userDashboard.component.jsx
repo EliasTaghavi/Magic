@@ -12,6 +12,7 @@ import {qrCodePreUrl} from "../../../../api/imagePreUrl";
 import * as UserStore from "../../../../../store/user";
 import {useDispatch} from "react-redux";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
+import * as MainStore from '../../../../../store/main';
 
 const UserDashboard = () => {
    const history = useHistory();
@@ -48,7 +49,7 @@ const UserDashboard = () => {
             if (response) {
                let {success, result} = response
                if (response === 401) {
-                  // do nothing but in another api's should logout from system
+                  dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
                } else if (success) {
                   setCurrentPck(result);
                   setCurrentPckLoader(0);
@@ -74,7 +75,7 @@ const UserDashboard = () => {
             if (response) {
                let {success, result} = response
                if (response === 401) {
-                  // do nothing but in another api's should logout from system
+                  dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
                } else if (success) {
                   setQrId(result);
                   setQrLoader(false);

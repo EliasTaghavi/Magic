@@ -20,6 +20,7 @@ import * as UserStore from '../../../../store/user';
 import {checkReferralCode} from "../../../api/auth/user";
 import RenderSelectMediaModal from "./components/renderSelectMediaModal";
 import RenderCamera from "./components/renderCamera";
+import * as MainStore from "../../../../store/main";
 
 let interval;
 let timer;
@@ -57,7 +58,6 @@ const LoginUser = () => {
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
   const [selectMediaModal, setSelectMediaModal] = useState('');
   const [camera, setCamera] = useState(false);
-  const [screenShot, setScreenShot] = useState('');
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -286,7 +286,7 @@ const LoginUser = () => {
          let {success} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setStep(2);
              setBtnLoader(false);
@@ -314,7 +314,7 @@ const LoginUser = () => {
          let {result: {token, status, hasActivePack, firstName: responseFirstName, lastName: responseLatsName}, success} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              if (status !== 4 && status !== 7) {
                if (status === 3) {
@@ -359,7 +359,7 @@ const LoginUser = () => {
          let {success} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setWaitingModal(1);
              setBtnLoader(false);
@@ -390,7 +390,7 @@ const LoginUser = () => {
          let {success, result} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setResultData(result);
              setReferralCodeLoader(false);
