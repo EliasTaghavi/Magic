@@ -22,7 +22,7 @@ namespace Infrastructure.Packs.Repos
             return lastPackBuy;
         }
 
-        public bool HasActivePack(string userId)
+        public PackBuy HasActivePack(string userId)
         {
             var lastPackBuy = GetCurrentByUserId(userId);
             if (lastPackBuy != null)
@@ -30,16 +30,16 @@ namespace Infrastructure.Packs.Repos
                 var isValid = (lastPackBuy.PayDate.Value.AddDays(lastPackBuy.Pack.DayCount) - DateTime.UtcNow) > TimeSpan.Zero;
                 if (isValid)
                 {
-                    return true;
+                    return lastPackBuy;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             else
             {
-                return false;
+                return null;
             }
         }
 

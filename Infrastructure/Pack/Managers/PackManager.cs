@@ -36,7 +36,7 @@ namespace Infrastructure.Packs.Managers
 
         public ManagerResult<CurrentPackDto> GetCurrent(string userId)
         {
-            var packBuy = packBuyRepo.GetSet().Where(x => x.UserId == userId && x.PayStatus == true).Include(x => x.Pack).OrderByDescending(x => x.PayDate).FirstOrDefault();
+            var packBuy = packBuyRepo.HasActivePack(userId);
 
             if (packBuy != null)
             {
@@ -86,7 +86,7 @@ namespace Infrastructure.Packs.Managers
             {
                 Discount = user.UserType.Discount,
                 ListDto = result,
-                HasActivePack = packBuyRepo.HasActivePack(userId),
+                HasActivePack = packBuyRepo.HasActivePack(userId) != null,
             };
             return new ManagerResult<PagedListPackWithUserTypeOffDto>(xResult);
         }

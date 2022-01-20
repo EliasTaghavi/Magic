@@ -9,6 +9,6 @@ namespace Core.Packs.Repos
     {
         PackBuy GetCurrentByUserId(string userId);
         PagedListDto<PackBuyListDto> Search(PageRequestDto<PackBuyListFilterDto> dto);
-        bool HasActivePack(string userId);
+        PackBuy HasActivePack(string userId);
     }
 }
