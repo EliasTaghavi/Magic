@@ -27,9 +27,9 @@ namespace Infrastructure.Purchase.Managers
         public ManagerResult<bool> Save(SaveBuyDto dto)
         {
             var shop = shopRepo.ReadByUserId(dto.ShopKeeperId);
-            var discount = shop.Offs?.FirstOrDefault()?.Percentage ?? 0;
+            decimal discount = shop.Offs?.FirstOrDefault()?.Percentage ?? 0;
             var shopper = userRepo.ReadByQR(dto.ShopperQR);
-            var afterDiscount = dto.OrderAmount - (dto.OrderAmount * (discount / 100));
+            decimal afterDiscount = dto.OrderAmount - (dto.OrderAmount * discount / 100);
 
             var buy = new Buy
             {
