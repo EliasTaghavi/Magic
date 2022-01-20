@@ -4,7 +4,6 @@ import ShopHeader from '../../../pages/panels/shop/components/header/shopHeader.
 
 const Panel = ({children, type}) => {
   const [open, setOpen] = useState(false);
-  console.log('here', type);
   if (type === 'user') {
     return (
        <UserHeader open={open} setOpen={(value) => setOpen(value)}>

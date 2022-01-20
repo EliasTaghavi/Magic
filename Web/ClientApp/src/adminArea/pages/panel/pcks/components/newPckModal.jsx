@@ -7,8 +7,10 @@ import {sendAddPckData} from "../../../../api/pck";
 import Loader from "react-loader-spinner";
 import NumberFormat from "react-number-format";
 import * as MainStore from "../../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const NewPckModal = ({setOpen, refreshList}) => {
+	const dispatch = useDispatch();
 	const [focused, setFocused] = useState('');
 	const [errors, setErrors] = useState({});
 	const [name, setName] = useState('');

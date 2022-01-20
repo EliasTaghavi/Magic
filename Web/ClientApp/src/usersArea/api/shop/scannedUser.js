@@ -8,7 +8,6 @@ export const getUserDetailsInShop = (userId) => {
 		'Authorization': `Bearer ${token}`
 	};
 	let body = JSON.stringify({userId});
-	console.log(body);
 
 	return axios.post('/api/shop/getBuyer', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
@@ -37,7 +36,6 @@ export const sendBuyData = (data) => {
 		ShopperQR: userId,
 		OrderAmount: factorPrice,
 	});
-	console.log(JSON.parse(body));
 
 	return axios.post('/api/buy/save', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {

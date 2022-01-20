@@ -70,7 +70,6 @@ const AdminRate = () => {
 					}
 				})
 				.catch((e) => {
-					console.log(12, e, e.response);
 					toast.error('خطای سرور', toastOptions);
 					setLoader(false);
 				})

@@ -44,7 +44,6 @@ const AdminDashboard = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(22, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setNewUsersLoader(false);
 			})
@@ -78,7 +77,6 @@ const AdminDashboard = () => {
 		setChartLoader(true);
 		getAdminChartData()
 			.then((response) => {
-				console.log(response);
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
@@ -93,7 +91,6 @@ const AdminDashboard = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(33, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setChartLoader(false);
 			})

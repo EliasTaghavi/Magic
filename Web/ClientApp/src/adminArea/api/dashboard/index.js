@@ -55,7 +55,6 @@ export const getAdminChartData = () => {
 	};
 
 	return axios.get('/api/payment/getPaymentLineChart',{headers}).then((res) => {
-		console.log('res', res);
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

@@ -8,8 +8,10 @@ import ConfirmBuyPckModal from "./components/confirmBuyPckModal";
 import Loader from "react-loader-spinner";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
 import * as MainStore from "../../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const UserPackages = () => {
+   const dispatch = useDispatch();
   const [bigLoader, setBigLoader] = useState(true);
   const [pcksData, setPcksData] = useState([]);
   const [confirmBuyPckModal, setConfirmBuyPckModal] = useState(null);
@@ -32,7 +34,6 @@ const UserPackages = () => {
          }
        })
        .catch((error) => {
-          console.log(error, error.response);
           toast.error('خطای سرور', toastOptions);
          setBigLoader(false);
        })

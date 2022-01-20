@@ -11,7 +11,6 @@ const Layout = ({children}) => {
   const [scrollButton, setScrollButton] = useState(false);
   const [isPanel, setIsPanel] = useState(false);
   const logoutModal = useShallowPickerSelector('main', ['logoutModal']);
-  console.log(logoutModal);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);

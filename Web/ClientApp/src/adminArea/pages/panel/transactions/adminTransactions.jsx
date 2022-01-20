@@ -73,7 +73,6 @@ const AdminTransactions = () => {
 		};
 		getAdminTransactions(filteredData)
 			.then((response) => {
-				console.log(1, response);
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {
@@ -102,7 +101,6 @@ const AdminTransactions = () => {
 		if (newPage === currentPage || newPage < 1 || newPage > pagesNumber[pagesNumber.length - 1]) {
 			// do nothing
 		} else {
-			console.log(newPage);
 			setCurrentPage(newPage);
 			getData({currentPage: newPage});
 		}
@@ -123,7 +121,6 @@ const AdminTransactions = () => {
 
 	const selectDay = (type, data) => {
 		delete errors[type];
-		console.log(data);
 		switch (type) {
 			case 'from':
 				setFrom(data);
