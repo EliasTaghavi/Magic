@@ -5,13 +5,17 @@ import NumberFormat from "react-number-format";
 import {faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {sendBuyData} from "../../../../api/shop/scannedUser";
+import {toast} from "react-toastify";
+import toastOptions from "../../../../../components/ToastOptions";
+import {useHistory} from "react-router-dom";
 
 const ScannedUserDetailsModal = ({userId, data, onClose}) => {
+	const history = useHistory();
 	let {dayRemain, expireDate, lastname, name, packStatus, userType, discount} = data;
 	const [error, setError] = useState('');
 	const [factorPrice, setFactorPrice] = useState('');
 	const [focus, setFocus] = useState(false);
-
+	const [buyLoader, setBuyLoader] = useState(false);
 
 	let priceToPay = factorPrice - ((factorPrice * discount) / 100);
 	console.log(discount, priceToPay);
@@ -21,12 +25,27 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 			factorPrice,
 			userId,
 		};
+		setBuyLoader(true);
 		sendBuyData(data)
 			.then((response) => {
 				console.log(response);
+				if (response) {
+					let {success, result} = response
+					if (response === 401) {
+						// do nothing but in another api's should logout from system
+					} else if (success) {
+						setBuyLoader(false);
+						toast.success('خرید با موفقیت ثبت شد', toastOptions);
+						history.replace('/shopPanel');
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setBuyLoader(false);
+				}
 			})
 			.catch((error) => {
-				console.log(error);
+				toast.error('خطای سرور', toastOptions);
+				setBuyLoader(false);
 			})
 	};
 
@@ -91,7 +110,8 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 				)}
 				{data && <div className="d-flex centered mt-3">
 					<button type="button" className="btn border-0 submitBtn" style={{maxWidth: 300}} onClick={setBuyDataFn}>
-						ثبت خرید
+						{!buyLoader && <span>ثبت خرید</span>}
+						{buyLoader && <Loader type="ThreeDots" color='#ffffff' height={8} width={50} className="loader"/>}
 					</button>
 				</div>}
 				{!data && (
