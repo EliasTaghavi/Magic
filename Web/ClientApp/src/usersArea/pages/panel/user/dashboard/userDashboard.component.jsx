@@ -91,7 +91,27 @@ const UserDashboard = () => {
    };
 
    return (
-    <div className="col-12 d-flex align-items-start justify-content-between pr-0">
+    <div className="col-12 d-flex flex-column flex-md-row align-items-start justify-content-between pr-0">
+       <div className="w-100 d-flex d-md-none col-3 mx-1 card cardPrimary px-3" style={{height: 550}}>
+          <div className="card-header bg-transparent">
+             <p className="card-title fs22 my-2">کد QR شما</p>
+          </div>
+          <div className="d-flex centered my-4 mh360">
+             {qrLoader && (
+                <div className="w-100 d-flex centered">
+                   <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
+                </div>
+             )}
+             {!qrLoader && qrId?.length > 0 && (
+                <div className="w-100 d-flex flex-column centered">
+                   <QRCode value={qrCodePreUrl(qrId)} renderAs="svg" size={250} level="H" />
+                   <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18" style={{maxWidth: 300}}>
+                      ذخیره
+                   </button>
+                </div>
+             )}
+          </div>
+       </div>
        <div className="col-6 ml-1 card cardPrimary" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">پنل کاربری</p>
@@ -100,7 +120,7 @@ const UserDashboard = () => {
              {paymentData && <PaymentResult data={paymentData}/>}
           </div>
        </div>
-       <div className="w-100 col-3 mx-1 card cardPrimary px-3" style={{height: 550}}>
+       <div className="w-100 d-none d-md-flex col-3 mx-1 my-3 card cardPrimary px-3" style={{height: 550}}>
           <div className="card-header bg-transparent">
              <p className="card-title fs22 my-2">کد QR شما</p>
           </div>

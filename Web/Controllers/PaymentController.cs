@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Parbad;
+using Serilog;
 using Web.Helper;
 using Web.Mappers;
 using Web.Models;
@@ -39,6 +40,7 @@ namespace Web.Controllers
         [HttpGet, HttpPost]
         public IActionResult Verify()
         {
+            Log.Error("Verify Buy");
             var invoice = onlinePayment.Fetch();
 
 
@@ -47,7 +49,7 @@ namespace Web.Controllers
             var response = packBuyManager.Verify(verifyResult);
 
 
-            return Redirect($"../../user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
+            return Redirect($"https://magicoff.ir/user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }
 
         [HttpGet]
