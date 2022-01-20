@@ -11,7 +11,9 @@ const ScannedUserDetailsModal = ({data, onClose}) => {
 	const [factorPrice, setFactorPrice] = useState('');
 	const [focus, setFocus] = useState(false);
 
-	let priceToPay = factorPrice * (100 - discount);
+
+	let priceToPay = factorPrice - ((factorPrice * discount) / 100);
+	console.log(discount, priceToPay);
 
 	return (
 		<Modal
@@ -25,16 +27,17 @@ const ScannedUserDetailsModal = ({data, onClose}) => {
 			<div className="modal-body py-5">
 				{data && <div className="d-flex centered">
 					<div className="packageContainerNoHover shadow w-100 pckBorder">
-						<p className="fs34 textSecondary1 m-0">{name + '\xa0' + lastname}</p>
-						<p className="fs26 textThird m-0 mt-3">{userType}</p>
+						<p className="fs24 textSecondary1 m-0">{name + '\xa0' + lastname}</p>
+						<p className="fs16 textThird m-0 mt-3">{userType}</p>
 						<hr className="w-100 cDivider"/>
-						<p className={`fs60 m-0 text-center cNumber mt-1 ${packStatus ? 'text-success' : 'text-danger'}`}>{packStatus ? 'معتبر' : 'نامعتبر'}</p>
+						<p className={`fs40 m-0 text-center cNumber mt-1 ${packStatus ? 'text-success' : 'text-danger'}`}>{packStatus ? 'معتبر' : 'نامعتبر'}</p>
 						<hr className="w-100 cDivider"/>
 						<p className="fs14 textThird m-0 mt-1">مدت اعتبار باقی مانده: <span
-							className="textMain fs20 font-weight-bold">{dayRemain}</span> روز</p>
+							className="textMain fs16 font-weight-bold">{dayRemain}</span> روز</p>
 						<p className="fs14 textThird m-0 mt-1">{`تاریخ انقضا:\xa0${expireDate}`}</p>
 					</div>
 				</div>}
+				<hr className="bgSecondary my-5 w-100"/>
 				{data && (
 					<div className="d-flex flex-column centered mt-5">
 						<div className="w-100 d-flex flex-column align-items-start justify-content-start" style={{maxWidth: 300}}>
@@ -52,7 +55,7 @@ const ScannedUserDetailsModal = ({data, onClose}) => {
 								className={`form-control mb-3 input ${error.length > 0 && 'is-invalid'}`}
 								onChange={(e) => {
 									setError('');
-									setFactorPrice(e.target.value);
+									setFactorPrice(e.target.value.replace(/,/gm, ''));
 								}}
 								placeholder="..."
 								thousandSeparator={true}
@@ -62,9 +65,12 @@ const ScannedUserDetailsModal = ({data, onClose}) => {
 						</div>
 						<div className="w-100 d-flex flex-column centered mt-4">
 							<FontAwesomeIcon icon={faMinus} className="text-secondary fs20 mb-3"/>
-							<p className="fs18 font-weight-bold textMain my-3">{`${discount}%`}</p>
+							<p className="fs18 font-weight-bold textMain my-3">{`%${discount}`}</p>
 							<FontAwesomeIcon icon={faEquals} className="text-secondary fs20 my-3"/>
-							<p className="fs20 textMain my-3">{priceToPay}</p>
+							<div className="d-flex centered my-3">
+								<NumberFormat value={priceToPay} displayType={'text'} thousandSeparator={true} className="fs30 textMain" />
+								<p className="textMain fs20 mx-2 mb-0">تومان</p>
+							</div>
 						</div>
 					</div>
 				)}

@@ -27,18 +27,15 @@ const Footer = () => {
         </div>
         <div className="w-100 cmy5 d-flex flex-column-reverse flex-md-row align-items-center align-items-md-center justify-content-between">
           <div className="mt-5 mt-md-0">
-            <p className='fs12 text-secondary'>ما را در شبکه‌های اجتماعی دنبال کنید:</p>
+            <p className='fs12 text-secondary'>با ما در ارتباط باشید:</p>
             <div className="d-flex align-items-start justify-content-start">
-              <a href="#" rel="noopener noreferrer" target="_blank" className="socialBox">
-                <img alt="magicOff.ir" src={whatsapp} className="socialIcon" />
-              </a>
-              <a href="#" rel="noopener noreferrer" target="_blank" className="socialBox">
+              <a href="https://www.instagram.com/magic_off.ir" rel="noopener noreferrer" target="_blank" className="socialBox">
                 <img alt="magicOff.ir" src={insta} className="socialIcon" />
               </a>
-              <a href="#" rel="noopener noreferrer" target="_blank" className="socialBox">
+              <a href="tel:09101419130" rel="noopener noreferrer" className="socialBox">
                 <img alt="magicOff.ir" src={tel} className="socialIcon" />
               </a>
-              <a href="#" rel="noopener noreferrer" target="_blank" className="socialBox">
+              <a href="mailto:info@magicoff.ir" rel="noopener noreferrer" className="socialBox">
                 <img alt="magicOff.ir" src={email} className="socialIcon" />
               </a>
             </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import Header from "./header/header.component";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -6,10 +6,18 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import Footer from "./footer/footer.component";
 
 const AboutUs = () => {
+	const container = useRef(null);
+
+	useEffect(() => {
+		if (container?.current) {
+			container.current.scrollIntoView({ behavior: 'smooth' });
+		}
+	}, []);
+
 	return (
 		<div className="homeMainContainer">
 			<Header />
-			<div className="container firstPart main">
+			<div className="container firstPart main" ref={container}>
 				<div className="d-flex flex-column align-items-start justify-content-start cpt-5">
 					<h3>درباره مجیک آف</h3>
 					<hr className="w-100" />
@@ -31,7 +39,7 @@ const AboutUs = () => {
 					<p className="font-weight-bold fs18 mt-4">راه های ارتباطی :</p>
 					<div className="d-flex centered mt-2">
 						<p style={{width: 100}}>اینستاگرام : </p>
-						<p className="font-weight-bold fs16"></p>
+						<p className="font-weight-bold fs16">Magic_off.ir</p>
 					</div>
 					<div className="d-flex centered">
 						<p style={{width: 100}}>ایمیل :</p>
@@ -39,7 +47,7 @@ const AboutUs = () => {
 					</div>
 					<div className="d-flex centered">
 						<p style={{width: 100}}>واتس آپ :</p>
-						<p className="font-weight-bold fs16"></p>
+						<p className="font-weight-bold fs16">۰۹۱۰۱۴۱۹۱۳۰ </p>
 					</div>
 				</div>
 			</div>
