@@ -1,10 +1,12 @@
 ﻿using Core.File.Managers;
 using Core.Identity.Managers;
 using Core.Packs.Managers;
+using Core.Purchase.Managers;
 using Core.Shops.Managers;
 using Infrastructure.File.Managers;
 using Infrastructure.Identity.Managers;
 using Infrastructure.Packs.Managers;
+using Infrastructure.Purchase.Managers;
 using Infrastructure.Shops.Managers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +23,7 @@ namespace Web.Services
             services.AddTransient<IPackManager, PackManager>();
             services.AddTransient<IPackBuyManager, PackBuyManager>();
             services.AddTransient<IShopManager, ShopManager>();
+            services.AddTransient<IBuyManager, BuyManager>();
         }
     }
 }

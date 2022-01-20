@@ -8,6 +8,6 @@
         New = 4,
         Rejected = 5,
         NotConfirmed = 6,
-        NewUserFromShop= 7,
+        NewUserFromShop = 7,
     }
 }

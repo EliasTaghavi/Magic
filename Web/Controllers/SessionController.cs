@@ -21,14 +21,14 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateByPhone([FromBody] PSessionCreateModel model)
+        public IActionResult CreateByPhone(PSessionCreateModel model)
         {
             var response = SessionManager.RequsetSessionByPhone(model.Phone);
             return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult CreateByUP([FromBody] UPSessionCreateModel model)
+        public IActionResult CreateByUP(UPSessionCreateModel model)
         {
 
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
@@ -54,7 +54,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult VerifyTokenByPhone([FromBody] VerifyTokenPhoneModel model)
+        public IActionResult VerifyTokenByPhone(VerifyTokenPhoneModel model)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 

@@ -6,6 +6,7 @@ using Core.Base.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Packs.Entities;
+using Core.Purchase.Entities;
 using Core.Shops.Entities;
 
 namespace Infrastructure.Data
@@ -24,6 +25,7 @@ namespace Infrastructure.Data
         public DbSet<PackBuy> PackBuys { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<ShopOff> ShopOffs { get; set; }
+        public DbSet<Buy> Buys { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
@@ -39,6 +41,7 @@ namespace Infrastructure.Data
             builder.PackValidation();
             builder.ShopValidation();
             builder.ShopOffValidation();
+            builder.BuyValidation();
             builder.PackBuyValidation();
             builder.AppFileValidation();
             builder.SettingValidation();

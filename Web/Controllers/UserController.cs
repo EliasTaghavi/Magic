@@ -24,7 +24,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateUserViewModel viewModel)
+        public IActionResult Create(CreateUserViewModel viewModel)
         {
             Core.Identity.Dto.CreateUserDto dto = viewModel.ToDto();
             var response = UserManager.CreateByPhone(dto);
@@ -72,7 +72,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult List([FromBody] PageRequestViewModel<UserListFilterViewModel> viewModel)
+        public IActionResult List(PageRequestViewModel<UserListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = UserManager.Search(dto);
@@ -81,7 +81,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Confirm([FromBody] ConfirmUserViewModel viewModel)
+        public IActionResult Confirm(ConfirmUserViewModel viewModel)
         {
             var dto = viewModel.ToDto();
             var response = UserManager.Confirm(dto);
@@ -98,7 +98,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult Reject([FromBody] RejectMessageViewModel viewModel)
+        public IActionResult Reject(RejectMessageViewModel viewModel)
         {
             var dto = viewModel.ToDto();
             var response = UserManager.Reject(dto);

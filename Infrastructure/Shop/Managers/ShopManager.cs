@@ -64,7 +64,7 @@ namespace Infrastructure.Shops.Managers
 
             Random random = new();
             var code = random.Next(1000, 10000);
-            
+
             var shop = dto.ToDataModel();
             shop.UserId = user.Id;
             shop.ReferralCode = code.ToString();

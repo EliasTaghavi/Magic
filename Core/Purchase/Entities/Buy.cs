@@ -1,11 +1,6 @@
 ﻿using Core.Base.Entities;
 using Core.Identity.Entities;
 using Core.Shops.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Purchase.Entities
 {
@@ -15,5 +10,7 @@ namespace Core.Purchase.Entities
         public User User { get; set; }
         public string ShopId { get; set; }
         public Shop Shop { get; set; }
+        public decimal FullPrice { get; set; }
+        public decimal AfterDiscount { get; set; }
     }
 }

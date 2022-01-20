@@ -23,7 +23,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult CreateInvoice([FromBody] CreateInvoiceViewModel viewModel)
+        public IActionResult CreateInvoice(CreateInvoiceViewModel viewModel)
         {
             string callBackUrl = Url.Action("Verify", "Payment", null, Request.Scheme);
             var userId = User.GetUserId();
