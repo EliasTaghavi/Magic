@@ -46,7 +46,7 @@ export const adminGetAllPcks = (data) => {
 		}
 	});
 
-	return axios.post('/api/pack/list', body,{headers}).then((res) => {
+	return axios.post('/api/pack/search', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
