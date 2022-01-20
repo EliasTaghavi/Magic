@@ -7,6 +7,7 @@ import NumberFormat from "react-number-format";
 import ConfirmBuyPckModal from "./components/confirmBuyPckModal";
 import Loader from "react-loader-spinner";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
+import * as MainStore from "../../../../../store/main";
 
 const UserPackages = () => {
   const [bigLoader, setBigLoader] = useState(true);
@@ -20,7 +21,7 @@ const UserPackages = () => {
           if (response) {
            let {success, result: {items}} = response
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+              dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setPcksData(items);
              setBigLoader(false);

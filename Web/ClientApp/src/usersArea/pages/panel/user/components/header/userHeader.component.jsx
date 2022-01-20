@@ -13,6 +13,8 @@ import {
 import TokenStore from "../../../../../../utils/tokenStore";
 import Divider from "../../../../../../components/divider";
 import logo from '../../../../../../assets/images/logo.png';
+import * as UserStore from "../../../../../../store/user";
+import {useDispatch} from "react-redux";
 
 const UserHeader = ({open, setOpen, children}) => {
   const token = TokenStore.getUserToken();
@@ -108,9 +110,10 @@ const Drawer = ({token, extraClassName, open, setOpen}) => {
 
 const MenuItems = ({open, setOpen, noOpacity}) => {
   const history = useHistory();
+   const dispatch = useDispatch();
   const logout = () => {
     TokenStore.removeUserToken();
-    // fixme clear redux data
+    dispatch(UserStore.actions.setUserData(null));
     history.replace('/');
   }
 

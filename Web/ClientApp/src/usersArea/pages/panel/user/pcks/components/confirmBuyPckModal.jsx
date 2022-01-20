@@ -8,6 +8,7 @@ import toastOptions from "../../../../../../components/ToastOptions";
 import * as UserStore from "../../../../../../store/user";
 import {useDispatch} from "react-redux";
 import {useShallowPickerSelector} from "../../../../../../store/selectors";
+import * as MainStore from '../../../../../../store/main';
 
 const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 	const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose}) => {
 			.then((response) => {
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
 					} else if (response?.success === false) {
 						toast.error('شما پکیج فعال دارید', toastOptions);
 						dispatch(UserStore.actions.setUserData({...userData, hasActivePack: true}));

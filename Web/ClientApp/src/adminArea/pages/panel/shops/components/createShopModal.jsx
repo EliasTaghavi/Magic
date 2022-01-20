@@ -5,8 +5,11 @@ import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import CreateShopValidation from "../../../../validations/createShopValidation";
 import {SendCreateShopData} from "../../../../api/shop";
+import {useDispatch} from "react-redux";
+import * as MainStore from '../../../../../store/main';
 
 const CreateShopModal = ({refreshData, setOpen}) => {
+	const dispatch = useDispatch()
 	const [errors, setErrors] = useState({});
 	const [name, setName] = useState('');
 	const [phone, setPhone] = useState('');
@@ -98,7 +101,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 				let {success} = response
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						refreshData();
 						setOpen();

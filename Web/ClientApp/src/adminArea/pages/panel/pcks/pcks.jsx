@@ -12,6 +12,7 @@ import toastOptions from "../../../../components/ToastOptions";
 import NumberFormat from "react-number-format";
 import DeleteItemModal from "../../../../components/shared/deleteItemModal";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import * as MainStore from "../../../../store/main";
 
 const AdminPcks = () => {
 	const [bigLoader, setBigLoader] = useState(false);
@@ -51,7 +52,7 @@ const AdminPcks = () => {
 				let {success, result: {count, items}} = response
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						PageNumberGenerator(count, data?.pageSize ?? pageSize)
 							.then((res) => {
@@ -94,7 +95,7 @@ const AdminPcks = () => {
 				let {success} = response
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						toast.success('آیتم با موفقیت حذف شد', toastOptions);
 						getData();

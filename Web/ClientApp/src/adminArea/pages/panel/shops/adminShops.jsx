@@ -11,8 +11,11 @@ import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import DeleteItemModal from "../../../../components/shared/deleteItemModal";
+import * as MainStore from "../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const AdminShops = () => {
+	const dispatch = useDispatch();
 	const [bigLoader, setBigLoader] = useState(false);
 	const [pageSize, setPageSize] = useState(5);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -55,7 +58,7 @@ const AdminShops = () => {
 				let {success, result: {count, items}} = response
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						PageNumberGenerator(count, data?.pageSize ?? pageSize)
 							.then((res) => {
@@ -98,7 +101,7 @@ const AdminShops = () => {
 				let {success} = response
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						toast.success('آیتم با موفقیت حذف شد', toastOptions);
 						getData();
@@ -130,7 +133,7 @@ const AdminShops = () => {
 					let {success} = response
 					if (response) {
 						if (response === 401) {
-							// do nothing but in another api's should logout from system
+							dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 						} else if (success) {
 							setDiscount('');
 							setDiscountEditEnable(undefined);
@@ -175,6 +178,7 @@ const AdminShops = () => {
 							<th style={{minWidth: 120}}>تاریخ عضویت</th>
 							<th style={{minWidth: 120}}>آدرس</th>
 							<th style={{minWidth: 120}}>درصد تخفیف</th>
+							<th style={{minWidth: 120}}>کد معرف</th>
 							<th style={{minWidth: 120}}>عملیات</th>
 						</tr>
 						</thead>
@@ -251,6 +255,7 @@ const AdminShops = () => {
 											</OverlayTrigger>}
 										</div>
 									</td>
+									<td>{item?.refCode ?? '-----'}</td>
 									<td>
 										<OverlayTrigger
 											key='details'

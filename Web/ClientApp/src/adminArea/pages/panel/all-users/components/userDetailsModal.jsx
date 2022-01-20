@@ -13,11 +13,13 @@ import {confirmUser, getUserJobType} from "../../../../api/users";
 import Select from "react-select";
 import {theme} from "../../../../../components/shared/theme";
 import makeAnimated from "react-select/animated/dist/react-select.esm";
+import * as MainStore from "../../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const animatedComponents = makeAnimated();
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
-	console.log(item);
+	const dispatch = useDispatch();
 	const prevItem = item;
 	const [loader, setLoader] = useState(false);
 	const [locked, setLocked] = useState(item?.status === 2);
@@ -35,11 +37,10 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 		setStatusTypesLoader(true);
 		getUserJobType()
 			.then((response) => {
-				console.log(response);
 				const {result, success} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						let newResult = result.map((item) => {
 							return {
@@ -75,7 +76,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 						let {success} = response;
 						if (response) {
 							if (response === 401) {
-								// do nothing
+								dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 							} else if (success) {
 								setOpen(false);
 								setLoader(false);
@@ -104,7 +105,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 				let {success} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						if (prevItem?.status === 2) {
 							item.status = 3;
@@ -234,14 +235,14 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 						<div style={{flex: 1}} className="d-flex flex-column align-items-start justify-content-start">
 							<p className="mt-3">عکس سلفی:</p>
 							<div className="adminUserImages">
-								{item?.selfieURL && <img alt="magicoff.ir" src={imagePreUrl(item?.selfieURL)} className="adminUserImages"/>}
+								{item?.selfieURL && <img alt="magicoff.ir" src={imagePreUrl(item?.selfieURL)} className="adminUserImages cursor" onClick={() => window.open(imagePreUrl(item?.selfieURL), '_blank', 'noopener,noreferrer')}/>}
 								{!item?.selfieURL && <FontAwesomeIcon icon={faUser} className="fs30 textGray"/>}
 							</div>
 						</div>
 						<div style={{flex: 1}} className="d-flex flex-column align-items-start justify-content-start">
 							<p className="mt-3">عکس تاییدیه شغلی:</p>
 							<div className="adminUserImages">
-								{item?.identityURL && <img alt="magicoff.ir" src={imagePreUrl(item?.identityURL)} className="adminUserImages"/>}
+								{item?.identityURL && <img alt="magicoff.ir" src={imagePreUrl(item?.identityURL)} className="adminUserImages cursor" onClick={() => window.open(imagePreUrl(item?.identityURL), '_blank', 'noopener,noreferrer')}/>}
 								{!item?.identityURL && <FontAwesomeIcon icon={faUser} className="fs30 textGray"/>}
 							</div>
 						</div>

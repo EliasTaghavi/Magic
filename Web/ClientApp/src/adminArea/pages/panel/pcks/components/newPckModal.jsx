@@ -6,6 +6,7 @@ import createPckValidation from "../../../../validations/createPckValidation";
 import {sendAddPckData} from "../../../../api/pck";
 import Loader from "react-loader-spinner";
 import NumberFormat from "react-number-format";
+import * as MainStore from "../../../../../store/main";
 
 const NewPckModal = ({setOpen, refreshList}) => {
 	const [focused, setFocused] = useState('');
@@ -51,7 +52,7 @@ const NewPckModal = ({setOpen, refreshList}) => {
 				let {success} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						setOpen(false);
 						refreshList(true);
