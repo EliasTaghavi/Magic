@@ -7,7 +7,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker, {unregister as unregisterServiceWorker} from './registerServiceWorker';
 import {PersistGate} from "redux-persist/integration/react";
 import store, {persistor} from "./store/store";
 import {BrowserRouter} from "react-router-dom";
@@ -26,5 +26,5 @@ ReactDOM.render(
       </PersistGate>
    </Provider>, rootElement);
 
-registerServiceWorker();
+unregisterServiceWorker();
 
