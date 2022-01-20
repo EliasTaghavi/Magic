@@ -19,7 +19,6 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose, discount}) => {
 	useEffect(() => {
 		sendBuyDetails(item?.id)
 			.then((response) => {
-				console.log(response);
 				if (response) {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
@@ -61,9 +60,14 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose, discount}) => {
 							<p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
 							{/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
 							<hr className="w-100 cDivider" />
-							<p className="fs90 m-0 textSecondary1 text-center cNumber mt-2">
-								<NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall" />
-							</p>
+							<div className="w-100 d-flex flex-column centered">
+								{discount > 0 && <p className="m-0 text-center mt-2 font-weight-normal textGray fs34" style={{textDecoration: 'line-through'}}>
+									<NumberFormat value={item?.price / 1000} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall"/>
+								</p>}
+								<p className="fs90 m-0 textSecondary1 text-center cNumber mt-2">
+									<NumberFormat value={((item?.price - ((item?.price * discount) / 100)) / 1000).toFixed()} displayType={'text'} thousandSeparator={true} className="fontSizePreSmall"/>
+								</p>
+							</div>
 							<p className="fs14 textThird text-center">هزار تومان</p>
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-start flex pl-4">
