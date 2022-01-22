@@ -651,7 +651,7 @@ const LoginUser = () => {
 }
 
 const Timer = ({resendCode, setSupportModal}) => {
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(60);
   const [resendCounter, setResendCounter] = useState(0);
 
   useEffect(() => {
@@ -695,7 +695,7 @@ const Timer = ({resendCode, setSupportModal}) => {
       {timer < 1 && resendCounter < 1 && (
         <button type="button" className="btn btn-transparent mt-3 outline p-0"
                 onClick={() => {
-                  setTimer(5);
+                  setTimer(60);
                   setResendCounter(resendCounter + 1);
                   resendCode();
                 }}>

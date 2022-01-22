@@ -30,7 +30,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 								<FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
 							</button>
 							<div className="d-flex align-items-center">
-								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
 							</div>
 						</div>
 						<div className="logoContainer">
@@ -55,7 +55,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 								<FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
 							</button>
 							<div className="d-flex align-items-center">
-								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
 							</div>
 						</div>
 						<div className="logoContainer">

@@ -3,7 +3,7 @@ import './header.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faBalanceScale, faBars,
-  faClipboardList, faPhone, faUsers
+  faClipboardList, faHome, faInfo, faPhone, faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import logo from '../../../assets/images/logo.png';
@@ -52,23 +52,28 @@ const Header = ({noLogin}) => {
       <div className="position-relative w-100 h-100" onClick={(e) => {if (e.target.id === 'drawerFather') setOpen(false)}}>
         <div id="drawerFather" className="DrawerFather p-0 border-0" style={{display: open ? 'flex' : 'none'}}/>
         <div id="drawer" className="Drawer bg-light pt-4" style={open ? {right: 0} : {right: '-80%'}}>
-          <img alt="magicoff.ir" src={require('../../../assets/images/wow.png')} className="logo"/>
+          <div className="w-100 d-flex centered">
+            <img alt="magicoff.ir" src={require('../../../assets/images/logo.png')} className="logo"/>
+          </div>
+          <div className="w-100 px-3 mt-4">
+            <hr className="w-100" />
+          </div>
           <ul className="nav d-flex flex-column p-0 list-unstyled">
-            {path !== '' && <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
+            <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
               <Link to="/" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
-                <FontAwesomeIcon icon={faClipboardList} className="text-primary ml-3" style={{fontSize: 20}}/>
+                <FontAwesomeIcon icon={faHome} className="textMain ml-3" style={{fontSize: 20, width: 25}}/>
                 خانه
               </Link>
-            </li>}
+            </li>
             <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
               <Link to="/terms" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
-                <FontAwesomeIcon icon={faBalanceScale} className="text-primary ml-3" style={{fontSize: 20}}/>
+                <FontAwesomeIcon icon={faBalanceScale} className="textMain ml-3" style={{fontSize: 20, width: 25}}/>
                 قوانین و مقررات
               </Link>
             </li>
             <li className="text-right px-4" style={{paddingTop: 11, paddingBottom: 11}}>
               <Link to="/about-us" className="text text-dark d-flex align-items-center" style={{fontSize: 14}}>
-                <FontAwesomeIcon icon={faUsers} className="text-primary ml-3" style={{fontSize: 20}}/>
+                <FontAwesomeIcon icon={faInfo} className="textMain ml-3" style={{fontSize: 20, width: 25}}/>
                 درباره ما
               </Link>
             </li>

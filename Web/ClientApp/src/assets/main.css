@@ -93,6 +93,7 @@
 /*auth part*/
 .authMainContainer {
     flex: 1;
+    width: 100%;
     min-height: 100vh;
     padding: 3rem 0;
     position: relative;
@@ -105,7 +106,7 @@
 }
 
 .whiteAreaVertical {
-    min-width: 300px;
+    min-width: 280px;
     max-width: 700px;
     width: 80%;
     min-height: 600px;
@@ -501,26 +502,17 @@ tr td:last-child {
     .cardFrame {
         width: 80%;
     }
-    .cardFrameReverse {
-        width: 80%;
-    }
 }
 
 @media screen and (min-width: 510px) {
     .cardFrame {
         width: 75%;
     }
-    .cardFrameReverse {
-        width: 75%;
-    }
 }
 
 @media screen and (min-width: 768px) {
     .cardFrame {
-        width: 50%;
-    }
-    .cardFrameReverse {
-        width: 50%;
+        width: 80%;
     }
     .inParts {
         flex-direction: row;
@@ -553,9 +545,6 @@ tr td:last-child {
 @media screen and (min-width: 992px) {
     .cardFrame {
         width: 75%;
-    }
-    .cardFrameReverse {
-        width: 70%;
     }
     .eachPartDesc {
         display: flex;
