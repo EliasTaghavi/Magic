@@ -18,6 +18,7 @@ namespace Web.Services
         {
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<ITokenManager, TokenManager>();
+            services.AddTransient<ICodeManager, CodeManager>();
             services.AddTransient<ISessionManager, SessionManager>();
             services.AddTransient<IFileManager, FileManager>();
             services.AddTransient<IPackManager, PackManager>();
