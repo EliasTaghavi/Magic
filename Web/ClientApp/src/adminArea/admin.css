@@ -67,16 +67,6 @@
     border-radius: 4px;
 }
 
-.adminHeaderNav {
-    width: 100%;
-    padding: 0;
-    background-color: white;
-    color: white;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-}
-
 .logoContainer {
     height: 100%;
     display: flex;

@@ -283,6 +283,27 @@
 }
 /*end of login part*/
 /*home part*/
+.mw270 {
+    min-width: 270px;
+}
+.mw550 {
+    min-width: auto;
+}
+.topQrBox {
+    display: flex !important;
+}
+
+.bottomQrBox {
+    display: none !important;
+}
+
+.flex1 {
+    flex: 1;
+}
+.flex2 {
+    flex: 1;
+}
+
 .homeMainContainer {
     width: 100%;
     display: flex;
@@ -492,6 +513,14 @@ tr td:last-child {
     font-size: 100px;
 }
 
+.cpr1 {
+    padding-right: 0;
+}
+
+.cpl1 {
+    padding-left: 0;
+}
+
 @media screen and (min-width: 350px) {
     .cpy-12 {
         padding-top: 7rem;
@@ -507,6 +536,16 @@ tr td:last-child {
 @media screen and (min-width: 510px) {
     .cardFrame {
         width: 75%;
+    }
+}
+
+@media screen and (min-width: 580px) {
+    .cpr1 {
+        padding-right: 0.3rem;
+    }
+
+    .cpl1 {
+        padding-left: 0.3rem;
     }
 }
 
@@ -534,11 +573,23 @@ tr td:last-child {
     .inFirstPart {
         min-height: 500px;
     }
+    .mw270 {
+        min-width: 270px;
+    }
+    .mw550 {
+        min-width: 550px;
+    }
 }
 
 @media screen and (min-width: 800px) {
     .cardFrame {
         width: 85%;
+    }
+    .topQrBox {
+        display: none !important;
+    }
+    .bottomQrBox {
+        display: flex !important;
     }
 }
 
@@ -557,11 +608,23 @@ tr td:last-child {
     .cpy-12 {
         padding-top: 4rem;
     }
+    .mw550 {
+        min-width: 550px;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .flex2 {
+        flex: 0.5;
+    }
 }
 
 @media screen and (min-width: 1200px) {
     .eachParts {
         min-height: 560px;
+    }
+    .mw270 {
+        min-width: 270px;
     }
 }
 
