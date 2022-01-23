@@ -93,6 +93,7 @@
 /*auth part*/
 .authMainContainer {
     flex: 1;
+    width: 100%;
     min-height: 100vh;
     padding: 3rem 0;
     position: relative;
@@ -105,7 +106,7 @@
 }
 
 .whiteAreaVertical {
-    min-width: 300px;
+    min-width: 280px;
     max-width: 700px;
     width: 80%;
     min-height: 600px;
@@ -282,6 +283,27 @@
 }
 /*end of login part*/
 /*home part*/
+.mw270 {
+    min-width: 270px;
+}
+.mw550 {
+    min-width: auto;
+}
+.topQrBox {
+    display: flex !important;
+}
+
+.bottomQrBox {
+    display: none !important;
+}
+
+.flex1 {
+    flex: 1;
+}
+.flex2 {
+    flex: 1;
+}
+
 .homeMainContainer {
     width: 100%;
     display: flex;
@@ -491,6 +513,14 @@ tr td:last-child {
     font-size: 100px;
 }
 
+.cpr1 {
+    padding-right: 0;
+}
+
+.cpl1 {
+    padding-left: 0;
+}
+
 @media screen and (min-width: 350px) {
     .cpy-12 {
         padding-top: 7rem;
@@ -501,26 +531,27 @@ tr td:last-child {
     .cardFrame {
         width: 80%;
     }
-    .cardFrameReverse {
-        width: 80%;
-    }
 }
 
 @media screen and (min-width: 510px) {
     .cardFrame {
         width: 75%;
     }
-    .cardFrameReverse {
-        width: 75%;
+}
+
+@media screen and (min-width: 580px) {
+    .cpr1 {
+        padding-right: 0.3rem;
+    }
+
+    .cpl1 {
+        padding-left: 0.3rem;
     }
 }
 
 @media screen and (min-width: 768px) {
     .cardFrame {
-        width: 50%;
-    }
-    .cardFrameReverse {
-        width: 50%;
+        width: 80%;
     }
     .inParts {
         flex-direction: row;
@@ -542,20 +573,29 @@ tr td:last-child {
     .inFirstPart {
         min-height: 500px;
     }
+    .mw270 {
+        min-width: 270px;
+    }
+    .mw550 {
+        min-width: 550px;
+    }
 }
 
 @media screen and (min-width: 800px) {
     .cardFrame {
         width: 85%;
     }
+    .topQrBox {
+        display: none !important;
+    }
+    .bottomQrBox {
+        display: flex !important;
+    }
 }
 
 @media screen and (min-width: 992px) {
     .cardFrame {
         width: 75%;
-    }
-    .cardFrameReverse {
-        width: 70%;
     }
     .eachPartDesc {
         display: flex;
@@ -568,11 +608,23 @@ tr td:last-child {
     .cpy-12 {
         padding-top: 4rem;
     }
+    .mw550 {
+        min-width: 550px;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .flex2 {
+        flex: 0.5;
+    }
 }
 
 @media screen and (min-width: 1200px) {
     .eachParts {
         min-height: 560px;
+    }
+    .mw270 {
+        min-width: 270px;
     }
 }
 

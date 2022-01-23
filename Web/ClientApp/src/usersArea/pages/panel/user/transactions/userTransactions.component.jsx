@@ -143,7 +143,7 @@ const UserTransactions = () => {
        <div className="card-body w-100 d-flex flex-column px-3">
          <div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
            <div className="flex form-group mt-4 d-flex flex-column flex-md-row align-items-start justify-content-start">
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
                <Select
                   defaultValue={statusTypes[0]}
                   options={statusTypes}
@@ -157,7 +157,7 @@ const UserTransactions = () => {
                   onChange={(value) => changeStatus(value)}
                   styles={theme.customStyles}/>
              </div>
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
                <DatePicker
                   value={from}
                   onChange={(value) => selectDay('from', value)}
@@ -173,7 +173,7 @@ const UserTransactions = () => {
                  <FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
                </button>}
              </div>
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative" style={{maxWidth: 280}}>
+             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
                <DatePicker
                   value={to}
                   onChange={(value) => selectDay('to', value)}
@@ -182,7 +182,7 @@ const UserTransactions = () => {
                   locale="fa"
                   inputPlaceholder="تا تاریخ..."
                   wrapperClassName="w-100"
-                  inputClassName={`w-100 text-right fs16 form-control mr-3 input ${errors['to'] && 'is-invalid'}`}
+                  inputClassName={`w-100 text-right fs16 form-control mr-0 mr-md-3 input ${errors['to'] && 'is-invalid'}`}
                />
                {to && <button type="button" className="btn bg-transparent position-absolute"
                               style={{left: 0, zIndex: 100}} onClick={() => selectDay('to', '')}>

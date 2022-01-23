@@ -22,7 +22,7 @@ const UserPackages = () => {
   useEffect(() => {
     getPcksData()
        .then((response) => {
-          console.log(response);
+          console.log(1, response);
           if (response) {
            let {success, result: {list: {count, items}, discount, hasActivePack}} = response
            if (response === 401) {
@@ -51,14 +51,14 @@ const UserPackages = () => {
       <div className="card cardPrimary px-3 w-100">
         <div className="card-header bg-transparent d-flex flex-column flex-sm-row align-items-start justify-content-center align-items-sm-center justify-content-sm-between">
           <p className="card-title fs22 my-2">اشتراک ها</p>
-          <p className="card-title fs16 font-weight-bold my-2 mx-0 mr-sm-3 text-danger">{`خرید شما، شامل ${discount}% تخفیف می باشد.`}</p>
+          <p className="card-title fs16 font-weight-bold my-2 mx-0 mr-sm-3 text-danger">{`خرید شما، شامل ${discount ?? 0}% تخفیف می باشد.`}</p>
         </div>
-        <div className="card-body w-100 d-flex flex-column px-3 py-5">
+        <div className="card-body w-100 d-flex flex-column py-5 px-0">
           <p className="fs20 text-justify  text-dark">با خرید هریک از اشتراک های زیر، با توجه به مدت زمانی خریداری شده، امکان استفاده با تخفیف از کلیه خدمات فروشگاه های هدف را دارید.</p>
           <div className="d-flex flex-wrap flex-column flex-md-row centered mt-5 ch">
             {!bigLoader && pcksData?.length > 0 && pcksData?.map((item) => {
               return (
-                 <div key={item?.id} className={`shadow ${!disabled ? 'packageContainer' : 'packageContainerNoHover m-3'}`}>
+                 <div key={item?.id} className={`shadow ${!disabled ? 'packageContainer' : 'packageContainerNoHover my-3'} mx-0 mx-md-3`}>
                    <p className={`fs40 textSecondary1 m-0 ${disabled && 'textSilver'}`}>{item?.title}</p>
                    <p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
                    {/*<p className="fs14 textThird m-0 mt-1">میزان تقاضا: 23%</p>*/}
@@ -77,7 +77,7 @@ const UserPackages = () => {
                       خرید
                    </button>}
                     {disabled && (
-                       <div className="button bgSilver border-0 px-2 text-nowrap" style={{cursor: 'not-allowed', backgroundImage: 'none'}}>
+                       <div className="button bgSilver border-0 px-2 text-nowrap" style={{minWidth: 150, cursor: 'not-allowed', backgroundImage: 'none'}}>
                           شما پکیج فعال دارید
                        </div>
                     )}
