@@ -18,7 +18,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles ="Admin,God")]
+        [Authorize(Roles ="Admin,God")]
         public IActionResult Search(PageRequestViewModel<CodeListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto();
