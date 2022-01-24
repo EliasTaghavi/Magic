@@ -12,6 +12,7 @@ import * as UserStore from "../../../../store/user";
 import {useDispatch} from "react-redux";
 import RenderUserWaitingModal from "../user/components/renderUserWaitingModal";
 import SupportModal from "../../../../components/shared/supportModal.component";
+import * as MainStore from "../../../../store/main";
 // import {sendMobile} from "../../../../../api/auth/auth";
 
 let interval;
@@ -135,11 +136,10 @@ const LoginShop = () => {
     setBtnLoader(true);
     sendShopLoginSms(mobile)
        .then((response) => {
-         console.log(response);
          let {success} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setStep(2);
              setBtnLoader(false);
@@ -162,11 +162,10 @@ const LoginShop = () => {
     setBtnLoader(true);
     sendShopLoginCode({mobile, code})
        .then((response) => {
-         console.log(response);
          let {result, success} = response;
          if (response?.code) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (response === false) {
              setBtnLoader(false);
              toast.error('خطای سرور', toastOptions);

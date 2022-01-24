@@ -20,6 +20,7 @@ import * as UserStore from '../../../../store/user';
 import {checkReferralCode} from "../../../api/auth/user";
 import RenderSelectMediaModal from "./components/renderSelectMediaModal";
 import RenderCamera from "./components/renderCamera";
+import * as MainStore from "../../../../store/main";
 
 let interval;
 let timer;
@@ -57,7 +58,6 @@ const LoginUser = () => {
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
   const [selectMediaModal, setSelectMediaModal] = useState('');
   const [camera, setCamera] = useState(false);
-  const [screenShot, setScreenShot] = useState('');
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -83,7 +83,6 @@ const LoginUser = () => {
   };
 
   const sendImage = async (e, type) => {
-    console.log(e, type);
     let newErrors = errors;
     if (type === 'selfi') {
       if (e.target.files && e.target.files[0]) {
@@ -282,11 +281,11 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginSms(mobile)
        .then((response) => {
-         console.log(response);
          let {success} = response;
          if (response) {
+           console.log(response);
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setStep(2);
              setBtnLoader(false);
@@ -310,11 +309,10 @@ const LoginUser = () => {
     setBtnLoader(true);
     sendUserLoginCode({mobile, code})
        .then((response) => {
-         console.log(response);
          let {result: {token, status, hasActivePack, firstName: responseFirstName, lastName: responseLatsName}, success} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              if (status !== 4 && status !== 7) {
                if (status === 3) {
@@ -359,7 +357,7 @@ const LoginUser = () => {
          let {success} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setWaitingModal(1);
              setBtnLoader(false);
@@ -386,11 +384,10 @@ const LoginUser = () => {
     setReferralCodeLoader(true);
     checkReferralCode({code: referralCode})
        .then((response) => {
-         console.log(response);
          let {success, result} = response;
          if (response) {
            if (response === 401) {
-             // do nothing but in another api's should logout from system
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              setResultData(result);
              setReferralCodeLoader(false);
@@ -654,7 +651,7 @@ const LoginUser = () => {
 }
 
 const Timer = ({resendCode, setSupportModal}) => {
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(60);
   const [resendCounter, setResendCounter] = useState(0);
 
   useEffect(() => {
@@ -698,7 +695,7 @@ const Timer = ({resendCode, setSupportModal}) => {
       {timer < 1 && resendCounter < 1 && (
         <button type="button" className="btn btn-transparent mt-3 outline p-0"
                 onClick={() => {
-                  setTimer(5);
+                  setTimer(60);
                   setResendCounter(resendCounter + 1);
                   resendCode();
                 }}>

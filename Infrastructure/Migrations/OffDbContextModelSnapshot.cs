@@ -45,7 +45,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings");
+                    b.ToTable("Settings", (string)null);
                 });
 
             modelBuilder.Entity("Core.File.Entities.AppFile", b =>
@@ -77,7 +77,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppFiles");
+                    b.ToTable("AppFiles", (string)null);
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.AccessToken", b =>
@@ -108,7 +108,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tokens");
+                    b.ToTable("Tokens", (string)null);
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.Cache", b =>
@@ -118,7 +118,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("JWT");
 
-                    b.ToTable("Caches");
+                    b.ToTable("Caches", (string)null);
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.Code", b =>
@@ -148,7 +148,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("Codes");
+                    b.ToTable("Codes", (string)null);
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.Role", b =>
@@ -175,7 +175,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -321,7 +321,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[Username] IS NOT NULL");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.UserType", b =>
@@ -333,6 +333,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("Enable")
                         .HasColumnType("bit");
 
@@ -341,13 +344,14 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserTypes");
+                    b.ToTable("UserTypes", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = "34e4a710-292d-4464-874a-bfcd739323e5",
                             CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
+                            Discount = 20,
                             Enable = true,
                             Name = "سایر"
                         },
@@ -355,6 +359,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = "bae26091-6fd0-4b43-8d68-f0610325b7d7",
                             CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
+                            Discount = 30,
                             Enable = true,
                             Name = "کارگر"
                         },
@@ -362,6 +367,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = "823a5500-e962-42b3-89d8-f5fb5b0270a9",
                             CreatedDate = new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230),
+                            Discount = 45,
                             Enable = true,
                             Name = "دانشجو"
                         });
@@ -393,7 +399,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Packs");
+                    b.ToTable("Packs", (string)null);
                 });
 
             modelBuilder.Entity("Core.Packs.Entities.PackBuy", b =>
@@ -436,7 +442,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[GatewayName] IS NOT NULL");
 
-                    b.ToTable("PackBuys");
+                    b.ToTable("PackBuys", (string)null);
                 });
 
             modelBuilder.Entity("Core.Purchase.Entities.Buy", b =>
@@ -469,7 +475,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Buys");
+                    b.ToTable("Buys", (string)null);
                 });
 
             modelBuilder.Entity("Core.Shops.Entities.Shop", b =>
@@ -507,7 +513,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Shops");
+                    b.ToTable("Shops", (string)null);
                 });
 
             modelBuilder.Entity("Core.Shops.Entities.ShopOff", b =>
@@ -532,7 +538,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("ShopOffs");
+                    b.ToTable("ShopOffs", (string)null);
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -547,7 +553,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("RoleUser", (string)null);
                 });
 
             modelBuilder.Entity("Core.File.Entities.AppFile", b =>

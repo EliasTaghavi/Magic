@@ -1,7 +1,11 @@
-﻿using Core.Identity.Entities;
+﻿using Core.Base.Dto;
+using Core.Identity.Dto;
+using Core.Identity.Entities;
 using Core.Identity.Enums;
+using Core.Identity.Mappers;
 using Core.Identity.Repos;
 using Infrastructure.Data;
+using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Identity.Repos
 {
@@ -39,7 +43,7 @@ namespace Infrastructure.Identity.Repos
             return code;
         }
 
-        public IEnumerable<Code> GetSet()
+        public IQueryable<Code> GetSet()
         {
             return Codes;
         }
@@ -58,6 +62,30 @@ namespace Infrastructure.Identity.Repos
         public void Save()
         {
             Context.SaveChanges();
+        }
+
+        public PagedListDto<CodeListDto> Search(PageRequestDto<CodeListFilterDto> dto)
+        {
+            var query = GetSet();
+            if (dto.MetaData.Type.HasValue)
+            {
+                query = query.Where(x => x.Type == dto.MetaData.Type.Value);
+            }
+            if (!string.IsNullOrEmpty(dto.MetaData.Keyword.Keyword))
+            {
+                query = query.Where(x => x.User.Mobile.Contains(dto.MetaData.Keyword.Keyword));
+            }
+            if (!string.IsNullOrEmpty(dto.SortField))
+            {
+                query = query.OrderBy(dto.SortField);
+            }
+            int count = query.Count();
+            var result = query.Include(x => x.User).Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();
+            return new PagedListDto<CodeListDto>
+            {
+                Count = count,
+                Items = result.ToDto()
+            };
         }
 
         public void Update(Code code)

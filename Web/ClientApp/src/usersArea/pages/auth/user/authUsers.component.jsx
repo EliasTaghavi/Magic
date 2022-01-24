@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../../../../assets/main.css';
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPhone} from "@fortawesome/free-solid-svg-icons";
+import {faHome} from "@fortawesome/free-solid-svg-icons";
 import logo from "../../../../assets/images/logo.png";
 import LoginUser from "./loginUser.components";
 
@@ -33,10 +33,10 @@ const MenuItem = ({extraClass}) => {
   return (
     <div className={`topPart ${extraClass}`}>
       <Link to="/" className="d-flex centered text-white text-decoration-none fs12 mt-3">
-        خانه
         <span className="iconContainer">
           <FontAwesomeIcon icon={faHome} className="textMain fs10"/>
         </span>
+        <span className="mr-2">خانه</span>
       </Link>
     </div>
   );

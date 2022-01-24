@@ -8,9 +8,12 @@ import {sendBuyData} from "../../../../api/shop/scannedUser";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import {useHistory} from "react-router-dom";
+import * as MainStore from "../../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	let {dayRemain, expireDate, lastname, name, packStatus, userType, discount} = data;
 	const [error, setError] = useState('');
 	const [factorPrice, setFactorPrice] = useState('');
@@ -18,7 +21,6 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 	const [buyLoader, setBuyLoader] = useState(false);
 
 	let priceToPay = factorPrice - ((factorPrice * discount) / 100);
-	console.log(discount, priceToPay);
 
 	const setBuyDataFn = () => {
 		let data = {
@@ -28,11 +30,10 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 		setBuyLoader(true);
 		sendBuyData(data)
 			.then((response) => {
-				console.log(response);
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
 					} else if (success) {
 						setBuyLoader(false);
 						toast.success('خرید با موفقیت ثبت شد', toastOptions);

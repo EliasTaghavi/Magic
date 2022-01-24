@@ -14,5 +14,6 @@ namespace Web.Models.Shop
         [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime CreatedDate { get; set; }
         public int LatestOff { get; set; }
+        public string RefCode { get; set; }
     }
 }

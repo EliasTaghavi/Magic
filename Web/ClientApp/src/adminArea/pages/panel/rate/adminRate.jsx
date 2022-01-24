@@ -4,8 +4,11 @@ import {getRatedShopsList, setMinRate} from "../../../api/rate";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import {generateMedal} from "./component/generateMedal";
+import * as MainStore from "../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const AdminRate = () => {
+	const dispatch = useDispatch();
 	const [error, setError] = useState('');
 	const [rate, setRate] = useState('');
 	const [focused, setFocused] = useState(false);
@@ -25,7 +28,7 @@ const AdminRate = () => {
 				let {success, result: {min, shops}} = response
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						setPrevRate(min.toString());
 						setShops(shops);
@@ -54,7 +57,7 @@ const AdminRate = () => {
 					let {success} = response
 					if (response) {
 						if (response === 401) {
-							// do nothing but in another api's should logout from system
+							dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 						} else if (success) {
 							setPrevRate(rateToSet);
 							setRate('');
@@ -67,7 +70,6 @@ const AdminRate = () => {
 					}
 				})
 				.catch((e) => {
-					console.log(12, e, e.response);
 					toast.error('خطای سرور', toastOptions);
 					setLoader(false);
 				})

@@ -76,7 +76,7 @@ const UserTransactions = () => {
          const {result: {count, items}, success} = response;
          if (response) {
            if (response === 401) {
-             dispatch(MainStore.actions.setLogoutModal(true));
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              PageNumberGenerator(count, data?.pageSize ?? pageSize)
                 .then((res) => {
@@ -101,7 +101,6 @@ const UserTransactions = () => {
     if (newPage === currentPage || newPage < 1 || newPage > pagesNumber[pagesNumber.length - 1]) {
       // do nothing
     } else {
-      console.log(newPage);
       setCurrentPage(newPage);
       getData({currentPage: newPage});
     }
@@ -122,7 +121,6 @@ const UserTransactions = () => {
 
   const selectDay = (type, data) => {
     delete errors[type];
-    console.log(data);
     switch (type) {
       case 'from':
         setFrom(data);
@@ -145,7 +143,7 @@ const UserTransactions = () => {
        <div className="card-body w-100 d-flex flex-column px-3">
          <div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
            <div className="flex form-group mt-4 d-flex flex-column flex-md-row align-items-start justify-content-start">
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
                <Select
                   defaultValue={statusTypes[0]}
                   options={statusTypes}
@@ -159,7 +157,7 @@ const UserTransactions = () => {
                   onChange={(value) => changeStatus(value)}
                   styles={theme.customStyles}/>
              </div>
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3" style={{maxWidth: 280}}>
+             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
                <DatePicker
                   value={from}
                   onChange={(value) => selectDay('from', value)}
@@ -175,7 +173,7 @@ const UserTransactions = () => {
                  <FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
                </button>}
              </div>
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative" style={{maxWidth: 280}}>
+             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
                <DatePicker
                   value={to}
                   onChange={(value) => selectDay('to', value)}
@@ -184,7 +182,7 @@ const UserTransactions = () => {
                   locale="fa"
                   inputPlaceholder="تا تاریخ..."
                   wrapperClassName="w-100"
-                  inputClassName={`w-100 text-right fs16 form-control mr-3 input ${errors['to'] && 'is-invalid'}`}
+                  inputClassName={`w-100 text-right fs16 form-control mr-0 mr-md-3 input ${errors['to'] && 'is-invalid'}`}
                />
                {to && <button type="button" className="btn bg-transparent position-absolute"
                               style={{left: 0, zIndex: 100}} onClick={() => selectDay('to', '')}>
@@ -214,9 +212,9 @@ const UserTransactions = () => {
                     <td>{item?.price ?? '-----'}</td>
                     <td>{item?.packTitle ?? '-----'}</td>
                     <td>{item?.status === true ? (
-                       <p className="font-weight-bold text-success">پرداخت شده</p>
+                       <p className="font-weight-bold text-success my-1">پرداخت شده</p>
                     ) : (
-                       <p className="font-weight-bold text-danger">پرداخت نشده</p>
+                       <p className="font-weight-bold text-danger my-1">پرداخت نشده</p>
                     )}</td>
                   </tr>
                );

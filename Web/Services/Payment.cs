@@ -12,6 +12,7 @@ namespace Web.Services
     {
         public static void AddPayment(this IServiceCollection services, IConfiguration configuration)
         {
+            var devEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
             services.AddParbad()
                 .ConfigureGateways(gateways =>
                 {
@@ -22,7 +23,7 @@ namespace Web.Services
                             accounts.AddInMemory(account =>
                             {
                                 account.MerchantId = "cdf6b9b5-97b4-488b-ab35-44b0bdd79bbd";
-                                account.IsSandbox = true;
+                                account.IsSandbox = devEnv;
                             });
                         });
                 })

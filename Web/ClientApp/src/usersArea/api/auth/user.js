@@ -93,7 +93,6 @@ export const checkReferralCode = ({code}) => {
   let headers = {
     'Content-Type': 'application/json',
   };
-  console.log(`/api/shop/findByRef?refCode=${code}`);
   return axios.post(`/api/shop/findByRef?refCode=${code}`, null,{headers}).then((res) => {
     if (res?.data?.code === '401') {
       return 401;

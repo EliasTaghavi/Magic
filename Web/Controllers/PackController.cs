@@ -21,6 +21,16 @@ namespace Web.Controllers
         [Authorize]
         public IActionResult List(PageRequestViewModel<PackFilterViewModel> viewModel)
         {
+            var userId = User.GetUserId();
+            var dto = viewModel.ToDto(mv => mv.ToDto());
+            var response = packManager.List(dto, userId);
+            return Ok(response.CreateViewModel(x => x.ToViewModel()));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Search(PageRequestViewModel<PackFilterViewModel> viewModel)
+        {
             var dto = viewModel.ToDto(mv => mv.ToDto());
             var response = packManager.Search(dto);
             return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));

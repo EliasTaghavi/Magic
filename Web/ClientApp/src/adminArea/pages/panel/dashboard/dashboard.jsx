@@ -7,8 +7,11 @@ import toastOptions from "../../../../components/ToastOptions";
 import {Link} from 'react-router-dom';
 import {getAdminLastTransactions, getAdminChartData} from "../../../api/dashboard";
 import NumberFormat from "react-number-format";
+import * as MainStore from "../../../../store/main";
+import {useDispatch} from "react-redux";
 
 const AdminDashboard = () => {
+	const dispatch = useDispatch();
 	const node1 = useRef(null);
 	const [newUsersLoader, setNewUsersLoader] = useState(false);
 	const [newUsers, setNewUsers] = useState([]);
@@ -29,7 +32,7 @@ const AdminDashboard = () => {
 				let {success, result: {items}} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing FIXME
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					}
 					else if (success) {
 						setNewUsers(items);
@@ -41,7 +44,6 @@ const AdminDashboard = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(22, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setNewUsersLoader(false);
 			})
@@ -54,7 +56,7 @@ const AdminDashboard = () => {
 				let {success, result: {items}} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing FIXME
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					}
 					else if (success) {
 						setTransactions(items);
@@ -75,11 +77,10 @@ const AdminDashboard = () => {
 		setChartLoader(true);
 		getAdminChartData()
 			.then((response) => {
-				console.log(response);
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing FIXME
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						setChartLoader(false);
 						renderEarnChart(result);
@@ -90,7 +91,6 @@ const AdminDashboard = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(33, e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setChartLoader(false);
 			})
@@ -269,6 +269,8 @@ const AdminDashboard = () => {
 													<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
 												) : item?.status === 2 ? (
 													<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
+												) : item?.status === 7 ? (
+													<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده توسط ادمین</p>
 												) : (
 													<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 												)}</td>

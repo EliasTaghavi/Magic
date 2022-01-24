@@ -22,5 +22,6 @@ namespace Core.Identity.Repos
         PagedListDto<UserListDto> Search(PageRequestDto<UserListFilterDto> dto);
         User Create(string phone);
         User ReadByQR(string userId);
+        User ReadWithType(string userId);
     }
 }

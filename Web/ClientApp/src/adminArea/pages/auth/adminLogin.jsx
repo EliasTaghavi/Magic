@@ -9,9 +9,12 @@ import {sendAdminLogin} from '../../api/auth/auth';
 import TokenStore from "../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
 import SupportModal from "../../../components/shared/supportModal.component";
+import {useDispatch} from "react-redux";
+import * as MainStore from '../../../store/main';
 
 const AdminLogin  = () => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const [bigLoader, setBigLoader] = useState(false);
 	const [loader, setLoader] = useState(false);
 	const [errors, setErrors] = useState({});
@@ -59,7 +62,7 @@ const AdminLogin  = () => {
 				let {success, result} = response;
 				if (response) {
 					if (response === 401) {
-						// do nothing but in another api's should logout from system
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
 						setLoader(false);
 						TokenStore.setAdminToken(result.token);

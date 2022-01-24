@@ -49,6 +49,7 @@ namespace Web.Mappers
                 UserMobile = dto.UserMobile,
                 CreatedDate = dto.CreatedDate,
                 LatestOff = dto.LatestOff,
+                RefCode = dto.RefCode,
             };
         }
 

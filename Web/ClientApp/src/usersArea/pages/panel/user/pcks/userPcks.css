@@ -18,7 +18,7 @@
 }
 
 .packageContainerNoHover {
-    width: 70vw;
+    width: 100%;
     min-width: 220px;
     max-width: 300px;
     min-height: 360px;
@@ -83,5 +83,9 @@
     .packageContainer {
         min-width: 280px;
         margin: 1rem;
+    }
+
+    .packageContainerNoHover {
+        width: 70vw;
     }
 }

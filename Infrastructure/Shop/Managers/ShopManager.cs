@@ -1,4 +1,5 @@
-﻿using Core.Base.Dto;
+﻿using Core;
+using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Enums;
@@ -62,12 +63,9 @@ namespace Infrastructure.Shops.Managers
                 userRepo.Update(user);
             }
 
-            Random random = new();
-            var code = random.Next(1000, 10000);
-
             var shop = dto.ToDataModel();
             shop.UserId = user.Id;
-            shop.ReferralCode = code.ToString();
+            shop.ReferralCode = Utils.RandomString(6);
             shopRepo.Create(shop);
             var shopOff = new ShopOff
             {
@@ -86,7 +84,7 @@ namespace Infrastructure.Shops.Managers
 
         public ManagerResult<string> FindByRef(string refCode)
         {
-            var shopName = shopRepo.GetSet().Where(x => x.ReferralCode == refCode).FirstOrDefault()?.Name;
+            var shopName = shopRepo.GetSet().Where(x => x.ReferralCode.ToLower() == refCode.ToLower()).FirstOrDefault()?.Name;
             return new ManagerResult<string>(shopName);
         }
 

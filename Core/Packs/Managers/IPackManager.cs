@@ -10,5 +10,6 @@ namespace Core.Packs.Managers
         ManagerResult<bool> Create(Entities.Pack data);
         ManagerResult<bool> Delete(string id);
         ManagerResult<CurrentPackDto> GetCurrent(string userId);
+        ManagerResult<PagedListPackWithUserTypeOffDto> List(PageRequestDto<PackFilterDto> dto, string userId);
     }
 }

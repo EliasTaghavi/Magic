@@ -64,5 +64,15 @@ namespace Web.Mappers
                 EndDate = currentPackDto.PayDate.AddDays(currentPackDto.DaysCount)
             };
         }
+
+        public static PagedListPackWithUserTypeOffViewModel ToViewModel(this PagedListPackWithUserTypeOffDto dto)
+        {
+            return new PagedListPackWithUserTypeOffViewModel
+            {
+                Discount = dto.Discount,
+                List = dto.ListDto.ToViewModel(x => x.ToViewModel()),
+                HasActivePack = dto.HasActivePack
+            };
+        }
     }
 }

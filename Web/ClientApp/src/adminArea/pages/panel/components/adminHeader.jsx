@@ -2,7 +2,7 @@ import React from 'react';
 import '../../../admin.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faBars, faBoxes,
+	faBars, faBoxes, faCode,
 	faHome, faList,
 	faMoneyBill,
 	faSignOutAlt, faStore,
@@ -30,7 +30,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 								<FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
 							</button>
 							<div className="d-flex align-items-center">
-								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
 							</div>
 						</div>
 						<div className="logoContainer">
@@ -55,7 +55,7 @@ const AdminHeader = ({open, setOpen, children}) => {
 								<FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
 							</button>
 							<div className="d-flex align-items-center">
-								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18">مجیک آف</Link>
+								<Link to="/admin/panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
 							</div>
 						</div>
 						<div className="logoContainer">
@@ -239,6 +239,28 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 						<FontAwesomeIcon icon={faList} className="fs18"/>
 						<span
 							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
+					</Link>
+				)}
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							کد ورود کاربران
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/user-codes" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faCode} className="fs18"/>
+						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/user-codes" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faCode} className="fs18"/>
+						<span
+							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
 					</Link>
 				)}
 			</li>

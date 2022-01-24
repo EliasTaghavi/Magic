@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
-	logoutModal: false,
+	logoutModal: {type: '', modal: false},
 }
 
 export const STORE_NAME = 'main';
