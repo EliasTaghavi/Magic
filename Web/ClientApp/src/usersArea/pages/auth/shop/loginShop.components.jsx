@@ -23,7 +23,7 @@ const LoginShop = () => {
   const history = useHistory();
   const [step, setStep] = useState(1); // 1=mobile 2= code
   const [errors, setErrors] = useState({});
-  const [mobile, setMobile] = useState('09123456789');
+  const [mobile, setMobile] = useState('');
   const [code, setCode] = useState('');
   const [shopName, setShopName] = useState('');
   const [shopPhone, setShopPhone] = useState('');
