@@ -7,6 +7,7 @@ import AdminPcks from "../pages/panel/pcks/pcks";
 import AdminTransactions from "../pages/panel/transactions/adminTransactions";
 import AdminShops from "../pages/panel/shops/adminShops";
 import AdminRate from "../pages/panel/rate/adminRate";
+import AdminUserCodes from '../pages/panel/user-codes/userCodes';
 
 const AdminPanelRoute = () => {
 	return (
@@ -18,6 +19,7 @@ const AdminPanelRoute = () => {
 				<Route path="/admin/panel/transactions" exact={true} component={AdminTransactions}/>
 				<Route path="/admin/panel/shops" exact={true} component={AdminShops}/>
 				<Route path="/admin/panel/rate" exact={true} component={AdminRate}/>
+				<Route path="/admin/panel/user-codes" exact={true} component={AdminUserCodes}/>
 			</Switch>
 		</AdminPanel>
 	);

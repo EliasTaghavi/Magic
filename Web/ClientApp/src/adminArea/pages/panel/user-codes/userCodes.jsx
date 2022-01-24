@@ -4,14 +4,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEllipsisV} from "@fortawesome/free-solid-svg-icons";
 import RenderPageButtons from "../components/RenderPageButtons";
 import SearchBox from "../components/SearchBox";
-import {adminGetAllUsers} from "../../../api/users";
+import {adminGetUsersCode} from "../../../api/usersCode";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import PageNumberGenerator from "../components/PageNumberGenerator";
 import {useDispatch} from "react-redux";
 import * as MainStore from '../../../../store/main';
 
-const AdminAllUsers = () => {
+const AdminUserCodes = () => {
 	const dispatch = useDispatch();
 	const [bigLoader, setBigLoader] = useState(false);
 	const [pageSize, setPageSize] = useState(5);
@@ -19,7 +19,6 @@ const AdminAllUsers = () => {
 	const [pagesNumber, setPagesNumber] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [totalCount, setTotalCount] = useState(0);
-	const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
 	const [data, setData] = useState([]);
 
 	useEffect(() => {
@@ -28,15 +27,14 @@ const AdminAllUsers = () => {
 
 	const getData = (data) => {
 		setBigLoader(true);
-		let lastStatus = data?.status ?? status;
 		let filteredData = {
 			index: data?.currentPage ?? currentPage,
 			size: data?.pageSize ?? pageSize,
-			status: lastStatus === 'null' ? null : lastStatus,
-			mobile: data?.searchValue ?? searchValue,
+			searchValue: data?.searchValue ?? searchValue,
 		};
 		adminGetUsersCode(filteredData)
 			.then((response) => {
+				console.log(response);
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {
@@ -103,11 +101,9 @@ const AdminAllUsers = () => {
 						<tr>
 							<th style={{minWidth: 120}}>ردیف</th>
 							<th style={{minWidth: 120}}>شماره موبایل</th>
-							<th style={{minWidth: 120}}>نام</th>
-							<th style={{minWidth: 120}}>نام خانوادگی</th>
-							<th style={{minWidth: 120}}>نقش کاربر</th>
-							<th style={{minWidth: 120}}>وضعیت</th>
-							<th style={{minWidth: 120}}>جزئیات بیشتر</th>
+							<th style={{minWidth: 120}}>نام کاربر</th>
+							<th style={{minWidth: 120}}>تاریخ</th>
+							<th style={{minWidth: 120}}>کد ورود</th>
 						</tr>
 						</thead>
 						<tbody className="w-100">
@@ -115,32 +111,10 @@ const AdminAllUsers = () => {
 							return (
 								<tr key={item?.id} className="customTr">
 									<td>{(currentPage - 1) * pageSize + (index + 1)}</td>
-									<td>{item?.mobile ?? '-----'}</td>
-									<td>{item?.firstName ?? '-----'}</td>
-									<td>{item?.lastName ?? '-----'}</td>
-									<td>
-										<div className="d-flex flex-wrap align-items-center justify-content-start h-100">
-											{item?.roles?.length > 0 ? generateRolesBadge(item?.roles) : '-----'}
-										</div>
-									</td>
-									<td>{item?.status === 3 ? (
-										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده</p>
-									) : item?.status === 5 ? (
-										<p className="text-danger font-weight-bold fs16 p-0 m-0">تایید نشده</p>
-									) : item?.status === 6 ? (
-										<p className="text-warning font-weight-bold fs16 p-0 m-0">در انتظار بررسی</p>
-									) : item?.status === 2 ? (
-										<p className="text-secondary font-weight-bold fs16 p-0 m-0">قفل شده</p>
-									) : item?.status === 7 ? (
-										<p className="text-success font-weight-bold fs16 p-0 m-0">تایید شده توسط ادمین</p>
-									) : (
-										<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
-									)}</td>
-									<td>
-										<button className="outline btn btn-transparent optionBtn rounded-circle d-flex align-items-center justify-content-center m-0 p-0" style={{width: 40, height: 40}} onClick={() => openDetailsModal(item)}>
-											<FontAwesomeIcon icon={faEllipsisV} className="text-secondary" style={{fontSize: 20}}/>
-										</button>
-									</td>
+									<td>{item?.userPhone ?? '-----'}</td>
+									<td>{item?.userName ?? '-----'}</td>
+									<td>{item?.createdDate ?? '-----'}</td>
+									<td className="font-weight-bold">{item?.num ?? '-----'}</td>
 								</tr>
 							);
 						})}
@@ -170,4 +144,4 @@ const AdminAllUsers = () => {
 	);
 }
 
-export default AdminAllUsers;
+export default AdminUserCodes;
