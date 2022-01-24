@@ -112,7 +112,7 @@ namespace Infrastructure.Identity.Managers
             {
                 if ((DateTime.UtcNow - code.CreatedDate) > TimeSpan.FromMinutes(1) && code.Times == 1)
                 {
-                    SMSService.Verification($"{code.Num}", user.Mobile);
+                    SMSService.Verification($"{code.Num}", user.Mobile).Wait();
                     code.Times = 2;
                     CodeRepo.Update(code);
                 }
@@ -145,7 +145,7 @@ namespace Infrastructure.Identity.Managers
                 Times = 1
             };
             CodeRepo.Create(newCode);
-            SMSService.Verification($"{num}", user.Mobile);
+            SMSService.Verification($"{num}", user.Mobile).Wait();
             return new ManagerResult<bool>
             {
                 Code = userAlreadyExist ? 1 : 2,
