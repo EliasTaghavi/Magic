@@ -127,7 +127,7 @@ const AdminPcks = () => {
 					</button>
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
-				<div className="table-responsive table-striped">
+				<div className="table-responsive table-striped customScrollbar">
 					<table className="w-100 mt-5">
 						<thead>
 							<tr>

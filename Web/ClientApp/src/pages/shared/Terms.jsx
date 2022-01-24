@@ -18,7 +18,7 @@ const Terms = () => {
 		<div className="homeMainContainer">
 			<Header />
 			<div ref={container}></div>
-			<div className="container d-flex justify-content-start align-items-start flex-column mt-5 main">
+			<div className="container d-flex justify-content-start align-items-start flex-column mt-5 main text-justify">
 				<h4 className="fontSizeBig font-weight-bold">قوانین و مقررات مجیک آف</h4>
 				<p className="mt-4">مشتری گرامی لطفا قبل از خرید و استفاده از خدمات وب سایت موارد زیر را به دقت مطالعه نمایید.</p>
 				<p>ورود مشتریان به وب سایت و عضویت با اطلاعات شخصی، خرید و استفاده از خدمات ارائه شده در وب سایت به معنای آگاهی کامل و پذیرفتن قوانین و شرایط استفاده از وب سایت وخدمات تخفیف محموعه ی اینترنتی مجیک آف خواهد بود و مشتری با عضویت و ثبت نام  قبول کلیه شرایط و قوانین وب سایت را اعلام نموده است. قوانین و شرایط مندرج در سایت همواره جایگزین کلیه توافق های قبلی خواهد بود.</p>
@@ -88,7 +88,7 @@ const Terms = () => {
 						{/*<p className="text-white fs24 font-weight-bold text-center">*/}
 						{/*  جذاب‌ترین <span className="textSecondary fs40 font-weight-bold mr-1">تخفیف‌ها</span>*/}
 						{/*</p>*/}
-						<p className="text-white mb-1 fs30 text-center text-md-right lh26">برای دریافت اشتراک <span className="textSecondary fs30 font-weight-bold">کلیک </span>کنید.</p>
+						<p className="text-white mb-1 fs30 text-center text-md-right clh26">برای دریافت اشتراک <span className="textSecondary fs30 font-weight-bold">کلیک </span>کنید.</p>
 					</div>
 					<Link to="/login" className="signUpLink centered textMain">
 						<p className="noBreak m-0">ثبت نام</p>

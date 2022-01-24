@@ -3,14 +3,13 @@ import './header.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faBalanceScale, faBars,
-  faClipboardList, faHome, faInfo, faPhone, faUsers
+  faHome, faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import logo from '../../../assets/images/logo.png';
 
 const Header = ({noLogin}) => {
   const [open, setOpen] = useState(false);
-  const [path, setPath] = useState('');
 
   return (
     <div>
@@ -40,7 +39,9 @@ const Header = ({noLogin}) => {
                   style={{cursor: 'pointer'}} onClick={() => setOpen(!open)}>
             <FontAwesomeIcon icon={faBars} className="text-dark fs22"/>
           </button>
-          <img alt="magicoff.ir" src={logo} className="logo d-md-none" />
+          <Link to="/">
+            <img alt="magicoff.ir" src={logo} className="logo d-md-none" />
+          </Link>
           <div className="rightSide">
             {!noLogin && <Link to="/login" className="signUpText bgMain">
               <span className="fs16 text-white d-none d-md-flex">{`ورود\xa0\xa0|\xa0\xa0ثبت نام`}</span>
