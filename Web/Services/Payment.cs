@@ -12,6 +12,7 @@ namespace Web.Services
     {
         public static void AddPayment(this IServiceCollection services, IConfiguration configuration)
         {
+            var devEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
             services.AddParbad()
                 .ConfigureGateways(gateways =>
                 {
