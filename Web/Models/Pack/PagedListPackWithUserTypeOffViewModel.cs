@@ -1,7 +1,4 @@
-﻿using Core.Base.Dto;
-using Core.Packs.Dto;
-
-namespace Web.Models.Pack
+﻿namespace Web.Models.Pack
 {
     public class PagedListPackWithUserTypeOffViewModel
     {

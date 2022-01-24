@@ -3,11 +3,6 @@ using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Managers;
 using Core.Identity.Repos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Identity.Managers
 {

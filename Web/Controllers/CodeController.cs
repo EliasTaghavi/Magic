@@ -1,9 +1,9 @@
 ﻿using Core.Identity.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Web.Models;
-using Web.Mappers;
 using Web.Helper;
+using Web.Mappers;
+using Web.Models;
 using Web.Models.User;
 
 namespace Web.Controllers
@@ -18,7 +18,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin,God")]
+        [Authorize(Roles = "Admin,God")]
         public IActionResult Search(PageRequestViewModel<CodeListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto();

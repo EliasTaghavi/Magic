@@ -23,7 +23,7 @@ namespace Web.Controllers
         {
             var userId = User.GetUserId();
             var dto = viewModel.ToDto(mv => mv.ToDto());
-            var response = packManager.List(dto,userId);
+            var response = packManager.List(dto, userId);
             return Ok(response.CreateViewModel(x => x.ToViewModel()));
         }
 
