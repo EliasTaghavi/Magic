@@ -159,12 +159,12 @@ const AdminDashboard = () => {
 	}
 
 	return (
-		<div className="w-100 d-flex flex-column align-items-start justify-content-between">
-			<div className="col-12 d-flex align-items-start justify-content-start px-0">
-				<div className="col-7 pl-1 pr-0">
-					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
+		<div className="d-flex flex-column align-items-start justify-content-between flex">
+			<div className="col-12 d-flex flex-column flex-md-row align-items-start justify-content-start px-0">
+				<div className="col-12 col-md-7 pl-0 pl-md-1 pr-0 mt-2">
+					<div className="w-100 card cardPrimary" style={{height: 450}}>
 						<div className="card-header bg-transparent">
-							<p className="card-title fs22 my-1">درآمد ماهیانه</p>
+							<p className="card-title cfs22 my-1">درآمد ماهیانه</p>
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
 							{chartLoader && <div className="w-100 d-flex centered">
@@ -176,12 +176,12 @@ const AdminDashboard = () => {
 						</div>
 					</div>
 				</div>
-				<div className="col-5 pr-1 pl-0">
-					<div className="w-100 card cardPrimary px-3" style={{height: 450}}>
+				<div className="col-12 col-md-5 pr-0 pr-md-1 pl-0 mt-2">
+					<div className="w-100 card cardPrimary" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-							<p className="card-title fs22 my-1">رتبه بندی فروشگاه ها</p>
-							<Link to="/admin/panel/shops" className="routeBtns">
-								همه فروشگاه ها
+							<p className="card-title cfs22 my-1">رتبه‌بندی فروشگاه‌ها</p>
+							<Link to="/admin/panel/shops" className="routeBtns cfs16 text-nowrap">
+								همه فروشگاه‌ها
 							</Link>
 						</div>
 						<div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
@@ -190,72 +190,69 @@ const AdminDashboard = () => {
 					</div>
 				</div>
 			</div>
-			<div className="col-12 d-flex align-items-start justify-content-start mt-2 px-0">
-				<div className="col-6 pl-1 pr-0">
-					<div className="w-100 card cardPrimary px-3 pb-2" style={{height: 450}}>
+			<div className="col-12 d-flex flex-column flex-md-row align-items-start justify-content-start px-0">
+				<div className="col-12 col-md-6 pl-0 pl-md-1 pr-0 mt-2">
+					<div className="w-100 card cardPrimary pb-2" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-							<p className="card-title fs22 my-1">آخرین تراکنش ها</p>
-							<Link to="/admin/panel/transactions" className="routeBtns">
-								همه تراکنش ها
+							<p className="card-title cfs22 my-1">آخرین تراکنش‌ها</p>
+							<Link to="/admin/panel/transactions" className="routeBtns cfs16 text-nowrap">
+								همه تراکنش‌ها
 							</Link>
 						</div>
-						<div className="w-100 h-100 d-flex align-items-start justify-content-start py-3 overflow-auto customScrollbar">
-							<div className="table-responsive table-striped">
-								<table className="w-100">
-									<thead>
+						<div className="table-responsive table-striped customScrollbar">
+							<table className="table w-100 overflow-auto">
+								<thead>
 									<tr>
 										<th style={{minWidth: 50}}>ردیف</th>
-										<th style={{minWidth: 120}}>نام و نام خانوادگی</th>
-										<th style={{minWidth: 120}}>تاریخ</th>
-										<th style={{minWidth: 120}}>مبلغ</th>
+										<th style={{minWidth: 170}}>نام و نام خانوادگی</th>
+										<th style={{minWidth: 140}}>تاریخ</th>
+										<th style={{minWidth: 150}}>مبلغ</th>
 									</tr>
-									</thead>
-									<tbody className="w-100">
-									{transactions?.length > 0 && transactions?.map((item, index) => {
-										return (
-											<tr key={item?.id} className="customTr">
-												<td>{index + 1}</td>
-												<td>{item?.userFullName ?? '-----'}</td>
-												<td style={{letterSpacing: 1}}>{item?.payDate ?? '-----'}</td>
-												<td className="font-weight-bold">
-													<NumberFormat value={item?.price} displayType={'text'} thousandSeparator={true} className="font-weight-bold fontSizePreSmall" /> تومان
-												</td>
-											</tr>
-										);
-									})}
-									</tbody>
-								</table>
-								{(transactions?.length < 1 && !transactionsLoader) && <div className="w-100 d-flex centered py-3">
-									<span className="text-danger">داده ای وجود ندارد.</span>
-								</div>}
-								{transactionsLoader && <div className="w-100 d-flex centered py-3">
-									<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
-								</div>}
-							</div>
+								</thead>
+								<tbody className="w-100">
+								{transactions?.length > 0 && transactions?.map((item, index) => {
+									return (
+										<tr key={item?.id} className="customTr">
+											<td>{index + 1}</td>
+											<td>{item?.userFullName ?? '-----'}</td>
+											<td style={{letterSpacing: 1}}>{item?.payDate ?? '-----'}</td>
+											<td className="font-weight-bold">
+												<NumberFormat value={item?.price} displayType={'text'} thousandSeparator={true} className="font-weight-bold fontSizePreSmall" /> تومان
+											</td>
+										</tr>
+									);
+								})}
+								</tbody>
+							</table>
+							{(transactions?.length < 1 && !transactionsLoader) && <div className="w-100 d-flex centered py-3">
+								<span className="text-danger">داده ای وجود ندارد.</span>
+							</div>}
+							{transactionsLoader && <div className="w-100 d-flex centered py-3">
+								<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+							</div>}
 						</div>
 					</div>
 				</div>
-				<div className="col-6 pr-1 pl-0">
-					<div className="w-100 card cardPrimary px-3 pb-2" style={{height: 450}}>
+				<div className="col-12 col-md-6 pr-0 pr-md-1 pl-0 mt-2">
+					<div className="w-100 card cardPrimary pb-2" style={{height: 450}}>
 						<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-							<p className="card-title fs22 my-1">جدیدترین کاربران</p>
-							<Link to="/admin/panel/all-users" className="routeBtns">
+							<p className="card-title cfs22 my-1">جدیدترین کاربران</p>
+							<Link to="/admin/panel/all-users" className="routeBtns cfs16 text-nowrap">
 								همه کاربران
 							</Link>
 						</div>
-						<div className="w-100 h-100 d-flex align-items-start justify-content-start overflow-auto py-3 customScrollbar">
-							<div className="table-responsive table-striped">
-								<table className="w-100 flex">
+							<div className="table-responsive table-striped customScrollbar">
+								<table className="table w-100 overflow-auto">
 									<thead>
-									<tr>
-										<th style={{minWidth: 50}}>ردیف</th>
-										<th style={{minWidth: 120}}>نام و نام خانوادگی</th>
-										<th style={{minWidth: 120}}>تاریخ ثبت نام</th>
-										<th style={{minWidth: 120}}>وضعیت</th>
-									</tr>
+										<tr>
+											<th style={{minWidth: 50}}>ردیف</th>
+											<th style={{minWidth: 170}}>نام و نام خانوادگی</th>
+											<th style={{minWidth: 150}}>ثبت نام</th>
+											<th style={{minWidth: 150}}>وضعیت</th>
+										</tr>
 									</thead>
 									<tbody className="w-100">
-									{newUsers?.length > 0 && newUsers?.map((item, index) => {
+										{newUsers?.length > 0 && newUsers?.map((item, index) => {
 										return (
 											<tr key={item?.id} className="customTr">
 												<td>{index + 1}</td>
@@ -286,7 +283,6 @@ const AdminDashboard = () => {
 									<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
 								</div>}
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>

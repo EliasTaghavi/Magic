@@ -120,34 +120,34 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
   }
 
   return (
-    <ul className="list-unstyled p-0 w-100">
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <Link to="/user-panel" className="menuLink cpx-12">
+    <ul className="list-unstyled p-0 w-100 overflow-auto">
+      <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
+        <Link to="/user-panel" className="userMenuLink cpx-12">
           <FontAwesomeIcon icon={faHome} className="fs18"/>
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
         </Link>
       </li>
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <Link to="/user-panel/packages" className="menuLink cpx-12">
+      <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
+        <Link to="/user-panel/packages" className="userMenuLink cpx-12">
           <FontAwesomeIcon icon={faCubes} className="fs18"/>
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>پکیج ها</span>
         </Link>
       </li>
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <Link to="/user-panel/transactions" className="menuLink cpx-12">
+      <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
+        <Link to="/user-panel/transactions" className="userMenuLink cpx-12">
           <FontAwesomeIcon icon={faList} className="fs18"/>
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
         </Link>
       </li>
       <Divider />
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <Link to="/user-panel/profile" className="menuLink cpx-12">
+      <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
+        <Link to="/user-panel/profile" className="userMenuLink cpx-12">
           <FontAwesomeIcon icon={faUserAlt} className="fs18"/>
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>حساب کاربری</span>
         </Link>
       </li>
-      <li className="menuItem rounded" onClick={() => setOpen(false)}>
-        <button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
+      <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
+        <button type="button" className="border-0 outline bg-transparent userMenuLink cpx-12" onClick={() => logout()}>
           <FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
         </button>

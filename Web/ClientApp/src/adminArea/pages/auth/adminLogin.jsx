@@ -18,8 +18,8 @@ const AdminLogin  = () => {
 	const [bigLoader, setBigLoader] = useState(false);
 	const [loader, setLoader] = useState(false);
 	const [errors, setErrors] = useState({});
-	const [userName, setUserName] = useState('admin');
-	const [password, setPassword] = useState('3040184571');
+	const [userName, setUserName] = useState('');
+	const [password, setPassword] = useState('');
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [focused, setFocused] = useState('');
 	const [supportModal, setSupportModal] = useState(false);

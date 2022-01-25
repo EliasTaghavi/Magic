@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../../../admin.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
@@ -15,14 +15,15 @@ import Divider from "../../../../components/divider";
 import TokenStore from "../../../../utils/tokenStore";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
-const AdminHeader = ({open, setOpen, children}) => {
+const AdminHeader = ({children}) => {
+	const [open, setOpen] = useState(false);
 
 	return (
 		<div className="w-100">
 			<div className="d-none d-md-flex">
 				<MdDrawer open={open} setOpen={setOpen} />
-				<div className="flex">
-					<div className="shadow1 sticky-top adminHeaderNav" style={{height: 63}}>
+				<div className="flex" style={{overflowX: 'auto'}}>
+					<div className="adminHeaderNav shadow1 sticky-top" style={{height: 63}}>
 						<div className="d-flex align-items-center justify-content-start h-100">
 							<button type="button"
 									  className="bg-transparent outline d-flex align-items-center justify-content-center border-0 mr-4 text-secondary"
@@ -124,13 +125,13 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faHome} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faHome} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
 					</Link>
 				)}
 			</li>
@@ -145,13 +146,13 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel/all-users" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faUsers} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel/all-users" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faUsers} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست کاربران</span>
 					</Link>
 				)}
 			</li>
@@ -166,13 +167,13 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel/packages" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faBoxes} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel/packages" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faBoxes} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
 					</Link>
 				)}
 			</li>
@@ -187,14 +188,14 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel/transactions" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faMoneyBill} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel/transactions" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faMoneyBill} className="fs18"/>
 						<span
-							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
 					</Link>
 				)}
 			</li>
@@ -209,14 +210,14 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel/shops" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faStore} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel/shops" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faStore} className="fs18"/>
 						<span
-							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
 					</Link>
 				)}
 			</li>
@@ -231,14 +232,14 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel/rate" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faList} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel/rate" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faList} className="fs18"/>
 						<span
-							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
 					</Link>
 				)}
 			</li>
@@ -253,14 +254,14 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel/user-codes" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faCode} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel/user-codes" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faCode} className="fs18"/>
 						<span
-							className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
 					</Link>
 				)}
 			</li>
@@ -276,13 +277,13 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
 						<FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
 					</button>
 				</OverlayTrigger>}
 				{open && (
 					<button type="button" className="border-0 outline bg-transparent menuLink cpx-12" onClick={() => logout()}>
 						<FontAwesomeIcon icon={faSignOutAlt} className="fs18"/>
-						<span className={`nav-link my-1 transition ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>خروج</span>
 					</button>
 				)}
 			</li>

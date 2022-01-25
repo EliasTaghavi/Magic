@@ -185,7 +185,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 				</div>
 				<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5 w-100">
 					<div className="d-flex flex-column align-items-start justify-content-start flex-md-row w-100">
-						<div className="mr-3 w-100">
+						<div className="mr-0 mr-md-3 w-100">
 							<div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
 								<p className="fs16 textThird">نام: </p>
 								<p className="fs18 mr-md-3">{item?.firstName ?? '-----'}</p>
@@ -209,7 +209,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 							<div className="w-100 d-flex flex-column align-items-start justify-content-start">
 								<div className="w-100 d-flex flex-column flex-md-row align-items-start justify-content-start align-items-md-center">
 									<p className="m-0 fs16 textThird">نوع شغل: </p>
-									<div className="col-12 col-md-6 position-relative">
+									<div className="col-12 col-md-6 position-relative pr-0 p-md-2 mt-3 mt-md-0">
 										<Select
 											value={statusType}
 											options={statusTypes}

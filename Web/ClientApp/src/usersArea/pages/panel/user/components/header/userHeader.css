@@ -97,6 +97,26 @@
 .z521 {
     z-index: 520;
 }
+.userMenuItem {
+    padding: 0 0.5rem;
+}
+
+.userMenuLink {
+    width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.userMenuLink:hover {
+    color: white;
+    background-color: #ffffff11;
+}
 
 @media screen and (min-width: 768px) {
     .userPanelDrawer {
