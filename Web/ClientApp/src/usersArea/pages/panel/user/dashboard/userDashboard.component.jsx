@@ -14,6 +14,7 @@ import {useDispatch} from "react-redux";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
 import * as MainStore from '../../../../../store/main';
 import Chart from "chart.js";
+import {useAddToHomeScreenPrompt} from "../components/useAddToHomeScreenPrompt";
 
 const UserDashboard = () => {
    const node1 = useRef(null);
@@ -25,6 +26,7 @@ const UserDashboard = () => {
    const [qrId, setQrId] = useState('');
    const [qrLoader, setQrLoader] = useState(false);
    const userData = useShallowPickerSelector('user', ['userData']);
+   const [prompt, promptToInstall] = useAddToHomeScreenPrompt();
 
    useEffect(() => {
       let url = history?.location?.search;
@@ -200,10 +202,10 @@ const UserDashboard = () => {
                          <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
                       </div>
                    )}
-                   {!qrLoader && qrId?.length > 0 && (
+                   {prompt && !qrLoader && qrId?.length > 0 && (
                       <div className="w-100 d-flex flex-column centered">
                          <QRCode value={qrCodePreUrl(qrId)} renderAs="svg" size={250} level="H" />
-                         <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18" style={{maxWidth: 300}}>
+                         <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18" style={{maxWidth: 300}} onClick={promptToInstall}>
                             ذخیره
                          </button>
                       </div>
