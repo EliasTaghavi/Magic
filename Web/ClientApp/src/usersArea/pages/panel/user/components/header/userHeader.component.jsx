@@ -81,7 +81,7 @@ const UserHeader = ({open, setOpen, children}) => {
 
 const MdDrawer = ({token, extraClassName, open, setOpen}) => {
   return (
-    <div className={`userPanelDrawer py-3 transition sticky-top ${open ? 'w280' : 'w60'} ${extraClassName}`}>
+    <div className={`userPanelDrawer pt-3 transition sticky-top ${open ? 'w280' : 'w60'} ${extraClassName}`}>
       <div className="d-flex centered px-2">
         <div className="d-flex align-items-center justify-content-center userLogo bg-light">
           <FontAwesomeIcon icon={faUser} className="text-dark"/>
@@ -96,7 +96,7 @@ const MdDrawer = ({token, extraClassName, open, setOpen}) => {
 
 const Drawer = ({token, extraClassName, open, setOpen}) => {
   return (
-    <div className={`userPanelDrawer py-3 transition sticky-top w280 ${extraClassName}`}>
+    <div className={`userPanelDrawer pt-3 transition sticky-top w280 ${extraClassName}`}>
       <div className="d-flex centered px-2">
         <div className="d-flex align-items-center justify-content-center userLogo bg-light">
           <FontAwesomeIcon icon={faUser} className="text-dark"/>
@@ -120,7 +120,7 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
   }
 
   return (
-    <ul className="list-unstyled p-0 w-100 overflow-auto">
+    <ul className="list-unstyled p-0 w-100 customScrollbar mb-0" style={{overflowX: 'hidden', overflowY: 'auto'}}>
       <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel" className="userMenuLink cpx-12">
           <FontAwesomeIcon icon={faHome} className="fs18"/>
