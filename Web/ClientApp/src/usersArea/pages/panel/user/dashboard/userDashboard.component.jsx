@@ -127,7 +127,31 @@ const UserDashboard = () => {
             data: data,
             options: {
                legend: {
-                  display: false,
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                     generateLabels: (chart) => {
+                        const data = ['خریدها', 'تخفیف های دریافتی'];
+                        if (data.length && data.length) {
+
+                           return data.map((label, i) => {
+
+                              return {
+                                 text: label
+                              };
+                           });
+                        }
+                        return [];
+                     }
+                  },
+                  title: {
+                     display: true,
+                     font: {
+                        family: 'IranSans',
+                     },
+                     text: 'er',
+                  },
+                  rtl: true,
                },
                maintainAspectRatio: false,
                tooltips: {
@@ -151,7 +175,7 @@ const UserDashboard = () => {
                      type: 'category',
                      labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
                      ticks: {
-                        fontFamily: 'Vazir',
+                        fontFamily: 'IranSans',
                      },
                      gridLines: {
                         display: false
@@ -164,9 +188,9 @@ const UserDashboard = () => {
                      ticks: {
                         min: 0,
                         callback: (value, index, values) => {
-                           return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                           return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
                         },
-                        fontFamily: 'Vazir'
+                        fontFamily: 'IranSans'
                      }
                   }],
                }
