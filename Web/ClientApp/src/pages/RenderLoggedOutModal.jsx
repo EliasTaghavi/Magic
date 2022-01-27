@@ -1,9 +1,9 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import {useDispatch} from "react-redux";
-import TokenStore from '../../utils/tokenStore';
-import * as MainStore from "../../store/main";
-import * as UserStore from "../../store/user";
+import TokenStore from '../utils/tokenStore';
+import * as MainStore from "../store/main";
+import * as UserStore from "../store/user";
 import {useHistory} from "react-router-dom";
 
 const RenderLoggedOutModal = (data) => {

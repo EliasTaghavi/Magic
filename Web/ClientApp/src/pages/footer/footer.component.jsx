@@ -1,9 +1,9 @@
 import React from 'react';
 import './footer.css';
 import {Link} from "react-router-dom";
-import insta from '../../../assets/images/insta.png';
-import tel from '../../../assets/images/tel.png';
-import email from '../../../assets/images/email.png';
+import insta from '../../assets/images/insta.png';
+import tel from '../../assets/images/tel.png';
+import email from '../../assets/images/email.png';
 
 const Footer = () => {
   return (

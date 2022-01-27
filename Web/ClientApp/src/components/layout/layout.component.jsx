@@ -4,7 +4,7 @@ import {faChevronUp} from "@fortawesome/free-solid-svg-icons";
 import './layout.css';
 import {useHistory} from "react-router-dom";
 import {useShallowPickerSelector} from "../../store/selectors";
-import RenderLoggedOutModal from "../../pages/shared/RenderLoggedOutModal";
+import RenderLoggedOutModal from "../../pages/RenderLoggedOutModal";
 
 const Layout = ({children}) => {
   const history = useHistory();

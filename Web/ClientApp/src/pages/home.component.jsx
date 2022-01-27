@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import '../../../assets/main.css';
-import Header from "../../../pages/shared/header/header.component";
-import tt from '../../../assets/images/tt.png';
-import tt12 from '../../../assets/images/tt12.png';
-import tt4 from '../../../assets/images/tt4.png';
-import Footer from "../../../pages/shared/footer/footer.component";
+import '../assets/main.css';
+import Header from "./header/header.component";
+import tt from '../assets/images/tt.png';
+import tt12 from '../assets/images/tt12.png';
+import tt4 from '../assets/images/tt4.png';
+import Footer from "./footer/footer.component";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";

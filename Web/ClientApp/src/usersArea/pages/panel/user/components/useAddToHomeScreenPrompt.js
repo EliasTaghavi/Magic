@@ -14,18 +14,18 @@ export const useAddToHomeScreenPrompt = () => {
 		);
 	};
 
+	const ready = (e) => {
+		e.preventDefault();
+		console.log(e);
+		setState(e);
+	};
+
 	React.useEffect(() => {
-		const ready = (e) => {
-			e.preventDefault();
-			setState(e);
-		};
-
 		window.addEventListener("beforeinstallprompt", ready);
-
 		return () => {
 			window.removeEventListener("beforeinstallprompt", ready);
 		};
 	}, []);
 
-	return [prompt, promptToInstall];
+	return {prompt, promptToInstall};
 }

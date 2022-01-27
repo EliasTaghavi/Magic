@@ -176,7 +176,7 @@ const LoginShop = () => {
                    TokenStore.setShopToken(result?.token);
                    dispatch(UserStore.actions.setUserData({...result?.shop, token: result?.token}));
                    setBtnLoader(false);
-                   history.replace('/shop-panel');
+                   history.replace(history?.location?.state?.from ?? '/shop-panel');
                  } else if (result?.status === 6) {
                    setWaitingModal(2);
                  } else {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
-import {faBan, faCheckCircle, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import {faBan, faCheckCircle, faInfo, faInfoCircle, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {supportDetails} from "../../../../../utils/supportDetails";
 
@@ -25,8 +25,9 @@ const RenderUserWaitingModal = ({waitingModal, resetToHome}) => {
 				)}
 				{waitingModal === 2 && (
 					<div className="p-3 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center">
-						<FontAwesomeIcon icon={faTimesCircle} style={{fontSize: 80}} className="text-danger"/>
-						<p className="fs18 mt-5 text-center">لطفا پس از دریافت پیامک تایید حساب، به پنل خود مراجعه نمایید.</p>
+						<FontAwesomeIcon icon={faInfoCircle} style={{fontSize: 80}} className="text-warning"/>
+						<p className="fs18 mt-5 text-center">اطلاعات شما در حال بررسی توسط کارشناسان ما می‌باشد.</p>
+						<p className="fs18 text-center">لطفا پس از دریافت پیامک تایید، به حساب کاربری خود مراجعه فرمایید.</p>
 						<button type="button" className="btn btn-outline-secondary mt-5 py-2 px-5"
 								  onClick={resetToHome}>
 							تایید

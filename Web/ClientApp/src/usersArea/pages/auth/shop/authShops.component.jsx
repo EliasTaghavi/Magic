@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPhone} from "@fortawesome/free-solid-svg-icons";
+import {faHome} from "@fortawesome/free-solid-svg-icons";
 import LoginShop from "./loginShop.components";
+import {useHistory} from "react-router";
 import logo from '../../../../assets/images/logo.png';
 
 const AuthShops = () => {
   const [section, setSection] = useState(1); // 1=auth 2=signUp
+
+  const history = useHistory();
+  console.log(history);
 
   return (
     <div className="mainContainer transition">
