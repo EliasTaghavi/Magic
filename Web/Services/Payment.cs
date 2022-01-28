@@ -23,7 +23,7 @@ namespace Web.Services
                             accounts.AddInMemory(account =>
                             {
                                 account.MerchantId = "cdf6b9b5-97b4-488b-ab35-44b0bdd79bbd";
-                                account.IsSandbox = devEnv;
+                                account.IsSandbox = true;
                             });
                         });
                 })
