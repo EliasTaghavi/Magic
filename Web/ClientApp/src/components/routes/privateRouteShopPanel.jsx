@@ -5,7 +5,6 @@ import TokenStore from "../../utils/tokenStore";
 const PrivateRouteShopPanel = (props) => {
   let {component: Component, ...restProps} = props;
   const shopToken = TokenStore.getShopToken();
-   console.log(props);
    return (
     <Route {...restProps} render={(props) => (
        shopToken ? (

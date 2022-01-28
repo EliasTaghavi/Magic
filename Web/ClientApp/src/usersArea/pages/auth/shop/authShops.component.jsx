@@ -10,7 +10,6 @@ const AuthShops = () => {
   const [section, setSection] = useState(1); // 1=auth 2=signUp
 
   const history = useHistory();
-  console.log(history);
 
   return (
     <div className="mainContainer transition">
