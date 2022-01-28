@@ -18,6 +18,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 	const [ownerMobile, setOwnerMobile] = useState('');
 	const [discount, setDiscount] = useState('');
 	const [address, setAddress] = useState('');
+	const [refCode, setRefCode] = useState('');
 	const [focused, setFocused] = useState('');
 	const [loader, setLoader] = useState(false);
 
@@ -55,6 +56,9 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 			case 'address':
 				setAddress(target.value);
 				break;
+			case 'refCode':
+				setRefCode(target.value);
+				break;
 			default:
 				break;
 		}
@@ -70,6 +74,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 			ownerMobile,
 			address,
 			discount,
+			refCode,
 		}
 		CreateShopValidation(data)
 			.then((response) => {
@@ -95,6 +100,7 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 			ownerMobile,
 			discount,
 			address,
+			refCode,
 		};
 		SendCreateShopData(data)
 			.then((response) => {
@@ -255,6 +261,27 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 							<span className="invalid-feedback mt-2 fs14" style={{
 								display: errors['discount'] ? 'block' : 'none',
 							}}>{errors['discount']}</span>
+						</div>
+						<div className="d-flex flex-column align-items-start justify-content-center col-12 col-md-6 mt-4">
+							<label htmlFor="refCode" className={`transition fs14 mb-0 ${focused === 'refCode' ? 'textMain' : 'textThird'}`}>
+								کد معرف<span style={{color: 'red'}}>{`\xa0*`}</span>
+							</label>
+							<input
+								id="refCode"
+								name="refCode"
+								type="text"
+								autoFocus={false}
+								required={true}
+								className={`form-control input ${errors['refCode'] && 'is-invalid'}`}
+								value={refCode}
+								onChange={changeValue}
+								placeholder="..."
+								onFocus={focusedFn}
+								onBlur={unfocusedFn}
+							/>
+							<span className="invalid-feedback mt-2 fs14" style={{
+								display: errors['refCode'] ? 'block' : 'none',
+							}}>{errors['refCode']}</span>
 						</div>
 						<div className="d-flex flex-column align-items-start justify-content-center col-12 mt-4">
 							<label htmlFor="address" className={`transition fs14 ${focused === 'address' ? 'textMain' : 'textThird'}`}>

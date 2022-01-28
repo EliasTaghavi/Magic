@@ -32,7 +32,7 @@ const UserHeader = ({open, setOpen, children}) => {
                        <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
                     </button>
                     <div className="d-flex align-items-center">
-                       <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
+                       <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
                     </div>
                  </div>
                  <div className="logoContainer">
@@ -60,7 +60,7 @@ const UserHeader = ({open, setOpen, children}) => {
                        <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
                     </button>
                     <div className="d-flex align-items-center">
-                       <Link to="/shop-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
+                       <Link to="/user-panel" className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک آف</Link>
                     </div>
                  </div>
                  <div className="logoContainer">
