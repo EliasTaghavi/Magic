@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import LoginUserValidation from "../../../../components/validations/authUser/loginUserValidation";
 import toastOptions from "../../../../components/ToastOptions";
 import {toast} from "react-toastify";
@@ -406,7 +406,7 @@ const LoginUser = () => {
   };
 
   return (
-    <div className={`loginContainer ${step === 2 && 'cpy4'}`}>
+    <div className={`loginContainer ${step === 2 ? 'cpy4' : step === 3 ? 'pt-3 py-md-0 pb-5' : ''}`}>
       <FadeComponent className="d-flex flex-column centered w-100">
         <form noValidate={true} autoComplete="off" className="loginForm" onSubmit={handleValidate}>
           {step === 1 && (
