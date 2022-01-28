@@ -1,7 +1,7 @@
 import './custom.css';
 import * as React from 'react';
 import {Route, Switch} from 'react-router';
-import Home from "./usersArea/pages/home/home.component";
+import Home from "./pages/home.component";
 import Layout from "./components/layout/layout.component";
 import LoginRoute from "./components/routes/loginRoutes";
 import PrivateRouteUserPanel from "./components/routes/privateRouteUserPanel";
@@ -9,8 +9,8 @@ import PrivateRouteShopPanel from "./components/routes/privateRouteShopPanel";
 import UserPanelRoute from "./components/routes/userPanelRoute";
 import ShopPanelRoute from "./components/routes/shopPanelRoute";
 import AdminAreaRoute from './adminArea/routes/adminAreaRoutes';
-import AboutUs from "./pages/shared/AboutUs";
-import Terms from "./pages/shared/Terms";
+import AboutUs from "./pages/AboutUs";
+import Terms from "./pages/Terms";
 
 export default () => (
    <Layout>

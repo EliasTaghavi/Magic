@@ -26,7 +26,9 @@ const UserDashboard = () => {
    const [qrId, setQrId] = useState('');
    const [qrLoader, setQrLoader] = useState(false);
    const userData = useShallowPickerSelector('user', ['userData']);
-   const [prompt, promptToInstall] = useAddToHomeScreenPrompt();
+   const {prompt, promptToInstall} = useAddToHomeScreenPrompt();
+
+   console.log(prompt);
 
    useEffect(() => {
       let url = history?.location?.search;
@@ -97,37 +99,44 @@ const UserDashboard = () => {
    };
 
    const renderDiscountChart = () => {
+      const COLORS = [
+         '#4dc9f6',
+         '#f67019',
+         '#f53794',
+         '#537bc4',
+         '#acc236',
+         '#166a8f',
+         '#00a950',
+         '#58595b',
+         '#8549ba'
+      ];
       const data = {
-         labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+         labels: ['فروشگاه یک', 'فروشگاه دو', 'فروشگاه سه', 'فروشگاه چهار', 'فروشگاه پنج'],
          datasets: [
             {
-               label: 'chart2',
-               data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90],
-               pointRadius: 4,
-               fill: true,
-               borderColor: '#296aef',
-               tension: 0.1,
-               cubicInterpolationMode: 'monotone',
-               backgroundColor: 'transparent',
-            },
-            {
-               label: 'chart1',
-               data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40],
-               pointRadius: 4,
-               fill: true,
-               borderColor: '#ff521d',
-               tension: 0.1,
-               cubicInterpolationMode: 'monotone',
-               backgroundColor: 'transparent',
-            }]
+               label: 'Dataset 1',
+               data: [17, 15, 25, 35, 18],
+               backgroundColor: Object.values(COLORS),
+            }
+         ]
       };
       if (node1?.current) {
          new Chart(node1?.current, {
-            type: 'line',
+            type: 'pie',
             data: data,
             options: {
+               responsive: true,
+               fontFamily: "IranSans",
                legend: {
-                  display: false,
+                  display: true,
+                  rtl: true,
+                  position: 'bottom',
+                  labels: {
+                     fontFamily: "IranSans",
+                     font: {
+                        family: 'IranSans',
+                     },
+                  }
                },
                maintainAspectRatio: false,
                tooltips: {
@@ -137,40 +146,15 @@ const UserDashboard = () => {
                   fontFamily: "IranSans",
                   titleFontFamily: 'IranSans',
                   bodyFontFamily: 'IranSans',
+                  rtl: true,
+                  textDirection: 'rtl',
                   callbacks: {
                      label: (tooltipItems, data) => {
-                        return tooltipItems.yLabel;
+                        return `${data?.labels[tooltipItems?.index]}:\xa0` + (data?.datasets[0]?.data[tooltipItems?.index].toFixed() * 1000).toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
                      }
                   }
                },
-               interaction: {
-                  intersect: false,
-               },
-               scales: {
-                  xAxes: [{
-                     type: 'category',
-                     labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-                     ticks: {
-                        fontFamily: 'Vazir',
-                     },
-                     gridLines: {
-                        display: false
-                     }
-                  }],
-                  yAxes: [{
-                     gridLines: {
-                        color: "rgba(0, 0, 0, 0)",
-                     },
-                     ticks: {
-                        min: 0,
-                        callback: (value, index, values) => {
-                           return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                        },
-                        fontFamily: 'Vazir'
-                     }
-                  }],
-               }
-            }
+            },
          });
       }
    }
@@ -182,10 +166,10 @@ const UserDashboard = () => {
              <div className="card-header bg-transparent">
                 <p className="card-title fs22 my-2">پنل کاربری</p>
              </div>
-             <div className="w-100 d-flex align-items-start justify-content-start py-5 px-3">
+             <div className="w-100 h-100 d-flex flex-column centered px-3 py-2">
                 {paymentData && <PaymentResult data={paymentData}/>}
-                <div className="position-relative pb-3 w-100" style={{height: 360}}>
-                   <canvas className="mt-4 w-100" ref={node1}/>
+                <div className="position-relative pb-3 w-100" style={{height: paymentData ? 300 : 400}}>
+                   <canvas className="w-100" ref={node1}/>
                 </div>
              </div>
           </div>
@@ -202,12 +186,13 @@ const UserDashboard = () => {
                          <Loader type="ThreeDots" color='#ff521d' height={10} width={70} className="loader"/>
                       </div>
                    )}
-                   {prompt && !qrLoader && qrId?.length > 0 && (
+                   {!qrLoader && qrId?.length > 0 && (
                       <div className="w-100 d-flex flex-column centered">
                          <QRCode value={qrCodePreUrl(qrId)} renderAs="svg" size={250} level="H" />
-                         <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18" style={{maxWidth: 300}} onClick={promptToInstall}>
+                         {prompt && <button type="button" className="btn outline submitBtn border-0 d-flex centered fs18"
+                                  style={{maxWidth: 300}} onClick={promptToInstall}>
                             ذخیره
-                         </button>
+                         </button>}
                       </div>
                    )}
                 </div>
@@ -286,14 +271,14 @@ const PaymentResult = ({data}) => {
    return (
       <div className="w-100">
          {status === 'Succeed' && <div className="alert alert-success" role="alert">
-            <h4 className="alert-heading">پرداخت موفق</h4>
-            <p className="mt-3">تبریک! پرداخت با موفقیت انجام شد.</p>
-            <p className="mt-3">{`کد پیگیری:\xa0${code}`}</p>
+            <h4 className="alert-heading fs18">پرداخت موفق</h4>
+            <p className="mt-2">تبریک! پرداخت با موفقیت انجام شد.</p>
+            <p className="mt-2">{`کد پیگیری:\xa0${code}`}</p>
          </div>}
          {status === 'Failed' && <div className="alert alert-danger" role="alert">
-            <h4 className="alert-heading">پرداخت ناموفق</h4>
-            <p className="mt-3">متاسفانه پرداخت ناموفق بود. لطفا مجددا تلاش نمایید.</p>
-            <p className="mt-3">{`کد پیگیری:\xa0${code}`}</p>
+            <h4 className="alert-heading fs18">پرداخت ناموفق</h4>
+            <p className="mt-2 mb-0">متاسفانه پرداخت ناموفق بود. لطفا مجددا تلاش نمایید.</p>
+            <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
          </div>}
       </div>
    )

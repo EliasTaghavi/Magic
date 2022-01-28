@@ -89,10 +89,10 @@ const AdminUserCodes = () => {
 	return (
 		<div className="card cardPrimary px-3 w-100">
 			<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-				<p className="card-title fs22 my-2">لیست همه کاربران</p>
+				<p className="card-title fs22 my-2">لیست کدهای ورود همه کاربران</p>
 			</div>
 			<div className="card-body w-100 d-flex flex-column px-3">
-				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
+				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-end">
 					<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />
 				</div>
 				<div className="table-responsive table-striped">
