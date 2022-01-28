@@ -47,9 +47,17 @@ namespace Web.Controllers
             var verifyResult = onlinePayment.Verify(invoice);
 
             var response = packBuyManager.Verify(verifyResult);
-
-
-            return RedirectPermanent($"https://magicoff.ir/user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
+            var devEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+            string url;
+            if (devEnv)
+            {
+                url = "https://localhost:5001";
+            }
+            else
+            {
+                url = "https://magicoff.ir";
+            }
+            return RedirectPermanent($"{url}/user-panel?code={verifyResult.TransactionCode}&status={verifyResult.Status}");
         }
 
         [HttpGet]
