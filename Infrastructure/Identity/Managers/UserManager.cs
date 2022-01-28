@@ -191,7 +191,7 @@ namespace Infrastructure.Identity.Managers
             user.UserStatus = UserStatus.Confirmed;
             user.UserTypeId = dto.TypeId;
             UserRepo.Update(user);
-            sMSService.SendConfirm(user.Mobile,$"{user.Name} {user.Surname}");
+            sMSService.SendConfirm(user.Mobile, $"{user.Name} {user.Surname}");
             return new ManagerResult<bool>(true);
         }
 

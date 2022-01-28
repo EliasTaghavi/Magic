@@ -16,7 +16,7 @@ namespace Infrastructure.Services
             settings = options.CurrentValue;
         }
 
-        public void SendConfirm(string mobile,string fullname)
+        public void SendConfirm(string mobile, string fullname)
         {
             if (settings.Enable)
             {

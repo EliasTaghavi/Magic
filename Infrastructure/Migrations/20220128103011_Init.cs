@@ -73,6 +73,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Discount = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Enable = table.Column<bool>(type: "bit", nullable: true)
                 },
@@ -239,7 +240,8 @@ namespace Infrastructure.Migrations
                         name: "FK_Tokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -266,7 +268,8 @@ namespace Infrastructure.Migrations
                         name: "FK_AppFiles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -330,12 +333,12 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserTypes",
-                columns: new[] { "Id", "CreatedDate", "Enable", "Name" },
+                columns: new[] { "Id", "CreatedDate", "Discount", "Enable", "Name" },
                 values: new object[,]
                 {
-                    { "34e4a710-292d-4464-874a-bfcd739323e5", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), true, "سایر" },
-                    { "823a5500-e962-42b3-89d8-f5fb5b0270a9", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), true, "دانشجو" },
-                    { "bae26091-6fd0-4b43-8d68-f0610325b7d7", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), true, "کارگر" }
+                    { "34e4a710-292d-4464-874a-bfcd739323e5", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), 20, true, "سایر" },
+                    { "823a5500-e962-42b3-89d8-f5fb5b0270a9", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), 45, true, "دانشجو" },
+                    { "bae26091-6fd0-4b43-8d68-f0610325b7d7", new DateTime(2022, 1, 2, 17, 1, 15, 300, DateTimeKind.Utc).AddTicks(2230), 30, true, "کارگر" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -346,7 +349,9 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AppFiles_UserId",
                 table: "AppFiles",
-                column: "UserId");
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buys_ShopId",
