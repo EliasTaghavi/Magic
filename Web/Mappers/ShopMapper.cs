@@ -26,6 +26,7 @@ namespace Web.Mappers
                 UserName = viewModel.UserName,
                 UserSurname = viewModel.UserSurname,
                 LatestOff = viewModel.LatestOff,
+                Refcode = viewModel.Refcode,
             };
         }
 

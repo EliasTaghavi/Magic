@@ -65,7 +65,6 @@ namespace Infrastructure.Shops.Managers
 
             var shop = dto.ToDataModel();
             shop.UserId = user.Id;
-            shop.ReferralCode = Utils.RandomString(6);
             shopRepo.Create(shop);
             var shopOff = new ShopOff
             {
