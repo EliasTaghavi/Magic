@@ -6,7 +6,7 @@ import {
   faHome, faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo-sm.png';
 
 const Header = ({noLogin}) => {
   const [open, setOpen] = useState(false);
@@ -54,7 +54,7 @@ const Header = ({noLogin}) => {
         <div id="drawerFather" className="DrawerFather p-0 border-0" style={{display: open ? 'flex' : 'none'}}/>
         <div id="drawer" className="Drawer bg-light pt-4" style={open ? {right: 0} : {right: '-80%'}}>
           <div className="w-100 d-flex centered">
-            <img alt="magicoff.ir" src={require('../../assets/images/logo.png')} className="logo"/>
+            <img alt="magicoff.ir" src={require('../../assets/images/logo-sm.png')} className="logo"/>
           </div>
           <div className="w-100 px-3 mt-4">
             <hr className="w-100" />

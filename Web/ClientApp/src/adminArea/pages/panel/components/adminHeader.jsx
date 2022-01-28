@@ -10,7 +10,7 @@ import {
 	faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import {Link, useHistory} from "react-router-dom";
-import logo from "../../../../assets/images/logo.png";
+import logo from "../../../../assets/images/logo-sm.png";
 import Divider from "../../../../components/divider";
 import TokenStore from "../../../../utils/tokenStore";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";

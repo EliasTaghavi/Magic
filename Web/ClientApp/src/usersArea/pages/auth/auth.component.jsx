@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../assets/main.css';
-import logo from '../../../assets/images/logo.png';
+import logo from '../../../assets/images/logo-sm.png';
 import cart from '../../../assets/images/cart.png';
 import store from '../../../assets/images/store.png';
 import {Link} from 'react-router-dom';

@@ -10,12 +10,8 @@ import {theme} from "../../../../../components/shared/theme";
 import DatePicker from "react-modern-calendar-datepicker";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import SearchBox from "../../../../../adminArea/pages/panel/components/SearchBox";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../../../../../adminArea/pages/panel/components/RenderPageButtons";
-import makeAnimated from "react-select/animated/dist/react-select.esm";
-
-const animatedComponents = makeAnimated();
 
 const UserTransactions = () => {
   const dispatch = useDispatch();
@@ -23,10 +19,10 @@ const UserTransactions = () => {
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesNumber, setPagesNumber] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue] = useState('');
   const [totalCount, setTotalCount] = useState(0);
   const [data, setData] = useState([]);
-  const [errors, setErrors] = useState({});
+  const [errors] = useState({});
   const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -45,16 +41,16 @@ const UserTransactions = () => {
     },
   ];
 
-  const searchData = (e) => {
-    e.preventDefault();
-    setCurrentPage(1);
-    getData({currentPage: 1});
-  };
-
-  const changeValue = useCallback((e) => {
-    let target = e.target;
-    setSearchValue(target.value);
-  }, []);
+  // const searchData = (e) => {
+  //   e.preventDefault();
+  //   setCurrentPage(1);
+  //   getData({currentPage: 1});
+  // };
+  //
+  // const changeValue = useCallback((e) => {
+  //   let target = e.target;
+  //   setSearchValue(target.value);
+  // }, []);
 
   useEffect(() => {
     getData();
@@ -148,7 +144,6 @@ const UserTransactions = () => {
                   defaultValue={statusTypes[0]}
                   options={statusTypes}
                   isClearable={false}
-                  components={animatedComponents}
                   isRtl={true}
                   isMulti={false}
                   isSearchable={false}

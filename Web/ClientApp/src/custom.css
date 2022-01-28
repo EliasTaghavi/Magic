@@ -8,11 +8,11 @@ body {
   font-size: 14px !important;
   text-align: right;
   scroll-behavior: smooth;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  /*-webkit-user-select: none;*/
+  /*-moz-user-select: none;*/
+  /*-ms-user-select: none;*/
   padding: 0 !important;
-  user-select: none;
+  /*user-select: none;*/
   /*overflow-x: hidden !important;*/
 }
 
@@ -93,7 +93,9 @@ a:hover {
 .bgSilver {
   background-color: #bbbbbb;
 }
-
+.bgSilverLight {
+  background-color: #eeeeee;
+}
 
 .textMain {
   color: #ff521d !important;

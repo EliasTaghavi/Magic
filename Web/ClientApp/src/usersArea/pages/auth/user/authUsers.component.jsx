@@ -3,11 +3,11 @@ import '../../../../assets/main.css';
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
-import logo from "../../../../assets/images/logo.png";
+import logo from "../../../../assets/images/logo-sm.png";
 import LoginUser from "./loginUser.components";
 
 const AuthUsers = () => {
-  const [section, setSection] = useState(1); // 1=auth 2=signUp
+  const [section] = useState(1); // 1=auth 2=signUp
 
   return (
     <div className="authMainContainer transition">

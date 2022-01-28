@@ -107,7 +107,7 @@ namespace Infrastructure.Data
                 shopOff.Ignore(x => x.ObjectState);
                 shopOff.HasOne(e => e.Shop)
         .WithMany(e => e.Offs)
-        .OnDelete(DeleteBehavior.ClientCascade);
+        .OnDelete(DeleteBehavior.Cascade);
             });
         }
 

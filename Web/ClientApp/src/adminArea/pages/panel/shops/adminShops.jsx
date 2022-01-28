@@ -111,7 +111,7 @@ const AdminShops = () => {
 					setDeleteItemModal(null);
 				}
 			})
-			.catch(() => {
+			.catch((e) => {
 				toast.error('خطای سرور', toastOptions);
 				setDeleteItemModal(null);
 			});

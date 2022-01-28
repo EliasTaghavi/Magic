@@ -11,6 +11,7 @@ namespace Core.Shops.Mappers
                 Address = dto.Address,
                 Name = dto.Name,
                 Phone = dto.Phone,
+                ReferralCode = dto.Refcode,
             };
         }
 

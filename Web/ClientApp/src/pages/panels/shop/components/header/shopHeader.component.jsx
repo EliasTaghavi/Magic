@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import TokenStore from "../../../../../utils/tokenStore";
 import Divider from "../../../../../components/divider";
-import logo from '../../../../../assets/images/logo.png';
+import logo from '../../../../../assets/images/logo-sm.png';
 
 const ShopHeader = ({children}) => {
    const [open, setOpen] = useState(false);

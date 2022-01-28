@@ -4,15 +4,13 @@ import '../../../../admin.css';
 import toastOptions from "../../../../../components/ToastOptions";
 import {toast} from "react-toastify";
 import AdminSendSMSValidation from "../../components/validatons/SendSMSValidation";
-import SMSMaxChar from "../../components/SMSMaxChar";
-import smsCounter from "../../components/smsCounter";
 import {rejectUser} from "../../../../api/users";
 import Loader from "react-loader-spinner";
 
-const RejectSmsModal = ({item, setOpen, refreshTable}) => {
+const RejectSmsModal = ({item, setOpen, refreshTable, setAllModalClose}) => {
 	const [loader, setLoader] = React.useState(false);
 	const [errors, setErrors] = React.useState({});
-	const [description, setDescription] = React.useState('با سلام\nاطلاعات شما در پنل مجیک آف تایید نشده است. لطفا نسبت به ثبت نام مجدد اقدام نمایید.');
+	const [description, setDescription] = React.useState('');
 
 	const validation = (e) => {
 		e.preventDefault();
@@ -37,7 +35,7 @@ const RejectSmsModal = ({item, setOpen, refreshTable}) => {
 		rejectUser(item?.id, description)
 			.then((response) => {
 				if (!response?.type) {
-					setOpen(false);
+					setAllModalClose();
 					toast.success(`پیامک با موفقیت ارسال شد`, toastOptions);
 					refreshTable();
 					setLoader(false);
@@ -56,6 +54,7 @@ const RejectSmsModal = ({item, setOpen, refreshTable}) => {
 		<Modal
 			show={true}
 			size="lg"
+			centered={true}
 			onHide={() => setOpen(false)}>
 			<div className="modal-content">
 				<div className="modal-header fs16 font-weight-bold">
@@ -66,29 +65,40 @@ const RejectSmsModal = ({item, setOpen, refreshTable}) => {
 						<div className="col-12">
 							<div className="d-flex align-items-center justify-content-between mb-1">
 								<label className="p-0 m-0">
-									متن پیام<span style={{color: 'red'}}>{`\xa0*`}</span>
-									{`\xa0${description.length}/${SMSMaxChar(description)}\xa0`}
-									{`(تعداد پیامک: ${smsCounter(description)})`}
+									دلیل رد شدن<span style={{color: 'red'}}>{`\xa0*`}</span>
 								</label>
 							</div>
-							<textarea
+							<input
 								disabled={loader}
+								id="description"
 								name="description"
+								type="text"
 								autoFocus={false}
-								required={false}
-								style={{height: 100, minHeight: 100, maxHeight: 100}}
+								required={true}
+								className="form-control input w-100 text-right"
 								value={description}
-								className='form-control w-100 text-right'
 								onChange={(e) => {
 									let newError = errors;
 									delete newError['description'];
 									setErrors(newError);
 									setDescription(e.target.value);
-								}}/>
+								}}
+								placeholder="..."
+							/>
 							<span className="invalid-feedback" style={{
 								display: errors['description'] ? 'block' : 'none',
 								fontSize: 14
 							}}>{errors['description']}</span>
+						</div>
+						<div className="col-12 mt-4">
+							<p className="fs16 font-weight-bold">متن ارسالی به کاربر:</p>
+							<div className="bgSilverLight rounded p-3">
+								<p className="fs16 mb-0">کاربر گرامی</p>
+								<p className="fs16 mb-0">حساب شما به دلیل زیر تایید نشد:</p>
+								<p className="fs16 mb-0 textMain">{description.length > 0 ? `"${description}"` : '"دلیل رد شدن"'}</p>
+								<p className="fs16 mb-0">خطا-"کد خطا"</p>
+								<p className="fs16 mb-0">سامانه Magic Off</p>
+							</div>
 						</div>
 					</div>
 					<div className="modal-footer d-flex justify-content-between align-items-center">

@@ -23,7 +23,7 @@ const UserPackages = () => {
     getPcksData()
        .then((response) => {
           if (response) {
-           let {success, result: {list: {count, items}, discount, hasActivePack}} = response
+           let {success, result: {list: {items}, discount, hasActivePack}} = response
            if (response === 401) {
               dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {

@@ -5,7 +5,6 @@ import RenderPageButtons from "../components/RenderPageButtons";
 import {getAdminTransactions} from "../../../api/transactions";
 import Select from "react-select";
 import {theme} from "../../../../components/shared/theme";
-import makeAnimated from "react-select/animated/dist/react-select.esm";
 import DatePicker from "react-modern-calendar-datepicker";
 import * as MainStore from "../../../../store/main";
 import PageNumberGenerator from "../components/PageNumberGenerator";
@@ -14,8 +13,6 @@ import toastOptions from "../../../../components/ToastOptions";
 import {useDispatch} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
-
-const animatedComponents = makeAnimated();
 
 const AdminTransactions = () => {
 	const dispatch = useDispatch();
@@ -26,7 +23,7 @@ const AdminTransactions = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const [totalCount, setTotalCount] = useState(0);
 	const [data, setData] = useState([]);
-	const [errors, setErrors] = useState({});
+	const [errors] = useState({});
 	const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
 	const [from, setFrom] = useState('');
 	const [to, setTo] = useState('');
@@ -148,7 +145,6 @@ const AdminTransactions = () => {
 								defaultValue={statusTypes[0]}
 								options={statusTypes}
 								isClearable={false}
-								components={animatedComponents}
 								isRtl={true}
 								isMulti={false}
 								isSearchable={false}
