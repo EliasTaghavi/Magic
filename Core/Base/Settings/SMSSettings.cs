@@ -5,5 +5,6 @@
         public bool CallSupport { get; set; }
         public bool Enable { get; set; }
         public string LineNumber { get; set; }
+        public string APIKey { get; set; }
     }
 }

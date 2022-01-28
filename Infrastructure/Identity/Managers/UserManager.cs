@@ -191,7 +191,7 @@ namespace Infrastructure.Identity.Managers
             user.UserStatus = UserStatus.Confirmed;
             user.UserTypeId = dto.TypeId;
             UserRepo.Update(user);
-            sMSService.SendConfirm(user.Mobile);
+            sMSService.SendConfirm(user.Mobile,$"{user.Name} {user.Surname}");
             return new ManagerResult<bool>(true);
         }
 
@@ -206,8 +206,7 @@ namespace Infrastructure.Identity.Managers
         public ManagerResult<bool> Reject(RejectMessageDto dto)
         {
             var user = UserRepo.Read(dto.UserId);
-            user.UserStatus = UserStatus.Rejected;
-            UserRepo.Update(user);
+            UserRepo.Delete(user.Id);
             sMSService.SendReject(user.Mobile, dto.Message);
             return new ManagerResult<bool>(true);
         }

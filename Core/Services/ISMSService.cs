@@ -6,6 +6,6 @@ namespace Core.Services
     {
         Task Verification(string Message, string Phone);
         void SendReject(string mobile, string message);
-        void SendConfirm(string mobile);
+        void SendConfirm(string mobile, string fullname);
     }
 }
