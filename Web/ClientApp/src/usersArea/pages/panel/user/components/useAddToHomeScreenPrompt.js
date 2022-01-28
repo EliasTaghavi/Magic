@@ -16,7 +16,6 @@ export const useAddToHomeScreenPrompt = () => {
 
 	const ready = (e) => {
 		e.preventDefault();
-		console.log(e);
 		setState(e);
 	};
 

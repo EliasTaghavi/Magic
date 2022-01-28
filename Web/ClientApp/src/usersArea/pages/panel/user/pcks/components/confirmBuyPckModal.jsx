@@ -54,7 +54,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose, discount}) => {
 					</div>
 				)}
 				{bigLoader === 0 && (
-					<div className="d-flex flex-row-reverse align-items-center justify-content-between">
+					<div className="d-flex flex-column flex-lg-row-reverse align-items-center justify-content-between">
 						<div key={item?.id} className="packageContainerNoHover shadow">
 							<p className="fs30 textSecondary1 m-0">{item?.title}</p>
 							<p className="fs18 textThird m-0 mt-3">{`مدت اعتبار:\xa0${item?.dayCount}\xa0روز`}</p>
@@ -70,7 +70,7 @@ const ConfirmBuyPckModal = ({pckDetails: item, onClose, discount}) => {
 							</div>
 							<p className="fs14 textThird text-center">هزار تومان</p>
 						</div>
-						<div className="d-flex flex-column align-items-start justify-content-start flex pl-4">
+						<div className="d-flex flex-column align-items-start justify-content-start flex pl-0 pl-lg-4 mt-3 mt-lg-0">
 							<p className="fs18 text-dark">شما در حال خرید پکیج روبرو هستید.</p>
 							<p className="fs18 text-dark">آیا از خرید خود اطمینان دارید؟</p>
 							<a href={buyUrl} rel="noopener noreferrer" className="submitBtn border-0 d-flex centered fs18">
