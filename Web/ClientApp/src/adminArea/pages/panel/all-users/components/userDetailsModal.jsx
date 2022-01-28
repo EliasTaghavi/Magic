@@ -12,11 +12,8 @@ import toastOptions from "../../../../../components/ToastOptions";
 import {confirmUser, getUserJobType} from "../../../../api/users";
 import Select from "react-select";
 import {theme} from "../../../../../components/shared/theme";
-import makeAnimated from "react-select/animated/dist/react-select.esm";
 import * as MainStore from "../../../../../store/main";
 import {useDispatch} from "react-redux";
-
-const animatedComponents = makeAnimated();
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	const dispatch = useDispatch();
@@ -37,6 +34,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 		setStatusTypesLoader(true);
 		getUserJobType()
 			.then((response) => {
+				console.log(response);
 				const {result, success} = response;
 				if (response) {
 					if (response === 401) {
@@ -214,7 +212,6 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 											value={statusType}
 											options={statusTypes}
 											isClearable={false}
-											components={animatedComponents}
 											isRtl={true}
 											isMulti={false}
 											isSearchable={false}

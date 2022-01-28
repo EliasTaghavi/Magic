@@ -289,7 +289,7 @@ const PaymentResult = ({data, closePaymentResult}) => {
                <p className="mt-2 mb-0">متاسفانه پرداخت ناموفق بود. لطفا مجددا تلاش نمایید.</p>
                <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
             </div>
-            <button type="button" className="btn bg-transparent text-success d-flex centered outline" onClick={closePaymentResult}>
+            <button type="button" className="btn bg-transparent text-danger d-flex centered outline" onClick={closePaymentResult}>
                <FontAwesomeIcon icon={faTimesCircle} className="fs18" />
             </button>
          </div>}

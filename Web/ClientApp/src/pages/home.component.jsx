@@ -15,7 +15,7 @@ const defaultFormData = {
 }
 
 const Home = () => {
-  const [errors, setErrors] = useState(defaultFormData);
+  const [errors] = useState(defaultFormData);
   const [focused, setFocused] = useState('');
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');

@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import TokenStore from "../../../../../../utils/tokenStore";
 import Divider from "../../../../../../components/divider";
-import logo from '../../../../../../assets/images/logo.png';
+import logo from '../../../../../../assets/images/logo-sm.png';
 import * as UserStore from "../../../../../../store/user";
 import {useDispatch} from "react-redux";
 

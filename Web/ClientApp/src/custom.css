@@ -93,7 +93,9 @@ a:hover {
 .bgSilver {
   background-color: #bbbbbb;
 }
-
+.bgSilverLight {
+  background-color: #eeeeee;
+}
 
 .textMain {
   color: #ff521d !important;

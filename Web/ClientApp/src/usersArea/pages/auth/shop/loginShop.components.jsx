@@ -31,13 +31,13 @@ const LoginShop = () => {
   const [shopPassword, setShopPassword] = useState('');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
-  const [loader, setLoader] = useState(true);
+  // const [loader, setLoader] = useState(true);
   const [btnLoader, setBtnLoader] = useState(false);
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
 
   useEffect(() => {
     timer = setTimeout(() => {
-      setLoader(false);
+      // setLoader(false);
     }, 250);
     return () => {
       clearTimeout(timer);
@@ -80,9 +80,9 @@ const LoginShop = () => {
     }
   }
 
-  const sendSms = async () => {
-    // await sendMobile(mobile);
-  };
+  // const sendSms = async () => {
+  //   // await sendMobile(mobile);
+  // };
 
   const handleValidate = (e) => {
     e.preventDefault();
