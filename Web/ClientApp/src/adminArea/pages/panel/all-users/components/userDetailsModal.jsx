@@ -34,7 +34,6 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 		setStatusTypesLoader(true);
 		getUserJobType()
 			.then((response) => {
-				console.log(response);
 				const {result, success} = response;
 				if (response) {
 					if (response === 401) {
