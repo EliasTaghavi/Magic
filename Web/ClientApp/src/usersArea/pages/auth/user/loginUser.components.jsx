@@ -21,14 +21,15 @@ import {checkReferralCode} from "../../../api/auth/user";
 import RenderSelectMediaModal from "./components/renderSelectMediaModal";
 import RenderCamera from "./components/renderCamera";
 import * as MainStore from "../../../../store/main";
+import moment from 'moment-jalaali';
 
 let interval;
 let timer;
 
 export const maximumDate = {
-  year: 1400,
-  month: 10,
-  day: 6,
+  year: moment(new Date()).jYear(),
+  month: moment(new Date()).jMonth() + 1,
+  day: moment(new Date()).jDate(),
 }
 
 const LoginUser = () => {
@@ -383,6 +384,7 @@ const LoginUser = () => {
     setReferralCodeLoader(true);
     checkReferralCode({code: referralCode})
        .then((response) => {
+         console.log(response);
          let {success, result} = response;
          if (response) {
            if (response === 401) {
@@ -391,7 +393,7 @@ const LoginUser = () => {
              setResultData(result);
              setReferralCodeLoader(false);
            } else {
-             setResultData('1');
+             setResultData('noShop');
              setReferralCodeLoader(false);
            }
          } else {
@@ -399,7 +401,8 @@ const LoginUser = () => {
            setReferralCodeLoader(false);
          }
        })
-       .catch(() => {
+       .catch((e) => {
+         console.log(e.response, e);
          toast.error('خطای سرور', toastOptions);
          setReferralCodeLoader(false);
        })
@@ -589,7 +592,7 @@ const LoginUser = () => {
                      type="text"
                      autoFocus={false}
                      required={true}
-                     className={`form-control input ${resultData && resultData !== '1' ? 'is-valid border-success' : resultData === '1' ? 'is-invalid' : ''}`}
+                     className={`form-control input ${resultData && resultData !== 'noShop' ? 'is-valid border-success' : resultData === 'noShop' ? 'is-invalid' : ''}`}
                      value={referralCode}
                      onChange={changeValue}
                      placeholder="..."
@@ -601,8 +604,8 @@ const LoginUser = () => {
                     {referralCodeLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={5} width={70} className="loader"/>}
                   </button>
                 </div>
-                {resultData && resultData !== '1' && <p className="fs12 text-success mt-1">{`فروشگاه\xa0${resultData}`}</p>}
-                {resultData === '1' && <p className="fs12 text-danger mt-1">کد نامعتبر است</p>}
+                {resultData && resultData !== 'noShop' && <p className="fs12 text-success mt-1">{`فروشگاه\xa0${resultData}`}</p>}
+                {resultData === 'noShop' && <p className="fs12 text-danger mt-1">کد نامعتبر است</p>}
               </div>
             </div>
           )}

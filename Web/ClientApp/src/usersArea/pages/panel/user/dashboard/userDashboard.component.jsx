@@ -5,7 +5,7 @@ import NumberFormat from "react-number-format";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import Loader from "react-loader-spinner";
-import {faRedo} from "@fortawesome/free-solid-svg-icons";
+import {faRedo, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import QRCode from 'qrcode.react';
 import {qrCodePreUrl} from "../../../../api/imagePreUrl";
@@ -157,6 +157,11 @@ const UserDashboard = () => {
       }
    }
 
+   const closePaymentResult = () => {
+      setPaymentData(null);
+      history.replace('/user-panel');
+   }
+
    return (
     <div className="col-12 d-flex flex-column-reverse flex-lg-row flex-wrap-reverse align-items-start justify-content-between px-0">
        <div className="flex1 col-12 px-1 mt-2 mw550">
@@ -239,7 +244,7 @@ const UserDashboard = () => {
              </div>
           </div>
        </div>
-		 {paymentData && <PaymentResult data={paymentData}/>}
+		 {paymentData && <PaymentResult data={paymentData} closePaymentResult={closePaymentResult}/>}
        {/*<div className="col-12 col-md-3 d-flex card cardPrimary px-3 topQrBox" style={{height: 550}}>*/}
        {/*   <div className="card-header bg-transparent">*/}
        {/*      <p className="card-title fs22 my-2">کد QR شما</p>*/}
@@ -264,19 +269,29 @@ const UserDashboard = () => {
   );
 }
 
-const PaymentResult = ({data}) => {
+const PaymentResult = ({data, closePaymentResult}) => {
    let {status, code} = data;
    return (
       <div className="w-100">
-         {status === 'Succeed' && <div className="alert alert-success" role="alert">
-            <h4 className="alert-heading fs18">پرداخت موفق</h4>
-            <p className="mt-2 mb-0">تبریک! پرداخت با موفقیت انجام شد.</p>
-            <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
+         {status === 'Succeed' && <div className="alert alert-success d-flex align-items-center justify-content-between" role="alert">
+            <div className="d-flex flex-column">
+               <h4 className="alert-heading fs18">پرداخت موفق</h4>
+               <p className="mt-2 mb-0">تبریک! پرداخت با موفقیت انجام شد.</p>
+               <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
+            </div>
+            <button type="button" className="btn bg-transparent text-success d-flex centered outline" onClick={closePaymentResult}>
+               <FontAwesomeIcon icon={faTimesCircle} className="fs18" />
+            </button>
          </div>}
-         {status === 'Failed' && <div className="alert alert-danger" role="alert">
-            <h4 className="alert-heading fs18">پرداخت ناموفق</h4>
-            <p className="mt-2 mb-0">متاسفانه پرداخت ناموفق بود. لطفا مجددا تلاش نمایید.</p>
-            <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
+         {status === 'Failed' && <div className="alert alert-danger d-flex align-items-center justify-content-between" role="alert">
+            <div className="d-flex flex-column">
+               <h4 className="alert-heading fs18">پرداخت ناموفق</h4>
+               <p className="mt-2 mb-0">متاسفانه پرداخت ناموفق بود. لطفا مجددا تلاش نمایید.</p>
+               <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
+            </div>
+            <button type="button" className="btn bg-transparent text-success d-flex centered outline" onClick={closePaymentResult}>
+               <FontAwesomeIcon icon={faTimesCircle} className="fs18" />
+            </button>
          </div>}
       </div>
    )
