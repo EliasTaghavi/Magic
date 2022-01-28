@@ -15,39 +15,43 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	let {dayRemain, expireDate, lastname, name, packStatus, userType, discount} = data;
-	const [error, setError] = useState('');
 	const [factorPrice, setFactorPrice] = useState('');
+	const [factorError, setFactorError] = useState(false);
 	const [focus, setFocus] = useState(false);
 	const [buyLoader, setBuyLoader] = useState(false);
 
 	let priceToPay = factorPrice - ((factorPrice * discount) / 100);
 
 	const setBuyDataFn = () => {
-		let data = {
-			factorPrice,
-			userId,
-		};
-		setBuyLoader(true);
-		sendBuyData(data)
-			.then((response) => {
-				if (response) {
-					let {success, result} = response
-					if (response === 401) {
-						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
-					} else if (success) {
+		if (factorPrice.length < 1) {
+			setFactorError(true);
+		} else {
+			let data = {
+				factorPrice,
+				userId,
+			};
+			setBuyLoader(true);
+			sendBuyData(data)
+				.then((response) => {
+					if (response) {
+						let {success, result} = response
+						if (response === 401) {
+							dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
+						} else if (success) {
+							setBuyLoader(false);
+							toast.success('خرید با موفقیت ثبت شد', toastOptions);
+							history.replace('/shop-panel');
+						}
+					} else {
+						toast.error('خطای سرور', toastOptions);
 						setBuyLoader(false);
-						toast.success('خرید با موفقیت ثبت شد', toastOptions);
-						history.replace('/shop-panel');
 					}
-				} else {
+				})
+				.catch((error) => {
 					toast.error('خطای سرور', toastOptions);
 					setBuyLoader(false);
-				}
-			})
-			.catch((error) => {
-				toast.error('خطای سرور', toastOptions);
-				setBuyLoader(false);
-			})
+				})
+		}
 	};
 
 	return (
@@ -87,16 +91,16 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 								type="text"
 								min={0}
 								value={factorPrice}
-								className={`form-control mb-3 input ${error.length > 0 && 'is-invalid'}`}
+								className={`form-control input ${factorError && 'is-invalid'}`}
 								onChange={(e) => {
-									setError('');
+									setFactorError(false);
 									setFactorPrice(e.target.value.replace(/,/gm, ''));
 								}}
 								placeholder="..."
 								thousandSeparator={true}
 								onFocus={() => setFocus(true)}
 								onBlur={() => setFocus(false)}/>
-							{error.length > 0 && <p className="text-danger fs14">مبلغ اشتباه وارد شده است</p>}
+							{factorError && <p className="text-danger fs14">مبلغ اشتباه وارد شده است</p>}
 						</div>
 						<div className="w-100 d-flex flex-column centered mt-4">
 							<FontAwesomeIcon icon={faMinus} className="text-secondary fs20 mb-3"/>
