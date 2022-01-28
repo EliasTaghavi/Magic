@@ -384,7 +384,6 @@ const LoginUser = () => {
     setReferralCodeLoader(true);
     checkReferralCode({code: referralCode})
        .then((response) => {
-         console.log(response);
          let {success, result} = response;
          if (response) {
            if (response === 401) {
@@ -402,7 +401,6 @@ const LoginUser = () => {
          }
        })
        .catch((e) => {
-         console.log(e.response, e);
          toast.error('خطای سرور', toastOptions);
          setReferralCodeLoader(false);
        })

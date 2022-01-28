@@ -10,14 +10,11 @@ import {adminGetAllUsers} from "../../../api/users";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../components/ToastOptions";
 import PageNumberGenerator from "../components/PageNumberGenerator";
-import makeAnimated from "react-select/animated/dist/react-select.esm";
 import {theme} from "../../../../components/shared/theme";
 import Select from "react-select";
 import {useDispatch} from "react-redux";
 import * as MainStore from '../../../../store/main';
 import generateRolesBadge from "./components/generateRolesBadge";
-
-const animatedComponents = makeAnimated();
 
 const AdminAllUsers = () => {
 	const dispatch = useDispatch();
@@ -147,10 +144,9 @@ const AdminAllUsers = () => {
 				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
 					<div className="col-12 col-sm-6 col-md-4 col-xl-3 form-group mt-4">
 						<Select
-							defaultValue={statusTypes[0]}
+							value={statusTypes[0]}
 							options={statusTypes}
 							isClearable={false}
-							components={animatedComponents}
 							isRtl={true}
 							isMulti={false}
 							isSearchable={false}
@@ -232,9 +228,12 @@ const AdminAllUsers = () => {
 			</div>
 			{detailsModal && <UserDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} sendSmsModal={() => setSendSmsModal(true)} refreshTable={() => getData()} />}
 			{sendSmsModal && <RejectSmsModal item={detailsModal} setOpen={() => {
+				setSendSmsModal(false);
+			}} refreshTable={() => getData()}
+			setAllModalClose={() => {
 				setDetailsModal(null);
 				setSendSmsModal(false);
-			}} refreshTable={() => getData()} />}
+			}}/>}
 		</div>
 	);
 }

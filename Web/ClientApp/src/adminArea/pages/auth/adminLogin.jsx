@@ -15,7 +15,7 @@ import * as MainStore from '../../../store/main';
 const AdminLogin  = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const [bigLoader, setBigLoader] = useState(false);
+	const [bigLoader] = useState(false);
 	const [loader, setLoader] = useState(false);
 	const [errors, setErrors] = useState({});
 	const [userName, setUserName] = useState('');
