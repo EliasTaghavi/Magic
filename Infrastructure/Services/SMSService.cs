@@ -21,16 +21,16 @@ namespace Infrastructure.Services
             if (settings.Enable)
             {
                 KavenegarApi api = new(settings.APIKey);
-                api.Send(settings.LineNumber, mobile, $"{fullname} عزیز\nحساب کاربری شما در Magic Off تایید شد\nاکنون می توانید از مزایای آن بهره‌مند شوید").Wait();
+                api.Send(mobile, fullname, "offitconfirm").Wait();
             }
         }
 
-        public void SendReject(string mobile, string message)
+        public void SendReject(string mobile, string cause)
         {
             if (settings.Enable)
             {
                 KavenegarApi api = new(settings.APIKey);
-                api.Send(settings.LineNumber, mobile, message).Wait();
+                api.VerifyLookup(mobile, cause, "offitreject").Wait();
             }
         }
 
