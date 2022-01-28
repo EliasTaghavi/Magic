@@ -22,7 +22,6 @@ const UserPackages = () => {
   useEffect(() => {
     getPcksData()
        .then((response) => {
-          console.log(1, response);
           if (response) {
            let {success, result: {list: {count, items}, discount, hasActivePack}} = response
            if (response === 401) {

@@ -28,8 +28,6 @@ const UserDashboard = () => {
    const userData = useShallowPickerSelector('user', ['userData']);
    const {prompt, promptToInstall} = useAddToHomeScreenPrompt();
 
-   console.log(prompt);
-
    useEffect(() => {
       let url = history?.location?.search;
       if (url.includes('?code=')) {
@@ -167,7 +165,6 @@ const UserDashboard = () => {
                 <p className="card-title fs22 my-2">پنل کاربری</p>
              </div>
              <div className="w-100 h-100 d-flex flex-column centered px-3 py-2">
-                {paymentData && <PaymentResult data={paymentData}/>}
                 <div className="position-relative pb-3 w-100" style={{height: paymentData ? 300 : 400}}>
                    <canvas className="w-100" ref={node1}/>
                 </div>
@@ -242,6 +239,7 @@ const UserDashboard = () => {
              </div>
           </div>
        </div>
+		 {paymentData && <PaymentResult data={paymentData}/>}
        {/*<div className="col-12 col-md-3 d-flex card cardPrimary px-3 topQrBox" style={{height: 550}}>*/}
        {/*   <div className="card-header bg-transparent">*/}
        {/*      <p className="card-title fs22 my-2">کد QR شما</p>*/}
@@ -272,8 +270,8 @@ const PaymentResult = ({data}) => {
       <div className="w-100">
          {status === 'Succeed' && <div className="alert alert-success" role="alert">
             <h4 className="alert-heading fs18">پرداخت موفق</h4>
-            <p className="mt-2">تبریک! پرداخت با موفقیت انجام شد.</p>
-            <p className="mt-2">{`کد پیگیری:\xa0${code}`}</p>
+            <p className="mt-2 mb-0">تبریک! پرداخت با موفقیت انجام شد.</p>
+            <p className="mt-2 mb-0">{`کد پیگیری:\xa0${code}`}</p>
          </div>}
          {status === 'Failed' && <div className="alert alert-danger" role="alert">
             <h4 className="alert-heading fs18">پرداخت ناموفق</h4>

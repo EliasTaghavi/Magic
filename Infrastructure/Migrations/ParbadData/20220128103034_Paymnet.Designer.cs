@@ -12,8 +12,8 @@ using Parbad.Storage.EntityFrameworkCore.Context;
 namespace Infrastructure.Migrations.ParbadData
 {
     [DbContext(typeof(ParbadDataContext))]
-    [Migration("20220120095739_Payment")]
-    partial class Payment
+    [Migration("20220128103034_Paymnet")]
+    partial class Paymnet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

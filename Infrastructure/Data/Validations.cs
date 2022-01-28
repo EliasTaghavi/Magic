@@ -14,6 +14,7 @@ namespace Infrastructure.Data
                 file.HasKey(x => x.Id);
                 file.Ignore(x => x.FullName);
                 file.Ignore(x => x.ObjectState);
+                file.HasOne(x => x.User).WithOne().OnDelete(DeleteBehavior.Cascade);
             });
         }
 
@@ -168,6 +169,7 @@ namespace Infrastructure.Data
                     .HasMaxLength(12);
                 user.Ignore(x => x.ObjectState);
                 user.HasMany(x => x.Roles).WithMany(x => x.Users);
+                user.HasMany(x => x.AccessTokens).WithOne(x => x.User).OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

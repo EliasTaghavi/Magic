@@ -16,12 +16,12 @@ namespace Infrastructure.Services
             settings = options.CurrentValue;
         }
 
-        public void SendConfirm(string mobile)
+        public void SendConfirm(string mobile, string fullname)
         {
             if (settings.Enable)
             {
-                KavenegarApi api = new("65377137336C466436754671364B716C54496972356B45587269325076706669");
-                api.Send("10008663", mobile, "Confirm").Wait();
+                KavenegarApi api = new(settings.APIKey);
+                api.Send(settings.LineNumber, mobile, $"{fullname} عزیز\nحساب کاربری شما در Magic Off تایید شد\nاکنون می توانید از مزایای آن بهره‌مند شوید").Wait();
             }
         }
 
@@ -29,8 +29,8 @@ namespace Infrastructure.Services
         {
             if (settings.Enable)
             {
-                KavenegarApi api = new("65377137336C466436754671364B716C54496972356B45587269325076706669");
-                api.Send("10008663", mobile, message).Wait();
+                KavenegarApi api = new(settings.APIKey);
+                api.Send(settings.LineNumber, mobile, message).Wait();
             }
         }
 
@@ -42,7 +42,7 @@ namespace Infrastructure.Services
                 {
                     //List<string> receptors = new List<string> { $"{Phone}" };
 
-                    KavenegarApi api = new("4B52665A49316951485262306669745644393334415945554363615670566336");
+                    KavenegarApi api = new(settings.APIKey);
 
                     Kavenegar.Core.Models.SendResult result = await api.VerifyLookup(Phone, Message, "offitlogin");
 

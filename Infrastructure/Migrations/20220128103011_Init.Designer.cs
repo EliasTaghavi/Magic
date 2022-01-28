@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(OffDbContext))]
-    [Migration("20220120133338_UserTypeDiscount")]
-    partial class UserTypeDiscount
+    [Migration("20220128103011_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,7 +77,9 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("AppFiles");
                 });
@@ -565,8 +567,9 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ShopId");
 
                     b.HasOne("Core.Identity.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithOne()
+                        .HasForeignKey("Core.File.Entities.AppFile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -575,7 +578,8 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Identity.Entities.User", "User")
                         .WithMany("AccessTokens")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });

@@ -45,7 +45,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("Core.File.Entities.AppFile", b =>
@@ -75,9 +75,11 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("AppFiles", (string)null);
+                    b.ToTable("AppFiles");
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.AccessToken", b =>
@@ -108,7 +110,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tokens", (string)null);
+                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.Cache", b =>
@@ -118,7 +120,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("JWT");
 
-                    b.ToTable("Caches", (string)null);
+                    b.ToTable("Caches");
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.Code", b =>
@@ -148,7 +150,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("Codes", (string)null);
+                    b.ToTable("Codes");
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.Role", b =>
@@ -175,7 +177,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -321,7 +323,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[Username] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Core.Identity.Entities.UserType", b =>
@@ -344,7 +346,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserTypes", (string)null);
+                    b.ToTable("UserTypes");
 
                     b.HasData(
                         new
@@ -399,7 +401,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Packs", (string)null);
+                    b.ToTable("Packs");
                 });
 
             modelBuilder.Entity("Core.Packs.Entities.PackBuy", b =>
@@ -442,7 +444,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[GatewayName] IS NOT NULL");
 
-                    b.ToTable("PackBuys", (string)null);
+                    b.ToTable("PackBuys");
                 });
 
             modelBuilder.Entity("Core.Purchase.Entities.Buy", b =>
@@ -475,7 +477,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Buys", (string)null);
+                    b.ToTable("Buys");
                 });
 
             modelBuilder.Entity("Core.Shops.Entities.Shop", b =>
@@ -513,7 +515,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Shops", (string)null);
+                    b.ToTable("Shops");
                 });
 
             modelBuilder.Entity("Core.Shops.Entities.ShopOff", b =>
@@ -538,7 +540,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("ShopOffs", (string)null);
+                    b.ToTable("ShopOffs");
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -553,7 +555,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser", (string)null);
+                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("Core.File.Entities.AppFile", b =>
@@ -563,8 +565,9 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ShopId");
 
                     b.HasOne("Core.Identity.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithOne()
+                        .HasForeignKey("Core.File.Entities.AppFile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -573,7 +576,8 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Identity.Entities.User", "User")
                         .WithMany("AccessTokens")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });

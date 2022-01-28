@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Migrations.ParbadData
 {
-    public partial class Payment : Migration
+    public partial class Paymnet : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

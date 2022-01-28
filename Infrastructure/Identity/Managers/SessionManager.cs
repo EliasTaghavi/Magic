@@ -35,7 +35,7 @@ namespace Infrastructure.Identity.Managers
         private readonly IRoleRepo roleRepo;
 
         public SessionManager(IUserRepo userRepo,
-            IRoleRepo roleRepo,
+                              IRoleRepo roleRepo,
                               ITokenRepo tokenRepo,
                               IPasswordHandler passwordHandler,
                               IJwtTokenHandler tokenHandler,
