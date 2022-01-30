@@ -20,14 +20,14 @@ namespace Infrastructure.Identity.Managers
             settings = options.CurrentValue;
         }
 
-        public ManagerResult<bool> CurrentIsDisable(StringValues header)
+        public ManagerResult<bool> CurrentIsDisable(string header)
         {
             string jwt = GetCurrent(header).Result;
             bool result = CacheRepo.Exist(jwt);
             return new ManagerResult<bool>(result);
         }
 
-        public ManagerResult<string> GetCurrent(StringValues header)
+        public ManagerResult<string> GetCurrent(string header)
         {
             StringValues authorizationHeader = header;
 
@@ -37,7 +37,7 @@ namespace Infrastructure.Identity.Managers
             return new ManagerResult<string>(result);
         }
 
-        public ManagerResult<bool> SameIP(StringValues header, string ip)
+        public ManagerResult<bool> SameIP(string header, string ip)
         {
             JwtSecurityTokenHandler handler = new();
             string jwt = GetCurrent(header).Result;
