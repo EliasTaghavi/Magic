@@ -25,5 +25,14 @@ namespace Web.Controllers
             var response = buyManager.Save(dto);
             return Ok(response);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult GetBenefit()
+        {
+            var userId = User.GetUserId();
+            var response = buyManager.GetBenefit(userId);
+            return Ok(response);
+        }
     }
 }

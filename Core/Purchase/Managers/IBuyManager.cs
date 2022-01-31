@@ -6,5 +6,6 @@ namespace Core.Purchase.Managers
     public interface IBuyManager
     {
         ManagerResult<bool> Save(SaveBuyDto dto);
+        ManagerResult<UserBenefitDto> GetBenefit(string userId);
     }
 }
