@@ -1,6 +1,7 @@
 ﻿using Core.Base.Entities;
 using Core.Base.Enums;
 using Core.Identity.Repos;
+using Core.Packs.Managers;
 using Core.Packs.Repos;
 using Core.Purchase.Dto;
 using Core.Purchase.Entities;
@@ -16,16 +17,19 @@ namespace Infrastructure.Purchase.Managers
         private readonly IShopRepo shopRepo;
         private readonly IUserRepo userRepo;
         private readonly IPackBuyRepo packBuyRepo;
+        private readonly IPackBuyManager packBuyManager;
 
         public BuyManager(IBuyRepo buyRepo,
                           IShopRepo shopRepo,
                           IUserRepo userRepo, 
-                          IPackBuyRepo packBuyRepo)
+                          IPackBuyRepo packBuyRepo,
+                          IPackBuyManager packBuyManager)
         {
             this.buyRepo = buyRepo;
             this.shopRepo = shopRepo;
             this.userRepo = userRepo;
             this.packBuyRepo = packBuyRepo;
+            this.packBuyManager = packBuyManager;
         }
 
         public ManagerResult<UserBenefitDto> GetBenefit(string userId)
@@ -40,6 +44,8 @@ namespace Infrastructure.Purchase.Managers
                 lastPackBenefit = buyRepo.GetTotalDiscount(userId,startDate,endDate);
             }
             var eachShopBuy = buyRepo.GetEachShopBuy(userId);
+            var zeroShopBuy = shopRepo.GerShopsName().Except(eachShopBuy.Select(x => x.Label));
+            eachShopBuy.AddRange(zeroShopBuy.Select(x => new Core.Base.Dto.LineChartDto<decimal> { Data = 0, Label = x }));
             var result = new UserBenefitDto
             {
                 EachShopBuy = eachShopBuy,
@@ -48,6 +54,21 @@ namespace Infrastructure.Purchase.Managers
             };
 
             return new ManagerResult<UserBenefitDto>(result);
+        }
+
+        public ManagerResult<ShopStatisticsDto> GetShopStatistics(string shopKeeperId)
+        {
+            var shop = shopRepo.ReadByUserId(shopKeeperId);
+            var tenLastNewUser = packBuyRepo.GetTenLastNewUserByShopRef(shop.ReferralCode);
+            var tenLastBuyer = buyRepo.GetTenLastBuyer(shop.Id);
+            var rate = packBuyManager.GetRank().Result.Shops.FindIndex(x => x.Name == shop.Name);
+            var result = new ShopStatisticsDto
+            {
+                Rate = rate + 1,
+                TenLastBuyer = tenLastBuyer,
+                TenLastNewUser = tenLastNewUser,
+            };
+            return new ManagerResult<ShopStatisticsDto>(result);
         }
 
         public ManagerResult<bool> Save(SaveBuyDto dto)

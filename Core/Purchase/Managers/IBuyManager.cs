@@ -7,5 +7,6 @@ namespace Core.Purchase.Managers
     {
         ManagerResult<bool> Save(SaveBuyDto dto);
         ManagerResult<UserBenefitDto> GetBenefit(string userId);
+        ManagerResult<ShopStatisticsDto> GetShopStatistics(string shopKeeperId);
     }
 }

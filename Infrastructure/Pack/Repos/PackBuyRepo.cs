@@ -1,4 +1,5 @@
 ﻿using Core.Base.Dto;
+using Core.Packs;
 using Core.Packs.Dto;
 using Core.Packs.Entities;
 using Core.Packs.Mapper;
@@ -20,6 +21,18 @@ namespace Infrastructure.Packs.Repos
         {
             var lastPackBuy = GetSet().Where(x => x.UserId == userId && x.PayStatus == true).Include(x => x.Pack).OrderByDescending(x => x.PayDate).FirstOrDefault();
             return lastPackBuy;
+        }
+
+        public List<KeyValueDto<string, string>> GetTenLastNewUserByShopRef(string referralCode)
+        {
+            var result = GetSet().Where(x => x.PayStatus == true && x.User.RefCode == referralCode)
+                                 .Include(x => x.User)
+                                 .OrderByDescending(x => x.PayDate)
+                                 .GroupBy(x => x.UserId)
+                                 .Take(10)
+                                 .Select(x => new KeyValueDto<string, string> { Key = x.Key, Value = $"{x.First().User.Name} {x.First().User.Surname}" })
+                                 .ToList();
+            return result;
         }
 
         public PackBuy HasActivePack(string userId)

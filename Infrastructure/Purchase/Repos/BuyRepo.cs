@@ -1,4 +1,5 @@
 ﻿using Core.Base.Dto;
+using Core.Purchase;
 using Core.Purchase.Entities;
 using Core.Purchase.Repos;
 using Infrastructure.Base.Repos;
@@ -19,8 +20,20 @@ namespace Infrastructure.Purchase.Repos
                 .Select(x => new LineChartDto<decimal>
                 {
                     Label = x.First().Shop.Name,
-                    Data = x.Sum(y => y.FullPrice - y.AfterDiscount)
+                    Data = x.Sum(y => y.FullPrice)
                 }).ToList();
+            return result;
+        }
+
+        public List<KeyValueDto<string, string>> GetTenLastBuyer(string id)
+        {
+            var result = GetSet().Where(x => x.ShopId == id)
+                                 .Include(x => x.User)
+                                 .OrderByDescending(x => x.CreatedDate)
+                                 .GroupBy(x => x.UserId)
+                                 .Take(10)
+                                 .Select(x => new KeyValueDto<string, string> { Key = x.Key, Value = $"{x.First().User.Name} {x.First().User.Surname}" })
+                                 .ToList();
             return result;
         }
 

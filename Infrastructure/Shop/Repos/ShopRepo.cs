@@ -14,6 +14,12 @@ namespace Infrastructure.Shops.Repos
 
         }
 
+        public List<string> GerShopsName()
+        {
+            var names = GetSet().Select(x => x.Name).ToList();
+            return names;
+        }
+
         public Core.Shops.Entities.Shop ReadByUserId(string userId)
         {
             var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1)).Include(x => x.Photos).FirstOrDefault();

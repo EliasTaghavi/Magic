@@ -8,5 +8,6 @@ namespace Core.Purchase.Repos
     {
         decimal GetTotalDiscount(string userId, DateTime? start = null, DateTime? end = null);
         List<LineChartDto<decimal>> GetEachShopBuy(string userId);
+        List<KeyValueDto<string,string>> GetTenLastBuyer(string id);
     }
 }

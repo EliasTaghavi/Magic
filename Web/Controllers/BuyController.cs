@@ -26,12 +26,21 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize]
         public IActionResult GetBenefit()
         {
             var userId = User.GetUserId();
             var response = buyManager.GetBenefit(userId);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Shop")]
+        public IActionResult GetShopStatistics()
+        {
+            var shopKeeperId = User.GetUserId();
+            var response = buyManager.GetShopStatistics(shopKeeperId);
             return Ok(response);
         }
     }
