@@ -1,14 +1,11 @@
-import tokenStore from "../../../utils/tokenStore";
 import axios from "axios";
 
-export const getShopDashboardData = () => {
-	const token = tokenStore.getShopToken();
+export const getShopList = () => {
 	let headers = {
 		'Content-Type': 'application/json',
-		'Authorization': `Bearer ${token}`
 	};
 
-	return axios.get('api/Buy/GetSellStatistics',{headers}).then((res) => {
+	return axios.get('/api/shop/list',{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
