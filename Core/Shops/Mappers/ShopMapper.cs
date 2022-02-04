@@ -19,11 +19,8 @@ namespace Core.Shops.Mappers
         {
             return new ShopSimpleDto
             {
-                Address = shop.Address,
                 Id = shop.Id,
                 Name = shop.Name,
-                Discount = shop.Offs.First().Percentage,
-                Phone = shop.Phone,
             };
         }
 
