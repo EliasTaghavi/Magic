@@ -4,6 +4,6 @@ namespace Core.Purchase.Dto
 {
     public class SellStatisticsDto
     {
-        public List<TwoColumnChartDto<decimal>> Sell { get; set; }
+        public List<ColumnChartDto> Sell { get; set; }
     }
 }

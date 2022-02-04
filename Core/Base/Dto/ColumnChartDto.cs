@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.Base.Dto
 {
-    public class TwoColumnChartDto<T>
+    public class ColumnChartDto
     {
-        public T Column1 { get; set; }
-        public T Column2 { get; set; }
+        public List<ChartNode<string,decimal>> Data { get; set; }
         public string Label { get; set; }
     }
 }

@@ -62,7 +62,8 @@ namespace Infrastructure.Purchase.Managers
         public ManagerResult<SellStatisticsDto> GetSellStatistics(string shopKeeperId)
         {
             var shop = shopRepo.ReadByUserId(shopKeeperId);
-            var sellData = new List<TwoColumnChartDto<decimal>>();
+            var sellData = new List<ChartNode<string, decimal>>();
+            var discountData = new List<ChartNode<string, decimal>>();
             PersianCalendar pc = new();
             int year = pc.GetYear(DateTime.UtcNow);
             for (int i = 0; i < 12; i++)
@@ -72,11 +73,24 @@ namespace Infrastructure.Purchase.Managers
                 var month = buyRepo.Bucket().Where(x => x.CreatedDate >= start && x.CreatedDate < end && x.ShopId == shop.Id);
                 decimal paid = month.Sum(x => x.FullPrice);
                 decimal discount = month.Sum(x => x.FullPrice - x.AfterDiscount);
-                sellData.Add(new TwoColumnChartDto<decimal> {  Column1= paid, Column2 = discount, Label = Utils.GetPersianMonthName(i + 1) });
+                sellData.Add(new ChartNode<string, decimal> {  Y = paid, X = Utils.GetPersianMonthName(i + 1) });
+                discountData.Add(new ChartNode<string, decimal> {  Y = discount, X = Utils.GetPersianMonthName(i + 1) });
             }
             var result = new SellStatisticsDto
             {
-                Sell = sellData
+                Sell = new List<ColumnChartDto>
+                {
+                    new ColumnChartDto
+                    {
+                        Data = sellData,
+                        Label = "مبلغ فاکتور"
+                    },
+                    new ColumnChartDto
+                    {
+                        Data = discountData,
+                        Label = "مبلغ تخفیف"
+                    }
+                }
             };
             return new ManagerResult<SellStatisticsDto>(result);
         }
