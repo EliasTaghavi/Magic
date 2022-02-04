@@ -50,8 +50,9 @@ const UserHeader = ({children, type}) => {
                     </button>
                     <div className="d-flex align-items-center">
                        <Link to="/user-panel"
-                             className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک
-                          آف</Link>
+                             className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">
+                          {`مجیک آف ${type === 'shop' ? '(پنل فروشگاه)' : '(پنل کاربری)'}`}
+                       </Link>
                     </div>
                  </div>
                  <div className="logoContainer">

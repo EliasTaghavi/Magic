@@ -50,7 +50,7 @@ const Footer = () => {
                <div className="d-flex flex-column align-items-start justify-content-start">
                  {shops?.length > 0 && shops?.map((item) => {
                    return (
-                      <Link to={`/shop-details/${item?.name}/${item?.id}`} className="fs14 text-secondary py-2">{item?.name}</Link>
+                      <Link key={item?.id?.toString()} to={`/shop-details/${item?.name.replace(/\s/gm, '-')}/${item?.id}`} className="fs14 text-secondary py-2">{item?.name}</Link>
                    );
                  })}
                </div>
