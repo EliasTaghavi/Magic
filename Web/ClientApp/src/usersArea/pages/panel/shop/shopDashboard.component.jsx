@@ -6,19 +6,22 @@ import toastOptions from "../../../../components/ToastOptions";
 import ScannedUserDetailsModal from "./components/scannedUserDetails";
 import * as MainStore from "../../../../store/main";
 import {useDispatch} from "react-redux";
+import {getShopDashboardData} from "../../../api/shop";
 
 const ShopDashboard = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	let userId = history?.location?.pathname?.replace('/shop-panel/', '');
+	let userId = history?.location?.pathname?.replace('/shop-panel', '');
 	const [scannedUserDetailsModal, setScannedUserDetailsModal] = useState(false);
 	const [currentPck, setCurrentPck] = useState(null);
 
 	useEffect(() => {
-		if (userId.length > 0) {
+		if (userId?.length > 0) {
 			setScannedUserDetailsModal(true);
-			getUserDetails(userId);
+			let newUserId = userId.replace(/^\//gm, '');
+			getUserDetails(newUserId);
 		}
+		getData();
 	}, []);
 
 	const getUserDetails = (userId) => {
@@ -40,9 +43,19 @@ const ShopDashboard = () => {
 			})
 	};
 
+	const getData = () => {
+		getShopDashboardData()
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+	}
+
 	return (
-		<div>
-			<div className="card cardPrimary px-3">
+		<div className="d-flex flex-column centered">
+			<div className="col-12 card cardPrimary px-3">
 				<div className="card-header bg-transparent">
 
 				</div>

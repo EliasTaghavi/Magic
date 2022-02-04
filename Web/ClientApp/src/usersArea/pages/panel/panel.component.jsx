@@ -1,22 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import UserHeader from './user/components/header/userHeader.component';
-import ShopHeader from '../../../pages/panels/shop/components/header/shopHeader.component';
 
 const Panel = ({children, type}) => {
-  const [open, setOpen] = useState(false);
-  if (type === 'user') {
-    return (
-       <UserHeader open={open} setOpen={(value) => setOpen(value)}>
+   return (
+      <UserHeader type={type}>
          {children}
-       </UserHeader>
-    )
-  }  else {
-    return (
-       <ShopHeader>
-         {children}
-       </ShopHeader>
-    );
-  }
+      </UserHeader>
+   )
 }
 
 export default Panel;
