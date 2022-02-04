@@ -162,6 +162,7 @@ const LoginShop = () => {
     setBtnLoader(true);
     sendShopLoginCode({mobile, code})
        .then((response) => {
+         console.log(response);
          let {result, success} = response;
          if (response?.code) {
            if (response === 401) {
@@ -174,7 +175,7 @@ const LoginShop = () => {
                if (result?.status !== 4) {
                  if (result?.status === 3) {
                    TokenStore.setShopToken(result?.token);
-                   dispatch(UserStore.actions.setUserData({...result?.shop, token: result?.token}));
+                   dispatch(UserStore.actions.setShopData({...result?.shop, token: result?.token}));
                    setBtnLoader(false);
                    history.replace(history?.location?.state?.from ?? '/shop-panel');
                  } else if (result?.status === 6) {
