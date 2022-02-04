@@ -24,7 +24,7 @@ namespace Infrastructure.Purchase.Managers
 
         public BuyManager(IBuyRepo buyRepo,
                           IShopRepo shopRepo,
-                          IUserRepo userRepo, 
+                          IUserRepo userRepo,
                           IPackBuyRepo packBuyRepo,
                           IPackBuyManager packBuyManager)
         {
@@ -44,7 +44,7 @@ namespace Infrastructure.Purchase.Managers
             {
                 var startDate = lastPack.PayDate.Value;
                 var endDate = startDate.AddDays(lastPack.Pack.DayCount);
-                lastPackBenefit = buyRepo.GetTotalDiscount(userId,startDate,endDate);
+                lastPackBenefit = buyRepo.GetTotalDiscount(userId, startDate, endDate);
             }
             var eachShopBuy = buyRepo.GetEachShopBuy(userId);
             var zeroShopBuy = shopRepo.GerShopsName().Except(eachShopBuy.Select(x => x.Label));

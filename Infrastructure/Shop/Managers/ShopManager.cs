@@ -1,5 +1,4 @@
-﻿using Core;
-using Core.Base.Dto;
+﻿using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Enums;

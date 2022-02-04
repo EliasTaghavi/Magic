@@ -1,5 +1,4 @@
-﻿using Core.Base.Dto;
-using Core.Base.Entities;
+﻿using Core.Base.Entities;
 using Core.Purchase.Dto;
 
 namespace Core.Purchase.Managers

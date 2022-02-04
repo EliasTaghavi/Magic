@@ -36,7 +36,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Shop")]
+        [Authorize(Roles = "Shop")]
         public IActionResult GetShopStatistics()
         {
             var shopKeeperId = User.GetUserId();

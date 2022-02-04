@@ -1,5 +1,4 @@
 ﻿using Core.Base.Dto;
-using Core.Purchase;
 using Core.Purchase.Dto;
 using Core.Purchase.Entities;
 using Core.Purchase.Repos;
@@ -51,7 +50,7 @@ namespace Infrastructure.Purchase.Repos
 
             var totalCost = query.Sum(x => x.FullPrice);
             var totalAfterDiscount = query.Sum(x => x.AfterDiscount);
-            
+
             return totalCost - totalAfterDiscount;
         }
     }
