@@ -22,7 +22,7 @@ namespace Infrastructure.Shops.Repos
 
         public List<Core.Shops.Entities.Shop> GetList()
         {
-            var result = GetSet().OrderBy(x => x.Name).Take(5).ToList();
+            var result = GetSet().Include(x => x.Offs.OrderByDescending(x => x.CreatedDate).Take(1)).OrderBy(x => x.Name).Take(5).ToList();
             return result;
         }
 
