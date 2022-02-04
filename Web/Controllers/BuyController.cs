@@ -43,5 +43,14 @@ namespace Web.Controllers
             var response = buyManager.GetShopStatistics(shopKeeperId);
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Shop")]
+        public IActionResult GetSellStatistics()
+        {
+            var shopKeeperId = User.GetUserId();
+            var response = buyManager.GetSellStatistics(shopKeeperId);
+            return Ok(response);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Core.Base.Entities;
+﻿using Core;
+using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.Base.Enums;
 using Core.Identity.Repos;
 using Core.Packs.Managers;
@@ -8,6 +10,7 @@ using Core.Purchase.Entities;
 using Core.Purchase.Managers;
 using Core.Purchase.Repos;
 using Core.Shops.Repos;
+using System.Globalization;
 
 namespace Infrastructure.Purchase.Managers
 {
@@ -56,15 +59,40 @@ namespace Infrastructure.Purchase.Managers
             return new ManagerResult<UserBenefitDto>(result);
         }
 
+        public ManagerResult<SellStatisticsDto> GetSellStatistics(string shopKeeperId)
+        {
+            var shop = shopRepo.ReadByUserId(shopKeeperId);
+            var sellData = new List<LineChartDto<decimal>>();
+            var offData = new List<LineChartDto<decimal>>();
+            PersianCalendar pc = new();
+            int year = pc.GetYear(DateTime.UtcNow);
+            for (int i = 0; i < 12; i++)
+            {
+                DateTime start = new(year, 1 + i, 1, pc);
+                DateTime end = i < 11 ? new DateTime(year, 2 + i, 1, pc) : new DateTime(year + 1, 1, 1, pc);
+                var month = buyRepo.Bucket().Where(x => x.CreatedDate >= start && x.CreatedDate < end && x.ShopId == shop.Id);
+                decimal paid = month.Sum(x => x.FullPrice);
+                decimal discount = month.Sum(x => x.FullPrice - x.AfterDiscount);
+                sellData.Add(new LineChartDto<decimal> { Data = paid, Label = Utils.GetPersianMonthName(i + 1) });
+                offData.Add(new LineChartDto<decimal> { Data = discount, Label = Utils.GetPersianMonthName(i + 1) });
+            }
+            var result = new SellStatisticsDto
+            {
+                Discount = offData,
+                Sell = sellData
+            };
+            return new ManagerResult<SellStatisticsDto>(result);
+        }
+
         public ManagerResult<ShopStatisticsDto> GetShopStatistics(string shopKeeperId)
         {
             var shop = shopRepo.ReadByUserId(shopKeeperId);
             var tenLastNewUser = packBuyRepo.GetTenLastNewUserByShopRef(shop.ReferralCode);
             var tenLastBuyer = buyRepo.GetTenLastBuyer(shop.Id);
-            var rate = packBuyManager.GetRank().Result.Shops.FindIndex(x => x.Name == shop.Name);
+            var rate = packBuyManager.GetRank().Result;
             var result = new ShopStatisticsDto
             {
-                Rate = rate + 1,
+                Rate = rate,
                 TenLastBuyer = tenLastBuyer,
                 TenLastNewUser = tenLastNewUser,
             };

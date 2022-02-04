@@ -1,4 +1,5 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.Purchase.Dto;
 
 namespace Core.Purchase.Managers
@@ -8,5 +9,6 @@ namespace Core.Purchase.Managers
         ManagerResult<bool> Save(SaveBuyDto dto);
         ManagerResult<UserBenefitDto> GetBenefit(string userId);
         ManagerResult<ShopStatisticsDto> GetShopStatistics(string shopKeeperId);
+        ManagerResult<SellStatisticsDto> GetSellStatistics(string shopKeeperId);
     }
 }
