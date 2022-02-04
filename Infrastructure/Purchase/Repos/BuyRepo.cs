@@ -1,5 +1,6 @@
 ﻿using Core.Base.Dto;
 using Core.Purchase;
+using Core.Purchase.Dto;
 using Core.Purchase.Entities;
 using Core.Purchase.Repos;
 using Infrastructure.Base.Repos;
@@ -25,14 +26,13 @@ namespace Infrastructure.Purchase.Repos
             return result;
         }
 
-        public List<KeyValueDto<string, string>> GetTenLastBuyer(string id)
+        public List<LastBuyDto> GetTenLastBuyer(string id)
         {
             var result = GetSet().Where(x => x.ShopId == id)
                                  .Include(x => x.User)
                                  .OrderByDescending(x => x.CreatedDate)
-                                 .GroupBy(x => x.UserId)
                                  .Take(10)
-                                 .Select(x => new KeyValueDto<string, string> { Key = x.Key, Value = $"{x.First().User.Name} {x.First().User.Surname}" })
+                                 .Select(x => new LastBuyDto { Id = x.Id, UserName = $"{x.User.Name} {x.User.Surname}", AfterDiscount = x.AfterDiscount, FullPrice = x.FullPrice })
                                  .ToList();
             return result;
         }

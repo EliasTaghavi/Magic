@@ -110,14 +110,5 @@ namespace Web.Controllers
             var response = packBuyManager.Search(dto);
             return Ok(response.CreateViewModel(x => x.ToViewModel(y => y.ToViewModel())));
         }
-
-        [HttpGet]
-        public IActionResult Test()
-        {
-
-            Log.Warning("fgsdfgsdfg");
-
-            return RedirectPermanent("../../user-panel?code=elias");
-        }
     }
 }

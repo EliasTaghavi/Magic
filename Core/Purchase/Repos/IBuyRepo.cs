@@ -1,5 +1,6 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Repos;
+using Core.Purchase.Dto;
 using Core.Purchase.Entities;
 
 namespace Core.Purchase.Repos
@@ -8,6 +9,6 @@ namespace Core.Purchase.Repos
     {
         decimal GetTotalDiscount(string userId, DateTime? start = null, DateTime? end = null);
         List<LineChartDto<decimal>> GetEachShopBuy(string userId);
-        List<KeyValueDto<string,string>> GetTenLastBuyer(string id);
+        List<LastBuyDto> GetTenLastBuyer(string id);
     }
 }
