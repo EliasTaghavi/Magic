@@ -10,5 +10,6 @@ namespace Core.Shops.Repos
         PagedListDto<Entities.Shop> Search(PageRequestDto<ShopListFilterDto> filterDto);
         List<string> GerShopsName();
         List<Entities.Shop> GetList();
+        Entities.Shop GetWithDetails(string id);
     }
 }

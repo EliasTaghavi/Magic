@@ -86,6 +86,23 @@ namespace Infrastructure.Shops.Managers
             return new ManagerResult<string>(shopName);
         }
 
+        public ManagerResult<ShopDetailsDto> Get(string id)
+        {
+            var shop = shopRepo.GetWithDetails(id);
+            var result = new ShopDetailsDto
+            {
+                Address = shop.Address,
+                CreatedDate = shop.CreatedDate,
+                Id = id,
+                LatestOff = shop.Offs.First().Percentage,
+                Name = shop.Name,
+                Phone = shop.Phone,
+                RefCode = shop.ReferralCode,
+                UserFullName = $"{shop.User.Name} {shop.User.Surname}",
+            };
+            return new ManagerResult<ShopDetailsDto>(result);
+        }
+
         public ManagerResult<List<ShopSimpleDto>> GetList()
         {
             var result = shopRepo.GetList();
