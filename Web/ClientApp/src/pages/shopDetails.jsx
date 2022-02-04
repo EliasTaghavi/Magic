@@ -21,22 +21,22 @@ const ShopDetails = () => {
 			<div ref={container}></div>
 			<div className="container d-flex justify-content-start align-items-start flex-column mt-5 main text-justify">
 				<h2>شناسنامه کسب و کار</h2>
-				<div>
+				<div className="d-flex flex-column align-items-start justify-content-start">
 					<ImageSlider />
-					<div>
-						<p>نام فروشگاه:</p>
+					<div className="mt-5">
+						<p className="fs16">نام فروشگاه:</p>
 						<p>{}</p>
 					</div>
-					<div>
-						<p>شماره تماس:</p>
+					<div className="mt-3">
+						<p className="fs16">شماره تماس:</p>
 						<p></p>
 					</div>
-					<div>
-						<p>آدرس:</p>
+					<div className="mt-3">
+						<p className="fs16">درصد تخفیف در مجیک آف:</p>
 						<p></p>
 					</div>
-					<div>
-						<p>درصد تخفیف در مجیک آف:</p>
+					<div className="mt-3">
+						<p className="fs16">آدرس:</p>
 						<p></p>
 					</div>
 				</div>
@@ -64,14 +64,14 @@ const ShopDetails = () => {
 
 const ImageSlider = () => {
 	return (
-		<div id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel" style={{maxHeight: 350}}>
+		<div id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel">
 			<ol className="carousel-indicators">
 				<li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
 				{/*<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>*/}
 				{/*<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>*/}
 			</ol>
 			<div className="carousel-inner">
-				<div className="carousel-item active" style={{backgroundPosition: 'center'}}>
+				<div className="carousel-item active" style={{maxHeight: 350, backgroundPosition: 'center'}}>
 					<img className="d-block w-100" src={bg} alt="First slide"/>
 				</div>
 				{/*<div className="carousel-item">*/}
