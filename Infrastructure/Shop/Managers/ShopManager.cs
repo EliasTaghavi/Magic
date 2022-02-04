@@ -87,6 +87,12 @@ namespace Infrastructure.Shops.Managers
             return new ManagerResult<string>(shopName);
         }
 
+        public ManagerResult<List<ShopSimpleDto>> GetList()
+        {
+            var result = shopRepo.GetList();
+            return new ManagerResult<List<ShopSimpleDto>>(result.ToSimpleDto());
+        }
+
         public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
         {
             var result = shopRepo.Search(filterDto);

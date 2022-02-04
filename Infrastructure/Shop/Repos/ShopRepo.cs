@@ -20,6 +20,12 @@ namespace Infrastructure.Shops.Repos
             return names;
         }
 
+        public List<Core.Shops.Entities.Shop> GetList()
+        {
+            var result = GetSet().OrderBy(x => x.Name).Take(5).ToList();
+            return result;
+        }
+
         public Core.Shops.Entities.Shop ReadByUserId(string userId)
         {
             var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1)).Include(x => x.Photos).FirstOrDefault();
