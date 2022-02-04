@@ -96,7 +96,8 @@ const ShopDashboard = () => {
 					setChartLoader(2);
 				}
 			})
-			.catch(() => {
+			.catch((e) => {
+				console.log(e);
 				toast.error('خطای سرور', toastOptions);
 				setChartLoader(2);
 			})
@@ -108,7 +109,7 @@ const ShopDashboard = () => {
 			type: 'bar',
 			data: {
 				labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-				datasets: data?.map((item, index) => {
+				datasets: data?.sell?.map((item, index) => {
 					let bg = index === 0 ? '#3692ed55' : '#ED6D3755';
 					let border = index === 0 ? '#3692ed' : '#ED6D37';
 					let point = index === 0 ? '#3692ed' : '#ED6D37';
@@ -152,8 +153,8 @@ const ShopDashboard = () => {
 						ticks: {
 							fontFamily: 'Vazir',
 						},
-						gridLines : {
-							display : false
+						gridLines: {
+							display: false
 						}
 					}],
 					yAxes: [{
@@ -234,10 +235,12 @@ const ShopDashboard = () => {
 											<td>{index + 1}</td>
 											<td>{item?.userName ?? '-----'}</td>
 											<td>{item?.fullPrice ?
-												<span><NumberFormat value={item?.fullPrice} displayType={'text'} thousandSeparator={true} />{'\xa0تومان'}</span>
+												<span><NumberFormat value={item?.fullPrice} displayType={'text'}
+																		  thousandSeparator={true}/>{'\xa0تومان'}</span>
 												: '-----'}</td>
 											<td>{item?.afterDiscount ?
-												<span><NumberFormat value={item?.afterDiscount} displayType={'text'} thousandSeparator={true} />{'\xa0تومان'}</span>
+												<span><NumberFormat value={item?.afterDiscount} displayType={'text'}
+																		  thousandSeparator={true}/>{'\xa0تومان'}</span>
 												: '-----'}</td>
 											<td className="fs18 font-weight-bold textMain">{`%${item?.discount}` ?? '-----'}</td>
 										</tr>
@@ -261,9 +264,9 @@ const ShopDashboard = () => {
 						<p className="card-title fs22 my-2">آمار و اطلاعات خریدها</p>
 					</div>
 					<div className="d-flex flex-column-reverse flex-lg-row align-items-center justify-content-between h-100">
-						{chartLoader === 0 && <div className="flex position-relative px-3 py-4 w-100 mt-4 mt-lg-0" style={{height: 400}}>
+						<div className="flex position-relative px-3 py-4 w-100 mt-4 mt-lg-0" style={{height: 400}}>
 							<canvas className="w-100 h-100" ref={node1}/>
-						</div>}
+						</div>
 						{chartLoader === 2 && <div className="w-100 d-flex centered py-3">
 							<span className="text-danger">داده ای وجود ندارد.</span>
 						</div>}
@@ -273,10 +276,11 @@ const ShopDashboard = () => {
 					</div>
 				</div>
 			</div>
-			{scannedUserDetailsModal && currentPck && <ScannedUserDetailsModal userId={userId ?? null} data={currentPck} onClose={() => {
+			{scannedUserDetailsModal && currentPck &&
+			<ScannedUserDetailsModal userId={userId ?? null} data={currentPck} onClose={() => {
 				setScannedUserDetailsModal(false);
 				history.replace('/shop-panel');
-			}} />}
+			}}/>}
 		</div>
 	);
 }
