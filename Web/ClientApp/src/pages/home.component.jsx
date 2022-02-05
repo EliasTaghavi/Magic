@@ -46,7 +46,6 @@ const Home = () => {
     e.preventDefault();
     let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let newErrors = {};
-    console.log(emailRegex.test(email), description?.length);
     if (!emailRegex.test(email)) {
       newErrors.email = 'ایمیل وارد شده اشتباه است';
       setErrors(newErrors);

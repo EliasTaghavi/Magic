@@ -104,7 +104,6 @@ const UserDashboard = () => {
       setChartLoader(true);
       getDiscountChartData()
          .then((response) => {
-            console.log(78787, response);
             if (response) {
                let {success, result} = response
                if (response === 401) {
@@ -119,7 +118,6 @@ const UserDashboard = () => {
                toast.error('خطای سرور', toastOptions);
                setChartLoader(false);
             }
-            console.log(565656, response);
             // renderDiscountChart();
          })
          .catch((error) => {
