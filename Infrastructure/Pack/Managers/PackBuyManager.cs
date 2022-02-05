@@ -131,9 +131,11 @@ namespace Infrastructure.Packs.Managers
                     shop.Name,
                     refCount.count
                 }).Select(x => new ShopRefCodeCountDto { Count = x.count, Name = x.Name }).ToList();
+            var shops = shopRepo.GetSet().Where(x => !result.Select(y => y.Name).Contains(x.Name)).Select(x => x.Name).ToList();
+            shops.ForEach(x => result.Add(new ShopRefCodeCountDto { Count = 0, Name = x }));
             var xResult = new ShopRankWithMinDto
             {
-                Shops = result,
+                Shops = result.OrderByDescending(x => x.Count).ToList(),
                 Min = settingRepo.GetByName<int>("MinimumRef")
             };
             return new ManagerResult<ShopRankWithMinDto>(xResult);

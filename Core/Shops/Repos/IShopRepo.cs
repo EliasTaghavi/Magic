@@ -8,5 +8,8 @@ namespace Core.Shops.Repos
     {
         Entities.Shop ReadByUserId(string userId);
         PagedListDto<Entities.Shop> Search(PageRequestDto<ShopListFilterDto> filterDto);
+        List<string> GerShopsName();
+        List<Entities.Shop> GetList();
+        Entities.Shop GetWithDetails(string id);
     }
 }

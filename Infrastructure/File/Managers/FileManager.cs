@@ -20,6 +20,12 @@ namespace Infrastructure.File.Managers
             this.fileService = fileService;
         }
 
+        public ManagerResult<string> GetSelfie(string userId)
+        {
+            var result = fileRepo.GetSelfie(userId);
+            return new ManagerResult<string>(result);
+        }
+
         public ManagerResult<bool> UploadIdentities(IdentityFileDto dto)
         {
             if (dto.SelfieDto == null)

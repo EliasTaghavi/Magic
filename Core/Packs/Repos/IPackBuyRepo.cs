@@ -10,5 +10,7 @@ namespace Core.Packs.Repos
         PackBuy GetCurrentByUserId(string userId);
         PagedListDto<PackBuyListDto> Search(PageRequestDto<PackBuyListFilterDto> dto);
         PackBuy HasActivePack(string userId);
+
+        List<KeyValueDto<string, string>> GetTenLastNewUserByShopRef(string referralCode);
     }
 }

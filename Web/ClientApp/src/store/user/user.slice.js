@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
   userData: null,
+  shopData: null,
 }
 
 export const STORE_NAME = 'user';
@@ -12,6 +13,9 @@ const user = createSlice({
   reducers: {
     setUserData: (state, {payload}) => {
       state.userData = payload;
+    },
+    setShopData: (state, {payload}) => {
+      state.shopData = payload;
     },
   },
 });

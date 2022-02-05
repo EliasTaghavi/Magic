@@ -14,9 +14,34 @@ namespace Infrastructure.Shops.Repos
 
         }
 
+        public List<string> GerShopsName()
+        {
+            var names = GetSet().Select(x => x.Name).ToList();
+            return names;
+        }
+
+        public List<Core.Shops.Entities.Shop> GetList()
+        {
+            var result = GetSet().Include(x => x.Offs.OrderByDescending(x => x.CreatedDate).Take(1)).OrderBy(x => x.Name).Take(5).ToList();
+            return result;
+        }
+
+        public Core.Shops.Entities.Shop GetWithDetails(string id)
+        {
+            var result = GetSet().Where(x => x.Id == id)
+                                 .Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1))
+                                 .Include(x => x.User)
+                                 .Include(x => x.Photos)
+                                 .FirstOrDefault();
+            return result;
+        }
+
         public Core.Shops.Entities.Shop ReadByUserId(string userId)
         {
-            var shop = GetSet().Where(x => x.UserId == userId).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1)).Include(x => x.Photos).FirstOrDefault();
+            var shop = GetSet().Where(x => x.UserId == userId)
+                               .Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1))
+                               .Include(x => x.Photos)
+                               .FirstOrDefault();
             return shop;
         }
 
@@ -41,7 +66,11 @@ namespace Infrastructure.Shops.Repos
                 }
             }
             int count = query.Count();
-            var result = query.Include(x => x.User).Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1)).Skip((filterDto.Index - 1) * filterDto.Size).Take(filterDto.Size).ToList();
+            var result = query.Include(x => x.User)
+                              .Include(x => x.Offs.OrderByDescending(y => y.CreatedDate).Take(1))
+                              .Skip((filterDto.Index - 1) * filterDto.Size)
+                              .Take(filterDto.Size)
+                              .ToList();
             return new PagedListDto<Core.Shops.Entities.Shop>
             {
                 Count = count,

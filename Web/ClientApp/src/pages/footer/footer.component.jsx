@@ -1,22 +1,66 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './footer.css';
 import {Link} from "react-router-dom";
 import insta from '../../assets/images/insta.png';
 import tel from '../../assets/images/tel.png';
 import email from '../../assets/images/email.png';
+import {getShopList} from "../../api";
+import {toast} from "react-toastify";
+import toastOptions from "../../components/ToastOptions";
+import Loader from "react-loader-spinner";
 
 const Footer = () => {
+  const [bigLoader, setBigLoader] = useState(0); // 0=false 1=true 2=noData
+  const [shops, setShops] = useState([]);
+
+  useEffect(() => {
+    getShopsFn();
+  }, []);
+
+  const getShopsFn = () => {
+    setBigLoader(1);
+    getShopList()
+       .then((response) => {
+         console.log(response);
+         if (response) {
+           let {success, result} = response;
+           if (success) {
+             setShops(result);
+             setBigLoader(0);
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBigLoader(2);
+         }
+       })
+       .catch((error) => {
+         console.log(error);
+         toast.error('خطای سرور', toastOptions);
+         setBigLoader(2);
+       })
+  };
+
   return (
     <div className="footerMainContainer">
       <div className="container d-flex flex-column align-items-center justify-content-start">
         <div className="w-100 d-flex flex-column flex-md-row align-content-start align-items-md-start justify-content-start justify-content-md-start">
           <div className="parts">
             <p className="fs16 textMain font-weight-bold">فروشگاه‌ها</p>
-            <Link to="" className="fs14 text-secondary py-2">خانه عطر</Link>
-            <Link to="" className="fs14 text-secondary py-2">خشکشویی رضایی</Link>
-            <Link to="" className="fs14 text-secondary py-2">هایپر مارکت پاسارگاد</Link>
-            <Link to="" className="fs14 text-secondary py-2">دونات</Link>
-            <Link to="" className="fs14 text-secondary py-2">فست فود داژو</Link>
+            {bigLoader === 0 && (
+               <div className="d-flex flex-column align-items-start justify-content-start">
+                 {shops?.length > 0 && shops?.map((item) => {
+                   return (
+                      <Link key={item?.id?.toString()} to={`/shop-details/${item?.name.replace(/\s/gm, '-')}/${item?.id}`} className="fs14 text-secondary py-2">{item?.name}</Link>
+                   );
+                 })}
+               </div>
+            )}
+            {bigLoader === 1 && (
+               <Loader type="ThreeDots" color='#ff521d' height={8}/>
+            )}
+            {bigLoader === 2 && (
+               <p className="fs12 text-danger">داده ای یافت نشد</p>
+            )}
           </div>
           <div className="parts mt-4 mt-md-0">
             <p className="fs16 textMain font-weight-bold">با مجیک آف</p>

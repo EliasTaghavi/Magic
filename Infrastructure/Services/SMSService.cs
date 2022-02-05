@@ -30,7 +30,7 @@ namespace Infrastructure.Services
             if (settings.Enable)
             {
                 KavenegarApi api = new(settings.APIKey);
-                api.VerifyLookup(mobile, "100",string.Empty,string.Empty,string.Empty,cause, "offitreject", Kavenegar.Core.Models.Enums.VerifyLookupType.Sms).Wait();
+                api.VerifyLookup(mobile, "100", string.Empty, string.Empty, string.Empty, cause, "offitreject", Kavenegar.Core.Models.Enums.VerifyLookupType.Sms).Wait();
             }
         }
 

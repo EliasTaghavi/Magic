@@ -14,5 +14,7 @@ namespace Core.Shops.Managers
         ManagerResult<bool> Delete(string id);
         ManagerResult<string> FindByRef(string refCode);
         ManagerResult<bool> UpdateOff(UpdateShopOffDto dto);
+        ManagerResult<List<ShopSimpleDto>> GetList();
+        ManagerResult<ShopDetailsDto> Get(string id);
     }
 }

@@ -15,6 +15,20 @@ namespace Core.Shops.Mappers
             };
         }
 
+        public static ShopSimpleDto ToSimpleDto(this Entities.Shop shop)
+        {
+            return new ShopSimpleDto
+            {
+                Id = shop.Id,
+                Name = shop.Name,
+            };
+        }
+
+        public static List<ShopSimpleDto> ToSimpleDto(this List<Entities.Shop> shops)
+        {
+            return shops.Select(x => x.ToSimpleDto()).ToList();
+        }
+
         public static ShopWithUserDto ToDto(this Entities.Shop shop)
         {
             return new ShopWithUserDto

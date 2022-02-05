@@ -83,5 +83,19 @@ namespace Web.Controllers
             var response = shopManager.UpdateOff(dto);
             return Ok(response);
         }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            var response = shopManager.GetList();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public IActionResult Get([FromQuery] string id)
+        {
+            var response = shopManager.Get(id);
+            return Ok(response);
+        }
     }
 }

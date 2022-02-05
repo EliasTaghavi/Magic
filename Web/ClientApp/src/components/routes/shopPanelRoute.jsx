@@ -5,12 +5,13 @@ import ShopDashboard from "../../usersArea/pages/panel/shop/shopDashboard.compon
 
 const ShopPanelRoute = () => {
   return (
-     <Panel type="shop">
-        <Switch>
-           <Route path="/shop-panel/:token" exact={true} component={ShopDashboard}/>
-           {/*<Route path="/panel/users" component={}/>*/}
-        </Switch>
-     </Panel>
+    <Panel type="shop">
+      <Switch>
+        <Route path="/shop-panel" exact={true} component={ShopDashboard}/>
+        <Route path="/shop-panel/:token" component={ShopDashboard}/>
+        {/*<Route path="/panel/users" component={}/>*/}
+      </Switch>
+    </Panel>
   );
 }
 

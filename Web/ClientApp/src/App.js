@@ -11,6 +11,7 @@ import ShopPanelRoute from "./components/routes/shopPanelRoute";
 import AdminAreaRoute from './adminArea/routes/adminAreaRoutes';
 import AboutUs from "./pages/AboutUs";
 import Terms from "./pages/Terms";
+import ShopDetails from "./pages/shopDetails";
 
 export default () => (
    <Layout>
@@ -22,6 +23,7 @@ export default () => (
          <Route path='/admin' component={AdminAreaRoute} />
          <Route path='/about-us' component={AboutUs} />
          <Route path='/terms' component={Terms} />
+         <Route path='/shop-details/:name/:id' component={(props) => <ShopDetails {...props} key={window.location.pathname}/>} />
          {/*<Route path="*" component={NoMatch}/>*/}
       </Switch>
    </Layout>

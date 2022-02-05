@@ -32,10 +32,10 @@ const MenuItem = ({extraClass}) => {
   return (
     <div className={`topPart ${extraClass}`}>
       <Link to="/" className="d-flex centered text-white text-decoration-none fs12 mt-3">
-        خانه
         <span className="iconContainer">
           <FontAwesomeIcon icon={faHome} className="textMain fs10"/>
         </span>
+        <span className="mr-2">خانه</span>
       </Link>
     </div>
   );

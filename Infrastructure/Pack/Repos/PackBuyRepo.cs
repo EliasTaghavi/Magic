@@ -22,6 +22,18 @@ namespace Infrastructure.Packs.Repos
             return lastPackBuy;
         }
 
+        public List<KeyValueDto<string, string>> GetTenLastNewUserByShopRef(string referralCode)
+        {
+            var result = GetSet().Where(x => x.PayStatus == true && x.User.RefCode == referralCode)
+                                 .Include(x => x.User)
+                                 .OrderByDescending(x => x.PayDate)
+                                 .GroupBy(x => x.UserId)
+                                 .Take(10)
+                                 .Select(x => new KeyValueDto<string, string> { Key = x.Key, Value = $"{x.First().User.Name} {x.First().User.Surname}" })
+                                 .ToList();
+            return result;
+        }
+
         public PackBuy HasActivePack(string userId)
         {
             var lastPackBuy = GetCurrentByUserId(userId);

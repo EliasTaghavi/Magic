@@ -1,5 +1,4 @@
-﻿using Core;
-using Core.Base.Dto;
+﻿using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.Identity.Dto;
 using Core.Identity.Enums;
@@ -85,6 +84,29 @@ namespace Infrastructure.Shops.Managers
         {
             var shopName = shopRepo.GetSet().Where(x => x.ReferralCode.ToLower() == refCode.ToLower()).FirstOrDefault()?.Name;
             return new ManagerResult<string>(shopName);
+        }
+
+        public ManagerResult<ShopDetailsDto> Get(string id)
+        {
+            var shop = shopRepo.GetWithDetails(id);
+            var result = new ShopDetailsDto
+            {
+                Address = shop.Address,
+                CreatedDate = shop.CreatedDate,
+                Id = id,
+                LatestOff = shop.Offs.First().Percentage,
+                Name = shop.Name,
+                Phone = shop.Phone,
+                RefCode = shop.ReferralCode,
+                UserFullName = $"{shop.User.Name} {shop.User.Surname}",
+            };
+            return new ManagerResult<ShopDetailsDto>(result);
+        }
+
+        public ManagerResult<List<ShopSimpleDto>> GetList()
+        {
+            var result = shopRepo.GetList();
+            return new ManagerResult<List<ShopSimpleDto>>(result.ToSimpleDto());
         }
 
         public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
