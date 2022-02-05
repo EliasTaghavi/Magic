@@ -8,17 +8,16 @@ import Footer from "./footer/footer.component";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
-
-const defaultFormData = {
-  email: '',
-  description: '',
-}
+import {toast} from "react-toastify";
+import toastOptions from "../components/ToastOptions";
+import Loader from "react-loader-spinner";
 
 const Home = () => {
-  const [errors] = useState(defaultFormData);
+  const [errors, setErrors] = useState({});
   const [focused, setFocused] = useState('');
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
+  const [sendLoader, setSendLoader] = useState(false);
 
   const container = useRef(null);
 
@@ -30,6 +29,7 @@ const Home = () => {
 
   const changeValue = (e) => {
     let target = e.target;
+    delete errors[target?.name];
     switch (target.name) {
       case 'email':
         setEmail(target.value);
@@ -42,8 +42,28 @@ const Home = () => {
     }
   }
 
-  const sendReport = () => {
-    // do nothing
+  const sendReport = (e) => {
+    e.preventDefault();
+    let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    let newErrors = {};
+    console.log(emailRegex.test(email), description?.length);
+    if (!emailRegex.test(email)) {
+      newErrors.email = 'ایمیل وارد شده اشتباه است';
+      setErrors(newErrors);
+    }
+    if (description?.length < 10) {
+      newErrors.description = 'حداقل 10 کاراکتر الزامی است';
+      setErrors(newErrors);
+    }
+    if (emailRegex.test(email) && description.length > 10) {
+      setSendLoader(true);
+      setTimeout(() => {
+        setEmail('');
+        setDescription('');
+        toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
+        setSendLoader(false);
+      }, 2000);
+    }
   };
 
   return (
@@ -111,7 +131,7 @@ const Home = () => {
             {/*<p className="mt-4 fs16 lh26">بهترین راه برای کاهش هزینه ها، گرفتن یک تخفیف خوب هنگام خریدهای دوره ای هست، ما براتون تخفیف گرفتیم</p>*/}
             {/*<img alt="magicOff" src={arrow} className="customArrow d-none d-md-flex" />*/}
             <div className="cardFrameContainer">
-              <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={sendReport}>
+              <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={(e) => sendReport(e)}>
                 <div className="d-flex flex-column w90p align-items-start justify-content-center">
                   <label htmlFor="email" className={`transition fs14 mt-4 mb-0 ${focused === 'email' ? 'textMain' : 'textThird'}`}>
                     ایمیل<span style={{color: 'red'}}>{`\xa0*`}</span>
@@ -119,13 +139,12 @@ const Home = () => {
                   <input
                     id="email"
                     name="email"
-                    type="number"
+                    type="text"
                     autoFocus={false}
                     required={true}
                     className={`form-control bg-white ${errors['email'] && 'is-invalid'}`}
                     value={email}
                     onChange={changeValue}
-                    maxLength={4}
                     placeholder="..."
                     onFocus={() => setFocused('email')}
                     onBlur={() => setFocused('')}
@@ -155,7 +174,8 @@ const Home = () => {
                   }}>{errors['description']}</span>
                 </div>
                 <button type="submit" className="btn submitBtn outline border-0">
-                  ثبت
+                  {!sendLoader && <span>ثبت</span>}
+                  {sendLoader && <Loader type="ThreeDots" color='white' height={8}/>}
                 </button>
               </form>
               {/*<img alt="magicOff" src={tt11} className="cardFrame" />*/}

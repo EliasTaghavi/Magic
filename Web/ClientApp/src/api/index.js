@@ -20,3 +20,24 @@ export const getShopList = () => {
 			}
 		})
 }
+
+export const getShopDetails = (shopId) => {
+	let headers = {
+		'Content-Type': 'application/json',
+	};
+
+	return axios.get(`/api/shop/get?id=${shopId}`,{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}

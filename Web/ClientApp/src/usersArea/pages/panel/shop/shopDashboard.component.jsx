@@ -81,7 +81,6 @@ const ShopDashboard = () => {
 		setChartLoader(1);
 		getChartData()
 			.then((response) => {
-				console.log(response);
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
@@ -97,15 +96,13 @@ const ShopDashboard = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(e);
 				toast.error('خطای سرور', toastOptions);
 				setChartLoader(2);
 			})
 	}
 
 	const renderChart = (data) => {
-		console.log(data);
-		new Chart(node1, {
+		new Chart(node1?.current, {
 			type: 'bar',
 			data: {
 				labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
@@ -131,19 +128,19 @@ const ShopDashboard = () => {
 					enabled: true,
 					mode: 'x',
 					intersect: false,
-					fontFamily: "arial",
-					titleFontFamily: 'Vazir',
-					bodyFontFamily: 'Vazir',
+					fontFamily: "IranSans",
+					titleFontFamily: 'IranSans',
+					bodyFontFamily: 'IranSans',
 					callbacks: {
 						label: (tooltipItems, data) => {
-							return data.datasets[tooltipItems.datasetIndex].label + '\xa0:\xa0' + tooltipItems.value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ریال ';
+							return data.datasets[tooltipItems.datasetIndex].label + '\xa0:\xa0' + tooltipItems.value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' تومان ';
 						}
 					}
 				},
 				legend: {
 					position: 'bottom',
 					labels: {
-						fontFamily: 'Vazir'
+						fontFamily: 'IranSans'
 					}
 				},
 				scales: {
@@ -151,7 +148,7 @@ const ShopDashboard = () => {
 						type: 'category',
 						labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
 						ticks: {
-							fontFamily: 'Vazir',
+							fontFamily: 'IranSans',
 						},
 						gridLines: {
 							display: false
@@ -164,9 +161,9 @@ const ShopDashboard = () => {
 						ticks: {
 							min: 0,
 							callback: (value, index, values) => {
-								return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ریال ';
+								return value.toLocaleString('fa-IR').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 							},
-							fontFamily: 'Vazir'
+							fontFamily: 'IranSans'
 						}
 					}],
 				}
@@ -175,7 +172,7 @@ const ShopDashboard = () => {
 	};
 
 	return (
-		<div className="d-flex flex-column centered">
+		<div className="d-flex flex-column centered flex">
 			<div className="col-12 d-flex flex-column flex-md-row align-items-start justify-content-start px-0">
 				<div className="col-12 col-md-5 pl-0 pl-md-1 pr-0 mt-2">
 					<div className="w-100 card cardPrimary pb-2" style={{height: 450}}>

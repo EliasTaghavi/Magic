@@ -40,7 +40,7 @@ const UserHeader = ({children, type}) => {
      <div className="w-100">
         {isLg && <div className="d-none d-md-flex">
            <MdDrawer token={token} open={open} setOpen={setOpen} type={type}/>
-           <div className="flex">
+           <div className="flex" style={{overflowX: 'auto'}}>
               <div className="userHeaderMainNav shadow1 sticky-top" style={{height: 63}}>
                  <div className="d-flex align-items-center justify-content-start h-100">
                     <button type="button"
@@ -49,9 +49,9 @@ const UserHeader = ({children, type}) => {
                        <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
                     </button>
                     <div className="d-flex align-items-center">
-                       <Link to="/user-panel"
+                       <Link to={type === 'shop' ? 'shop-panel' : '/user-panel'}
                              className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">
-                          {`مجیک آف ${type === 'shop' ? '(پنل فروشگاه)' : '(پنل کاربری)'}`}
+                          مجیک آف
                        </Link>
                     </div>
                  </div>
@@ -80,9 +80,10 @@ const UserHeader = ({children, type}) => {
                        <FontAwesomeIcon icon={faBars} style={{fontSize: 22}}/>
                     </button>
                     <div className="d-flex align-items-center">
-                       <Link to="/user-panel"
-                             className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">مجیک
-                          آف</Link>
+                       <Link to={type === 'shop' ? 'shop-panel' : '/user-panel'}
+                             className="text-secondary fontSize4 pr-4 text-decoration-none fs18 noWrapText">
+                          مجیک آف
+                       </Link>
                     </div>
                  </div>
                  <div className="logoContainer">
