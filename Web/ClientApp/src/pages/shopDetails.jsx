@@ -1,13 +1,20 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Header from "./header/header.component";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import Footer from "./footer/footer.component";
 import bg from '../assets/images/1.jpg';
+import {getShopDetails} from "../api/index";
+import {toast} from "react-toastify";
+import toastOptions from "../components/ToastOptions";
+import Loader from "react-loader-spinner";
 
 const ShopDetails = () => {
 	const container = useRef(null);
+	const history = useHistory();
+	const [bigLoader, setBigLoader] = useState(0); //0=false 1=true 2=nodata
+	const [shopDetails, setShopDetails] = useState(null);
 
 	useEffect(() => {
 		if (container?.current) {
@@ -15,30 +22,73 @@ const ShopDetails = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		getShopDetailsFn();
+	}, []);
+
+	const getShopDetailsFn = () => {
+		setBigLoader(1);
+		let shopId = history?.location?.pathname?.split('/')[3];
+		console.log(shopId);
+		getShopDetails(shopId)
+			.then((response) => {
+				console.log(response);
+				if (response) {
+					let {success, result} = response
+					if (response === 401) {
+						// do nothing
+					} else if (success) {
+						setShopDetails(result);
+						setBigLoader(0);
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setBigLoader(2);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+				toast.error('خطای سرور', toastOptions);
+				setBigLoader(2);
+			})
+	}
+
 	return (
 		<div className="homeMainContainer">
 			<Header />
 			<div ref={container}></div>
-			<div className="container d-flex justify-content-start align-items-start flex-column mt-5 main text-justify">
+			<div className="container d-flex flex-column justify-content-start align-items-start mt-5 main text-justify">
 				<h2>شناسنامه کسب و کار</h2>
-				<div className="d-flex flex-column align-items-start justify-content-start">
-					<ImageSlider />
-					<div className="mt-5">
-						<p className="fs16">نام فروشگاه:</p>
-						<p>{}</p>
-					</div>
-					<div className="mt-3">
-						<p className="fs16">شماره تماس:</p>
-						<p></p>
-					</div>
-					<div className="mt-3">
-						<p className="fs16">درصد تخفیف در مجیک آف:</p>
-						<p></p>
-					</div>
-					<div className="mt-3">
-						<p className="fs16">آدرس:</p>
-						<p></p>
-					</div>
+				<div className="w-100 d-flex centered" style={{minHeight: 500}}>
+					{bigLoader === 0 && <div className="w-100 d-flex flex-column align-items-start justify-content-start">
+						<ImageSlider/>
+						<div className="d-flex align-items-center justify-content-start mt-5">
+							<p className="fs16" style={{width: 180}}>نام فروشگاه:</p>
+							<p className="fs18 font-weight-bold">{shopDetails?.name}</p>
+						</div>
+						<div className="d-flex align-items-center justify-content-start mt-3">
+							<p className="fs16" style={{width: 180}}>شماره تماس:</p>
+							<p className="fs18 font-weight-bold">{shopDetails?.phone}</p>
+						</div>
+						<div className="d-flex align-items-center justify-content-start mt-3">
+							<p className="fs16" style={{width: 180}}>درصد تخفیف:</p>
+							<p className="fs18 font-weight-bold textMain">%{shopDetails?.latestOff}</p>
+						</div>
+						<div className="d-flex align-items-center justify-content-start mt-3">
+							<p className="fs16" style={{width: 180}}>آدرس:</p>
+							<p className="fs18 font-weight-bold">{shopDetails?.address}</p>
+						</div>
+					</div>}
+					{bigLoader === 1 && (
+						<div className="w-100 d-flex centered py-3">
+							<Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+						</div>
+					)}
+					{bigLoader === 2 && (
+						<div className="w-100 d-flex centered py-3">
+							<span className="text-danger">داده ای وجود ندارد.</span>
+						</div>
+					)}
 				</div>
 			</div>
 			<div className="container-fluid fifthPart position-relative cpt-5 pb-3">
@@ -64,7 +114,7 @@ const ShopDetails = () => {
 
 const ImageSlider = () => {
 	return (
-		<div id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel">
+		<div id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
 			<ol className="carousel-indicators">
 				<li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
 				{/*<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>*/}

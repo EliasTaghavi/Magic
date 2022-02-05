@@ -7,15 +7,16 @@ import EditUserProfileModal from "./components/editUserProfileModal";
 const UserProfile = () => {
   const [editUserProfile, setEditUserProfile] = useState(false);
   const userData = useShallowPickerSelector('user', ['userData']);
+  console.log(userData);
   return (
     <div className="d-flex flex-column centered w-100">
       <div className="card cardPrimary px-3 w-100">
         <div className="card-header bg-transparent d-flex align-items-center justify-content-between">
           <p className="card-title fs22 my-2">حساب کاربری</p>
-          <button type="button" className="btn btn-outline-secondary fs14" onClick={() => setEditUserProfile(true)}>
-            <span className="d-none d-md-flex">ویرایش حساب کاربری</span>
-            <span className="d-flex d-md-none">ویرایش</span>
-          </button>
+          {/*<button type="button" className="btn btn-outline-secondary fs14" onClick={() => setEditUserProfile(true)}>*/}
+          {/*  <span className="d-none d-md-flex">ویرایش حساب کاربری</span>*/}
+          {/*  <span className="d-flex d-md-none">ویرایش</span>*/}
+          {/*</button>*/}
         </div>
         <div className="card-body w-100 d-flex flex-column flex-md-row align-items-center align-items-md-start justify-content-start py-5 px-3">
           <div className="userProfileImage">
