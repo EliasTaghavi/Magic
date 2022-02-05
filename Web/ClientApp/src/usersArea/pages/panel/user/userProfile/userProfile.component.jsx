@@ -3,6 +3,7 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
 import EditUserProfileModal from "./components/editUserProfileModal";
+import {imagePreUrl} from "../../../../api/imagePreUrl";
 
 const UserProfile = () => {
   const [editUserProfile, setEditUserProfile] = useState(false);
@@ -20,7 +21,7 @@ const UserProfile = () => {
         </div>
         <div className="card-body w-100 d-flex flex-column flex-md-row align-items-center align-items-md-start justify-content-start py-5 px-3">
           <div className="userProfileImage">
-            {userData?.selfieURL && <img alt="magicoff.ir" src={userData?.selfieURL} className="userProfileImage"/>}
+            {userData?.selfieURL && <img alt="magicoff.ir" src={imagePreUrl(userData?.selfieURL)} className="userImage"/>}
             {!userData?.selfieURL && <FontAwesomeIcon icon={faUser} className="userIcon textGray"/>}
           </div>
           <div className="d-flex flex-column align-items-start justify-content-start mr-4 mt-5 mt-md-3">
