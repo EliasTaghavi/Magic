@@ -1,4 +1,5 @@
-﻿using Core.Identity.Managers;
+﻿using Core.File.Managers;
+using Core.Identity.Managers;
 using Core.Packs.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +14,13 @@ namespace Web.Controllers
     {
         private readonly ISessionManager SessionManager;
         private readonly IPackManager packManager;
+        private readonly IFileManager fileManager;
 
-        public SessionController(ISessionManager sessionManager, IPackManager packManager)
+        public SessionController(ISessionManager sessionManager, IPackManager packManager, IFileManager fileManager)
         {
             SessionManager = sessionManager;
             this.packManager = packManager;
+            this.fileManager = fileManager;
         }
 
         [HttpPost]
@@ -34,7 +37,8 @@ namespace Web.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.CreateByUP(model.ToDto(ip));
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(false)));
+            var selfieUrl = fileManager.GetSelfie(response.Result.UserId);
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(false,selfieUrl.Result)));
         }
 
         [Authorize]
@@ -60,7 +64,8 @@ namespace Web.Controllers
 
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
             var responsePack = packManager.GetCurrent(response.Result.UserId);
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success)));
+            var selfieUrl = fileManager.GetSelfie(response.Result.UserId);
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success,selfieUrl.Result)));
         }
     }
 }

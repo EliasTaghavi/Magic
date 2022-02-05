@@ -26,7 +26,7 @@ namespace Web.Mappers
             };
         }
 
-        public static VerifiedUserViewModel ToVerifiedUserViewModel(this AccessToken token, bool hasActivePack)
+        public static VerifiedUserViewModel ToVerifiedUserViewModel(this AccessToken token, bool hasActivePack, string selfieUrl)
         {
             if (token == null)
             {
@@ -40,7 +40,7 @@ namespace Web.Mappers
                 FirstName = token.User.Name,
                 LastName = token.User.Surname,
                 Mobile = token.User.Mobile,
-                SelfieURL = string.Empty,
+                SelfieURL = selfieUrl,
                 Token = token.JWT,
                 HasActivePack = hasActivePack
             };
