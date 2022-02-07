@@ -70,6 +70,11 @@ const LoginUser = () => {
     }
   }, []);
 
+  useReadOTP((smsCode) => {
+    setCode(smsCode.toString());
+    handleValidate();
+  });
+
   const focusedFn = (e) => {
     let target = e.target;
     setFocused(target.name);
@@ -406,10 +411,6 @@ const LoginUser = () => {
          setReferralCodeLoader(false);
        })
   };
-
-  useReadOTP((data) => {
-    console.log(1212121, data);
-  });
 
   return (
     <div className={`loginContainer ${step === 2 ? 'cpy4' : step === 3 ? 'pt-3 py-md-0 pb-5' : ''}`}>
