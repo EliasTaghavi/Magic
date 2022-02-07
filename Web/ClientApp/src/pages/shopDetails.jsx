@@ -29,10 +29,8 @@ const ShopDetails = () => {
 	const getShopDetailsFn = () => {
 		setBigLoader(1);
 		let shopId = history?.location?.pathname?.split('/')[3];
-		console.log(shopId);
 		getShopDetails(shopId)
 			.then((response) => {
-				console.log(response);
 				if (response) {
 					let {success, result} = response
 					if (response === 401) {
@@ -47,7 +45,6 @@ const ShopDetails = () => {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
 				toast.error('خطای سرور', toastOptions);
 				setBigLoader(2);
 			})

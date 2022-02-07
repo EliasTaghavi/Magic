@@ -8,7 +8,6 @@ import {imagePreUrl} from "../../../../api/imagePreUrl";
 const UserProfile = () => {
   const [editUserProfile, setEditUserProfile] = useState(false);
   const userData = useShallowPickerSelector('user', ['userData']);
-  console.log(userData);
   return (
     <div className="d-flex flex-column centered w-100">
       <div className="card cardPrimary px-3 w-100">
