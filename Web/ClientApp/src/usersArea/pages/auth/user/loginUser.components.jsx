@@ -450,7 +450,6 @@ const LoginUser = () => {
                 id="code"
                 name="code"
                 type="number"
-                autoComplete="one-time-code"
                 autoFocus={true}
                 required={true}
                 className={`form-control input ${errors['code'] && 'is-invalid'}`}
