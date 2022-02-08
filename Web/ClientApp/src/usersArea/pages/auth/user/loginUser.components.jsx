@@ -22,7 +22,6 @@ import RenderSelectMediaModal from "./components/renderSelectMediaModal";
 import RenderCamera from "./components/renderCamera";
 import * as MainStore from "../../../../store/main";
 import moment from 'moment-jalaali';
-import { useReadOTP } from "react-read-otp";
 
 let interval;
 let timer;
@@ -69,12 +68,6 @@ const LoginUser = () => {
       clearTimeout(timer);
     }
   }, []);
-
-  useReadOTP((smsCode) => {
-    console.log(smsCode);
-    setCode(smsCode.toString());
-    handleValidate();
-  });
 
   const focusedFn = (e) => {
     let target = e.target;
