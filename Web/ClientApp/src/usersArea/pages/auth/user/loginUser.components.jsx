@@ -71,6 +71,7 @@ const LoginUser = () => {
   }, []);
 
   useReadOTP((smsCode) => {
+    console.log(smsCode);
     setCode(smsCode.toString());
     handleValidate();
   });
