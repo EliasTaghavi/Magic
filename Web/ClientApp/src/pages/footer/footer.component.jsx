@@ -21,7 +21,6 @@ const Footer = () => {
     setBigLoader(1);
     getShopList()
        .then((response) => {
-         console.log(response);
          if (response) {
            let {success, result} = response;
            if (success) {
@@ -34,7 +33,6 @@ const Footer = () => {
          }
        })
        .catch((error) => {
-         console.log(error);
          toast.error('خطای سرور', toastOptions);
          setBigLoader(2);
        })

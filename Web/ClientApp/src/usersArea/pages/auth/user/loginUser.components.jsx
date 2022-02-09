@@ -22,7 +22,6 @@ import RenderSelectMediaModal from "./components/renderSelectMediaModal";
 import RenderCamera from "./components/renderCamera";
 import * as MainStore from "../../../../store/main";
 import moment from 'moment-jalaali';
-import { useReadOTP } from "react-read-otp";
 
 let interval;
 let timer;
@@ -407,10 +406,6 @@ const LoginUser = () => {
        })
   };
 
-  useReadOTP((data) => {
-    console.log(1212121, data);
-  });
-
   return (
     <div className={`loginContainer ${step === 2 ? 'cpy4' : step === 3 ? 'pt-3 py-md-0 pb-5' : ''}`}>
       <FadeComponent className="d-flex flex-column centered w-100">
@@ -448,7 +443,6 @@ const LoginUser = () => {
                 id="code"
                 name="code"
                 type="number"
-                autoComplete="one-time-code"
                 autoFocus={true}
                 required={true}
                 className={`form-control input ${errors['code'] && 'is-invalid'}`}

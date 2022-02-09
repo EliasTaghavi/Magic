@@ -162,7 +162,6 @@ const LoginShop = () => {
     setBtnLoader(true);
     sendShopLoginCode({mobile, code})
        .then((response) => {
-         console.log(response);
          let {result, success} = response;
          if (response?.code) {
            if (response === 401) {
