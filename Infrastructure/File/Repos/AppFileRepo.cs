@@ -20,7 +20,8 @@ namespace Infrastructure.File.Repos
 
         public string GetSelfie(string userId)
         {
-            var selfie = GetSet().Where(x => x.UserId == userId && x.Type == FileType.Selfie).FirstOrDefault();
+            var selfie = GetSet().Where(x => x.UserId == userId && x.Type == FileType.Selfie)
+                                 .FirstOrDefault();
             return selfie?.FullName;
         }
     }
