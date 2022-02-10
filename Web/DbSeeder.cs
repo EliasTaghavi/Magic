@@ -84,8 +84,8 @@ namespace Web
                 PasswordHash = passShahab.PasswordHash,
                 PasswordSalt = passShahab.PasswordSalt,
             };
-            roles.ForEach(x => user.Roles.Add(x));
-            dbContext.Users.Add(user);
+            roles.ForEach(x => userShahab.Roles.Add(x));
+            dbContext.Users.Add(userShahab);
 
             dbContext.SaveChanges();
         }
