@@ -73,8 +73,8 @@ namespace Infrastructure.Purchase.Managers
                 var month = buyRepo.Bucket().Where(x => x.CreatedDate >= start && x.CreatedDate < end && x.ShopId == shop.Id);
                 decimal paid = month.Sum(x => x.FullPrice);
                 decimal discount = month.Sum(x => x.FullPrice - x.AfterDiscount);
-                sellData.Add(new ChartNode<string, decimal> {  Y = paid, X = Utils.GetPersianMonthName(i + 1) });
-                discountData.Add(new ChartNode<string, decimal> {  Y = discount, X = Utils.GetPersianMonthName(i + 1) });
+                sellData.Add(new ChartNode<string, decimal> { Y = paid, X = Utils.GetPersianMonthName(i + 1) });
+                discountData.Add(new ChartNode<string, decimal> { Y = discount, X = Utils.GetPersianMonthName(i + 1) });
             }
             var result = new SellStatisticsDto
             {
