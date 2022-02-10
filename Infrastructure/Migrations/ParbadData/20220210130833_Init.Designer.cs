@@ -12,14 +12,14 @@ using Parbad.Storage.EntityFrameworkCore.Context;
 namespace Infrastructure.Migrations.ParbadData
 {
     [DbContext(typeof(ParbadDataContext))]
-    [Migration("20220128103034_Paymnet")]
-    partial class Paymnet
+    [Migration("20220210130833_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
