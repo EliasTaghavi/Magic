@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System.Globalization;
 using System.IO;
 using Web.Middleware;
 using Web.Services;
@@ -28,6 +29,12 @@ namespace Web
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, OffDbContext dbContext)
         {
             DbSeeder.AdminSeeder(dbContext, Configuration);
+
+            var cultureInfo = new CultureInfo("fa-IR");
+            var uiCultureInfo = new CultureInfo("fa-IR");
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = uiCultureInfo;
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
