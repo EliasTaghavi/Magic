@@ -31,7 +31,7 @@ namespace Web
             DbSeeder.AdminSeeder(dbContext, Configuration);
 
             var cultureInfo = new CultureInfo("fa-IR");
-            var uiCultureInfo = new CultureInfo("fa-IR");
+            var uiCultureInfo = new CultureInfo("en-US");
 
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = uiCultureInfo;
