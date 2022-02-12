@@ -395,6 +395,11 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
 }
 
+.customCheckBox {
+  width: 16px !important;
+  height: 16px !important;
+}
+
 .css-1pahdxg-control {
   border-color: #ff521d !important;
   box-shadow: 0 0 0 1px #ff521dcc !important;

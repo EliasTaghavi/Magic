@@ -528,6 +528,14 @@ tr td:last-child {
     padding-left: 0;
 }
 
+.jobPartOpened {
+    height: 170px !important;
+}
+
+.jobPartClosed {
+    height: 0 !important;
+}
+
 @media screen and (min-width: 350px) {
     .cpy-12 {
         padding-top: 7rem;
