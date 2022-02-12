@@ -59,6 +59,7 @@ const LoginUser = () => {
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
   const [selectMediaModal, setSelectMediaModal] = useState('');
   const [camera, setCamera] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -258,6 +259,7 @@ const LoginUser = () => {
         address,
         token,
         referralCode,
+        isStudent,
       }
       SignupUserValidation(data)
          .then((response) => {
@@ -381,29 +383,31 @@ const LoginUser = () => {
   };
 
   const checkReferralCodeFn = () => {
-    setReferralCodeLoader(true);
-    checkReferralCode({code: referralCode})
-       .then((response) => {
-         let {success, result} = response;
-         if (response) {
-           if (response === 401) {
-             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
-           } else if (success) {
-             setResultData(result);
-             setReferralCodeLoader(false);
+    if (referralCode.length > 0) {
+      setReferralCodeLoader(true);
+      checkReferralCode({code: referralCode})
+         .then((response) => {
+           let {success, result} = response;
+           if (response) {
+             if (response === 401) {
+               dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
+             } else if (success) {
+               setResultData(result);
+               setReferralCodeLoader(false);
+             } else {
+               setResultData('noShop');
+               setReferralCodeLoader(false);
+             }
            } else {
-             setResultData('noShop');
+             toast.error('خطای سرور', toastOptions);
              setReferralCodeLoader(false);
            }
-         } else {
+         })
+         .catch((e) => {
            toast.error('خطای سرور', toastOptions);
            setReferralCodeLoader(false);
-         }
-       })
-       .catch((e) => {
-         toast.error('خطای سرور', toastOptions);
-         setReferralCodeLoader(false);
-       })
+         })
+    }
   };
 
   return (
@@ -558,20 +562,30 @@ const LoginUser = () => {
                 </button>
               </div>}
               </div>
-              <div className="d-flex flex-column align-items-start justify-content-center w-100 mt-4">
+              <div className="mt-5 cursor d-flex align-items-center mb-4">
+                <input id="isStudent" type="checkbox" className="cursor customCheckBox" checked={isStudent} value={isStudent} onChange={(e) => {
+                  setIsStudent(!isStudent);
+                }} />
+                <label htmlFor="isStudent" className="pr-2 mb-0 cursor fs14 textThird">
+                  دانشجو هستم
+                </label>
+              </div>
+              <div className={`d-flex flex-column align-items-start justify-content-start w-100 overflow-hidden transition ${isStudent ? 'jobPartOpened' : 'jobPartClosed'}`}>
                 <label htmlFor="image" className="transition fs14 mb-0 textThird">
-                  شغل (اختیاری)
+                  تصویر کارت دانشجویی<span style={{color: 'red'}}>{`\xa0*`}</span>
                 </label>
                 <div id="image" className="w-100 d-flex align-items-center justify-content-center rounded p-0 mt-2">
-
-                  <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => setSelectMediaModal('image')}>
+                  <button type="button" className="w-100 btn loginUpload outline mt-2"
+                          onClick={() => setSelectMediaModal('image')}>
                     انتخاب
                   </button>
-                  <input type="file" id="getImage" accept="image/jpg" className="form-control d-none" onChange={(e) => sendImage(e, 'image')}/>
+                  <input type="file" id="getImage" accept="image/jpg" className="form-control d-none"
+                         onChange={(e) => sendImage(e, 'image')}/>
                 </div>
                 <span className="textThird fs14 mt-2 mr-2">فقط پرونده ها با فرمت jpg را بارگذاری نمایید.</span>
                 {errors['image'] && <span className="mt-2 mr-2 text-danger">{errors['image']}</span>}
-                {imagePreviewUrl && <div className="w-100 d-flex flex-row align-items-start justify-content-start position-relative mt-3">
+                {imagePreviewUrl &&
+                <div className="w-100 d-flex flex-row align-items-start justify-content-start position-relative mt-3">
                   <img alt="ezsaze" src={imagePreviewUrl} className="loginImage"/>
                   <button type="button" className="removeImageBtnUserLogin" onClick={() => removeImage('image')}>
                     <FontAwesomeIcon icon={faTimes} color="red"/>
