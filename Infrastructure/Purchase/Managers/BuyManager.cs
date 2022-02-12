@@ -114,7 +114,7 @@ namespace Infrastructure.Purchase.Managers
         {
             var shop = shopRepo.ReadByUserId(dto.ShopKeeperId);
             decimal discount = shop.Offs?.FirstOrDefault()?.Percentage ?? 0;
-            var shopper = userRepo.ReadByQR(dto.ShopperQR);
+            var shopper = userRepo.ReadByQR(dto.ShopperQR.Replace("/",""));
             decimal afterDiscount = dto.OrderAmount - (dto.OrderAmount * discount / 100);
 
             var buy = new Buy
