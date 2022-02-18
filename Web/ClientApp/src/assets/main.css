@@ -260,7 +260,7 @@
     width: 22px;
     height: 22px;
     top: -5px;
-    right: -5px;
+    right: 0;
     z-index: 999;
 }
 
@@ -417,6 +417,10 @@
     border-radius: 10px;
 }
 
+iframe {
+    border: none !important;
+}
+
 .bgImage {
     width: 100%;
     min-height: 200px;
@@ -529,11 +533,11 @@ tr td:last-child {
 }
 
 .jobPartOpened {
-    height: 170px !important;
+    max-height: 1000px !important;
 }
 
 .jobPartClosed {
-    height: 0 !important;
+    max-height: 0 !important;
 }
 
 @media screen and (min-width: 350px) {

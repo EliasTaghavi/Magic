@@ -48,7 +48,7 @@ const ShopDashboard = () => {
 					toast.error('خطای سرور', toastOptions);
 				}
 			})
-			.catch((error) => {
+			.catch(() => {
 				toast.error('خطای سرور', toastOptions);
 			})
 	};
@@ -71,7 +71,7 @@ const ShopDashboard = () => {
 					setBigLoader(false);
 				}
 			})
-			.catch(() => {
+			.catch((e) => {
 				toast.error('خطای سرور', toastOptions);
 				setBigLoader(false);
 			})
