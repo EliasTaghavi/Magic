@@ -14,7 +14,6 @@ namespace Infrastructure.Data
                 file.HasKey(x => x.Id);
                 file.Ignore(x => x.FullName);
                 file.Ignore(x => x.ObjectState);
-                file.HasOne(x => x.User).WithOne().OnDelete(DeleteBehavior.Cascade);
             });
         }
 

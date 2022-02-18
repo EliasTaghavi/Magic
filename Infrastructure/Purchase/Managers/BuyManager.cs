@@ -40,6 +40,10 @@ namespace Infrastructure.Purchase.Managers
             var totalDiscount = buyRepo.GetTotalDiscount(userId);
             decimal lastPackBenefit = 0;
             var lastPack = packBuyRepo.GetCurrentByUserId(userId);
+            if (lastPack == null)
+            {
+                return new ManagerResult<UserBenefitDto>(null, false);
+            }
             if (lastPack.PayStatus.Value)
             {
                 var startDate = lastPack.PayDate.Value;

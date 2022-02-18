@@ -7,6 +7,16 @@ namespace Infrastructure.Services
 {
     public class FileService : IFileService
     {
+        public string Save(InputFileDto item)
+        {
+            string fileName = Guid.NewGuid().ToString();
+            using (FileStream idFileStream = new($"ids/{fileName}.{item.Extension}", FileMode.Create))
+            {
+                item.Stream.CopyTo(idFileStream);
+            }
+            return fileName;
+        }
+
         public string SaveIdentity(InputFileDto inputFileDto)
         {
             string fileName = Guid.NewGuid().ToString();

@@ -1,4 +1,5 @@
-﻿using Core.Base.Entities;
+﻿using Core.Base.Dto;
+using Core.Base.Entities;
 using Core.Base.Enums;
 using Core.File.Dto;
 using Core.File.Entities;
@@ -20,10 +21,44 @@ namespace Infrastructure.File.Managers
             this.fileService = fileService;
         }
 
+        public ManagerResult<bool> AddShopPhoto(InputFileDto item, string shopId, FileType fileType)
+        {
+            var fileName = fileService.Save(item);
+            var file = new AppFile
+            {
+                Id = fileName,
+                Enable = true,
+                FileExtension = item.Extension,
+                ObjectState = ObjectState.Added,
+                Type = fileType,
+                RefId = shopId,
+            };
+            fileRepo.Create(file);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> Delete(string photoId)
+        {
+            var result = fileRepo.Delete(photoId);
+            return new ManagerResult<bool>(true);
+        }
+
         public ManagerResult<string> GetSelfie(string userId)
         {
             var result = fileRepo.GetSelfie(userId);
             return new ManagerResult<string>(result);
+        }
+
+        public ManagerResult<List<string>> GetShopPhotos(string id)
+        {
+            var idPhoto = fileRepo.GetSet().Where(x => x.RefId == id && x.Type == FileType.ShopId).FirstOrDefault()?.FullName;
+            var others = fileRepo.GetSet().Where(x => x.RefId == id && x.Type == FileType.Shop)?.Select(x => x.FullName).ToList();
+            var result = new List<string>()
+            {
+                idPhoto,
+            };
+            result.AddRange(others);
+            return new ManagerResult<List<string>>(result);
         }
 
         public ManagerResult<bool> UploadIdentities(IdentityFileDto dto)
@@ -45,7 +80,7 @@ namespace Infrastructure.File.Managers
                 FileExtension = dto.SelfieDto.Extension,
                 ObjectState = ObjectState.Added,
                 Type = FileType.Selfie,
-                UserId = dto.UserId,
+                RefId = dto.UserId,
             };
             fileRepo.Create(SelfieFile);
 
@@ -61,7 +96,7 @@ namespace Infrastructure.File.Managers
                     FileExtension = dto.IdentityDto.Extension,
                     ObjectState = ObjectState.Added,
                     Type = FileType.Identity,
-                    UserId = dto.UserId,
+                    RefId = dto.UserId,
                 };
                 fileRepo.Create(idFile);
             }

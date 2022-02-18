@@ -4,7 +4,7 @@
     {
         Selfie = 1,
         Identity = 2,
-        ShopLogo = 3,
+        ShopId = 3,
         Shop = 4,
         UserProfile = 5,
     }
