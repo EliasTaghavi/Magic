@@ -65,6 +65,24 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    const script1 = document.createElement('script');
+
+    script.src = "https://www.aparat.com/embed/PkI5d?data[rnddiv]=62321399343&data[responsive]=yes";
+    script1.src = "https://www.aparat.com/embed/EDY07?data[rnddiv]=57822539951&data[responsive]=yes";
+    script.async = true;
+    script1.async = true;
+
+    document.body.appendChild(script);
+    document.body.appendChild(script1);
+
+    return () => {
+      document.body.removeChild(script);
+      document.body.removeChild(script1);
+    }
+  }, []);
+
   return (
     <div className="homeMainContainer">
       <Header />
@@ -94,7 +112,8 @@ const Home = () => {
             {/*<p className="mt-4 fs16 lh26">شما به فروشگاه ها امتیاز بدید، ما بر اساس امتیازات و رضایت شما، فروشگاه ها را رتبه بندی و به سیستم اضافه می کنیم.</p>*/}
             {/*<img alt="magicOff" src={arrow} className="customArrow d-none d-md-flex" />*/}
             <div className="cardFrameContainer">
-              <img alt="magicOff" src={tt} className="cardFrame" />
+              {/*<img alt="magicOff" src={tt} className="cardFrame" />*/}
+              <div id="62321399343" className="w-100"></div>
             </div>
           </div>
         </div>
@@ -111,7 +130,8 @@ const Home = () => {
             {/*<p className="text-white mt-4 fs16 lh26">بالاترین درصد تخفیفی که برای شما کاربران عزیز جذاب باشه و برای فروشگاه ها هم صرفه اقتصادی داشته باشه رو ما گرفتیم براتون</p>*/}
             {/*<img alt="magicOff" src={arrowWhite} className="arrowReverse d-none d-md-flex" />*/}
             <div className="cardFrameContainer">
-              <img alt="magicOff" src={tt12} className="cardFrame" />
+              {/*<img alt="magicOff" src={tt12} className="cardFrame" />*/}
+              <div id="57822539951" className="w-100"></div>
             </div>
           </div>
         </div>
