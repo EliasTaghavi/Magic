@@ -9,6 +9,7 @@ import {getShopDetails} from "../api/index";
 import {toast} from "react-toastify";
 import toastOptions from "../components/ToastOptions";
 import Loader from "react-loader-spinner";
+import ReactTooltip from "react-tooltip";
 
 const ShopDetails = () => {
 	const container = useRef(null);
@@ -58,7 +59,7 @@ const ShopDetails = () => {
 				<h2>شناسنامه کسب و کار</h2>
 				<div className="w-100 d-flex centered" style={{minHeight: 500}}>
 					{bigLoader === 0 && <div className="w-100 d-flex flex-column align-items-start justify-content-start">
-						<ImageSlider/>
+						<ImageSlider shopDetails={shopDetails}/>
 						<div className="d-flex align-items-center justify-content-start mt-5">
 							<p className="fs16" style={{width: 180}}>نام فروشگاه:</p>
 							<p className="fs18 font-weight-bold">{shopDetails?.name}</p>
@@ -109,33 +110,42 @@ const ShopDetails = () => {
 	);
 }
 
-const ImageSlider = () => {
+const ImageSlider = ({shopDetails}) => {
+	console.log(shopDetails);
 	return (
-		<div id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
-			<ol className="carousel-indicators">
-				<li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-				{/*<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>*/}
-				{/*<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>*/}
-			</ol>
-			<div className="carousel-inner">
-				<div className="carousel-item active" style={{maxHeight: 350, backgroundPosition: 'center'}}>
-					<img className="d-block w-100" src={bg} alt="First slide"/>
+		<div>
+			<div data-tip="" data-for="global" id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
+				<ol className="carousel-indicators">
+					<li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
+					{/*<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>*/}
+					{/*<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>*/}
+				</ol>
+				<div className="carousel-inner">
+					<div className="carousel-item active" style={{maxHeight: 350, backgroundPosition: 'center'}}>
+						<img className="d-block w-100" src={bg} alt="First slide"/>
+					</div>
+					{/*<div className="carousel-item">*/}
+					{/*	<img className="d-block w-100" src="..." alt="Second slide"/>*/}
+					{/*</div>*/}
+					{/*<div className="carousel-item">*/}
+					{/*	<img className="d-block w-100" src="..." alt="Third slide"/>*/}
+					{/*</div>*/}
 				</div>
-				{/*<div className="carousel-item">*/}
-				{/*	<img className="d-block w-100" src="..." alt="Second slide"/>*/}
-				{/*</div>*/}
-				{/*<div className="carousel-item">*/}
-				{/*	<img className="d-block w-100" src="..." alt="Third slide"/>*/}
-				{/*</div>*/}
+				<a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					<span className="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span className="sr-only">Previous</span>
+				</a>
+				<a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					<span className="carousel-control-next-icon" aria-hidden="true"></span>
+					<span className="sr-only">Next</span>
+				</a>
 			</div>
-			<a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-				<span className="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span className="sr-only">Previous</span>
-			</a>
-			<a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-				<span className="carousel-control-next-icon" aria-hidden="true"></span>
-				<span className="sr-only">Next</span>
-			</a>
+			<ReactTooltip id='global' aria-haspopup='true'>
+				<p className="fs20 font-weight-bold w-100 text-center">{shopDetails?.name}</p>
+				<p className="fs16 w-100 text-right">{shopDetails?.phone}</p>
+				<p className="fs16 w-100 text-right">{shopDetails?.latestOff}</p>
+				<p className="fs16 w-100 text-right">{shopDetails?.address}</p>
+			</ReactTooltip>
 		</div>
 	);
 };
