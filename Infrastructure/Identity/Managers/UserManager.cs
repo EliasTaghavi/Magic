@@ -255,7 +255,17 @@ namespace Infrastructure.Identity.Managers
                 var packBuy = packBuyRepo.GetCurrentByUserId(buyer.Id);
                 if (packBuy == null)
                 {
-                    return new ManagerResult<BuyerDto>(null,false);
+                    return new ManagerResult<BuyerDto>(new BuyerDto
+                    {
+                        DayRemain = 0,
+                        ExpireDate = DateTime.UtcNow,
+                        Lastname = buyer.Surname,
+                        Name = buyer.Name,
+                        PackStatus = packBuy?.PayStatus.Value ?? false,
+                        SelfieUrl = selfie?.FullName,
+                        UserType = buyer.UserType.Name,
+                        ShopOff = shop.Offs?.FirstOrDefault()?.Percentage ?? 0,
+                    }, true);
                 }
                 var resultDto = new BuyerDto
                 {
