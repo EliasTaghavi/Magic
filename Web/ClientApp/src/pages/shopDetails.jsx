@@ -9,7 +9,6 @@ import {getShopDetails} from "../api/index";
 import {toast} from "react-toastify";
 import toastOptions from "../components/ToastOptions";
 import Loader from "react-loader-spinner";
-import ReactTooltip from "react-tooltip";
 
 const ShopDetails = () => {
 	const container = useRef(null);
@@ -140,12 +139,6 @@ const ImageSlider = ({shopDetails}) => {
 					<span className="sr-only">Next</span>
 				</a>
 			</div>
-			<ReactTooltip id='global' aria-haspopup='true'>
-				<p className="fs20 font-weight-bold w-100 text-center">{shopDetails?.name}</p>
-				<p className="fs16 w-100 text-right">{shopDetails?.phone}</p>
-				<p className="fs16 w-100 text-right">{shopDetails?.latestOff}</p>
-				<p className="fs16 w-100 text-right">{shopDetails?.address}</p>
-			</ReactTooltip>
 		</div>
 	);
 };
