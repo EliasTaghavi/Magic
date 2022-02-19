@@ -9,5 +9,6 @@ namespace Core.Services
         string SaveIdentity(InputFileDto inputFileDto);
 
         List<AppFile> SaveSignUpFile(List<FileStream> Pics);
+        string Save(InputFileDto item);
     }
 }

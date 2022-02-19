@@ -1,5 +1,7 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
+using Core.File.Enums;
+using Core.File.Managers;
 using Core.Identity.Dto;
 using Core.Identity.Enums;
 using Core.Identity.Managers;
@@ -20,13 +22,15 @@ namespace Infrastructure.Shops.Managers
         private readonly IShopOffRepo shopOffRepo;
         private readonly IUserManager userManager;
         private readonly ISessionManager sessionManager;
+        private readonly IFileManager fileManager;
 
         public ShopManager(IShopRepo shopRepo,
                            IRoleRepo roleRepo,
                            IUserRepo userRepo,
                            IShopOffRepo shopOffRepo,
                            IUserManager userManager,
-                           ISessionManager sessionManager)
+                           ISessionManager sessionManager,
+                           IFileManager fileManager)
         {
             this.shopRepo = shopRepo;
             this.roleRepo = roleRepo;
@@ -34,11 +38,22 @@ namespace Infrastructure.Shops.Managers
             this.shopOffRepo = shopOffRepo;
             this.userManager = userManager;
             this.sessionManager = sessionManager;
+            this.fileManager = fileManager;
         }
 
         public ManagerResult<bool> AddPhotos(AddPhotosForShopDto dto)
         {
-            throw new NotImplementedException();
+            var idPhoto = dto.InputFileDtos.FirstOrDefault();
+            if (idPhoto != null)
+            {
+                fileManager.AddShopPhoto(idPhoto, dto.ShopId, FileType.ShopId);
+            }
+            dto.InputFileDtos.Remove(idPhoto);
+            foreach (var item in dto.InputFileDtos)
+            {
+                fileManager.AddShopPhoto(item, dto.ShopId, FileType.Shop);
+            }
+            return new ManagerResult<bool>(true);
         }
 
         public ManagerResult<bool> Create(CreateShopDto dto)
@@ -80,6 +95,12 @@ namespace Infrastructure.Shops.Managers
             return new ManagerResult<bool>(true);
         }
 
+        public ManagerResult<bool> DeletePhoto(string photoId)
+        {
+            var result = fileManager.Delete(photoId);
+            return result;
+        }
+
         public ManagerResult<string> FindByRef(string refCode)
         {
             var shopName = shopRepo.GetSet().Where(x => x.ReferralCode.ToLower() == refCode.ToLower()).FirstOrDefault()?.Name;
@@ -89,6 +110,7 @@ namespace Infrastructure.Shops.Managers
         public ManagerResult<ShopDetailsDto> Get(string id)
         {
             var shop = shopRepo.GetWithDetails(id);
+            var photos = fileManager.GetShopPhotos(id);
             var result = new ShopDetailsDto
             {
                 Address = shop.Address,
@@ -99,6 +121,7 @@ namespace Infrastructure.Shops.Managers
                 Phone = shop.Phone,
                 RefCode = shop.ReferralCode,
                 UserFullName = $"{shop.User.Name} {shop.User.Surname}",
+                Photos = photos.Result 
             };
             return new ManagerResult<ShopDetailsDto>(result);
         }
@@ -162,7 +185,7 @@ namespace Infrastructure.Shops.Managers
                     Name = shop.Name,
                     Phone = shop.Phone,
                     PhotoUrl = shop?.Photos?.Where(x => x.Type == Core.File.Enums.FileType.Shop).Select(x => x.FullName).ToList(),
-                    ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopLogo)?.FullName
+                    ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopId)?.FullName
                 },
                 Status = UserStatus.Confirmed,
                 Token = token.Result.JWT

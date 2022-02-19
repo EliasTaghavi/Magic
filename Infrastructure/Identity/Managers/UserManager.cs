@@ -179,8 +179,8 @@ namespace Infrastructure.Identity.Managers
             var photos = appFileRepo.GetPhotos(userIds);
             foreach (var item in result.Items)
             {
-                item.SelfieURL = photos.FirstOrDefault(x => x.UserId == item.Id && x.Type == FileType.Selfie)?.FullName;
-                item.IdentityURL = photos.FirstOrDefault(x => x.UserId == item.Id && x.Type == FileType.Identity)?.FullName;
+                item.SelfieURL = photos.FirstOrDefault(x => x.RefId == item.Id && x.Type == FileType.Selfie)?.FullName;
+                item.IdentityURL = photos.FirstOrDefault(x => x.RefId == item.Id && x.Type == FileType.Identity)?.FullName;
             }
             return new ManagerResult<PagedListDto<UserListDto>>(result);
         }
@@ -251,8 +251,22 @@ namespace Infrastructure.Identity.Managers
             var shop = shopRepo.ReadByUserId(dto.ShoperId);
             if (shop != null && buyer != null)
             {
-                var selfie = appFileRepo.GetSet().FirstOrDefault(x => x.UserId == buyer.Id && x.Type == FileType.Selfie);
+                var selfie = appFileRepo.GetSet().FirstOrDefault(x => x.RefId == buyer.Id && x.Type == FileType.Selfie);
                 var packBuy = packBuyRepo.GetCurrentByUserId(buyer.Id);
+                if (packBuy == null)
+                {
+                    return new ManagerResult<BuyerDto>(new BuyerDto
+                    {
+                        DayRemain = 0,
+                        ExpireDate = DateTime.UtcNow,
+                        Lastname = buyer.Surname,
+                        Name = buyer.Name,
+                        PackStatus = packBuy?.PayStatus.Value ?? false,
+                        SelfieUrl = selfie?.FullName,
+                        UserType = buyer.UserType.Name,
+                        ShopOff = shop.Offs?.FirstOrDefault()?.Percentage ?? 0,
+                    }, true);
+                }
                 var resultDto = new BuyerDto
                 {
                     DayRemain = (packBuy.PayDate.Value.AddDays(packBuy.Pack.DayCount) - DateTime.UtcNow).Days,

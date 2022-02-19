@@ -14,13 +14,13 @@ namespace Infrastructure.File.Repos
 
         public List<AppFile> GetPhotos(IEnumerable<string> userIds)
         {
-            var list = GetSet().Where(x => userIds.Contains(x.UserId));
+            var list = GetSet().Where(x => userIds.Contains(x.RefId));
             return list.ToList();
         }
 
         public string GetSelfie(string userId)
         {
-            var selfie = GetSet().Where(x => x.UserId == userId && x.Type == FileType.Selfie)
+            var selfie = GetSet().Where(x => x.RefId == userId && x.Type == FileType.Selfie)
                                  .FirstOrDefault();
             return selfie?.FullName;
         }

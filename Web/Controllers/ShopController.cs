@@ -1,4 +1,5 @@
-﻿using Core.Identity.Managers;
+﻿using Core.File.Managers;
+using Core.Identity.Managers;
 using Core.Shops.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,12 +17,14 @@ namespace Web.Controllers
         private readonly IHttpContextAccessor accessor;
         private readonly IShopManager shopManager;
         private readonly IUserManager userManager;
+        private readonly IFileManager fileManager;
 
-        public ShopController(IHttpContextAccessor accessor, IShopManager shopManager, IUserManager userManager)
+        public ShopController(IHttpContextAccessor accessor, IShopManager shopManager, IUserManager userManager, IFileManager fileManager)
         {
             this.accessor = accessor;
             this.shopManager = shopManager;
             this.userManager = userManager;
+            this.fileManager = fileManager;
         }
 
         [HttpPost]
@@ -40,7 +43,7 @@ namespace Web.Controllers
             var shoperId = User.GetUserId();
             var dto = viewModel.ToDto(shoperId);
             var response = userManager.GetBuyer(dto);
-            return Ok(response.CreateViewModel(x => x.ToViewModel()));
+            return Ok(response.CreateViewModel(x => x?.ToViewModel()));
         }
 
         [HttpPost]
@@ -95,6 +98,23 @@ namespace Web.Controllers
         public IActionResult Get([FromQuery] string id)
         {
             var response = shopManager.Get(id);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult AddPhotos([FromForm] AddShopPhotosViewModel viewModel)
+        {
+            var dto = viewModel.ToDto();
+            var response = shopManager.AddPhotos(dto);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult DeletePhoto(DeleteShopPhotoViewModel viewModel)
+        {
+            var response = shopManager.DeletePhoto(viewModel.PhotoId);
             return Ok(response);
         }
     }

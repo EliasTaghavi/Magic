@@ -1,5 +1,8 @@
-﻿using Core.Identity.Dto;
+﻿using Core;
+using Core.Base.Dto;
+using Core.Identity.Dto;
 using Core.Shops.Dto;
+using Microsoft.AspNetCore.Http;
 using Web.Models.Shop;
 
 namespace Web.Mappers
@@ -81,6 +84,25 @@ namespace Web.Mappers
                 Discount = dto.ShopOff,
                 UserType = dto.UserType,
             };
+        }
+
+        public static AddPhotosForShopDto ToDto(this AddShopPhotosViewModel viewModel)
+        {
+            var dto = new AddPhotosForShopDto
+            {
+                ShopId = viewModel.ShopId,
+                InputFileDtos = new List<InputFileDto>()
+            };
+            foreach (var file in viewModel.Files)
+            {
+                var stream = file != null ? new InputFileDto
+                {
+                    Stream = file.OpenReadStream(),
+                    Extension = MimeTypesMap.GetExtension(file.ContentType)
+                } : null;
+                dto.InputFileDtos.Add(stream);
+            }
+            return dto;
         }
     }
 }
