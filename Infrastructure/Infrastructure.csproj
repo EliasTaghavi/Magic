@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="KavenegarDotNetCore" Version="1.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.2" />
