@@ -1,6 +1,7 @@
 ﻿using Core.Base.Dto;
 using Core.Base.Entities;
 using Core.File.Dto;
+using Core.File.Entities;
 using Core.File.Enums;
 
 namespace Core.File.Managers
@@ -12,5 +13,6 @@ namespace Core.File.Managers
         ManagerResult<bool> AddShopPhoto(InputFileDto item, string shopId, FileType fileType);
         ManagerResult<List<string>> GetShopPhotos(string id);
         ManagerResult<bool> Delete(string photoId);
+        ManagerResult<List<AppFile>> GetShopPhotos(IEnumerable<string> enumerable);
     }
 }

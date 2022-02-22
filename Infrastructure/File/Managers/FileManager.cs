@@ -61,6 +61,12 @@ namespace Infrastructure.File.Managers
             return new ManagerResult<List<string>>(result);
         }
 
+        public ManagerResult<List<AppFile>> GetShopPhotos(IEnumerable<string> enumerable)
+        {
+            var result = fileRepo.GetSet().Where(x => enumerable.Contains(x.RefId)).ToList();
+            return new ManagerResult<List<AppFile>>(result);
+        }
+
         public ManagerResult<bool> UploadIdentities(IdentityFileDto dto)
         {
             if (dto.SelfieDto == null)

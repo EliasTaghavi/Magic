@@ -1,4 +1,5 @@
-﻿using Core.Shops.Dto;
+﻿using Core.File.Entities;
+using Core.Shops.Dto;
 
 namespace Core.Shops.Mappers
 {
@@ -29,7 +30,7 @@ namespace Core.Shops.Mappers
             return shops.Select(x => x.ToSimpleDto()).ToList();
         }
 
-        public static ShopWithUserDto ToDto(this Entities.Shop shop)
+        public static ShopWithUserDto ToDto(this Entities.Shop shop, List<AppFile> valuePairs)
         {
             return new ShopWithUserDto
             {
@@ -42,12 +43,13 @@ namespace Core.Shops.Mappers
                 CreatedDate = shop.CreatedDate,
                 LatestOff = shop.Offs?.FirstOrDefault()?.Percentage ?? 0,
                 RefCode = shop.ReferralCode,
+                Photos = valuePairs?.Where(x => x.RefId == shop.Id).Select(x => x.FullName).ToList()
             };
         }
 
-        public static List<ShopWithUserDto> ToDto(this List<Entities.Shop> shop)
+        public static List<ShopWithUserDto> ToDto(this List<Entities.Shop> shop, List<AppFile> valuePairs)
         {
-            return shop.Select(x => x.ToDto()).ToList();
+            return shop.Select(x => x.ToDto(valuePairs)).ToList();
         }
     }
 }

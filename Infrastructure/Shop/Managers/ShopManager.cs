@@ -136,10 +136,11 @@ namespace Infrastructure.Shops.Managers
         public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
         {
             var result = shopRepo.Search(filterDto);
+            var photos = fileManager.GetShopPhotos(result.Items.Select(x => x.Id)).Result;
             var dto = new PagedListDto<ShopWithUserDto>
             {
                 Count = result.Count,
-                Items = result.Items.ToDto()
+                Items = result.Items.ToDto(photos)
             };
             return new ManagerResult<PagedListDto<ShopWithUserDto>>(dto);
         }
