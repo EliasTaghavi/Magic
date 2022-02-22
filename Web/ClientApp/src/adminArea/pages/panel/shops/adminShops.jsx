@@ -270,7 +270,7 @@ const AdminShops = () => {
 											</button>
 										</OverlayTrigger>
 										<OverlayTrigger
-											key='details'
+											key='images'
 											placement='left'
 											overlay={
 												<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
@@ -309,7 +309,7 @@ const AdminShops = () => {
 			</div>
 			{createShopModal && <CreateShopModal setOpen={() => setCreateShopModal(false)} refreshData={() => getData()} />}
 			{deleteItemModal && <DeleteItemModal item={{type: 'فروشگاه', name: deleteItemModal?.name ?? '-----'}} setOpen={() => setDeleteItemModal(null)} deleteItem={deleteItem} />}
-			{addImageModal && <AddImageModal item={addImageModal} setOpen={() => setAddImageModal(null)} />}
+			{addImageModal && <AddImageModal item={addImageModal} setOpen={() => setAddImageModal(null)} refreshData={() => getData()} />}
 		</div>
 	);
 }

@@ -540,6 +540,26 @@ tr td:last-child {
     max-height: 0 !important;
 }
 
+.addImageBox {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    border: 1px dashed #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectedShopImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin: 0.5rem;
+}
+
 @media screen and (min-width: 350px) {
     .cpy-12 {
         padding-top: 7rem;
