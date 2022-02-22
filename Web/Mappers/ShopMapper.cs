@@ -54,6 +54,7 @@ namespace Web.Mappers
                 CreatedDate = dto.CreatedDate,
                 LatestOff = dto.LatestOff,
                 RefCode = dto.RefCode,
+                Photos = dto.Photos
             };
         }
 

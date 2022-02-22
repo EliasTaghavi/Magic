@@ -15,5 +15,6 @@ namespace Web.Models.Shop
         public DateTime CreatedDate { get; set; }
         public int LatestOff { get; set; }
         public string RefCode { get; set; }
+        public List<string> Photos { get; set; }
     }
 }

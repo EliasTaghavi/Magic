@@ -117,5 +117,13 @@ namespace Web.Controllers
             var response = shopManager.DeletePhoto(viewModel.PhotoId);
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult GetPhotos([FromQuery] string id)
+        {
+            var response = shopManager.GetPhotos(id);
+            return Ok(response);
+        }
     }
 }

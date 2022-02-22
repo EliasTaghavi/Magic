@@ -43,12 +43,6 @@ namespace Infrastructure.Shops.Managers
 
         public ManagerResult<bool> AddPhotos(AddPhotosForShopDto dto)
         {
-            var idPhoto = dto.InputFileDtos.FirstOrDefault();
-            if (idPhoto != null)
-            {
-                fileManager.AddShopPhoto(idPhoto, dto.ShopId, FileType.ShopId);
-            }
-            dto.InputFileDtos.Remove(idPhoto);
             foreach (var item in dto.InputFileDtos)
             {
                 fileManager.AddShopPhoto(item, dto.ShopId, FileType.Shop);
@@ -130,6 +124,13 @@ namespace Infrastructure.Shops.Managers
         {
             var result = shopRepo.GetList();
             return new ManagerResult<List<ShopSimpleDto>>(result.ToSimpleDto());
+        }
+
+        public ManagerResult<List<string>> GetPhotos(string Id)
+        {
+            List<string> photos = fileManager.GetShopPhotos(Id).Result;
+
+            return new ManagerResult<List<string>>(photos);
         }
 
         public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
