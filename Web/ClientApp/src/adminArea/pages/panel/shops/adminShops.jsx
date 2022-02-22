@@ -3,7 +3,7 @@ import SearchBox from "../components/SearchBox";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../components/RenderPageButtons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTrash, faEdit, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faTrash, faEdit, faCheck, faTimes, faInbox, faImage} from "@fortawesome/free-solid-svg-icons";
 import CreateShopModal from "./components/createShopModal";
 import {adminGetAllShops, deleteShop, editDiscount} from "../../../api/shop";
 import PageNumberGenerator from "../components/PageNumberGenerator";
@@ -13,6 +13,7 @@ import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import DeleteItemModal from "../../../../components/shared/deleteItemModal";
 import * as MainStore from "../../../../store/main";
 import {useDispatch} from "react-redux";
+import AddImageModal from "./components/addImageModal";
 
 const AdminShops = () => {
 	const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const AdminShops = () => {
 	const [data, setData] = useState([]);
 	const [deleteItemModal, setDeleteItemModal] = useState(null);
 	const [createShopModal, setCreateShopModal] = useState(false);
+	const [addImageModal, setAddImageModal] = useState(null);
 	const [discountEditEnable, setDiscountEditEnable] = useState(undefined);
 	const [discount, setDiscount] = useState('');
 	const [discountError, setDiscountError] = useState(false);
@@ -267,6 +269,18 @@ const AdminShops = () => {
 												<FontAwesomeIcon icon={faTrash} className="text-danger fs18" />
 											</button>
 										</OverlayTrigger>
+										<OverlayTrigger
+											key='details'
+											placement='left'
+											overlay={
+												<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+													افزودن تصاویر
+												</Tooltip>
+											}>
+											<button type="button" className="btn bg-transparent border-0 outline" onClick={() => setAddImageModal(item)}>
+												<FontAwesomeIcon icon={faImage} className="textMain fs18" />
+											</button>
+										</OverlayTrigger>
 									</td>
 								</tr>
 							);
@@ -295,6 +309,7 @@ const AdminShops = () => {
 			</div>
 			{createShopModal && <CreateShopModal setOpen={() => setCreateShopModal(false)} refreshData={() => getData()} />}
 			{deleteItemModal && <DeleteItemModal item={{type: 'فروشگاه', name: deleteItemModal?.name ?? '-----'}} setOpen={() => setDeleteItemModal(null)} deleteItem={deleteItem} />}
+			{addImageModal && <AddImageModal item={addImageModal} setOpen={() => setAddImageModal(null)} />}
 		</div>
 	);
 }
