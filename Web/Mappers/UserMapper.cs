@@ -25,6 +25,7 @@ namespace Web.Mappers
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
                 RefCode = viewModel.RefCode,
+                Password = viewModel.Password,
             };
         }
 

@@ -150,6 +150,12 @@ namespace Infrastructure.Identity.Managers
             {
                 model.Roles.Add(role);
             }
+            if (!string.IsNullOrEmpty(dto.Password))
+            {
+                PasswordHashResult pass = PasswordHandler.CreatePasswordHash(dto.Password);
+                model.PasswordHash = pass.PasswordHash;
+                model.PasswordSalt = pass.PasswordSalt;
+            }
 
             User mangerResult = UserRepo.Create(model);
             return new ManagerResult<User>(mangerResult);
@@ -165,6 +171,12 @@ namespace Infrastructure.Identity.Managers
             user.RefCode = dto.RefCode;
             user.UserStatus = UserStatus.NotConfirmed;
             user.QRCode = Guid.NewGuid().ToString();
+            if (!string.IsNullOrEmpty(dto.Password))
+            {
+                PasswordHashResult pass = PasswordHandler.CreatePasswordHash(dto.Password);
+                user.PasswordHash = pass.PasswordHash;
+                user.PasswordSalt = pass.PasswordSalt;
+            }
             UserRepo.Update(user);
             return new ManagerResult<bool>(true)
             {

@@ -1,5 +1,6 @@
 ﻿using Core.File.Managers;
 using Core.Identity.Managers;
+using Core.Packs.Managers;
 using Core.Shops.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,13 +19,22 @@ namespace Web.Controllers
         private readonly IShopManager shopManager;
         private readonly IUserManager userManager;
         private readonly IFileManager fileManager;
+        private readonly IPackManager packManager;
+        private readonly ISessionManager sessionManager;
 
-        public ShopController(IHttpContextAccessor accessor, IShopManager shopManager, IUserManager userManager, IFileManager fileManager)
+        public ShopController(IHttpContextAccessor accessor,
+                              IShopManager shopManager,
+                              IUserManager userManager,
+                              IFileManager fileManager,
+                              IPackManager packManager,
+                              ISessionManager sessionManager)
         {
             this.accessor = accessor;
             this.shopManager = shopManager;
             this.userManager = userManager;
             this.fileManager = fileManager;
+            this.packManager = packManager;
+            this.sessionManager = sessionManager;
         }
 
         [HttpPost]
@@ -33,6 +43,16 @@ namespace Web.Controllers
             string ip = accessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = shopManager.VerifyTokenByPhoneForShop(model.ToDto(ip));
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public IActionResult CreateByUP(UPSessionCreateModel model)
+        {
+
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+
+            var response = sessionManager.CreateByUPShop(model.ToDto(ip));
             return Ok(response);
         }
 
@@ -107,6 +127,10 @@ namespace Web.Controllers
         {
             var dto = viewModel.ToDto();
             var response = shopManager.AddPhotos(dto);
+            foreach (var item in viewModel.Deleted)
+            {
+                shopManager.DeletePhoto(item);
+            }
             return Ok(response);
         }
 

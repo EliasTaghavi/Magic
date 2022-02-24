@@ -8,5 +8,6 @@ namespace Core.Identity.Dto
         public string FirstName { get; set; }
         public string Lastname { get; set; }
         public UserStatus Status { get; set; }
+        public string Password { get; set; }
     }
 }

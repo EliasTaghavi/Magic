@@ -30,6 +30,7 @@ namespace Web.Mappers
                 UserSurname = viewModel.UserSurname,
                 LatestOff = viewModel.LatestOff,
                 Refcode = viewModel.Refcode,
+                Password = viewModel.Password,
             };
         }
 

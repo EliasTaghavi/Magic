@@ -7,5 +7,6 @@
         public string Address { get; set; }
         public DateTime Birthday { get; set; }
         public string RefCode { get; set; }
+        public string Password { get; set; }
     }
 }

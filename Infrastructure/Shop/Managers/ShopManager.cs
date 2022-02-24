@@ -60,7 +60,8 @@ namespace Infrastructure.Shops.Managers
                     FirstName = dto.UserName,
                     Lastname = dto.UserSurname,
                     Phone = dto.UserMobile,
-                    Status = UserStatus.NewUserFromShop
+                    Status = UserStatus.NewUserFromShop,
+                    Password = dto.Password,
                 };
                 user = userManager.CreateByPhone(userDto, "Shop").Result;
             }
@@ -181,6 +182,7 @@ namespace Infrastructure.Shops.Managers
                 FirstName = user.Name,
                 LastName = user.Surname,
                 Mobile = user.Mobile,
+                ShopkeeperId = user.Id,
                 Shop = new ShopDto
                 {
                     Address = shop.Address,
