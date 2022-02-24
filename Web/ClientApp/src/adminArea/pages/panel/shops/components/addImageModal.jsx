@@ -9,12 +9,16 @@ import * as MainStore from "../../../../../store/main";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import {useDispatch} from "react-redux";
+import {imagePreUrl} from "../../../../../usersArea/api/imagePreUrl";
+import {deleteShopImage} from "../../../../api/shop";
 
 const AddImageModal = ({item, setOpen, refreshData}) => {
+	console.log(item);
 	const dispatch = useDispatch();
 	const [loader, setLoader] = useState(false);
 	const [errors, setErrors] = useState({});
 	const [images, setImages] = useState([]);
+	const [deleteLoader, setDeleteLoader] = useState(null);
 	const [shopImagesPreviewUrl, setShopImagesPreviewUrl] = useState([]);
 
 	const handleValidate = (e) => {
@@ -106,6 +110,18 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 		setShopImagesPreviewUrl(newShopImagesPreviewUrl);
 	}
 
+	const removeServerPictures = (item) => {
+		setDeleteLoader(item);
+		deleteShopImage(item)
+			.then((response) => {
+				setDeleteLoader(null);
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+	}
+
 	return (
 		<Modal
 			show={true}
@@ -131,6 +147,17 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 								<span style={{color: '#999999', fontSize: 14}} className="mt-2 mr-2">فقط پرونده ها با فرمت jpg را بارگذاری نمایید.</span>
 							</div>}
 							<div className="w-100 d-flex flex-row flex-wrap align-items-start justify-content-start mt-4">
+								{item?.photos.length > 0 && item?.photos.map((item, index) => {
+									return (
+										<div key={Math.random().toString()} className="position-relative">
+											<img alt="ezsaze" src={imagePreUrl(item)} className="border border-light-dark rounded selectedShopImage"/>
+											<button type="button" className="btn bg-light border border-light-dark rounded-circle d-flex align-items-center justify-content-center p-0 m-0 outline position-absolute" style={{width: 22, height: 22, top: -2, left: -2, zIndex: 999}} onClick={() => removeServerPictures(item)}>
+												{!deleteLoader && <FontAwesomeIcon icon={faTimes} color="red"/>}
+												{deleteLoader && <Loader type="Circles" color='#777777' height={5} width={5} className="loader"/>}
+											</button>
+										</div>
+									);
+								})}
 								{shopImagesPreviewUrl.map((item, index) => {
 									return (
 										<div key={Math.random().toString()} className="position-relative">

@@ -126,7 +126,7 @@ export const sendShopImage = (data) => {
 	let {shopId, files} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
-		'Content-Type': 'application/json',
+		'Content-Type': 'multipart/form-data',
 		'Authorization': 'Bearer ' + token,
 	};
 	let formData = new FormData();
@@ -143,6 +143,36 @@ export const sendShopImage = (data) => {
 
 
 	return axios.post('/api/shop/addPhotos', formData, {headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
+
+export const deleteShopImage = (data) => {
+	console.log(7878, data);
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': 'Bearer ' + token,
+	};
+	let body = JSON.stringify({
+		photoId: data.replace(/(.png)|(.jpg)|(.jpeg)/gm, ''),
+	});
+
+	console.log(body);
+
+
+	return axios.post('/api/shop/deletePhoto', body, {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
