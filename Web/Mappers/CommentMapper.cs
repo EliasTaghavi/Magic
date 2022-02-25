@@ -27,7 +27,7 @@ namespace Web.Mappers
             };
         }
 
-        public static  AddCommentDto ToDto(this AddCommentViewModel viewModel, string userId)
+        public static AddCommentDto ToDto(this AddCommentViewModel viewModel, string userId)
         {
             return new AddCommentDto
             {

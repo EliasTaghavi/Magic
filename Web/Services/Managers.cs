@@ -1,8 +1,10 @@
-﻿using Core.File.Managers;
+﻿using Core.Comments.Managers;
+using Core.File.Managers;
 using Core.Identity.Managers;
 using Core.Packs.Managers;
 using Core.Purchase.Managers;
 using Core.Shops.Managers;
+using Infrastructure.Comments.Managers;
 using Infrastructure.File.Managers;
 using Infrastructure.Identity.Managers;
 using Infrastructure.Packs.Managers;
@@ -25,6 +27,7 @@ namespace Web.Services
             services.AddTransient<IPackBuyManager, PackBuyManager>();
             services.AddTransient<IShopManager, ShopManager>();
             services.AddTransient<IBuyManager, BuyManager>();
+            services.AddTransient<ICommentManager, CommentManager>();
         }
     }
 }

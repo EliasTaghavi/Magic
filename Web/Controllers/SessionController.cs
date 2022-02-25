@@ -37,8 +37,8 @@ namespace Web.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
             var response = SessionManager.CreateByUP(model.ToDto(ip));
-            var responsePack = packManager.GetCurrent(response.Result.UserId);
-            var selfieUrl = fileManager.GetSelfie(response.Result.UserId);
+            var responsePack = packManager.GetCurrent(response?.Result?.UserId);
+            var selfieUrl = fileManager.GetSelfie(response?.Result?.UserId);
             return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success, selfieUrl.Result)));
         }
 

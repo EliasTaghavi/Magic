@@ -2,7 +2,6 @@
 using Core.Base.Dto;
 using Core.Identity.Dto;
 using Core.Shops.Dto;
-using Microsoft.AspNetCore.Http;
 using Web.Models.Shop;
 
 namespace Web.Mappers

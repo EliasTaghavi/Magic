@@ -1,10 +1,12 @@
 ﻿using Core.Base.Repos;
+using Core.Comments.Repos;
 using Core.File.Repos;
 using Core.Identity.Repos;
 using Core.Packs.Repos;
 using Core.Purchase.Repos;
 using Core.Shops.Repos;
 using Infrastructure.Base.Repos;
+using Infrastructure.Comments.Repos;
 using Infrastructure.File.Repos;
 using Infrastructure.Identity.Repos;
 using Infrastructure.Packs.Repos;
@@ -30,6 +32,7 @@ namespace Web.Services
             services.AddTransient<IShopRepo, ShopRepo>();
             services.AddTransient<IShopOffRepo, ShopOffRepo>();
             services.AddTransient<IBuyRepo, BuyRepo>();
+            services.AddTransient<ICommentRepo, CommentRepo>();
             services.AddTransient<ISettingRepo, SettingRepo>();
         }
     }

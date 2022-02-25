@@ -2,13 +2,8 @@
 using Core.Base.Entities;
 using Core.Comments.Dto;
 using Core.Comments.Managers;
-using Core.Comments.Repos;
 using Core.Comments.Mapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Core.Comments.Repos;
 
 namespace Infrastructure.Comments.Managers
 {

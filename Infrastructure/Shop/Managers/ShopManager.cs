@@ -116,7 +116,7 @@ namespace Infrastructure.Shops.Managers
                 Phone = shop.Phone,
                 RefCode = shop.ReferralCode,
                 UserFullName = $"{shop.User.Name} {shop.User.Surname}",
-                Photos = photos.Result 
+                Photos = photos.Result
             };
             return new ManagerResult<ShopDetailsDto>(result);
         }

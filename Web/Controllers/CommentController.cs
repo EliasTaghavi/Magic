@@ -8,11 +8,11 @@ using Web.Models.Comment;
 
 namespace Web.Controllers
 {
-    public class CommnetController :BaseController
+    public class CommentController : BaseController
     {
         private readonly ICommentManager commentManager;
 
-        public CommnetController(ICommentManager commentManager)
+        public CommentController(ICommentManager commentManager)
         {
             this.commentManager = commentManager;
         }
