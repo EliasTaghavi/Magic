@@ -1,3 +1,3 @@
 export const supportDetails = {
-	phoneNumber: '09123456789',
+	phoneNumber: '09101419130',
 };
