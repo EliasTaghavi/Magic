@@ -70,11 +70,14 @@ const EditShopPasswordModal = ({onClose}) => {
 		};
 		SendChangeShopPasswordData(data)
 			.then((response) => {
-				let {success} = response
+				let {success, result} = response
 				if (response) {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
-					} else if (success) {
+					} else if (result === false) {
+						toast.error('کلمه عبور قبلی اشتباه است', toastOptions)
+					} else if (result && success) {
+						toast.success('کلمه عبور با موفقیت ویرایش شد', toastOptions)
 						onClose();
 						setLoader(false);
 					}
@@ -114,7 +117,6 @@ const EditShopPasswordModal = ({onClose}) => {
 										type={prevPasswordVisible ? 'text' : 'password'}
 										value={prevPassword}
 										placeholder="..."
-										maxLength={5}
 										onFocus={() => setFocused('prevPassword')}
 										onBlur={() => setFocused('')}
 										className={`form-control w-100 text-right ${errors['prevPassword'] ? 'is-invalid' : null}`}
@@ -142,7 +144,6 @@ const EditShopPasswordModal = ({onClose}) => {
 										type={newPasswordVisible ? 'text' : 'password'}
 										value={newPassword}
 										placeholder="..."
-										maxLength={5}
 										onFocus={() => setFocused('newPassword')}
 										onBlur={() => setFocused('')}
 										className={`form-control w-100 text-right ${errors['newPassword'] ? 'is-invalid' : null}`}
@@ -170,7 +171,6 @@ const EditShopPasswordModal = ({onClose}) => {
 										type={repeatNewPasswordVisible ? 'text' : 'password'}
 										value={repeatNewPassword}
 										placeholder="..."
-										maxLength={5}
 										onFocus={() => setFocused('repeatNewPassword')}
 										onBlur={() => setFocused('')}
 										className={`form-control w-100 text-right ${errors['repeatNewPassword'] ? 'is-invalid' : null}`}

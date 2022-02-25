@@ -301,7 +301,6 @@ const CreateShopModal = ({refreshData, setOpen}) => {
 								required={true}
 								className={`form-control input ${errors['password'] && 'is-invalid'}`}
 								value={password}
-								maxLength={5}
 								onChange={changeValue}
 								placeholder="..."
 								onFocus={focusedFn}

@@ -13,7 +13,7 @@ const LoginShopValidation = (data) => {
           errors['code'] = 'کد وارد شده اشتباه است.'
         }
       } else {
-        if (!data?.loginPassword || data?.loginPassword.length !== 5) {
+        if (!data?.loginPassword) {
           errors['loginPassword'] = 'کلمه عبور وارد شده اشتباه است.'
         }
       }

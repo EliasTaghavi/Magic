@@ -43,9 +43,10 @@ export const getShopDetails = (shopId) => {
 }
 
 export const sendReport = (data) => {
-	let {email, description} = data;
+	let {mainToken, email, description} = data;
 	let headers = {
 		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${mainToken}`
 	};
 	let body =JSON.stringify( {
 		email,

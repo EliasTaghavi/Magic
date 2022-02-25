@@ -3,15 +3,15 @@ const ChangeUserPasswordValidation = (data) => {
 	let {prevPassword, newPassword, repeatNewPassword} = data;
 	return new Promise((value) => {
 
-		if (!prevPassword || prevPassword.length !== 5) {
+		if (!prevPassword) {
 			errors['prevPassword'] = 'کلمه عبور قبلی اشتباه است.'
 		}
 
-		if (!newPassword || newPassword.length !== 5) {
+		if (!newPassword) {
 			errors['newPassword'] = 'کلمه عبور جدید اشتباه است.'
 		}
 
-		if (!repeatNewPassword || repeatNewPassword.length !== 5) {
+		if (!repeatNewPassword) {
 			errors['repeatNewPassword'] = 'تکرار کلمه عبور جدید اشتباه است.'
 		}
 

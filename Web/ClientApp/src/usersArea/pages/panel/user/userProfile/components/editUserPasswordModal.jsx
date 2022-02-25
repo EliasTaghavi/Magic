@@ -117,7 +117,6 @@ const EditUserPasswordModal = ({onClose}) => {
 										type={prevPasswordVisible ? 'text' : 'password'}
 										value={prevPassword}
 										placeholder="..."
-										maxLength={5}
 										onFocus={() => setFocused('prevPassword')}
 										onBlur={() => setFocused('')}
 										className={`form-control w-100 text-right ${errors['prevPassword'] ? 'is-invalid' : null}`}
@@ -145,7 +144,6 @@ const EditUserPasswordModal = ({onClose}) => {
 										type={newPasswordVisible ? 'text' : 'password'}
 										value={newPassword}
 										placeholder="..."
-										maxLength={5}
 										onFocus={() => setFocused('newPassword')}
 										onBlur={() => setFocused('')}
 										className={`form-control w-100 text-right ${errors['newPassword'] ? 'is-invalid' : null}`}
@@ -173,7 +171,6 @@ const EditUserPasswordModal = ({onClose}) => {
 										type={repeatNewPasswordVisible ? 'text' : 'password'}
 										value={repeatNewPassword}
 										placeholder="..."
-										maxLength={5}
 										onFocus={() => setFocused('repeatNewPassword')}
 										onBlur={() => setFocused('')}
 										className={`form-control w-100 text-right ${errors['repeatNewPassword'] ? 'is-invalid' : null}`}

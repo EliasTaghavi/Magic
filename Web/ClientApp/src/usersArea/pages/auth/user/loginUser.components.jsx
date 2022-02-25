@@ -552,7 +552,6 @@ const LoginUser = () => {
                   className={`form-control input ${errors['loginPassword'] && 'is-invalid'}`}
                   value={loginPassword}
                   onChange={changeValue}
-                  maxLength={5}
                   placeholder="..."
                   onFocus={focusedFn}
                   onBlur={unfocusedFn}

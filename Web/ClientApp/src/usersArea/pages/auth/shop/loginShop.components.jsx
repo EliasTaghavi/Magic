@@ -179,7 +179,7 @@ const LoginShop = () => {
              } else {
                if (response?.result === null) {
                  setBtnLoader(false);
-                 toast.error('فروشگاه ثبت نشده است', toastOptions);
+                 toast.error('ورود ناموفق', toastOptions);
                }
              }
            }
@@ -342,7 +342,6 @@ const LoginShop = () => {
                   className={`form-control input ${errors['loginPassword'] && 'is-invalid'}`}
                   value={loginPassword}
                   onChange={changeValue}
-                  maxLength={5}
                   placeholder="..."
                   onFocus={focusedFn}
                   onBlur={unfocusedFn}
