@@ -58,13 +58,15 @@ const Home = () => {
     if (emailRegex.test(email) && description.length > 10) {
       setSendLoader(true);
       sendReport({email, description})
-         .then(() => {
+         .then((response) => {
+           console.log(response);
            setEmail('');
            setDescription('');
            toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
            setSendLoader(false);
          })
-         .catch(() =>{
+         .catch((e) =>{
+           console.log(e, e.response);
            setEmail('');
            setDescription('');
            toast.error('لطفا مجددا تلاش کنید', toastOptions);
@@ -166,7 +168,7 @@ const Home = () => {
                   <input
                     id="email"
                     name="email"
-                    type="text"
+                    type="email"
                     autoFocus={false}
                     required={true}
                     className={`form-control bg-white ${errors['email'] && 'is-invalid'}`}
