@@ -91,7 +91,7 @@ namespace Infrastructure.Identity.Repos
             }
             else
             {
-                query = query.OrderBy(x => x.CreatedDate);
+                query = query.OrderByDescending(x => x.CreatedDate);
             }
             int count = query.Count();
             var result = query.Include(x => x.Roles).Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();

@@ -93,6 +93,7 @@ namespace Web.Mappers
             var dto = new AddPhotosForShopDto
             {
                 ShopId = viewModel.ShopId,
+                Deleted = viewModel.Deleted,
                 InputFileDtos = new List<InputFileDto>()
             };
             foreach (var file in viewModel.Files)
