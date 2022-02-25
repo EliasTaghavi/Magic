@@ -17,7 +17,7 @@ namespace Web.Controllers
             this.commentManager = commentManager;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public IActionResult Search(PageRequestViewModel<CommentFilterViewModel> viewModel)
         {
