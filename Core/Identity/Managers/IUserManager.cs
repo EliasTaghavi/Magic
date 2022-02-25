@@ -32,5 +32,6 @@ namespace Core.Identity.Managers
         ManagerResult<List<KeyValueDto<string, string>>> GetTypes();
         ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto);
         ManagerResult<string> GetQR(string userId);
+        ManagerResult<bool> ChangePassword(ChangePasswordDto dto);
     }
 }

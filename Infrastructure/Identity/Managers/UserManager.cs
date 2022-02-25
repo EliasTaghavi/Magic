@@ -304,5 +304,20 @@ namespace Infrastructure.Identity.Managers
             }
             return new ManagerResult<string>(result.QRCode);
         }
+
+        public ManagerResult<bool> ChangePassword(ChangePasswordDto dto)
+        {
+            User user = UserRepo.Read(dto.UserId);
+            PasswordHashResult oldPass = PasswordHandler.CreatePasswordHash(dto.OldPassword);
+            if (user.PasswordHash == oldPass.PasswordHash && user.PasswordSalt == oldPass.PasswordSalt)
+            {
+                PasswordHashResult newPass = PasswordHandler.CreatePasswordHash(dto.NewPassword);
+                user.PasswordHash = newPass.PasswordHash;
+                user.PasswordSalt = newPass.PasswordSalt;
+                UserRepo.Update(user);
+                return new ManagerResult<bool>(true);
+            }
+            return new ManagerResult<bool>(false);
+        }
     }
 }

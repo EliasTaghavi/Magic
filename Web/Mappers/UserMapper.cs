@@ -73,5 +73,15 @@ namespace Web.Mappers
                 UserId = viewModel.UserId,
             };
         }
+
+        public static ChangePasswordDto ToDto(this ChangePasswordViewModel viewModel, string userId)
+        {
+            return new ChangePasswordDto
+            {
+                UserId = userId,
+                NewPassword = viewModel.NewPassword,
+                OldPassword = viewModel.OldPassword,
+            };
+        }
     }
 }

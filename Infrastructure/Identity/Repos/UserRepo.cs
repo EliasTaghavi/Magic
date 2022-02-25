@@ -55,7 +55,7 @@ namespace Infrastructure.Identity.Repos
 
         public User ReadByUsername(string UserName)
         {
-            return GetSet().FirstOrDefault(x => x.Username == UserName);
+            return GetSet().FirstOrDefault(x => x.Username == UserName || x.Mobile == UserName);
         }
 
         public List<Role> ReadUserAllRoles(User User)
