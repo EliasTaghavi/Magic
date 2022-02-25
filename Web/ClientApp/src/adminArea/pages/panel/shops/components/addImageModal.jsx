@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import {faPlus, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -10,53 +10,56 @@ import {toast} from "react-toastify";
 import toastOptions from "../../../../../components/ToastOptions";
 import {useDispatch} from "react-redux";
 import {imagePreUrl} from "../../../../../usersArea/api/imagePreUrl";
-import {deleteShopImage} from "../../../../api/shop";
 
 const AddImageModal = ({item, setOpen, refreshData}) => {
-	console.log(item);
 	const dispatch = useDispatch();
 	const [loader, setLoader] = useState(false);
 	const [errors, setErrors] = useState({});
 	const [images, setImages] = useState([]);
-	const [deleteLoader, setDeleteLoader] = useState(null);
-	const [shopImagesPreviewUrl, setShopImagesPreviewUrl] = useState([]);
+	const [addedImages, setAddedImages] = useState([]);
+	const [deletedImages, setDeletedImages] = useState([]);
+
+	useEffect(() => {
+		setImages([...item?.photos, ...images]);
+	}, [item]);
 
 	const handleValidate = (e) => {
 		e.preventDefault();
 		console.log(images);
-		if (images?.length > 0) {
-			setLoader(true);
-			let data = {
-				files: images,
-				shopId: item?.id,
-			};
-			sendShopImage(data)
-				.then((response) => {
-					let {success} = response
-					if (response) {
-						if (response === 401) {
-							dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
-						} else if (success) {
-							refreshData();
-							setOpen();
-							setLoader(false);
-						}
-					} else {
-						toast.error('خطای سرور', toastOptions);
+		setLoader(true);
+		let data = {
+			files: addedImages,
+			deleted: deletedImages.map((i) => i.replace(/(.png)|(.jpg)|(.jpeg)/gm, '')),
+			shopId: item?.id,
+		};
+		console.log(data);
+		sendShopImage(data)
+			.then((response) => {
+				let {success} = response
+				if (response) {
+					if (response === 401) {
+						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
+					} else if (success) {
+						refreshData();
+						setOpen();
 						setLoader(false);
 					}
-				})
-				.catch(() => {
+				} else {
 					toast.error('خطای سرور', toastOptions);
 					setLoader(false);
-				})
-		}
+				}
+			})
+			.catch((e) => {
+				console.log(e, e.response);
+				toast.error('خطای سرور', toastOptions);
+				setLoader(false);
+			})
 	}
 
 	const setImagesFn = (e) => {
 		delete errors['imageSize'];
 		if (e.target.files && e.target.files[0]) {
-			if (shopImagesPreviewUrl.length < 4) {
+			if (images.length < 4) {
 				// if (e.target.files[0].size / 1024 < 1024) {
 				let reader = new FileReader();
 				let data = e.target.files[0];
@@ -79,7 +82,7 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 						uri => {
 							uri.lastModifiedDate = new Date();
 							uri.name = blobName;
-							setImages([...images, uri]);
+							setAddedImages([uri, ...addedImages]);
 							reader.readAsDataURL(uri);
 						},
 						'blob'
@@ -92,7 +95,7 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 						100,
 						0,
 						uri => {
-							setShopImagesPreviewUrl([...shopImagesPreviewUrl, uri]);
+							setImages([...images, {id: blobName, data: uri}]);
 						},
 						'base64'
 					);
@@ -103,24 +106,22 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 		}
 	}
 
-	const removePicture = (index) => {
-		let newImages = images.filter((item) => images[index] !== item);
-		let newShopImagesPreviewUrl = shopImagesPreviewUrl.filter((item) => shopImagesPreviewUrl[index] !== item);
+	const removePicture = (item) => {
+		let newImages;
+		if (item?.id) {
+			// the image is local
+			newImages = images.filter((i) => i?.id !== item?.id);
+			let newAddedImages = addedImages.filter((i) => i.name !== item.id);
+			setAddedImages(newAddedImages);
+		} else {
+			// the image is on server
+			newImages = images.filter((i) => i !== item);
+			setDeletedImages([item, ...deletedImages]);
+		}
 		setImages(newImages);
-		setShopImagesPreviewUrl(newShopImagesPreviewUrl);
 	}
 
-	const removeServerPictures = (item) => {
-		setDeleteLoader(item);
-		deleteShopImage(item)
-			.then((response) => {
-				setDeleteLoader(null);
-				console.log(response);
-			})
-			.catch((error) => {
-				console.log(error);
-			})
-	}
+	console.log('images', images);
 
 	return (
 		<Modal
@@ -147,22 +148,23 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 								<span style={{color: '#999999', fontSize: 14}} className="mt-2 mr-2">فقط پرونده ها با فرمت jpg را بارگذاری نمایید.</span>
 							</div>}
 							<div className="w-100 d-flex flex-row flex-wrap align-items-start justify-content-start mt-4">
-								{item?.photos.length > 0 && item?.photos.map((item, index) => {
+								{/*{item?.photos.length > 0 && item?.photos.map((item, index) => {*/}
+								{/*	return (*/}
+								{/*		<div key={Math.random().toString()} className="position-relative">*/}
+								{/*			<img alt="ezsaze" src={imagePreUrl(item)} className="border border-light-dark rounded selectedShopImage"/>*/}
+								{/*			<button type="button" className="btn bg-light border border-light-dark rounded-circle d-flex align-items-center justify-content-center p-0 m-0 outline position-absolute"*/}
+								{/*					  style={{width: 22, height: 22, top: -2, left: -2, zIndex: 999}} onClick={() => removeServerPictures(item)}>*/}
+								{/*				<FontAwesomeIcon icon={faTimes} color="red"/>*/}
+								{/*			</button>*/}
+								{/*		</div>*/}
+								{/*	);*/}
+								{/*})}*/}
+								{images?.map((item) => {
 									return (
 										<div key={Math.random().toString()} className="position-relative">
-											<img alt="ezsaze" src={imagePreUrl(item)} className="border border-light-dark rounded selectedShopImage"/>
-											<button type="button" className="btn bg-light border border-light-dark rounded-circle d-flex align-items-center justify-content-center p-0 m-0 outline position-absolute" style={{width: 22, height: 22, top: -2, left: -2, zIndex: 999}} onClick={() => removeServerPictures(item)}>
-												{!deleteLoader && <FontAwesomeIcon icon={faTimes} color="red"/>}
-												{deleteLoader && <Loader type="Circles" color='#777777' height={5} width={5} className="loader"/>}
-											</button>
-										</div>
-									);
-								})}
-								{shopImagesPreviewUrl.map((item, index) => {
-									return (
-										<div key={Math.random().toString()} className="position-relative">
-											<img alt="ezsaze" src={item} className="border border-light-dark rounded selectedShopImage"/>
-											<button type="button" className="btn bg-light border border-light-dark rounded-circle d-flex align-items-center justify-content-center p-0 m-0 outline position-absolute" style={{width: 22, height: 22, top: -2, left: -2, zIndex: 999}} onClick={() => removePicture(index)}>
+											<img alt="ezsaze" src={item?.id ? item?.data : imagePreUrl(item)} className="border border-light-dark rounded selectedShopImage"/>
+											<button type="button" className="btn bg-light border border-light-dark rounded-circle d-flex align-items-center justify-content-center p-0 m-0 outline position-absolute"
+													  style={{width: 22, height: 22, top: -2, left: -2, zIndex: 999}} onClick={() => removePicture(item)}>
 												<FontAwesomeIcon icon={faTimes} color="red"/>
 											</button>
 										</div>)

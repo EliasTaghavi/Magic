@@ -46,3 +46,26 @@ export const getChartData = () => {
 			}
 		})
 }
+
+export const SendChangeShopPasswordData = () => {
+	const token = tokenStore.getShopToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+
+	return axios.get('api/Buy/GetSellStatistics',{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}

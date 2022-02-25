@@ -3,12 +3,12 @@ import '../../../components/css/panelHeader.css';
 import {Link, useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-  faBars,
-  faUser,
-  faHome,
-  faUserAlt,
-  faSignOutAlt,
-  faList, faCubes
+   faBars,
+   faUser,
+   faHome,
+   faUserAlt,
+   faSignOutAlt,
+   faList, faCubes, faKey
 } from "@fortawesome/free-solid-svg-icons";
 import TokenStore from "../../../../../../utils/tokenStore";
 import Divider from "../../../../../../components/divider";
@@ -170,6 +170,12 @@ const MenuItemsUser = ({open, setOpen, noOpacity}) => {
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
         </Link>
       </li>
+       <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
+          <Link to="/user-panel/change-password" className="userMenuLink cpx-12">
+             <FontAwesomeIcon icon={faKey} className="fs18"/>
+             <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>تغییر کلمه عبور</span>
+          </Link>
+       </li>
       <Divider />
       <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel/profile" className="userMenuLink cpx-12">
@@ -205,7 +211,7 @@ const MenuItemsShop = ({open, setOpen}) => {
          </li>
          <Divider />
          <li className="menuItem rounded" onClick={() => setOpen(false)}>
-            <Link to="/shop-panel" className="menuLink cpx-12">
+            <Link to="/shop-panel/account" className="menuLink cpx-12">
                <FontAwesomeIcon icon={faUserAlt} className="fs18"/>
                <span className={`nav-link my-1 transition ${open ? '' : 'opacity0'}`}>حساب کاربری</span>
             </Link>

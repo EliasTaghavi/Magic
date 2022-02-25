@@ -61,7 +61,7 @@ export const deleteShop = (data) => {
 };
 
 export const SendCreateShopData = (data) => {
-	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address, refCode} = data;
+	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address, refCode, password} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -76,6 +76,7 @@ export const SendCreateShopData = (data) => {
 		userSurname: ownerLastName,
 		LatestOff: discount,
 		refcode: refCode,
+		password,
 	});
 
 	return axios.post('/api/shop/create', body,{headers}).then((res) => {
@@ -123,7 +124,7 @@ export const editDiscount = (data) => {
 }
 
 export const sendShopImage = (data) => {
-	let {shopId, files} = data;
+	let {shopId, files, deleted} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'multipart/form-data',
@@ -131,16 +132,18 @@ export const sendShopImage = (data) => {
 	};
 	let formData = new FormData();
 
-	if (files?.length > 0) {
-		for (let i = 0; i < files.length; i++) {
-			formData.append('Files', files[i]);
-		}
+
+	for (let i = 0; i < files.length; i++) {
+		formData.append('Files', files[i]);
+	}
+
+	for (let i = 0; i < deleted.length; i++) {
+		formData.append('Deleted', deleted[i]);
 	}
 
 	if (shopId) {
 		formData.append('ShopId', shopId);
 	}
-
 
 	return axios.post('/api/shop/addPhotos', formData, {headers}).then((res) => {
 		if (res?.data?.code === '401') {
