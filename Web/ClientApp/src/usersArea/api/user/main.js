@@ -70,14 +70,21 @@ export const getDiscountChartData = () => {
 		})
 }
 
-export const SendChangeUserPasswordData = () => {
+export const SendChangeUserPasswordData = (data) => {
+	let {prevPassword, newPassword} = data;
 	const token = tokenStore.getUserToken();
 	let headers = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
+	let body = JSON.stringify({
+		oldPassword: prevPassword,
+		newPassword: newPassword,
+	});
 
-	return axios.get('/api/buy/GetBenefit',{headers}).then((res) => {
+	console.log(body);
+
+	return axios.post('/api/user/changePassword', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

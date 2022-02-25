@@ -170,12 +170,6 @@ const MenuItemsUser = ({open, setOpen, noOpacity}) => {
           <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>تراکنش ها</span>
         </Link>
       </li>
-       <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
-          <Link to="/user-panel/change-password" className="userMenuLink cpx-12">
-             <FontAwesomeIcon icon={faKey} className="fs18"/>
-             <span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>تغییر کلمه عبور</span>
-          </Link>
-       </li>
       <Divider />
       <li className="userMenuItem rounded" onClick={() => setOpen(false)}>
         <Link to="/user-panel/profile" className="userMenuLink cpx-12">

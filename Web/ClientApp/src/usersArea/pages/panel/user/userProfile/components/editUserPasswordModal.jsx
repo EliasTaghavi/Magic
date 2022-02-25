@@ -66,15 +66,16 @@ const EditUserPasswordModal = ({onClose}) => {
 		let data = {
 			prevPassword,
 			newPassword,
-			repeatNewPassword,
 		};
 		SendChangeUserPasswordData(data)
 			.then((response) => {
-				let {success} = response
+				let {success} = response;
+				console.log(response);
 				if (response) {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
 					} else if (success) {
+						toast.success('کلمه عبور با موفقیت ویرایش شد', toastOptions)
 						onClose();
 						setLoader(false);
 					}
