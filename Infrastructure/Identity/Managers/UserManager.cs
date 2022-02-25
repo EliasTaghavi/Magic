@@ -309,7 +309,7 @@ namespace Infrastructure.Identity.Managers
         {
             User user = UserRepo.Read(dto.UserId);
             PasswordHashResult oldPass = PasswordHandler.CreatePasswordHash(dto.OldPassword);
-            if (user.PasswordHash == oldPass.PasswordHash && user.PasswordSalt == oldPass.PasswordSalt)
+            if (PasswordHandler.VerifyPasswordHash(dto.OldPassword, oldPass.PasswordHash, oldPass.PasswordSalt))
             {
                 PasswordHashResult newPass = PasswordHandler.CreatePasswordHash(dto.NewPassword);
                 user.PasswordHash = newPass.PasswordHash;
