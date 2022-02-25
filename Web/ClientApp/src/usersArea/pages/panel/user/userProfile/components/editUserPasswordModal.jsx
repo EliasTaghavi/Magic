@@ -69,12 +69,14 @@ const EditUserPasswordModal = ({onClose}) => {
 		};
 		SendChangeUserPasswordData(data)
 			.then((response) => {
-				let {success} = response;
+				let {success, result} = response;
 				console.log(response);
 				if (response) {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
-					} else if (success) {
+					} else if (!result) {
+						toast.error('کلمه عبور قبلی اشتباه است', toastOptions)
+					} else {
 						toast.success('کلمه عبور با موفقیت ویرایش شد', toastOptions)
 						onClose();
 						setLoader(false);

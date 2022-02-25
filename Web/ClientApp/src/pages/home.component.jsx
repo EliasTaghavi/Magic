@@ -11,6 +11,7 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {toast} from "react-toastify";
 import toastOptions from "../components/ToastOptions";
 import Loader from "react-loader-spinner";
+import {sendReport} from "../api";
 
 const Home = () => {
   const [errors, setErrors] = useState({});
@@ -42,7 +43,7 @@ const Home = () => {
     }
   }
 
-  const sendReport = (e) => {
+  const sendReportFn = (e) => {
     e.preventDefault();
     let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let newErrors = {};
@@ -56,12 +57,19 @@ const Home = () => {
     }
     if (emailRegex.test(email) && description.length > 10) {
       setSendLoader(true);
-      setTimeout(() => {
-        setEmail('');
-        setDescription('');
-        toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
-        setSendLoader(false);
-      }, 2000);
+      sendReport({email, description})
+         .then(() => {
+           setEmail('');
+           setDescription('');
+           toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
+           setSendLoader(false);
+         })
+         .catch(() =>{
+           setEmail('');
+           setDescription('');
+           toast.error('لطفا مجددا تلاش کنید', toastOptions);
+           setSendLoader(false);
+         })
     }
   };
 
@@ -150,7 +158,7 @@ const Home = () => {
             {/*<p className="mt-4 fs16 lh26">بهترین راه برای کاهش هزینه ها، گرفتن یک تخفیف خوب هنگام خریدهای دوره ای هست، ما براتون تخفیف گرفتیم</p>*/}
             {/*<img alt="magicOff" src={arrow} className="customArrow d-none d-md-flex" />*/}
             <div className="cardFrameContainer">
-              <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={(e) => sendReport(e)}>
+              <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={(e) => sendReportFn(e)}>
                 <div className="d-flex flex-column w90p align-items-start justify-content-center">
                   <label htmlFor="email" className={`transition fs14 mt-4 mb-0 ${focused === 'email' ? 'textMain' : 'textThird'}`}>
                     ایمیل<span style={{color: 'red'}}>{`\xa0*`}</span>

@@ -41,3 +41,29 @@ export const getShopDetails = (shopId) => {
 			}
 		})
 }
+
+export const sendReport = (data) => {
+	let {email, description} = data;
+	let headers = {
+		'Content-Type': 'application/json',
+	};
+	let body =JSON.stringify( {
+		email,
+		text: description,
+	});
+
+	return axios.post(`/api/comment/add`, body, {headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
