@@ -12,9 +12,18 @@ export const getReports = (data) => {
 	let body = JSON.stringify({
 		index,
 		size,
+		sortField: '',
+		order: 0,
+		metaData: {
+			text: '',
+			userName: '',
+			email: ''
+		}
 	});
+	console.log(body);
 
 	return axios.post('/api/comment/search', body,{headers}).then((res) => {
+		console.log(res);
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {
@@ -22,6 +31,7 @@ export const getReports = (data) => {
 		}
 	})
 		.catch((error) => {
+			console.log(error, error.response);
 			if (error.response.status === 401) {
 				return 401;
 			} else {
