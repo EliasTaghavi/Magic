@@ -28,6 +28,8 @@ namespace Infrastructure.Comments.Managers
             var result = commentRepo.Search(dto);
             return new ManagerResult<PagedListDto<CommentListDto>>
             {
+                Success = true,
+                Code = 200,
                 Result = new PagedListDto<CommentListDto>
                 {
                     Count = result.Count,
