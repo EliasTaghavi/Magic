@@ -7,6 +7,8 @@ using Core.Identity.Interfaces;
 using Core.Identity.Managers;
 using Core.Identity.Repos;
 using Core.Services;
+using Core.Shops.Dto;
+using Core.Shops.Repos;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
@@ -24,7 +26,7 @@ namespace Infrastructure.Identity.Managers
         private readonly SMSSettings settings;
 
         private readonly ISMSService SMSService;
-
+        private readonly IShopRepo shopRepo;
         private readonly IJwtTokenHandler TokenHandler;
 
         private readonly ITokenManager TokenManager;
@@ -43,6 +45,7 @@ namespace Infrastructure.Identity.Managers
                               ITokenManager tokenManager,
                               ICacheRepo cacheRepo,
                               ISMSService sMSService,
+                              IShopRepo shopRepo,
                               IOptionsMonitor<SMSSettings> options)
         {
             UserRepo = userRepo;
@@ -54,6 +57,7 @@ namespace Infrastructure.Identity.Managers
             TokenManager = tokenManager;
             CacheRepo = cacheRepo;
             SMSService = sMSService;
+            this.shopRepo = shopRepo;
             settings = options.CurrentValue;
         }
 
@@ -68,6 +72,58 @@ namespace Infrastructure.Identity.Managers
                 return CreateToken(user, dto.Ip);
             }
             return new ManagerResult<AccessToken>()
+            {
+                Code = 11,
+                Message = "UsernameOrPasswordIsWrong.",
+                Success = false
+            };
+        }
+
+        public ManagerResult<VerifiedUserWithShopDto> CreateByUPShop(UPSessionCreateDto dto)
+        {
+            User user = UserRepo.ReadByUsername(dto.Username);
+            byte[] hash = user.PasswordHash;
+            byte[] salt = user.PasswordSalt;
+            bool flag = PasswordHandler.VerifyPasswordHash(dto.Password, hash, salt);
+            if (flag)
+            {
+                var token = CreateToken(user, dto.Ip);
+                var roles = roleRepo.GetSet().Where(x => x.Users.Any(y => y.Id == user.Id));
+                var shop = shopRepo.ReadByUserId(user.Id);
+                if (shop == null)
+                {
+                    return new ManagerResult<VerifiedUserWithShopDto>
+                    {
+                        Code = 22,
+                        Errors = null,
+                        Message = "NoShop",
+                        Success = false,
+                        Result = null
+                    };
+                }
+
+                var resultDto = new VerifiedUserWithShopDto
+                {
+                    Address = user.Address,
+                    Birthday = user.Birthday,
+                    FirstName = user.Name,
+                    LastName = user.Surname,
+                    Mobile = user.Mobile,
+                    ShopkeeperId = user.Id,
+                    Shop = new ShopDto
+                    {
+                        Address = shop.Address,
+                        Name = shop.Name,
+                        Phone = shop.Phone,
+                        PhotoUrl = shop?.Photos?.Where(x => x.Type == Core.File.Enums.FileType.Shop).Select(x => x.FullName).ToList(),
+                        ShopLogoUrl = shop?.Photos?.FirstOrDefault(x => x.Type == Core.File.Enums.FileType.ShopId)?.FullName
+                    },
+                    Status = UserStatus.Confirmed,
+                    Token = token.Result.JWT
+                };
+                return new ManagerResult<VerifiedUserWithShopDto>(resultDto);
+            }
+            return new ManagerResult<VerifiedUserWithShopDto>()
             {
                 Code = 11,
                 Message = "UsernameOrPasswordIsWrong.",

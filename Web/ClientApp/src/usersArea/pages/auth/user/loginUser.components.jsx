@@ -7,11 +7,11 @@ import TokenStore from '../../../../utils/tokenStore';
 import {useHistory} from "react-router-dom";
 import DatePicker from "react-modern-calendar-datepicker";
 import SignupUserValidation from "../../../../components/validations/authUser/signupUserValidation";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faEyeSlash, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Resizer from 'react-image-file-resizer';
 import SupportModal from "../../../../components/shared/supportModal.component";
-import {sendUserLoginSms, sendUserLoginCode, signupUser} from '../../../api/auth/user';
+import {sendUserLoginSms, sendUserLoginCode, sendUserLoginPassword, signupUser} from '../../../api/auth/user';
 import Loader from 'react-loader-spinner';
 import RenderProgressBarModal from "../../../../components/shared/renderProgressBarModal";
 import RenderUserWaitingModal from "./components/renderUserWaitingModal";
@@ -39,11 +39,14 @@ const LoginUser = () => {
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState('');
   const [btnLoader, setBtnLoader] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [code, setCode] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
+  const [radio, setRadio] = useState('password');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
   const [referralCode, setReferralCode] = useState('');
@@ -60,6 +63,7 @@ const LoginUser = () => {
   const [selectMediaModal, setSelectMediaModal] = useState('');
   const [camera, setCamera] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
+  const [loginPassword, setLoginPassword] = useState('');
 
   useEffect(() => {
     timer = setTimeout(() => {
@@ -213,6 +217,12 @@ const LoginUser = () => {
       case 'lastName':
         setLastName(target.value);
         break;
+      case 'password':
+        setPassword(target.value);
+        break;
+      case 'loginPassword':
+        setLoginPassword(target.value);
+        break;
       case 'address':
         setAddress(target.value);
         break;
@@ -232,14 +242,25 @@ const LoginUser = () => {
         mobile,
         code,
         step,
+        radio,
+        loginPassword,
       }
       LoginUserValidation(data)
          .then((response) => {
+           console.log(response);
            if (Object.entries(response).length < 1) {
              if (step === 1) {
-               sendSmsFn();
+               if (radio === 'code') {
+                 sendSmsFn();
+               } else {
+                 setStep(2);
+               }
              } else {
-               sendCode();
+               if (radio === 'code') {
+                 sendCode();
+               } else {
+                 checkPassword();
+               }
              }
            } else {
              setErrors(response);
@@ -258,6 +279,7 @@ const LoginUser = () => {
         selfiImage,
         address,
         token,
+        password,
         referralCode,
         isStudent,
       }
@@ -305,6 +327,50 @@ const LoginUser = () => {
 
   const resendCode = async () => {
     await sendUserLoginSms(mobile);
+  };
+
+  const checkPassword = () => {
+    setBtnLoader(true);
+    sendUserLoginPassword({mobile, loginPassword})
+       .then((response) => {
+         let {result: {token, status, hasActivePack, firstName: responseFirstName, lastName: responseLatsName}, success} = response;
+         if (response) {
+           if (response === 401) {
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
+           } else if (success) {
+             if (status !== 4 && status !== 7) {
+               if (status === 3) {
+                 TokenStore.setUserToken(token);
+                 dispatch(UserStore.actions.setUserData(response.result));
+                 setBtnLoader(false);
+                 if (hasActivePack) {
+                   history.replace('/user-panel');
+                 } else {
+                   history.replace('/user-panel');
+                   history.push('/user-panel/packages');
+                 }
+               } else if (status === 6) {
+                 setWaitingModal(2);
+               } else {
+                 setWaitingModal(3);
+               }
+             } else {
+               setStep(3);
+               setFirstName(responseFirstName);
+               setLastName(responseLatsName);
+               setToken(token);
+               setBtnLoader(false);
+             }
+           }
+         } else {
+           toast.error('خطای سرور', toastOptions);
+           setBtnLoader(false);
+         }
+       })
+       .catch(() => {
+         setBtnLoader(false);
+         toast.error('خطای سرور', toastOptions);
+       });
   };
 
   const sendCode = () => {
@@ -416,7 +482,17 @@ const LoginUser = () => {
         <form noValidate={true} autoComplete="off" className="loginForm" onSubmit={handleValidate}>
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
-              <label htmlFor="mobile" className={`transition fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
+              <div className="w-100 d-flex justify-content-center align-items-center">
+                <div className="cursor d-flex align-items-center">
+                  <input type="radio" id="password" name="radio" className="cursor" style={{width: 20, height: 20}} value={false} required={true} checked={radio === 'password'} onChange={() => setRadio('password')}/>
+                  <label className="cursor p-0 m-0 pr-2" htmlFor="password">کلمه عبور</label>
+                </div>
+                <div className="cursor d-flex align-items-center mr-4">
+                  <input type="radio" id="code" name="radio" className="cursor" style={{width: 20, height: 20}} value={true} required={true} checked={radio === 'code'} onChange={() => setRadio('code')}/>
+                  <label className="cursor p-0 m-0 pr-2" htmlFor="code">کد یکبار مصرف</label>
+                </div>
+              </div>
+              <label htmlFor="mobile" className={`transition mt-5 fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
                 شماره موبایل<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
@@ -438,7 +514,7 @@ const LoginUser = () => {
               }}>{errors['mobile']}</span>
             </div>
           )}
-          {step === 2 && (
+          {step === 2 && radio === 'code' && (
             <div className="codeContainer">
               <label htmlFor="code" className={`transition fs14 ${focused === 'code' ? 'textMain' : 'textThird'}`}>
                 {`لطفا کد ارسالی به ${mobile} را وارد کنید`}<span style={{color: 'red'}}>{`\xa0*`}</span>
@@ -461,6 +537,29 @@ const LoginUser = () => {
                 display: errors['code'] ? 'block' : 'none',
               }}>{errors['code']}</span>
             </div>
+          )}
+          {step === 2 && radio === 'password' && (
+             <div className="codeContainer">
+               <label htmlFor="loginPassword" className={`transition fs14 ${focused === 'loginPassword' ? 'textMain' : 'textThird'}`}>
+                 کلمه عبور<span style={{color: 'red'}}>{`\xa0*`}</span>
+               </label>
+               <input
+                  id="loginPassword"
+                  name="loginPassword"
+                  type="text"
+                  autoFocus={true}
+                  required={true}
+                  className={`form-control input ${errors['loginPassword'] && 'is-invalid'}`}
+                  value={loginPassword}
+                  onChange={changeValue}
+                  placeholder="..."
+                  onFocus={focusedFn}
+                  onBlur={unfocusedFn}
+               />
+               <span className="invalid-feedback mt-2 fs14" style={{
+                 display: errors['loginPassword'] ? 'block' : 'none',
+               }}>{errors['loginPassword']}</span>
+             </div>
           )}
           {step === 3 && (
             <div className="w-100">
@@ -524,6 +623,33 @@ const LoginUser = () => {
                 <span className="invalid-feedback mt-2 fs14" style={{
                   display: errors['birthday'] ? 'block' : 'none',
                 }}>{errors['birthday']}</span>
+              </div>
+              <div className="w-100 form-group mt-3">
+                <label htmlFor="password" className={`transition fs14 mb-0 ${focused === 'password' ? 'textMain' : 'textThird'}`}>
+                  کلمه عبور<span style={{color: 'red'}}>{`\xa0*`}</span>
+                </label>
+                <div className="position-relative">
+                  <input
+                     disabled={loader}
+                     name="password"
+                     autoFocus={false}
+                     required={true}
+                     type={passwordVisible ? 'text' : 'password'}
+                     value={password}
+                     placeholder="..."
+                     onFocus={() => setFocused('password')}
+                     onBlur={() => setFocused('')}
+                     className={`form-control w-100 text-right ${errors['password'] ? 'is-invalid' : null}`}
+                     onChange={(e) => changeValue(e)}/>
+                  <button type="button" className="btn bg-transparent position-absolute outline" style={{top: 5, left: 0}} onClick={() => setPasswordVisible(!passwordVisible)}>
+                    {!passwordVisible && <FontAwesomeIcon icon={faEyeSlash} className="textThird" />}
+                    {passwordVisible && <FontAwesomeIcon icon={faEye} className="textThird" />}
+                  </button>
+                </div>
+                <span className="invalid-feedback" style={{
+                  display: errors['password'] ? 'block' : 'none',
+                  fontSize: 14
+                }}>{errors['password']}</span>
               </div>
               <label htmlFor="address" className={`transition fs14 mt-4 ${focused === 'address' ? 'textMain' : 'textThird'}`}>
                 آدرس<span style={{color: 'red'}}>{`\xa0*`}</span>
@@ -625,12 +751,13 @@ const LoginUser = () => {
             {!btnLoader && <span>ثبت</span>}
             {btnLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={8} width={70} className="loader"/>}
           </button>
-          {step === 2 && <Timer resendCode={resendCode} setSupportModal={(value) => setSupportModal(value)}/>}
+          {step === 2 && radio === 'code' && <Timer resendCode={resendCode} setSupportModal={(value) => setSupportModal(value)}/>}
         </form>
         {step === 2 && (
           <button className="bg-transparent border-0 fs14 text-primary textUnderline"
             onClick={() => {
               setCode('');
+              setLoginPassword('');
               setErrors({});
               setStep(1);
             }}>بازگشت</button>

@@ -278,7 +278,7 @@
 @media screen and (min-width: 768px) {
     .loginForm {
         width: 50%;
-        padding: 80px 0;
+        padding: 60px 0 80px 0;
     }
 }
 /*end of login part*/
@@ -538,6 +538,31 @@ tr td:last-child {
 
 .jobPartClosed {
     max-height: 0 !important;
+}
+
+.addImageBox {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    border: 1px dashed #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectedShopImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin: 0.5rem;
+}
+
+.shopDetailsImage {
+    width: 100%;
+    object-fit: cover;
 }
 
 @media screen and (min-width: 350px) {

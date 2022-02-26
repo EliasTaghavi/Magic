@@ -4,11 +4,11 @@ import {Link, useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import Footer from "./footer/footer.component";
-import bg from '../assets/images/1.jpg';
 import {getShopDetails} from "../api/index";
 import {toast} from "react-toastify";
 import toastOptions from "../components/ToastOptions";
 import Loader from "react-loader-spinner";
+import {imagePreUrl} from "../usersArea/api/imagePreUrl";
 
 const ShopDetails = () => {
 	const container = useRef(null);
@@ -112,33 +112,38 @@ const ShopDetails = () => {
 const ImageSlider = ({shopDetails}) => {
 	console.log(shopDetails);
 	return (
-		<div>
-			<div data-tip="" data-for="global" id="carouselExampleIndicators" className="carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
-				<ol className="carousel-indicators">
-					<li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-					{/*<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>*/}
-					{/*<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>*/}
-				</ol>
-				<div className="carousel-inner">
-					<div className="carousel-item active" style={{maxHeight: 350, backgroundPosition: 'center'}}>
-						<img className="d-block w-100" src={bg} alt="First slide"/>
-					</div>
-					{/*<div className="carousel-item">*/}
-					{/*	<img className="d-block w-100" src="..." alt="Second slide"/>*/}
-					{/*</div>*/}
-					{/*<div className="carousel-item">*/}
-					{/*	<img className="d-block w-100" src="..." alt="Third slide"/>*/}
-					{/*</div>*/}
-				</div>
-				<a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-					<span className="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span className="sr-only">Previous</span>
-				</a>
-				<a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-					<span className="carousel-control-next-icon" aria-hidden="true"></span>
-					<span className="sr-only">Next</span>
-				</a>
+		<div data-tip="" data-for="global" id="carouselExampleIndicators" className="w-100 carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
+			<ol className="carousel-indicators">
+				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item) => {
+					return (
+						<li key={item?.toString()} data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
+					);
+				})}
+			</ol>
+			<div className="carousel-inner">
+				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item) => {
+					console.log(item);
+					return (
+						<div key={item?.toString()} className="carousel-item active" style={{maxHeight: 350, backgroundPosition: 'center'}}>
+							<img className="d-block w-100 shopDetailsImage" src={imagePreUrl(item)} alt="First slide"/>
+						</div>
+					);
+				})}
+				{/*<div className="carousel-item">*/}
+				{/*	<img className="d-block w-100" src="..." alt="Second slide"/>*/}
+				{/*</div>*/}
+				{/*<div className="carousel-item">*/}
+				{/*	<img className="d-block w-100" src="..." alt="Third slide"/>*/}
+				{/*</div>*/}
 			</div>
+			<a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+				<span className="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span className="sr-only">Previous</span>
+			</a>
+			<a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+				<span className="carousel-control-next-icon" aria-hidden="true"></span>
+				<span className="sr-only">Next</span>
+			</a>
 		</div>
 	);
 };

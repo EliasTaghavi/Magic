@@ -1,4 +1,5 @@
 ﻿using Core.Base.Entities;
+using Core.Comments.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Purchase.Entities;
@@ -122,6 +123,18 @@ namespace Infrastructure.Data
                 .HasColumnType("money");
                 buy.Property(i => i.AfterDiscount)
                 .HasColumnType("money");
+            });
+        }
+
+        public static void CommentValidation(this ModelBuilder builder)
+        {
+            builder.Entity<Comment>(comment =>
+            {
+                comment.Property(x => x.Id)
+                     .ValueGeneratedOnAdd();
+                comment.HasKey(x => x.Id);
+                comment.Ignore(x => x.ObjectState);
+                comment.HasOne(x => x.User);
             });
         }
 

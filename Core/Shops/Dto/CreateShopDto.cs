@@ -10,5 +10,6 @@
         public string UserSurname { get; set; }
         public int LatestOff { get; set; }
         public string Refcode { get; set; }
+        public string Password { get; set; }
     }
 }

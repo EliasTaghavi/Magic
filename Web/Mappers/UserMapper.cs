@@ -25,6 +25,7 @@ namespace Web.Mappers
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
                 RefCode = viewModel.RefCode,
+                Password = viewModel.Password,
             };
         }
 
@@ -70,6 +71,16 @@ namespace Web.Mappers
             {
                 TypeId = viewModel.TypeId,
                 UserId = viewModel.UserId,
+            };
+        }
+
+        public static ChangePasswordDto ToDto(this ChangePasswordViewModel viewModel, string userId)
+        {
+            return new ChangePasswordDto
+            {
+                UserId = userId,
+                NewPassword = viewModel.NewPassword,
+                OldPassword = viewModel.OldPassword,
             };
         }
     }

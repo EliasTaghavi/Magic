@@ -1,6 +1,5 @@
 ﻿using Core.Base.Entities;
 using Core.File.Enums;
-using Core.Identity.Entities;
 
 namespace Core.File.Entities
 {

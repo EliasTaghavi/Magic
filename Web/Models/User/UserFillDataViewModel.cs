@@ -14,5 +14,6 @@ namespace Web.Models.User
         public IFormFile Selfie { get; set; }
         public IFormFile Identity { get; set; }
         public string RefCode { get; set; }
+        public string Password { get; set; }
     }
 }

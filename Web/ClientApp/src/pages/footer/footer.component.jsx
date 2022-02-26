@@ -82,7 +82,7 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            enamad logo
+
           </div>
         </div>
         <p className="w-100 copyRight">

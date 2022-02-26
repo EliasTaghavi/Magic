@@ -3,6 +3,7 @@ global using System;
 global using System.Collections.Generic;
 global using System.Linq;
 using Core.Base.Entities;
+using Core.Comments.Entities;
 using Core.File.Entities;
 using Core.Identity.Entities;
 using Core.Packs.Entities;
@@ -26,6 +27,7 @@ namespace Infrastructure.Data
         public DbSet<Shop> Shops { get; set; }
         public DbSet<ShopOff> ShopOffs { get; set; }
         public DbSet<Buy> Buys { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         public OffDbContext(DbContextOptions<OffDbContext> options) : base(options)
         {
@@ -42,6 +44,7 @@ namespace Infrastructure.Data
             builder.ShopValidation();
             builder.ShopOffValidation();
             builder.BuyValidation();
+            builder.CommentValidation();
             builder.PackBuyValidation();
             builder.AppFileValidation();
             builder.SettingValidation();

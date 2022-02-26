@@ -16,6 +16,7 @@ namespace Web.Models.User
         public string Mobile { get; set; }
         public string SelfieURL { get; set; }
         public string IdentityURL { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
         public DateTime CeatedDate { get; set; }
         public string TypeId { get; set; }
         public List<string> Roles { get; set; }

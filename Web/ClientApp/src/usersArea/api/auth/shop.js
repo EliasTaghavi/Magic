@@ -44,3 +44,29 @@ export const sendShopLoginCode = ({mobile, code}) => {
 			}
 		})
 }
+
+export const sendShopLoginPassword = ({mobile, loginPassword}) => {
+	let headers = {
+		'Content-Type': 'application/json',
+	};
+	let rawData = {
+		username: mobile,
+		password: loginPassword,
+	};
+	console.log(rawData);
+	let data = JSON.stringify(rawData);
+	return axios.post('/api/shop/createByUp', data, {headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}

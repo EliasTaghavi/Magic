@@ -137,5 +137,15 @@ namespace Web.Controllers
             var response = UserManager.GetQR(userId);
             return Ok(response);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            var userId = User.GetUserId();
+            var dto = model.ToDto(userId);
+            var response = UserManager.ChangePassword(dto);
+            return Ok(response);
+        }
     }
 }

@@ -11,6 +11,8 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {toast} from "react-toastify";
 import toastOptions from "../components/ToastOptions";
 import Loader from "react-loader-spinner";
+import {sendReport} from "../api";
+import tokenStore from "../utils/tokenStore";
 
 const Home = () => {
   const [errors, setErrors] = useState({});
@@ -42,26 +44,42 @@ const Home = () => {
     }
   }
 
-  const sendReport = (e) => {
+  const sendReportFn = (e) => {
     e.preventDefault();
-    let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    let newErrors = {};
-    if (!emailRegex.test(email)) {
-      newErrors.email = 'ایمیل وارد شده اشتباه است';
-      setErrors(newErrors);
-    }
-    if (description?.length < 10) {
-      newErrors.description = 'حداقل 10 کاراکتر الزامی است';
-      setErrors(newErrors);
-    }
-    if (emailRegex.test(email) && description.length > 10) {
-      setSendLoader(true);
-      setTimeout(() => {
-        setEmail('');
-        setDescription('');
-        toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
-        setSendLoader(false);
-      }, 2000);
+    let userToken = tokenStore.getUserToken();
+    let shopToken =  tokenStore.getShopToken();
+    if (userToken || shopToken) {
+      let mainToken = userToken ?? shopToken;
+      let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      let newErrors = {};
+      if (!emailRegex.test(email)) {
+        newErrors.email = 'ایمیل وارد شده اشتباه است';
+        setErrors(newErrors);
+      }
+      if (description?.length < 10) {
+        newErrors.description = 'حداقل 10 کاراکتر الزامی است';
+        setErrors(newErrors);
+      }
+      if (emailRegex.test(email) && description.length > 10) {
+        setSendLoader(true);
+        sendReport({mainToken, email, description})
+           .then((response) => {
+             console.log(response);
+             setEmail('');
+             setDescription('');
+             toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
+             setSendLoader(false);
+           })
+           .catch((e) =>{
+             console.log(e, e.response);
+             setEmail('');
+             setDescription('');
+             toast.error('لطفا مجددا تلاش کنید', toastOptions);
+             setSendLoader(false);
+           })
+      }
+    } else {
+      toast.error('ابتدا به حساب خود وارد شوید', toastOptions);
     }
   };
 
@@ -150,7 +168,7 @@ const Home = () => {
             {/*<p className="mt-4 fs16 lh26">بهترین راه برای کاهش هزینه ها، گرفتن یک تخفیف خوب هنگام خریدهای دوره ای هست، ما براتون تخفیف گرفتیم</p>*/}
             {/*<img alt="magicOff" src={arrow} className="customArrow d-none d-md-flex" />*/}
             <div className="cardFrameContainer">
-              <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={(e) => sendReport(e)}>
+              <form autoComplete="off" noValidate={true} className="cardFrame reportBox p-4" onSubmit={(e) => sendReportFn(e)}>
                 <div className="d-flex flex-column w90p align-items-start justify-content-center">
                   <label htmlFor="email" className={`transition fs14 mt-4 mb-0 ${focused === 'email' ? 'textMain' : 'textThird'}`}>
                     ایمیل<span style={{color: 'red'}}>{`\xa0*`}</span>
@@ -158,7 +176,7 @@ const Home = () => {
                   <input
                     id="email"
                     name="email"
-                    type="text"
+                    type="email"
                     autoFocus={false}
                     required={true}
                     className={`form-control bg-white ${errors['email'] && 'is-invalid'}`}

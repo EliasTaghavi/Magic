@@ -2,7 +2,6 @@
 using Core.Base.Dto;
 using Core.Identity.Dto;
 using Core.Shops.Dto;
-using Microsoft.AspNetCore.Http;
 using Web.Models.Shop;
 
 namespace Web.Mappers
@@ -30,6 +29,7 @@ namespace Web.Mappers
                 UserSurname = viewModel.UserSurname,
                 LatestOff = viewModel.LatestOff,
                 Refcode = viewModel.Refcode,
+                Password = viewModel.Password,
             };
         }
 
@@ -54,6 +54,7 @@ namespace Web.Mappers
                 CreatedDate = dto.CreatedDate,
                 LatestOff = dto.LatestOff,
                 RefCode = dto.RefCode,
+                Photos = dto.Photos
             };
         }
 
@@ -91,6 +92,7 @@ namespace Web.Mappers
             var dto = new AddPhotosForShopDto
             {
                 ShopId = viewModel.ShopId,
+                Deleted = viewModel.Deleted,
                 InputFileDtos = new List<InputFileDto>()
             };
             foreach (var file in viewModel.Files)

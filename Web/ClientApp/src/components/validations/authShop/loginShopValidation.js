@@ -8,8 +8,14 @@ const LoginShopValidation = (data) => {
         errors['mobile'] = 'شماره موبایل اشتباه است.'
       }
     } else if (data?.step === 2) {
-      if (!data?.code || data?.code.length !== 4 || !onlyNumbersRegex.test(data?.code)) {
-        errors['code'] = 'کد وارد شده اشتباه است.'
+      if (data?.radio === 'code') {
+        if (!data?.code || data?.code.length !== 4 || !onlyNumbersRegex.test(data?.code)) {
+          errors['code'] = 'کد وارد شده اشتباه است.'
+        }
+      } else {
+        if (!data?.loginPassword) {
+          errors['loginPassword'] = 'کلمه عبور وارد شده اشتباه است.'
+        }
       }
     } else {
       // FIXME

@@ -24,16 +24,20 @@ const SignupUserValidation = (data) => {
       errors['address'] = 'آدرس حداقل 10 کارکتر است.'
     }
 
-    if (data?.image.size > 2095152) {
-      errors['image'] = 'حجم عکس نباید بیشتر از 2 مگابایت باشد.'
+    if (data?.image.size > 4194304) {
+      errors['image'] = 'حجم عکس نباید بیشتر از 4 مگابایت باشد.'
     }
 
-    if (data?.selfiImage.size > 2095152) {
-      errors['selfiImage'] = 'حجم عکس نباید بیشتر از 2 مگابایت باشد.'
+    if (data?.selfiImage.size > 4194304) {
+      errors['selfiImage'] = 'حجم عکس نباید بیشتر از 4 مگابایت باشد.'
     }
 
     if (data?.isStudent && data?.image?.length < 1) {
       errors['image'] = 'تصویر کارت دانشجویی الزامی است.'
+    }
+
+    if (data?.password && data?.password?.length < 5) {
+      errors['password'] = 'کلمه عبور حداقل 5 کاراکتر است.'
     }
 
     value(errors);

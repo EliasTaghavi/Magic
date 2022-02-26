@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../../../admin.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faBars, faBoxes, faCode,
+	faBars, faBoxes, faCode, faComment,
 	faHome, faList,
 	faMoneyBill,
 	faSignOutAlt, faStore,
@@ -262,6 +262,28 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 						<FontAwesomeIcon icon={faCode} className="fs18"/>
 						<span
 							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
+					</Link>
+				)}
+			</li>
+			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+				{!open && <OverlayTrigger
+					key='details'
+					placement='left'
+					overlay={
+						<Tooltip id={`tooltip-top`} style={{fontFamily: 'Vazir', fontSize: 14}}>
+							نظرات و پیشنهادات
+						</Tooltip>
+					}>
+					<Link to="/admin/panel/reports" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faComment} className="fs18"/>
+						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>نظرات و پیشنهادات</span>
+					</Link>
+				</OverlayTrigger>}
+				{open && (
+					<Link to="/admin/panel/reports" className="menuLink cpx-12">
+						<FontAwesomeIcon icon={faComment} className="fs18"/>
+						<span
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>نظرات و پیشنهادات</span>
 					</Link>
 				)}
 			</li>

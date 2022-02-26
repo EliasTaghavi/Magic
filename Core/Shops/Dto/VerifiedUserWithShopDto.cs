@@ -12,6 +12,7 @@ namespace Core.Shops.Dto
         public string Mobile { get; set; }
         public DateTime Birthday { get; set; }
         public string SelfieURL { get; set; }
+        public string ShopkeeperId { get; set; }
         public ShopDto Shop { get; set; }
     }
 }

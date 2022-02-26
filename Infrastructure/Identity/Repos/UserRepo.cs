@@ -55,7 +55,7 @@ namespace Infrastructure.Identity.Repos
 
         public User ReadByUsername(string UserName)
         {
-            return GetSet().FirstOrDefault(x => x.Username == UserName);
+            return GetSet().FirstOrDefault(x => x.Username == UserName || x.Mobile == UserName);
         }
 
         public List<Role> ReadUserAllRoles(User User)
@@ -88,6 +88,10 @@ namespace Infrastructure.Identity.Repos
             if (!string.IsNullOrEmpty(dto.SortField))
             {
                 query = query.OrderBy(dto.SortField);
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.CreatedDate);
             }
             int count = query.Count();
             var result = query.Include(x => x.Roles).Skip((dto.Index - 1) * dto.Size).Take(dto.Size).ToList();

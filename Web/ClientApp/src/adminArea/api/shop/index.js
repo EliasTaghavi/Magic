@@ -61,7 +61,7 @@ export const deleteShop = (data) => {
 };
 
 export const SendCreateShopData = (data) => {
-	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address, refCode} = data;
+	const {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address, refCode, password} = data;
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -76,6 +76,7 @@ export const SendCreateShopData = (data) => {
 		userSurname: ownerLastName,
 		LatestOff: discount,
 		refcode: refCode,
+		password,
 	});
 
 	return axios.post('/api/shop/create', body,{headers}).then((res) => {
@@ -107,6 +108,74 @@ export const editDiscount = (data) => {
 	});
 
 	return axios.post('/api/shop/updateOff', body,{headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
+
+export const sendShopImage = (data) => {
+	let {shopId, files, deleted} = data;
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'multipart/form-data',
+		'Authorization': 'Bearer ' + token,
+	};
+	let formData = new FormData();
+
+
+	for (let i = 0; i < files.length; i++) {
+		formData.append('Files', files[i]);
+	}
+
+	for (let i = 0; i < deleted.length; i++) {
+		formData.append('Deleted', deleted[i]);
+	}
+
+	if (shopId) {
+		formData.append('ShopId', shopId);
+	}
+
+	return axios.post('/api/shop/addPhotos', formData, {headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+}
+
+export const deleteShopImage = (data) => {
+	console.log(7878, data);
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': 'Bearer ' + token,
+	};
+	let body = JSON.stringify({
+		photoId: data.replace(/(.png)|(.jpg)|(.jpeg)/gm, ''),
+	});
+
+	console.log(body);
+
+
+	return axios.post('/api/shop/deletePhoto', body, {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

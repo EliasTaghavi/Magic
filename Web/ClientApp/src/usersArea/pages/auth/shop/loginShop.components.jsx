@@ -7,7 +7,7 @@ import TokenStore from "../../../../utils/tokenStore";
 import {useHistory} from "react-router-dom";
 import SignupShopValidation from "../../../../components/validations/authShop/signupShopValidation";
 import Loader from "react-loader-spinner";
-import {sendShopLoginSms, sendShopLoginCode} from "../../../api/auth/shop";
+import {sendShopLoginSms, sendShopLoginCode, sendShopLoginPassword} from "../../../api/auth/shop";
 import * as UserStore from "../../../../store/user";
 import {useDispatch} from "react-redux";
 import RenderUserWaitingModal from "../user/components/renderUserWaitingModal";
@@ -28,9 +28,11 @@ const LoginShop = () => {
   const [shopName, setShopName] = useState('');
   const [shopPhone, setShopPhone] = useState('');
   const [shopAddress, setShopAddress] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [shopPassword, setShopPassword] = useState('');
   const [supportModal, setSupportModal] = useState(false);
   const [focused, setFocused] = useState('');
+  const [radio, setRadio] = useState('password');
   // const [loader, setLoader] = useState(true);
   const [btnLoader, setBtnLoader] = useState(false);
   const [waitingModal, setWaitingModal] = useState(0); // 0=false - 1=wait on signup - 2=wait in login 3=locked
@@ -63,6 +65,9 @@ const LoginShop = () => {
       case 'code':
         setCode(target.value);
         break;
+      case 'loginPassword':
+        setLoginPassword(target.value);
+        break;
       case 'shopName':
         setShopName(target.value);
         break;
@@ -91,14 +96,24 @@ const LoginShop = () => {
         mobile,
         code,
         step,
+        loginPassword,
+        radio,
       }
       LoginShopValidation(data)
         .then((response) => {
           if (Object.entries(response).length < 1) {
             if (step === 1) {
-              sendSmsFn();
+              if (radio === 'code') {
+                sendSmsFn();
+              } else {
+                setStep(2);
+              }
             } else {
-              sendCode();
+              if (radio === 'code') {
+                sendCode();
+              } else {
+                checkPassword();
+              }
             }
           } else {
             setErrors(response);
@@ -132,6 +147,53 @@ const LoginShop = () => {
     }
   }
 
+  const checkPassword = () => {
+    setBtnLoader(true);
+    sendShopLoginPassword({mobile, loginPassword})
+       .then((response) => {
+         let {result, success} = response;
+         if (response?.code) {
+           if (response === 401) {
+             dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
+           } else if (response === false) {
+             setBtnLoader(false);
+             toast.error('خطای سرور', toastOptions);
+           } else {
+             if (success) {
+               if (result?.status !== 4) {
+                 if (result?.status === 3) {
+                   TokenStore.setShopToken(result?.token);
+                   dispatch(UserStore.actions.setShopData({...result?.shop, token: result?.token}));
+                   setBtnLoader(false);
+                   history.replace(history?.location?.state?.from ?? '/shop-panel');
+                 } else if (result?.status === 6) {
+                   setWaitingModal(2);
+                 } else {
+                   setWaitingModal(3);
+                 }
+               } else {
+                 // setStep(3);
+                 // setToken(token);
+                 // setBtnLoader(false);
+               }
+             } else {
+               if (response?.result === null) {
+                 setBtnLoader(false);
+                 toast.error('ورود ناموفق', toastOptions);
+               }
+             }
+           }
+         } else {
+           setBtnLoader(false);
+           toast.error('خطای سرور', toastOptions);
+         }
+       })
+       .catch((error) => {
+         setBtnLoader(false);
+         toast.error('خطای سرور', toastOptions);
+       });
+  };
+
   const sendSmsFn = () => {
     setBtnLoader(true);
     sendShopLoginSms(mobile)
@@ -154,6 +216,7 @@ const LoginShop = () => {
          setBtnLoader(false);
        })
   };
+
   const resendCode = async () => {
     await sendShopLoginSms(mobile);
   };
@@ -215,7 +278,17 @@ const LoginShop = () => {
         <form noValidate={true} autoComplete="off" className="loginForm" onSubmit={handleValidate}>
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
-              <label htmlFor="mobile" className={`transition fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
+              <div className="w-100 d-flex justify-content-center align-items-center">
+                <div className="cursor d-flex align-items-center">
+                  <input type="radio" id="password" name="radio" className="cursor" style={{width: 20, height: 20}} value={false} required={true} checked={radio === 'password'} onChange={() => setRadio('password')}/>
+                  <label className="cursor p-0 m-0 pr-2" htmlFor="password">کلمه عبور</label>
+                </div>
+                <div className="cursor d-flex align-items-center mr-4">
+                  <input type="radio" id="code" name="radio" className="cursor" style={{width: 20, height: 20}} value={true} required={true} checked={radio === 'code'} onChange={() => setRadio('code')}/>
+                  <label className="cursor p-0 m-0 pr-2" htmlFor="code">کد یکبار مصرف</label>
+                </div>
+              </div>
+              <label htmlFor="mobile" className={`transition mt-5 fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
                 شماره موبایل<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>
               <input
@@ -234,7 +307,7 @@ const LoginShop = () => {
               />
             </div>
           )}
-          {step === 2 && (
+          {step === 2 && radio === 'code' && (
             <div className="codeContainer">
               <label htmlFor="code" className={`transition fs14 ${focused === 'code' ? 'textMain' : 'textThird'}`}>
                 {`لطفا کد ارسالی به ${mobile} را وارد کنید`}<span style={{color: 'red'}}>{`\xa0*`}</span>
@@ -254,6 +327,29 @@ const LoginShop = () => {
                 onBlur={unfocusedFn}
               />
             </div>
+          )}
+          {step === 2 && radio === 'password' && (
+             <div className="codeContainer">
+               <label htmlFor="loginPassword" className={`transition fs14 ${focused === 'loginPassword' ? 'textMain' : 'textThird'}`}>
+                 کلمه عبور<span style={{color: 'red'}}>{`\xa0*`}</span>
+               </label>
+               <input
+                  id="loginPassword"
+                  name="loginPassword"
+                  type="text"
+                  autoFocus={true}
+                  required={true}
+                  className={`form-control input ${errors['loginPassword'] && 'is-invalid'}`}
+                  value={loginPassword}
+                  onChange={changeValue}
+                  placeholder="..."
+                  onFocus={focusedFn}
+                  onBlur={unfocusedFn}
+               />
+               <span className="invalid-feedback mt-2 fs14" style={{
+                 display: errors['loginPassword'] ? 'block' : 'none',
+               }}>{errors['loginPassword']}</span>
+             </div>
           )}
           {step === 3 && (
             <div>
@@ -348,12 +444,13 @@ const LoginShop = () => {
             {!btnLoader && <span>ثبت</span>}
             {btnLoader && <Loader type="ThreeDots" color='rgba(255, 255, 255, 1)' height={8} width={70} className="loader"/>}
           </button>
-          {step === 2 && <Timer resendCode={resendCode} setSupportModal={(value) => setSupportModal(value)}/>}
+          {step === 2 && radio === 'code' && <Timer resendCode={resendCode} setSupportModal={(value) => setSupportModal(value)}/>}
         </form>
         {step === 2 && (
            <button className="bg-transparent border-0 fs14 text-primary textUnderline"
              onClick={() => {
                setCode('');
+               setLoginPassword('');
                setErrors({});
                setStep(1);
              }}>بازگشت</button>

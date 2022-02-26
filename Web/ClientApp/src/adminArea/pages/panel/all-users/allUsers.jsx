@@ -58,6 +58,7 @@ const AdminAllUsers = () => {
 			label: 'تایید شده توسط ادمین',
 		},
 	];
+	const [value, setValue] = useState(statusTypes[0]);
 
 	useEffect(() => {
 		getData();
@@ -74,6 +75,7 @@ const AdminAllUsers = () => {
 		};
 		adminGetAllUsers(filteredData)
 			.then((response) => {
+				console.log(response);
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {
@@ -132,6 +134,7 @@ const AdminAllUsers = () => {
 	const changeStatus = (val) => {
 		let {value} = val;
 		setStatus(value);
+		setValue(val);
 		getData({status: value !== null ? value : 'null'});
 	}
 
@@ -144,7 +147,7 @@ const AdminAllUsers = () => {
 				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
 					<div className="col-12 col-sm-6 col-md-4 col-xl-3 form-group mt-4">
 						<Select
-							value={statusTypes[0]}
+							value={value}
 							options={statusTypes}
 							isClearable={false}
 							isRtl={true}

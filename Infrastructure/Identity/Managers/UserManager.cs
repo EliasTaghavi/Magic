@@ -150,6 +150,12 @@ namespace Infrastructure.Identity.Managers
             {
                 model.Roles.Add(role);
             }
+            if (!string.IsNullOrEmpty(dto.Password))
+            {
+                PasswordHashResult pass = PasswordHandler.CreatePasswordHash(dto.Password);
+                model.PasswordHash = pass.PasswordHash;
+                model.PasswordSalt = pass.PasswordSalt;
+            }
 
             User mangerResult = UserRepo.Create(model);
             return new ManagerResult<User>(mangerResult);
@@ -165,6 +171,12 @@ namespace Infrastructure.Identity.Managers
             user.RefCode = dto.RefCode;
             user.UserStatus = UserStatus.NotConfirmed;
             user.QRCode = Guid.NewGuid().ToString();
+            if (!string.IsNullOrEmpty(dto.Password))
+            {
+                PasswordHashResult pass = PasswordHandler.CreatePasswordHash(dto.Password);
+                user.PasswordHash = pass.PasswordHash;
+                user.PasswordSalt = pass.PasswordSalt;
+            }
             UserRepo.Update(user);
             return new ManagerResult<bool>(true)
             {
@@ -291,6 +303,21 @@ namespace Infrastructure.Identity.Managers
                 return new ManagerResult<string>(null, false);
             }
             return new ManagerResult<string>(result.QRCode);
+        }
+
+        public ManagerResult<bool> ChangePassword(ChangePasswordDto dto)
+        {
+            User user = UserRepo.Read(dto.UserId);
+            PasswordHashResult oldPass = PasswordHandler.CreatePasswordHash(dto.OldPassword);
+            if (PasswordHandler.VerifyPasswordHash(dto.OldPassword, oldPass.PasswordHash, oldPass.PasswordSalt))
+            {
+                PasswordHashResult newPass = PasswordHandler.CreatePasswordHash(dto.NewPassword);
+                user.PasswordHash = newPass.PasswordHash;
+                user.PasswordSalt = newPass.PasswordSalt;
+                UserRepo.Update(user);
+                return new ManagerResult<bool>(true);
+            }
+            return new ManagerResult<bool>(false);
         }
     }
 }

@@ -1,5 +1,5 @@
 const CreateShopValidation = (data) => {
-	let {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address, refCode} = data;
+	let {name, phone, ownerFirstName, ownerLastName, ownerMobile, discount, address, refCode, password} = data;
 	let onlyNumbersRegex = /^[0-9]+$/;
 	let onlyFloatNumber = /^-?\d*(\.\d+)?$/;
 	let mobileRegex = /^(09)\d{9}$/;
@@ -31,6 +31,9 @@ const CreateShopValidation = (data) => {
 		}
 		if (!refCode || refCode?.length < 1) {
 			errors['refCode'] = 'کد معرف فروشگاه اشتباه است.';
+		}
+		if (!password || password?.length < 5) {
+			errors['password'] = 'کلمه عبور فروشگاه اشتباه است.';
 		}
 		value(errors);
 	});

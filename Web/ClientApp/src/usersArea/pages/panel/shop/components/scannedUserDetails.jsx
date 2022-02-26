@@ -76,8 +76,8 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 						<p className="fs14 textThird m-0 mt-1">{`تاریخ انقضا:\xa0${expireDate}`}</p>
 					</div>
 				</div>}
-				<hr className="bgSecondary my-5 w-100"/>
-				{data && (
+				{data && packStatus && <hr className="bgSecondary my-5 w-100"/>}
+				{data && packStatus && (
 					<div className="d-flex flex-column centered mt-5">
 						<div className="w-100 d-flex flex-column align-items-start justify-content-start" style={{maxWidth: 300}}>
 							<label htmlFor="factorPrice" className={`transition fs14 mb-0 ${focus ? 'textMain' : 'textThird'}`}>
@@ -113,7 +113,7 @@ const ScannedUserDetailsModal = ({userId, data, onClose}) => {
 						</div>
 					</div>
 				)}
-				{data && <div className="d-flex centered mt-3">
+				{data && packStatus && <div className="d-flex centered mt-3">
 					<button type="button" className="btn border-0 submitBtn" style={{maxWidth: 300}} onClick={setBuyDataFn}>
 						{!buyLoader && <span>ثبت خرید</span>}
 						{buyLoader && <Loader type="ThreeDots" color='#ffffff' height={8} width={50} className="loader"/>}

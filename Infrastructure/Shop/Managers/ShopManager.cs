@@ -43,12 +43,6 @@ namespace Infrastructure.Shops.Managers
 
         public ManagerResult<bool> AddPhotos(AddPhotosForShopDto dto)
         {
-            var idPhoto = dto.InputFileDtos.FirstOrDefault();
-            if (idPhoto != null)
-            {
-                fileManager.AddShopPhoto(idPhoto, dto.ShopId, FileType.ShopId);
-            }
-            dto.InputFileDtos.Remove(idPhoto);
             foreach (var item in dto.InputFileDtos)
             {
                 fileManager.AddShopPhoto(item, dto.ShopId, FileType.Shop);
@@ -66,7 +60,8 @@ namespace Infrastructure.Shops.Managers
                     FirstName = dto.UserName,
                     Lastname = dto.UserSurname,
                     Phone = dto.UserMobile,
-                    Status = UserStatus.NewUserFromShop
+                    Status = UserStatus.NewUserFromShop,
+                    Password = dto.Password,
                 };
                 user = userManager.CreateByPhone(userDto, "Shop").Result;
             }
@@ -121,7 +116,7 @@ namespace Infrastructure.Shops.Managers
                 Phone = shop.Phone,
                 RefCode = shop.ReferralCode,
                 UserFullName = $"{shop.User.Name} {shop.User.Surname}",
-                Photos = photos.Result 
+                Photos = photos.Result
             };
             return new ManagerResult<ShopDetailsDto>(result);
         }
@@ -132,13 +127,21 @@ namespace Infrastructure.Shops.Managers
             return new ManagerResult<List<ShopSimpleDto>>(result.ToSimpleDto());
         }
 
+        public ManagerResult<List<string>> GetPhotos(string Id)
+        {
+            List<string> photos = fileManager.GetShopPhotos(Id).Result;
+
+            return new ManagerResult<List<string>>(photos);
+        }
+
         public ManagerResult<PagedListDto<ShopWithUserDto>> Search(PageRequestDto<ShopListFilterDto> filterDto)
         {
             var result = shopRepo.Search(filterDto);
+            var photos = fileManager.GetShopPhotos(result.Items.Select(x => x.Id)).Result;
             var dto = new PagedListDto<ShopWithUserDto>
             {
                 Count = result.Count,
-                Items = result.Items.ToDto()
+                Items = result.Items.ToDto(photos)
             };
             return new ManagerResult<PagedListDto<ShopWithUserDto>>(dto);
         }
@@ -179,6 +182,7 @@ namespace Infrastructure.Shops.Managers
                 FirstName = user.Name,
                 LastName = user.Surname,
                 Mobile = user.Mobile,
+                ShopkeeperId = user.Id,
                 Shop = new ShopDto
                 {
                     Address = shop.Address,

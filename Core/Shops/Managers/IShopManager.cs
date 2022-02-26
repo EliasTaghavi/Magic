@@ -17,5 +17,6 @@ namespace Core.Shops.Managers
         ManagerResult<List<ShopSimpleDto>> GetList();
         ManagerResult<ShopDetailsDto> Get(string id);
         ManagerResult<bool> DeletePhoto(string photoId);
+        ManagerResult<List<string>> GetPhotos(string Id);
     }
 }
