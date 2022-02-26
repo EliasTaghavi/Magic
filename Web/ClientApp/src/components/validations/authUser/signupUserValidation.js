@@ -36,7 +36,7 @@ const SignupUserValidation = (data) => {
       errors['image'] = 'تصویر کارت دانشجویی الزامی است.'
     }
 
-    if (data?.password && data?.password?.length < 5) {
+    if (!data?.password && data?.password?.length < 5) {
       errors['password'] = 'کلمه عبور حداقل 5 کاراکتر است.'
     }
 
