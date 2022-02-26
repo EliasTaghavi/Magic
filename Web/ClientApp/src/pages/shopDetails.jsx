@@ -114,9 +114,10 @@ const ImageSlider = ({shopDetails}) => {
 	return (
 		<div data-tip="" data-for="global" id="carouselExampleIndicators" className="w-100 carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
 			<ol className="carousel-indicators">
-				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item) => {
+				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item, index) => {
+					console.log(item);
 					return (
-						<li key={item?.toString()} data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
+						<li key={item?.toString()} data-target="#carouselExampleIndicators" data-slide-to={index} className="active bg-danger"></li>
 					);
 				})}
 			</ol>
@@ -124,7 +125,10 @@ const ImageSlider = ({shopDetails}) => {
 				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item) => {
 					console.log(item);
 					return (
-						<div key={item?.toString()} className="carousel-item active" style={{maxHeight: 350, backgroundPosition: 'center'}}>
+						<div key={item?.toString()} className="carousel-item active w-100 position-relative">
+							<div className="w-100 bgImageBlur" style={{backgroundImage: `url(${imagePreUrl(item)})`, zIndex: 10}}>
+
+							</div>
 							<img className="d-block w-100 shopDetailsImage" src={imagePreUrl(item)} alt="First slide"/>
 						</div>
 					);
