@@ -127,10 +127,14 @@ namespace Web.Controllers
         {
             var dto = viewModel.ToDto();
             var response = shopManager.AddPhotos(dto);
-            foreach (var item in viewModel.Deleted)
+            if (viewModel.Deleted != null)
             {
-                shopManager.DeletePhoto(item);
+                foreach (var item in viewModel.Deleted)
+                {
+                    shopManager.DeletePhoto(item);
+                }
             }
+            
             return Ok(response);
         }
 

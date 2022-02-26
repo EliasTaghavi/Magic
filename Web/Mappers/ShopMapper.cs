@@ -95,15 +95,19 @@ namespace Web.Mappers
                 Deleted = viewModel.Deleted,
                 InputFileDtos = new List<InputFileDto>()
             };
-            foreach (var file in viewModel.Files)
+            if (viewModel.Files != null)
             {
-                var stream = file != null ? new InputFileDto
+                foreach (var file in viewModel?.Files)
                 {
-                    Stream = file.OpenReadStream(),
-                    Extension = MimeTypesMap.GetExtension(file.ContentType)
-                } : null;
-                dto.InputFileDtos.Add(stream);
+                    var stream = file != null ? new InputFileDto
+                    {
+                        Stream = file.OpenReadStream(),
+                        Extension = MimeTypesMap.GetExtension(file.ContentType)
+                    } : null;
+                    dto.InputFileDtos.Add(stream);
+                }
             }
+            
             return dto;
         }
     }
