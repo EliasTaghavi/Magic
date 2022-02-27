@@ -134,7 +134,7 @@ namespace Web.Controllers
                     shopManager.DeletePhoto(item);
                 }
             }
-            
+
             return Ok(response);
         }
 
