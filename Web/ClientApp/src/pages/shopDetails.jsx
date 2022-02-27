@@ -8,7 +8,7 @@ import {getShopDetails} from "../api/index";
 import {toast} from "react-toastify";
 import toastOptions from "../components/ToastOptions";
 import Loader from "react-loader-spinner";
-import {imagePreUrl} from "../usersArea/api/imagePreUrl";
+import MyCarousel from "../components/MyCarousel";
 
 const ShopDetails = () => {
 	const container = useRef(null);
@@ -58,7 +58,9 @@ const ShopDetails = () => {
 				<h2>شناسنامه کسب و کار</h2>
 				<div className="w-100 d-flex centered" style={{minHeight: 500}}>
 					{bigLoader === 0 && <div className="w-100 d-flex flex-column align-items-start justify-content-start">
-						<ImageSlider shopDetails={shopDetails}/>
+						<div className="w-100 mt-3">
+							<MyCarousel images={shopDetails?.photos} />
+						</div>
 						<div className="d-flex align-items-center justify-content-start mt-5">
 							<p className="fs16" style={{width: 180}}>نام فروشگاه:</p>
 							<p className="fs18 font-weight-bold">{shopDetails?.name}</p>
@@ -108,48 +110,5 @@ const ShopDetails = () => {
 		</div>
 	);
 }
-
-const ImageSlider = ({shopDetails}) => {
-	console.log(shopDetails);
-	return (
-		<div data-tip="" data-for="global" id="carouselExampleIndicators" className="w-100 carousel slide mt-3" data-ride="carousel" style={{minHeight: 350}}>
-			<ol className="carousel-indicators">
-				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item, index) => {
-					console.log(item);
-					return (
-						<li key={item?.toString()} data-target="#carouselExampleIndicators" data-slide-to={index} className="active bg-danger"></li>
-					);
-				})}
-			</ol>
-			<div className="carousel-inner">
-				{shopDetails?.photos.length > 0 && shopDetails?.photos.map((item) => {
-					console.log(item);
-					return (
-						<div key={item?.toString()} className="carousel-item active w-100 position-relative">
-							<div className="w-100 bgImageBlur" style={{backgroundImage: `url(${imagePreUrl(item)})`, zIndex: 10}}>
-
-							</div>
-							<img className="d-block w-100 shopDetailsImage" src={imagePreUrl(item)} alt="First slide"/>
-						</div>
-					);
-				})}
-				{/*<div className="carousel-item">*/}
-				{/*	<img className="d-block w-100" src="..." alt="Second slide"/>*/}
-				{/*</div>*/}
-				{/*<div className="carousel-item">*/}
-				{/*	<img className="d-block w-100" src="..." alt="Third slide"/>*/}
-				{/*</div>*/}
-			</div>
-			<a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-				<span className="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span className="sr-only">Previous</span>
-			</a>
-			<a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-				<span className="carousel-control-next-icon" aria-hidden="true"></span>
-				<span className="sr-only">Next</span>
-			</a>
-		</div>
-	);
-};
 
 export default ShopDetails;
