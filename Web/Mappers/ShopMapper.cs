@@ -107,7 +107,7 @@ namespace Web.Mappers
                     dto.InputFileDtos.Add(stream);
                 }
             }
-            
+
             return dto;
         }
     }

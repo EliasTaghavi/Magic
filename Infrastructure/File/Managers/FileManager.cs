@@ -51,12 +51,8 @@ namespace Infrastructure.File.Managers
 
         public ManagerResult<List<string>> GetShopPhotos(string id)
         {
-            var idPhoto = fileRepo.GetSet().Where(x => x.RefId == id && x.Type == FileType.ShopId).FirstOrDefault()?.FullName;
             var others = fileRepo.GetSet().Where(x => x.RefId == id && x.Type == FileType.Shop)?.Select(x => x.FullName).ToList();
-            var result = new List<string>()
-            {
-                idPhoto,
-            };
+            var result = new List<string>();
             result.AddRange(others);
             return new ManagerResult<List<string>>(result);
         }
