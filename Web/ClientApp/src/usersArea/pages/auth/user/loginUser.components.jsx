@@ -677,9 +677,9 @@ const LoginUser = () => {
                   <button type="button" className="w-100 btn loginUpload outline mt-2" onClick={() => setSelectMediaModal('selfi')}>
                     انتخاب
                   </button>
-                  <input type="file" id="getSelfiImage" accept="image/jpg" className="form-control d-none" onChange={(e) => sendImage(e, 'selfi')}/>
+                  <input type="file" id="getSelfiImage" accept="image/*" className="form-control d-none" onChange={(e) => sendImage(e, 'selfi')}/>
                 </div>
-                <span className="textThird fs14 mt-2 mr-2">فقط پرونده ها با فرمت jpg را بارگذاری نمایید.</span>
+                <span className="textThird fs14 mt-2 mr-2">فقط پرونده ها با فرمت عکس را بارگذاری نمایید.</span>
                 {errors['selfiImage'] && <span className="mt-2 mr-2 text-danger">{errors['selfiImage']}</span>}
                 {selfiImagePreviewUrl && <div className="w-100 d-flex flex-row align-items-start justify-content-start position-relative mt-3">
                 <img alt="ezsaze" src={selfiImagePreviewUrl} className="loginImage"/>
@@ -705,10 +705,10 @@ const LoginUser = () => {
                           onClick={() => setSelectMediaModal('image')}>
                     انتخاب
                   </button>
-                  <input type="file" id="getImage" accept="image/jpg" className="form-control d-none"
+                  <input type="file" id="getImage" accept="image/*" className="form-control d-none"
                          onChange={(e) => sendImage(e, 'image')}/>
                 </div>
-                <span className="textThird fs14 mt-2 mr-2">فقط پرونده ها با فرمت jpg را بارگذاری نمایید.</span>
+                <span className="textThird fs14 mt-2 mr-2">فقط پرونده ها با فرمت عکس را بارگذاری نمایید.</span>
                 {errors['image'] && <span className="mt-2 mr-2 text-danger">{errors['image']}</span>}
                 {imagePreviewUrl &&
                 <div className="w-100 d-flex flex-row align-items-start justify-content-start position-relative mt-3">
