@@ -80,6 +80,8 @@ const Reports = () => {
 						<thead>
 							<tr>
 								<th style={{minWidth: 50}}>ردیف</th>
+								<th style={{minWidth: 120}}>تاریخ</th>
+								<th style={{minWidth: 120}}>نام کاربر</th>
 								<th style={{minWidth: 120}}>ایمیل</th>
 								<th style={{minWidth: 120}}>متن پیام</th>
 							</tr>
@@ -89,8 +91,10 @@ const Reports = () => {
 								return (
 									<tr key={item?.id} className="customTr">
 										<td>{index + 1}</td>
-										<td>{item?.mobile ?? '-----'}</td>
-										<td>{item?.firstName ?? '-----'}</td>
+										<td>{item?.addDate ?? '-----'}</td>
+										<td>{item?.userName ?? '-----'}</td>
+										<td>{item?.email ?? '-----'}</td>
+										<td>{item?.text ?? '-----'}</td>
 									</tr>
 								);
 							})}
