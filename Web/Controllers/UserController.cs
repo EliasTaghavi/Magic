@@ -150,7 +150,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,God")]
-        public IActionResult CreateExpert(CreateExpertViewModel model)
+        public IActionResult CreateExpert([FromForm] CreateExpertViewModel model)
         {
             var dto = model.ToDto();
 
