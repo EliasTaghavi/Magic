@@ -34,6 +34,7 @@ namespace Infrastructure.Comments.Repos
             var result = query.Include(x => x.User)
                               .Skip((dto.Index - 1) * dto.Size)
                               .Take(dto.Size)
+                              .OrderByDescending(x => x.CreatedDate)
                               .ToList();
             return new PagedListDto<Comment>
             {
