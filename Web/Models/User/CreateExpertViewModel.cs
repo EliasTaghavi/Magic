@@ -1,5 +1,4 @@
-﻿using Core.Identity.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Web.JsonConverter;
 

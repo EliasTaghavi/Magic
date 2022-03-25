@@ -1,6 +1,4 @@
-﻿using Core.Identity.Entities;
-
-namespace Core.Identity.Dto
+﻿namespace Core.Identity.Dto
 {
     public class CreateExpertDto
     {
