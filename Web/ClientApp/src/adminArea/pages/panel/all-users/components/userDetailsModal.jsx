@@ -14,6 +14,7 @@ import Select from "react-select";
 import {theme} from "../../../../../components/shared/theme";
 import * as MainStore from "../../../../../store/main";
 import {useDispatch} from "react-redux";
+import {useShallowPickerSelector} from "../../../../../store/selectors";
 
 const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 	const [statusError, setStatusError] = useState(false);
 	const [statusTypes, setStatusTypes] = useState([]);
 	const [statusTypesLoader, setStatusTypesLoader] = useState(false);
+
+	let exceptions = ['بالای بالا', 'مدیر سیستم', 'کسب و کار', 'پشتیبان'];
+	let adminData = useShallowPickerSelector('user', ['adminData']);
+	let roles = adminData?.roles;
 
 	useEffect(() => {
 		getUserJobTypeFn();
@@ -130,6 +135,17 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 		setStatusType(val);
 	}
 
+	let changeable = true;
+	for (let i = 0; i < exceptions.length; i++) {
+		if (item?.roles?.includes(exceptions[i])) {
+			changeable = false;
+			break;
+		}
+	}
+	if (roles.includes('God') || roles?.includes('Admin')) {
+		changeable = true;
+	}
+
 	return (
 		<Modal
 			show={true}
@@ -139,7 +155,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 			<div className="modal-content">
 				<div className="modal-header fs16 font-weight-bold d-flex align-items-center justify-content-between">
 					<p className="p-0 m-0">مشخصات کاربر</p>
-					{(!item.roles.includes('بالای بالا') && !item.roles.includes('مدیر سیستم')) && <div className="d-flex centered">
+					{changeable && <div className="d-flex centered">
 						{(item?.status === 2 || item?.status === 3) && <div className="position-relative d-flex centered p-1">
 							<Switch
 								className="ml-3"
@@ -150,7 +166,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 								height={24}
 								onColor="#28a745"
 								onHandleColor='#ffffff'
-								onChange={() => sendLockFn()}
+								onChange={() => changeable ? sendLockFn() : {}}
 								checked={!locked}
 							/>
 							{lockLoader && <div className="position-absolute d-flex centered"
