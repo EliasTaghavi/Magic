@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import Loader from 'react-loader-spinner';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEllipsisV} from "@fortawesome/free-solid-svg-icons";
+import {faEllipsisV, faPlus} from "@fortawesome/free-solid-svg-icons";
 import UserDetailsModal from "./components/userDetailsModal";
 import RenderPageButtons from "../components/RenderPageButtons";
 import SearchBox from "../components/SearchBox";
@@ -15,6 +15,7 @@ import Select from "react-select";
 import {useDispatch} from "react-redux";
 import * as MainStore from '../../../../store/main';
 import generateRolesBadge from "./components/generateRolesBadge";
+import AddExpertModal from "./components/AddExpertModal";
 
 const AdminAllUsers = () => {
 	const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const AdminAllUsers = () => {
 	const [status, setStatus] = useState(null); // 0=false 1=true 2=undefined
 	const [data, setData] = useState([]);
 	const [detailsModal, setDetailsModal] = useState(null);
+	const [addExpertModal, setAddExpertModal] = useState(false);
 	const statusTypes = [
 		{
 			value: null,
@@ -138,12 +140,22 @@ const AdminAllUsers = () => {
 		getData({status: value !== null ? value : 'null'});
 	}
 
+	const addExpert = () => {
+		setAddExpertModal(true);
+	}
+
 	return (
 		<div className="card cardPrimary px-3 w-100">
 			<div className="card-header bg-transparent d-flex align-items-center justify-content-between">
 				<p className="card-title fs22 my-2">لیست همه کاربران</p>
 			</div>
 			<div className="card-body w-100 d-flex flex-column px-3">
+				<div className="w-100 d-flex align-items-center justify-content-start">
+					<button type="button" className="btn bgMain text-white outline border-0 d-flex centered" onClick={addExpert}>
+						<FontAwesomeIcon icon={faPlus} className="ml-2" />
+						افزودن کارشناس
+					</button>
+				</div>
 				<div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
 					<div className="col-12 col-sm-6 col-md-4 col-xl-3 form-group mt-4">
 						<Select
@@ -230,6 +242,7 @@ const AdminAllUsers = () => {
 				</div>
 			</div>
 			{detailsModal && <UserDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} sendSmsModal={() => setSendSmsModal(true)} refreshTable={() => getData()} />}
+			{addExpertModal && <AddExpertModal setOpen={() => setAddExpertModal(false)} />}
 			{sendSmsModal && <RejectSmsModal item={detailsModal} setOpen={() => {
 				setSendSmsModal(false);
 			}} refreshTable={() => getData()}

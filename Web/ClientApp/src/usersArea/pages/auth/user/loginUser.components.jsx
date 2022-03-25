@@ -682,11 +682,11 @@ const LoginUser = () => {
                 <span className="textThird fs14 mt-2 mr-2">فقط پرونده ها با فرمت عکس را بارگذاری نمایید.</span>
                 {errors['selfiImage'] && <span className="mt-2 mr-2 text-danger">{errors['selfiImage']}</span>}
                 {selfiImagePreviewUrl && <div className="w-100 d-flex flex-row align-items-start justify-content-start position-relative mt-3">
-                <img alt="ezsaze" src={selfiImagePreviewUrl} className="loginImage"/>
-                <button type="button" className="removeImageBtnUserLogin" onClick={() => removeImage('selfi')}>
-                  <FontAwesomeIcon icon={faTimes} color="red"/>
-                </button>
-              </div>}
+                  <img alt="ezsaze" src={selfiImagePreviewUrl} className="loginImage"/>
+                  <button type="button" className="removeImageBtnUserLogin" onClick={() => removeImage('selfi')}>
+                    <FontAwesomeIcon icon={faTimes} color="red"/>
+                  </button>
+                </div>}
               </div>
               <div className="mt-5 cursor d-flex align-items-center mb-4">
                 <input id="isStudent" type="checkbox" className="cursor customCheckBox" checked={isStudent} value={isStudent} onChange={(e) => {
