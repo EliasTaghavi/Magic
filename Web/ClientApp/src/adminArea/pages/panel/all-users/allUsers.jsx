@@ -242,7 +242,7 @@ const AdminAllUsers = () => {
 				</div>
 			</div>
 			{detailsModal && <UserDetailsModal item={detailsModal} setOpen={() => setDetailsModal(null)} sendSmsModal={() => setSendSmsModal(true)} refreshTable={() => getData()} />}
-			{addExpertModal && <AddExpertModal setOpen={() => setAddExpertModal(false)} />}
+			{addExpertModal && <AddExpertModal setOpen={() => setAddExpertModal(false)} refreshList={() => getData()} />}
 			{sendSmsModal && <RejectSmsModal item={detailsModal} setOpen={() => {
 				setSendSmsModal(false);
 			}} refreshTable={() => getData()}

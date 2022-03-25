@@ -140,10 +140,20 @@ export const sendExpertData = (data) => {
 		'Authorization': `Bearer ${token}`
 	};
 
-	let body = JSON.stringify(data);
-	console.log(JSON.parse(body));
+	let formData = new FormData();
 
-	return axios.post('/api/user/createExpert', body, {headers}).then((res) => {
+	for (let [key, value] of Object.entries(data)) {
+		formData.append(key, value);
+	}
+
+	if (data?.Identity) {
+		formData.append('Identity', data?.Identity);
+	}
+	if (data?.selfiImage) {
+		formData.append('Selfie', data?.selfiImage);
+	}
+
+	return axios.post('/api/user/createExpert', formData, {headers}).then((res) => {
 		if (res?.data?.code === '401') {
 			return 401;
 		} else {

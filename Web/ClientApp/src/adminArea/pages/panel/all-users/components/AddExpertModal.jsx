@@ -208,7 +208,7 @@ const AddExpertModal = ({setOpen, refreshList}) => {
 			Surname: lastName,
 			Mobile: mobile,
 			Address: address,
-			Birthday: birthday,
+			Birthday: `${birthday?.year}/${birthday?.month}/${birthday?.day}`,
 			Password: password,
 			Selfie: selfiImage,
 			Identity: image,
@@ -222,6 +222,7 @@ const AddExpertModal = ({setOpen, refreshList}) => {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
+						toast.success('کارشناس با موفقیت افزوده شد', toastOptions);
 						setOpen(false);
 						refreshList(true);
 						setLoader(false);

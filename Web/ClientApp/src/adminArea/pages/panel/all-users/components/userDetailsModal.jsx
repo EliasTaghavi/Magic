@@ -139,7 +139,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 			<div className="modal-content">
 				<div className="modal-header fs16 font-weight-bold d-flex align-items-center justify-content-between">
 					<p className="p-0 m-0">مشخصات کاربر</p>
-					<div className="d-flex centered">
+					{(!item.roles.includes('بالای بالا') && !item.roles.includes('مدیر سیستم')) && <div className="d-flex centered">
 						{(item?.status === 2 || item?.status === 3) && <div className="position-relative d-flex centered p-1">
 							<Switch
 								className="ml-3"
@@ -178,7 +178,7 @@ const UserDetailsModal = ({item, setOpen, sendSmsModal, refreshTable}) => {
 						) : (
 							<p className="text-info font-weight-bold fs16 p-0 m-0">عدم تکمیل اطلاعات</p>
 						)}
-					</div>
+					</div>}
 				</div>
 				<div className="modal-body d-flex flex-column align-items-start justify-content-start pt-5 w-100">
 					<div className="d-flex flex-column align-items-start justify-content-start flex-md-row w-100">
