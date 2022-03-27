@@ -16,5 +16,6 @@ namespace Web.Models.Session
         public DateTime Birthday { get; set; }
         public string SelfieURL { get; set; }
         public bool HasActivePack { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

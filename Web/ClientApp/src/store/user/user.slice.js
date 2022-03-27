@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
   userData: null,
   shopData: null,
+  adminData: null,
 }
 
 export const STORE_NAME = 'user';
@@ -16,6 +17,9 @@ const user = createSlice({
     },
     setShopData: (state, {payload}) => {
       state.shopData = payload;
+    },
+    setAdminData: (state, {payload}) => {
+      state.adminData = payload;
     },
   },
 });

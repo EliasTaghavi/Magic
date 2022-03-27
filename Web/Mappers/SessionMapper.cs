@@ -42,7 +42,8 @@ namespace Web.Mappers
                 Mobile = token.User.Mobile,
                 SelfieURL = selfieUrl,
                 Token = token.JWT,
-                HasActivePack = hasActivePack
+                HasActivePack = hasActivePack,
+                Roles = token.User.Roles.Select(x => x.EnName).ToList(),
             };
         }
     }

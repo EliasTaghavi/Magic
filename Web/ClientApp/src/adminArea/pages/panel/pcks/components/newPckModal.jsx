@@ -56,6 +56,7 @@ const NewPckModal = ({setOpen, refreshList}) => {
 					if (response === 401) {
 						dispatch(MainStore.actions.setLogoutModal({type: 'admin', modal: true}));
 					} else if (success) {
+						toast.success('پکیج با موفقیت افزوده شد', toastOptions);
 						setOpen(false);
 						refreshList(true);
 						setLoader(false);

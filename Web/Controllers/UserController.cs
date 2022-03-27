@@ -71,7 +71,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,God")]
+        [Authorize(Roles = "Admin,God,Support")]
         public IActionResult List(PageRequestViewModel<UserListFilterViewModel> viewModel)
         {
             var dto = viewModel.ToDto(mv => mv.ToDto());
@@ -80,7 +80,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,God")]
+        [Authorize(Roles = "Admin,God,Support")]
         public IActionResult Confirm(ConfirmUserViewModel viewModel)
         {
             var dto = viewModel.ToDto();
@@ -89,7 +89,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,God")]
+        [Authorize(Roles = "Admin,God,Support")]
         public IActionResult Lock([FromQuery] string id)
         {
             var response = UserManager.Lock(id);
@@ -97,7 +97,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,God")]
+        [Authorize(Roles = "Admin,God,Support")]
         public IActionResult Reject(RejectMessageViewModel viewModel)
         {
             var dto = viewModel.ToDto();
@@ -122,7 +122,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,God")]
+        [Authorize(Roles = "Admin,God,Support")]
         public IActionResult GetTypes()
         {
             var response = UserManager.GetTypes();
@@ -145,6 +145,29 @@ namespace Web.Controllers
             var userId = User.GetUserId();
             var dto = model.ToDto(userId);
             var response = UserManager.ChangePassword(dto);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,God")]
+        public IActionResult CreateExpert([FromForm] CreateExpertViewModel model)
+        {
+            var dto = model.ToDto();
+
+            var fileViewModel = new IdentityFileModel
+            {
+                Identity = model.Identity,
+                Selfie = model.Selfie,
+            };
+
+            var response = UserManager.CreateExpert(dto);
+
+            var fileDto = fileViewModel.ToDto(response.Result);
+            var fileResponse = fileManager.UploadIdentities(fileDto);
+            if (!fileResponse.Success)
+            {
+                return Ok(fileResponse);
+            }
             return Ok(response);
         }
     }

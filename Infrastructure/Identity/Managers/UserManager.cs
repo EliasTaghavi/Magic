@@ -319,5 +319,36 @@ namespace Infrastructure.Identity.Managers
             }
             return new ManagerResult<bool>(false);
         }
+
+        public ManagerResult<string> CreateExpert(CreateExpertDto dto)
+        {
+            var expert = new User
+            {
+                Address = dto.Address,
+                Birthday = dto.Birthday,
+                Mobile = dto.Mobile,
+                MobileConfirmed = true,
+                Name = dto.Name,
+                Surname = dto.Surname,
+                Username = dto.Mobile,
+                UserStatus = UserStatus.Confirmed,
+                UserTypeId = dto.UserTypeId,
+                QRCode = Guid.NewGuid().ToString(),
+            };
+
+            var roles = RoleRepo.Bucket().Where(x => x.EnName.Contains("User") || x.EnName.Contains("Support")).ToList();
+            foreach (var role in roles)
+            {
+                expert.Roles.Add(role);
+            }
+
+            PasswordHashResult newPass = PasswordHandler.CreatePasswordHash(dto.Password);
+            expert.PasswordHash = newPass.PasswordHash;
+            expert.PasswordSalt = newPass.PasswordSalt;
+
+            expert = UserRepo.Create(expert);
+
+            return new ManagerResult<string>(expert.Id);
+        }
     }
 }

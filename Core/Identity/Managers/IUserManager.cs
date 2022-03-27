@@ -33,5 +33,6 @@ namespace Core.Identity.Managers
         ManagerResult<BuyerDto> GetBuyer(ShopBuyerDto dto);
         ManagerResult<string> GetQR(string userId);
         ManagerResult<bool> ChangePassword(ChangePasswordDto dto);
+        ManagerResult<string> CreateExpert(CreateExpertDto dto);
     }
 }

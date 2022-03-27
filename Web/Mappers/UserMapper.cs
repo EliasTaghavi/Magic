@@ -83,5 +83,19 @@ namespace Web.Mappers
                 OldPassword = viewModel.OldPassword,
             };
         }
+
+        public static CreateExpertDto ToDto(this CreateExpertViewModel viewModel)
+        {
+            return new CreateExpertDto
+            {
+                Address = viewModel.Address,
+                Birthday = viewModel.Birthday,
+                Mobile = viewModel.Mobile,
+                Name = viewModel.Name,
+                Password = viewModel.Password,
+                Surname = viewModel.Surname,
+                UserTypeId = viewModel.UserTypeId,
+            };
+        }
     }
 }

@@ -132,3 +132,40 @@ export const getUserJobType = () => {
 			}
 		})
 };
+
+export const sendExpertData = (data) => {
+	const token = tokenStore.getAdminToken();
+	let headers = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
+
+	let formData = new FormData();
+
+	for (let [key, value] of Object.entries(data)) {
+		formData.append(key, value);
+	}
+
+	if (data?.Identity) {
+		formData.append('Identity', data?.Identity);
+	}
+	if (data?.selfiImage) {
+		formData.append('Selfie', data?.selfiImage);
+	}
+
+	return axios.post('/api/user/createExpert', formData, {headers}).then((res) => {
+		if (res?.data?.code === '401') {
+			return 401;
+		} else {
+			return res.data;
+		}
+	})
+		.catch((error) => {
+			console.log(error, error.response);
+			if (error.response.status === 401) {
+				return 401;
+			} else {
+				return false;
+			}
+		})
+};
