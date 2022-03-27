@@ -17,7 +17,7 @@
     "moment": "^2.29.1",
     "moment-jalaali": "^0.9.4",
     "popper.js": "^1.16.0",
-    "qrcode.react": "^1.0.1",
+    "qrcode.react": "^3.0.0",
     "react": "16.11.0",
     "react-bootstrap": "^1.6.1",
     "react-countup": "^6.1.1",
