@@ -11,6 +11,7 @@ import {useHistory} from "react-router-dom";
 import SupportModal from "../../../components/shared/supportModal.component";
 import {useDispatch} from "react-redux";
 import * as MainStore from '../../../store/main';
+import * as UserStore from "../../../store/user";
 
 const AdminLogin  = () => {
 	const history = useHistory();
@@ -66,6 +67,7 @@ const AdminLogin  = () => {
 					} else if (success) {
 						setLoader(false);
 						TokenStore.setAdminToken(result.token);
+						dispatch(UserStore.actions.setAdminData(response?.result));
 						history.replace('/admin/panel');
 					}
 				} else {

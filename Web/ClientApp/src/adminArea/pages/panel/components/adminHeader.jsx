@@ -14,6 +14,9 @@ import logo from "../../../../assets/images/logo-sm.png";
 import Divider from "../../../../components/divider";
 import TokenStore from "../../../../utils/tokenStore";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import {useShallowPickerSelector} from "../../../../store/selectors";
+import * as UserStore from "../../../../store/user";
+import {useDispatch} from "react-redux";
 
 const AdminHeader = ({children}) => {
 	const [open, setOpen] = useState(false);
@@ -107,14 +110,21 @@ const Drawer = ({extraClassName, open, setOpen}) => {
 
 const MenuItems = ({open, setOpen, noOpacity}) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
+	let adminData = useShallowPickerSelector('user', ['adminData']);
+	let roles = adminData?.roles;
+
 	const logout = () => {
 		TokenStore.removeAdminToken();
+		dispatch(UserStore.actions.setAdminData(null));
 		history.replace('/admin');
 	}
 
+	let isActiveOnRole = !roles.includes('Support');
+
 	return (
 		<ul className="list-unstyled p-0 w-100">
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -125,16 +135,18 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					}>
 					<Link to="/admin/panel" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faHome} className="fs18"/>
-						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+						<span
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
 					</Link>
 				</OverlayTrigger>}
 				{open && (
 					<Link to="/admin/panel" className="menuLink cpx-12">
 						<FontAwesomeIcon icon={faHome} className="fs18"/>
-						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
+						<span
+							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>داشبورد</span>
 					</Link>
 				)}
-			</li>
+			</li>}
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
@@ -156,7 +168,7 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 					</Link>
 				)}
 			</li>
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -176,8 +188,8 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 						<span className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست پکیج ها</span>
 					</Link>
 				)}
-			</li>
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			</li>}
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -198,8 +210,8 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست تراکنش ها</span>
 					</Link>
 				)}
-			</li>
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			</li>}
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -220,8 +232,8 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>لیست فروشگاه ها</span>
 					</Link>
 				)}
-			</li>
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			</li>}
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -242,8 +254,8 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>رتبه بندی</span>
 					</Link>
 				)}
-			</li>
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			</li>}
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -264,8 +276,8 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>کد ورود کاربران</span>
 					</Link>
 				)}
-			</li>
-			<li className="menuItem rounded" onClick={() => setOpen(false)}>
+			</li>}
+			{isActiveOnRole && <li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger
 					key='details'
 					placement='left'
@@ -286,7 +298,7 @@ const MenuItems = ({open, setOpen, noOpacity}) => {
 							className={`nav-link my-1 transition noWrapText ${!noOpacity && !open ? 'opacity0' : ''}`}>نظرات و پیشنهادات</span>
 					</Link>
 				)}
-			</li>
+			</li>}
 			<Divider />
 			<li className="menuItem rounded" onClick={() => setOpen(false)}>
 				{!open && <OverlayTrigger

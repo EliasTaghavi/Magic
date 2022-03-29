@@ -8,7 +8,7 @@ import {
    faHome,
    faUserAlt,
    faSignOutAlt,
-   faList, faCubes, faKey
+   faList, faCubes
 } from "@fortawesome/free-solid-svg-icons";
 import TokenStore from "../../../../../../utils/tokenStore";
 import Divider from "../../../../../../components/divider";
