@@ -9,5 +9,6 @@
         Rejected = 5,
         NotConfirmed = 6,
         NewUserFromShop = 7,
+        PhoneConfirmed = 8,
     }
 }

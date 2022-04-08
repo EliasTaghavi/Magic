@@ -13,7 +13,7 @@ namespace Core.Identity.Managers
 
         ManagerResult<bool> Delete(StringValues authHeader);
 
-        ManagerResult<bool> RequsetSessionByPhone(string Phone);
+        ManagerResult<bool> RequsetSessionByPhone(PSessionCreateDto dto);
 
         ManagerResult<AccessToken> VerifyTokenByPhone(VerifyTokenPhoneDto dto);
     }

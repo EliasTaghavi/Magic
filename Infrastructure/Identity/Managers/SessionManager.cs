@@ -27,6 +27,7 @@ namespace Infrastructure.Identity.Managers
 
         private readonly ISMSService SMSService;
         private readonly IShopRepo shopRepo;
+        private readonly IUserTypeRepo userTypeRepo;
         private readonly IJwtTokenHandler TokenHandler;
 
         private readonly ITokenManager TokenManager;
@@ -46,6 +47,7 @@ namespace Infrastructure.Identity.Managers
                               ICacheRepo cacheRepo,
                               ISMSService sMSService,
                               IShopRepo shopRepo,
+                              IUserTypeRepo userTypeRepo,
                               IOptionsMonitor<SMSSettings> options)
         {
             UserRepo = userRepo;
@@ -58,6 +60,7 @@ namespace Infrastructure.Identity.Managers
             CacheRepo = cacheRepo;
             SMSService = sMSService;
             this.shopRepo = shopRepo;
+            this.userTypeRepo = userTypeRepo;
             settings = options.CurrentValue;
         }
 
@@ -146,20 +149,25 @@ namespace Infrastructure.Identity.Managers
             }
         }
 
-        public ManagerResult<bool> RequsetSessionByPhone(string phone)
+        public ManagerResult<bool> RequsetSessionByPhone(PSessionCreateDto dto)
         {
-            User user = UserRepo.ReadByPhone(phone);
+            User user = UserRepo.ReadByPhone(dto.Phone);
             bool userAlreadyExist;
             if (user == null)
             {
                 var newUser = new User
                 {
-                    Mobile = phone,
-                    Username = phone,
-                    UserStatus = UserStatus.New,
+                    Mobile = dto.Phone,
+                    Username = dto.Phone,
+                    UserStatus = UserStatus.PhoneConfirmed,
                 };
                 var role = roleRepo.GetSet().FirstOrDefault(x => x.EnName == "User");
                 newUser.Roles.Add(role);
+                if (dto.IsStudent)
+                {
+                    var type = userTypeRepo.GetSet().FirstOrDefault(x => x.Id == "823a5500-e962-42b3-89d8-f5fb5b0270a9");
+                    newUser.UserType = type;
+                }
                 user = UserRepo.Create(newUser);
             }
             userAlreadyExist = string.IsNullOrEmpty(user.Name?.Trim());

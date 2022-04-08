@@ -26,7 +26,8 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult CreateByPhone(PSessionCreateModel model)
         {
-            var response = SessionManager.RequsetSessionByPhone(model.Phone);
+            var dto = model.ToDto();
+            var response = SessionManager.RequsetSessionByPhone(dto);
             return Ok(response);
         }
 

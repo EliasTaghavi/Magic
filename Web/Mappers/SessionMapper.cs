@@ -6,6 +6,14 @@ namespace Web.Mappers
 {
     public static class SessionMapper
     {
+        public static PSessionCreateDto ToDto(this PSessionCreateModel model)
+        {
+            return new PSessionCreateDto
+            {
+                IsStudent = model.IsStudent,
+                Phone = model.Phone,
+            };
+        }
         public static VerifyTokenPhoneDto ToDto(this VerifyTokenPhoneModel model, string ip)
         {
             return new VerifyTokenPhoneDto
