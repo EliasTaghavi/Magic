@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const sendUserLoginSms = (mobileNumber) => {
+export const sendUserLoginSms = (mobileNumber, isStudent) => {
   let headers = {
     'Content-Type': 'application/json',
   };
-  return axios.post('/api/Session/CreateByPhone', JSON.stringify({phone: mobileNumber}), {headers}).then((res) => {
+  return axios.post('/api/Session/CreateByPhone', JSON.stringify({phone: mobileNumber, isStudent}), {headers}).then((res) => {
     if (res?.data?.code === '401') {
       return 401;
     } else {
