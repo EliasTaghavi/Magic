@@ -43,6 +43,12 @@ namespace Infrastructure.File.Managers
             return new ManagerResult<bool>(true);
         }
 
+        public ManagerResult<string> GetIdentity(string userId)
+        {
+            var result = fileRepo.GetIdentity(userId);
+            return new ManagerResult<string>(result);
+        }
+
         public ManagerResult<string> GetSelfie(string userId)
         {
             var result = fileRepo.GetSelfie(userId);

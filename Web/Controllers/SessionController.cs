@@ -40,7 +40,7 @@ namespace Web.Controllers
             var response = SessionManager.CreateByUP(model.ToDto(ip));
             var responsePack = packManager.GetCurrent(response?.Result?.UserId);
             var selfieUrl = fileManager.GetSelfie(response?.Result?.UserId);
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success, selfieUrl.Result)));
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success, selfieUrl.Result, "")));
         }
 
         [Authorize]
@@ -67,7 +67,8 @@ namespace Web.Controllers
             var response = SessionManager.VerifyTokenByPhone(model.ToDto(ip));
             var responsePack = packManager.GetCurrent(response.Result.UserId);
             var selfieUrl = fileManager.GetSelfie(response.Result.UserId);
-            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success, selfieUrl.Result)));
+            var identityUrl = fileManager.GetIdentity(response.Result.UserId);
+            return Ok(response.CreateViewModel(view => view.ToVerifiedUserViewModel(responsePack.Success, selfieUrl.Result, identityUrl.Result)));
         }
     }
 }

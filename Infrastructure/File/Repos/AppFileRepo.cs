@@ -12,6 +12,13 @@ namespace Infrastructure.File.Repos
         {
         }
 
+        public string GetIdentity(string userId)
+        {
+            var identity = GetSet().Where(x => x.RefId == userId && x.Type == FileType.Identity)
+                                 .FirstOrDefault();
+            return identity?.FullName;
+        }
+
         public List<AppFile> GetPhotos(IEnumerable<string> userIds)
         {
             var list = GetSet().Where(x => userIds.Contains(x.RefId));
