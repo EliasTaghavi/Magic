@@ -47,7 +47,7 @@ const UserPackages = () => {
 
   return (
     <div className="d-flex flex-column centered w-100">
-       {!userData?.imageURL && userData?.isStudent && <div className="w-100 alert alert-warning">
+       {!userData?.identityURL && userData?.isStudent && <div className="w-100 alert alert-warning">
           <p className="font-weight-bold fs16 alert-heading">توجه!</p>
           <p>اطلاعات حساب کاربری شما تکمیل نشده است. در صورت خرید پکیج و عدم تکمیل اطلاعات حساب کاربری در مدت یک هفته،
              مدت زمان استفاده از پکیج به نصف کاهش می یابد.</p>
