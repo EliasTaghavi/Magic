@@ -39,7 +39,10 @@ namespace Web.Controllers
             {
                 string userId = User.Claims.First(x => x.Type == ClaimTypes.UserData).Value;
                 User user = UserManager.GetProfileDetails(userId).Result;
-                return Ok(user);
+                var selfieUrl = fileManager.GetSelfie(userId).Result;
+                var identityUrl = fileManager.GetIdentity(userId).Result;
+
+                return Ok(user.ToViewModel(identityUrl, selfieUrl));
             }
             catch (Exception)
             {

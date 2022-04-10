@@ -139,7 +139,8 @@ namespace Infrastructure.Identity.Managers
 
         public ManagerResult<User> GetProfileDetails(string userId)
         {
-            throw new NotImplementedException();
+            var user = UserRepo.GetSet().Where(x => x.Id == userId).Include(x => x.UserType).FirstOrDefault();
+            return new ManagerResult<User>(user);
         }
 
         public ManagerResult<User> CreateByPhone(CreateUserDto dto, string roleName = default)

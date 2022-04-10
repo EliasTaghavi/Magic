@@ -1,4 +1,5 @@
 ﻿using Core.Identity.Dto;
+using Core.Identity.Entities;
 using Core.Services.Dto;
 using Web.Models.User;
 
@@ -95,6 +96,24 @@ namespace Web.Mappers
                 Password = viewModel.Password,
                 Surname = viewModel.Surname,
                 UserTypeId = viewModel.UserTypeId,
+            };
+        }
+
+        public static UserProfileViewModel ToViewModel(this User user, string identityURL, string selfieURL)
+        {
+            return new UserProfileViewModel
+            {
+                Address = user.Address,
+                Birthday = user.Birthday,
+                Mobile = user.Mobile,
+                Name = user.Name,
+                QRCode = user.QRCode,
+                RefCode = user.RefCode,
+                Surname = user.Surname,
+                UserStatus = user.UserStatus,
+                UserTypeTitle = user.UserType.Name,
+                IdentityURL = identityURL,
+                SelfieURL = selfieURL
             };
         }
     }
