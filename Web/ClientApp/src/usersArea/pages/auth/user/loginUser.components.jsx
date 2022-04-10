@@ -58,6 +58,7 @@ const LoginUser = () => {
   const [selectMediaModal, setSelectMediaModal] = useState('');
   const [camera, setCamera] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
+  const [isStudentOnSms, setIsStudentOnSms] = useState(false);
 
   const focusedFn = (e) => {
     let target = e.target;
@@ -272,7 +273,7 @@ const LoginUser = () => {
 
   const sendSmsFn = () => {
     setBtnLoader(true);
-    sendUserLoginSms(mobile)
+    sendUserLoginSms(mobile, isStudentOnSms)
        .then((response) => {
          let {success} = response;
          if (response) {
@@ -406,6 +407,14 @@ const LoginUser = () => {
         <form noValidate={true} autoComplete="off" className="loginForm" onSubmit={handleValidate}>
           {step === 1 && (
             <div className="d-flex flex-column align-content-start justify-content-center">
+              <div className="mt-2 cursor d-flex align-items-center mb-2">
+                <input id="isStudent" type="checkbox" className="cursor customCheckBox" checked={isStudentOnSms} value={isStudentOnSms} onChange={(e) => {
+                  setIsStudentOnSms(!isStudentOnSms);
+                }} />
+                <label htmlFor="isStudent" className="pr-2 mb-0 cursor fs14 textThird">
+                  دانشجو هستم
+                </label>
+              </div>
               <label htmlFor="mobile" className={`transition mt-3 fs14 ${focused === 'mobile' ? 'textMain' : 'textThird'}`}>
                 شماره موبایل<span style={{color: 'red'}}>{`\xa0*`}</span>
               </label>

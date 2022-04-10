@@ -1,11 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
 import {imagePreUrl} from "../../../../api/imagePreUrl";
+import * as profileApi from '../../../../api/user/profile';
 
 const UserProfile = () => {
   const userData = useShallowPickerSelector('user', ['userData']);
+
+  useEffect(() => {
+    getUserDetailsFn();
+  }, []);
+
+  const getUserDetailsFn = () => {
+    profileApi.getUserDetails()
+       .then((response) => {
+         console.log(response);
+       })
+       .catch((error) => {
+         console.log(error, error.response);
+       })
+  }
+
   return (
     <div className="d-flex flex-column centered w-100">
       <div className="card cardPrimary px-3 w-100">
