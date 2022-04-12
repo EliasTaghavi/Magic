@@ -351,5 +351,19 @@ namespace Infrastructure.Identity.Managers
 
             return new ManagerResult<string>(expert.Id);
         }
+
+        public ManagerResult<bool> Edit(EditUserDto dto)
+        {
+            var user = UserRepo.Read(dto.Id);
+
+            user.Name = dto.Name;
+            user.Surname = dto.Surname;
+            user.Birthday = dto.Birthday;
+            user.Address = dto.Address;
+
+            UserRepo.Update(user);
+
+            return new ManagerResult<bool>(true);
+        }
     }
 }

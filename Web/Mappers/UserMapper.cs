@@ -116,5 +116,17 @@ namespace Web.Mappers
                 SelfieURL = selfieURL
             };
         }
+
+        public static EditUserDto ToDto(this EditUserViewModel viewModel, string userId)
+        {
+            return new EditUserDto
+            {
+                Address = viewModel.Address,
+                Birthday = viewModel.Birthday,
+                Name = viewModel.Name,
+                Surname = viewModel.Surname,
+                Id = userId
+            };
+        }
     }
 }

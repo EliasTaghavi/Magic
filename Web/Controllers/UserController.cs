@@ -173,5 +173,16 @@ namespace Web.Controllers
             }
             return Ok(response);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(EditUserViewModel viewModel)
+        {
+            var dto = viewModel.ToDto(User.GetUserId());
+
+            var response = UserManager.Edit(dto);
+
+            return Ok(response);
+        }
     }
 }
