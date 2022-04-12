@@ -14,7 +14,7 @@ namespace Infrastructure.File.Repos
 
         public string GetIdentity(string userId)
         {
-            var identity = GetSet().Where(x => x.RefId == userId && x.Type == FileType.Identity)
+            var identity = GetSet().Where(x => x.RefId == userId && x.Type == FileType.Identity).OrderByDescending(x => x.CreatedDate)
                                  .FirstOrDefault();
             return identity?.FullName;
         }
@@ -27,7 +27,7 @@ namespace Infrastructure.File.Repos
 
         public string GetSelfie(string userId)
         {
-            var selfie = GetSet().Where(x => x.RefId == userId && x.Type == FileType.Selfie)
+            var selfie = GetSet().Where(x => x.RefId == userId && x.Type == FileType.Selfie).OrderByDescending(x => x.CreatedDate)
                                  .FirstOrDefault();
             return selfie?.FullName;
         }

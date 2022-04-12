@@ -176,11 +176,31 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(EditUserViewModel viewModel)
+        public IActionResult Edit([FromForm]EditUserViewModel viewModel)
         {
-            var dto = viewModel.ToDto(User.GetUserId());
+            string userId = User.GetUserId();
+
+            var dto = viewModel.ToDto(userId);
+
+            var fileViewModel = new IdentityFileModel
+            {
+                Identity = viewModel.Identity,
+                Selfie = viewModel.Selfie,
+            };
+
+            var fileDto = fileViewModel.ToDto(userId);
 
             var response = UserManager.Edit(dto);
+
+            if (!string.IsNullOrEmpty(fileDto.IdentityDto.Extension))
+            {
+                fileManager.UpdateIdentity(fileDto.IdentityDto, fileDto.UserId);
+            }
+
+            if (!string.IsNullOrEmpty(fileDto.SelfieDto.Extension))
+            {
+                fileManager.UpdateSelfie(fileDto.SelfieDto, fileDto.UserId);
+            }
 
             return Ok(response);
         }
