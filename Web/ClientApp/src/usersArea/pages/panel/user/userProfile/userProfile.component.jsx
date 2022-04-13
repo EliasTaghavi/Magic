@@ -36,23 +36,23 @@ const UserProfile = () => {
           <div className="d-flex flex-column align-items-start justify-content-start mr-4 mt-5 mt-md-3">
             <div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
               <p className="fs18 textThird">نام: </p>
-              <p className="fs20 mr-md-3">{userData?.firstName}</p>
+              <p className="fs20 mr-md-3">{userData?.firstName ?? '-----'}</p>
             </div>
             <div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
               <p className="fs18 textThird">نام خانوادگی: </p>
-              <p className="fs20 mr-md-3">{userData?.lastName}</p>
+              <p className="fs20 mr-md-3">{userData?.lastName ?? '-----'}</p>
             </div>
             <div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
               <p className="fs18 textThird">شماره موبایل: </p>
-              <p className="fs20 mr-md-3">{userData?.mobile}</p>
+              <p className="fs20 mr-md-3">{userData?.mobile ?? '-----'}</p>
             </div>
             <div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
               <p className="fs18 textThird">تاریخ تولد: </p>
-              <p className="fs20 mr-md-3">{userData?.birthday}</p>
+              <p className="fs20 mr-md-3">{userData?.birthday ?? '-----'}</p>
             </div>
             <div className="d-flex flex-column flex-md-row align-items-start justify-content-start">
               <p className="fs18 textThird">آدرس: </p>
-              <p className="fs20 mr-md-3">{userData?.address}</p>
+              <p className="fs20 mr-md-3">{userData?.address ?? '-----'}</p>
             </div>
           </div>
         </div>
