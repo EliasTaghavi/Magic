@@ -99,21 +99,21 @@ namespace Web.Mappers
             };
         }
 
-        public static UserProfileViewModel ToViewModel(this User user, string identityURL, string selfieURL)
+        public static UserProfileViewModel ToViewModel(this User user, string identityURL, string selfieURL, bool hasPack)
         {
             return new UserProfileViewModel
             {
                 Address = user.Address,
                 Birthday = user.Birthday,
                 Mobile = user.Mobile,
-                Name = user.Name,
-                QRCode = user.QRCode,
-                RefCode = user.RefCode,
-                Surname = user.Surname,
-                UserStatus = user.UserStatus,
-                UserTypeTitle = user.UserType.Name,
+                FirstName = user.Name,
+                LastName = user.Surname,
+                IsStudent = user.UserStatus == Core.Identity.Enums.UserStatus.PhoneConfirmed || user.UserType.Name == "دانشجو",
                 IdentityURL = identityURL,
-                SelfieURL = selfieURL
+                SelfieURL = selfieURL,
+                HasActivePack = hasPack,
+                Roles = user.Roles.Select(x => x.Name).ToList(),
+                Status = user.UserStatus,
             };
         }
 
