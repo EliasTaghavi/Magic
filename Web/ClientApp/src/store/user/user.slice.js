@@ -15,6 +15,12 @@ const user = createSlice({
     setUserData: (state, {payload}) => {
       state.userData = payload;
     },
+    updateUserData: (state, {payload}) => {
+      state.userData = {
+        ...state.userData,
+        ...payload,
+      }
+    },
     setShopData: (state, {payload}) => {
       state.shopData = payload;
     },

@@ -32,10 +32,6 @@ const SignupUserValidation = (data) => {
       errors['selfiImage'] = 'حجم عکس نباید بیشتر از 4 مگابایت باشد.'
     }
 
-    if (data?.isStudent && data?.image?.length < 1) {
-      errors['image'] = 'تصویر کارت دانشجویی الزامی است.'
-    }
-
     value(errors);
   });
 };
