@@ -304,11 +304,12 @@ const LoginUser = () => {
        .then((response) => {
          let {result: {token, status, hasActivePack, firstName: responseFirstName, lastName: responseLatsName}, success} = response;
          if (response) {
+           console.log(response);
            if (response === 401) {
              dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
            } else if (success) {
              if (status !== 4 && status !== 7) {
-               if (status === 3) {
+               if (status === 3 || status === 8) {
                  TokenStore.setUserToken(token);
                  dispatch(UserStore.actions.setUserData(response.result));
                  setBtnLoader(false);
