@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import '../../../components/css/panelHeader.css';
 import {Link, useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -18,6 +18,7 @@ import {useDispatch} from "react-redux";
 
 const UserHeader = ({children, type}) => {
   const token = TokenStore.getUserToken();
+  const dispatch = useDispatch();
    const [open, setOpen] = useState(false);
    const [isLg, setIsLg] = useState(window?.innerWidth >= 768);
 
@@ -27,6 +28,10 @@ const UserHeader = ({children, type}) => {
          window.removeEventListener('resize', updateSize);
       }
    }, []);
+
+   useEffect(() => {
+      dispatch(UserStore.getUserData());
+   }, [dispatch]);
 
    const updateSize = () => {
       if (window?.innerWidth < 768) {
