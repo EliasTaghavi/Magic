@@ -1,4 +1,5 @@
 import axios from "axios";
+import tokenStore from "../../../utils/tokenStore";
 
 export const sendUserLoginSms = (mobileNumber, isStudent) => {
   let headers = {
@@ -108,6 +109,52 @@ export const signupUser = (data) => {
     }
   })
      .catch((error) => {
+       if (error.response.status === 401) {
+         return 401;
+       } else {
+         return false;
+       }
+     })
+}
+
+export const editUserProfile = (data) => {
+  let {firstName, lastName, birthday, image, selfiImage, address} = data;
+  const token = tokenStore.getUserToken();
+  let headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + token,
+  };
+  let formData = new FormData();
+
+  let textData = {
+    Name: firstName,
+    Surename: lastName,
+    Birthday: birthday ? `${birthday?.year}/${birthday?.month}/${birthday?.day}` : '1401/01/01',
+    Address: address,
+  };
+
+  for (let [key, value] of Object.entries(textData)) {
+    formData.append(key, value);
+  }
+
+  if (image) {
+    formData.append('Identity', image);
+  }
+  if (selfiImage) {
+    formData.append('Selfie', selfiImage);
+  }
+
+
+  return axios.post('/api/user/edit', formData, {headers}).then((res) => {
+    console.log(res);
+    if (res?.data?.code === '401') {
+      return 401;
+    } else {
+      return res.data;
+    }
+  })
+     .catch((error) => {
+       console.log(error, error.response);
        if (error.response.status === 401) {
          return 401;
        } else {

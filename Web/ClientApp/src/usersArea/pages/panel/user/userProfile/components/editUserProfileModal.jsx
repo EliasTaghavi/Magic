@@ -8,23 +8,23 @@ import Loader from "react-loader-spinner";
 import RenderSelectMediaModal from "../../../../auth/user/components/renderSelectMediaModal";
 import RenderCamera from "../../../../auth/user/components/renderCamera";
 import Resizer from "react-image-file-resizer";
-import {checkReferralCode, signupUser} from "../../../../../api/auth/user";
+import {checkReferralCode, editUserProfile} from "../../../../../api/auth/user";
 import * as MainStore from "../../../../../../store/main";
 import {toast} from "react-toastify";
 import toastOptions from "../../../../../../components/ToastOptions";
 import {useDispatch} from "react-redux";
-import SignupUserValidation from "../../../../../../components/validations/authUser/signupUserValidation";
+import EditUserValidation from "../../../../../../components/validations/editUser/editUser";
 import {useShallowPickerSelector} from "../../../../../../store/selectors";
 import RenderProgressBarModal from "../../../../../../components/shared/renderProgressBarModal";
-import * as UserStore from '../../../../../../store/user';
 
 const EditUserProfileModal = ({onClose, reload}) => {
 	const dispatch = useDispatch();
+	const userData = useShallowPickerSelector('user', ['userData']);
 	const [errors, setErrors] = useState({});
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [birthday, setBirthday] = useState('');
-	const [address, setAddress] = useState('');
+	const [firstName, setFirstName] = useState(userData?.firstName ?? '');
+	const [lastName, setLastName] = useState(userData?.lastName ?? '');
+	const [birthday, setBirthday] = useState(userData?.birthday ?? '');
+	const [address, setAddress] = useState(userData?.address ?? '');
 	const [focused, setFocused] = useState('');
 	const [selectMediaModal, setSelectMediaModal] = useState('');
 	const [image, setImage] = useState('');
@@ -37,8 +37,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [camera, setCamera] = useState(false);
 	const [btnLoader, setBtnLoader] = useState(false);
 	const [progressBarModal, setProgressBarModal] = useState(false);
-	const userData = useShallowPickerSelector('user', ['userData']);
-	console.log(userData);
+	console.log(44444, userData);
 
 	const focusedFn = (e) => {
 		let target = e.target;
@@ -228,10 +227,10 @@ const EditUserProfileModal = ({onClose, reload}) => {
 			token: userData?.token,
 			referralCode,
 		}
-		SignupUserValidation(data)
+		EditUserValidation(data)
 			.then((response) => {
 				if (Object.entries(response).length < 1) {
-					sendSignupUserData(data);
+					sendEditUserData(data);
 				} else {
 					setErrors(response);
 					setBtnLoader(false);
@@ -246,32 +245,35 @@ const EditUserProfileModal = ({onClose, reload}) => {
 			})
 	}
 
-	const sendSignupUserData = (data) => {
+	const sendEditUserData = (data) => {
 		setBtnLoader(true);
 		setProgressBarModal(true);
-		signupUser(data)
+		console.log(data);
+		editUserProfile(data)
 			.then((response) => {
-				let {success} = response;
-				if (response) {
-					if (response === 401) {
-						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
-					} else if (success) {
-						toast.success('اطلاعات شما با موفقیت ویرایش شد', toastOptions);
-						setBtnLoader(false);
-						setProgressBarModal(false);
-						reload();
-						// dispatch(UserStore.actions.updateUserData({firstName, lastName, birthday, address}));
-					}
-				} else {
-					toast.error('خطای سرور', toastOptions);
-					setBtnLoader(false);
-					setProgressBarModal(false);
-				}
+				console.log(response);
+				// let {success} = response;
+				// if (response) {
+				// 	if (response === 401) {
+				// 		dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
+				// 	} else if (success) {
+				// 		toast.success('اطلاعات شما با موفقیت ویرایش شد', toastOptions);
+				// 		setBtnLoader(false);
+				// 		setProgressBarModal(false);
+				// 		reload();
+				// 		// dispatch(UserStore.actions.updateUserData({firstName, lastName, birthday, address}));
+				// 	}
+				// } else {
+				// 	toast.error('خطای سرور', toastOptions);
+				// 	setBtnLoader(false);
+				// 	setProgressBarModal(false);
+				// }
 			})
 			.catch((e) => {
-				toast.error('خطای سرور', toastOptions);
-				setBtnLoader(false);
-				setProgressBarModal(false);
+				console.log(e, e.response);
+				// toast.error('خطای سرور', toastOptions);
+				// setBtnLoader(false);
+				// setProgressBarModal(false);
 			})
 	};
 
