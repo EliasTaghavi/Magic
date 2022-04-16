@@ -128,7 +128,7 @@ export const editUserProfile = (data) => {
 
   let textData = {
     Name: firstName,
-    Surename: lastName,
+    Surname: lastName,
     Birthday: birthday ? `${birthday?.year}/${birthday?.month}/${birthday?.day}` : '1401/01/01',
     Address: address,
   };

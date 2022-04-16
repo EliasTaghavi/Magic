@@ -71,22 +71,6 @@ namespace Infrastructure.File.Managers
 
         public ManagerResult<bool> UpdateIdentity(InputFileDto fileDto, string userId)
         {
-            var selfieFileName = fileService.SaveIdentity(fileDto);
-            var SelfieFile = new AppFile
-            {
-                Id = selfieFileName,
-                Enable = true,
-                FileExtension = fileDto.Extension,
-                ObjectState = ObjectState.Added,
-                Type = FileType.Selfie,
-                RefId = userId,
-            };
-            fileRepo.Create(SelfieFile);
-            return new ManagerResult<bool>(true);
-        }
-
-        public ManagerResult<bool> UpdateSelfie(InputFileDto fileDto, string userId)
-        {
             var identityFileName = fileService.SaveIdentity(fileDto);
             var idFile = new AppFile
             {
@@ -98,6 +82,22 @@ namespace Infrastructure.File.Managers
                 RefId = userId,
             };
             fileRepo.Create(idFile);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> UpdateSelfie(InputFileDto fileDto, string userId)
+        {
+            var selfieFileName = fileService.SaveIdentity(fileDto);
+            var selfieFile = new AppFile
+            {
+                Id = selfieFileName,
+                Enable = true,
+                FileExtension = fileDto.Extension,
+                ObjectState = ObjectState.Added,
+                Type = FileType.Selfie,
+                RefId = userId,
+            };
+            fileRepo.Create(selfieFile);
 
             return new ManagerResult<bool>(true);
         }
