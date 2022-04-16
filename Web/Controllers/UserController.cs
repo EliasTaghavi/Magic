@@ -196,12 +196,12 @@ namespace Web.Controllers
 
             var response = UserManager.Edit(dto);
 
-            if (!string.IsNullOrEmpty(fileDto.IdentityDto.Extension))
+            if (!string.IsNullOrEmpty(fileDto?.IdentityDto?.Extension))
             {
                 fileManager.UpdateIdentity(fileDto.IdentityDto, fileDto.UserId);
             }
 
-            if (!string.IsNullOrEmpty(fileDto.SelfieDto.Extension))
+            if (!string.IsNullOrEmpty(fileDto?.SelfieDto?.Extension))
             {
                 fileManager.UpdateSelfie(fileDto.SelfieDto, fileDto.UserId);
             }

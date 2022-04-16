@@ -192,8 +192,8 @@ namespace Infrastructure.Identity.Managers
             var photos = appFileRepo.GetPhotos(userIds);
             foreach (var item in result.Items)
             {
-                item.SelfieURL = photos.FirstOrDefault(x => x.RefId == item.Id && x.Type == FileType.Selfie)?.FullName;
-                item.IdentityURL = photos.FirstOrDefault(x => x.RefId == item.Id && x.Type == FileType.Identity)?.FullName;
+                item.SelfieURL = appFileRepo.GetSelfie(item.Id);
+                item.IdentityURL = appFileRepo.GetIdentity(item.Id);
             }
             return new ManagerResult<PagedListDto<UserListDto>>(result);
         }
@@ -360,6 +360,7 @@ namespace Infrastructure.Identity.Managers
             user.Surname = dto.Surname;
             user.Birthday = dto.Birthday;
             user.Address = dto.Address;
+            user.RefCode = dto.RefCode;
 
             UserRepo.Update(user);
 

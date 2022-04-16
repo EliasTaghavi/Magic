@@ -13,5 +13,6 @@ namespace Web.Models.User
 		public string Address { get; set; }
 		public IFormFile Selfie { get; set; }
 		public IFormFile Identity { get; set; }
-	}
+        public string RefCode { get; set; }
+    }
 }

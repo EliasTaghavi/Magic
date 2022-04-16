@@ -125,7 +125,8 @@ namespace Web.Mappers
                 Birthday = viewModel.Birthday,
                 Name = viewModel.Name,
                 Surname = viewModel.Surname,
-                Id = userId
+                Id = userId,
+                RefCode = viewModel.RefCode
             };
         }
     }
