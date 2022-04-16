@@ -532,14 +532,6 @@ tr td:last-child {
     padding-left: 0;
 }
 
-.jobPartOpened {
-    max-height: 1000px !important;
-}
-
-.jobPartClosed {
-    max-height: 0 !important;
-}
-
 .addImageBox {
     width: 150px;
     height: 150px;
