@@ -138,10 +138,10 @@ export const editUserProfile = (data) => {
     formData.append(key, value);
   }
 
-  if (image) {
+  if (image && typeof image === 'object') {
     formData.append('Identity', image);
   }
-  if (selfiImage) {
+  if (selfiImage && typeof selfiImage === 'object') {
     formData.append('Selfie', selfiImage);
   }
 

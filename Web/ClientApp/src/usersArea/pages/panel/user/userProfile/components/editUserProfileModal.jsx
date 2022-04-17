@@ -17,6 +17,7 @@ import EditUserValidation from "../../../../../../components/validations/editUse
 import {useShallowPickerSelector} from "../../../../../../store/selectors";
 import RenderProgressBarModal from "../../../../../../components/shared/renderProgressBarModal";
 import {dateConvertor} from "../../../../../../components/dateConvertor";
+import {imagePreUrl} from "../../../../../api/imagePreUrl";
 
 const EditUserProfileModal = ({onClose, reload}) => {
 	const dispatch = useDispatch();
@@ -30,8 +31,8 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [selectMediaModal, setSelectMediaModal] = useState('');
 	const [image, setImage] = useState('');
 	const [selfiImage, setSelfiImage] = useState('');
-	const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-	const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState('');
+	const [imagePreviewUrl, setImagePreviewUrl] = useState(imagePreUrl(userData?.identityURL));
+	const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState(imagePreUrl(userData?.selfieURL));
 	const [referralCode, setReferralCode] = useState('');
 	const [referralCodeLoader, setReferralCodeLoader] = useState(false);
 	const [resultData, setResultData] = useState('');
@@ -250,7 +251,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const sendEditUserData = (data) => {
 		setBtnLoader(true);
 		setProgressBarModal(true);
-		console.log(data);
+		console.log(data, typeof data?.selfiImage);
 		editUserProfile(data)
 			.then((response) => {
 				console.log(response);
