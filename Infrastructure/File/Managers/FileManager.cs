@@ -43,6 +43,12 @@ namespace Infrastructure.File.Managers
             return new ManagerResult<bool>(true);
         }
 
+        public ManagerResult<string> GetIdentity(string userId)
+        {
+            var result = fileRepo.GetIdentity(userId);
+            return new ManagerResult<string>(result);
+        }
+
         public ManagerResult<string> GetSelfie(string userId)
         {
             var result = fileRepo.GetSelfie(userId);
@@ -61,6 +67,39 @@ namespace Infrastructure.File.Managers
         {
             var result = fileRepo.GetSet().Where(x => enumerable.Contains(x.RefId)).ToList();
             return new ManagerResult<List<AppFile>>(result);
+        }
+
+        public ManagerResult<bool> UpdateIdentity(InputFileDto fileDto, string userId)
+        {
+            var identityFileName = fileService.SaveIdentity(fileDto);
+            var idFile = new AppFile
+            {
+                Id = identityFileName,
+                Enable = true,
+                FileExtension = fileDto.Extension,
+                ObjectState = ObjectState.Added,
+                Type = FileType.Identity,
+                RefId = userId,
+            };
+            fileRepo.Create(idFile);
+            return new ManagerResult<bool>(true);
+        }
+
+        public ManagerResult<bool> UpdateSelfie(InputFileDto fileDto, string userId)
+        {
+            var selfieFileName = fileService.SaveIdentity(fileDto);
+            var selfieFile = new AppFile
+            {
+                Id = selfieFileName,
+                Enable = true,
+                FileExtension = fileDto.Extension,
+                ObjectState = ObjectState.Added,
+                Type = FileType.Selfie,
+                RefId = userId,
+            };
+            fileRepo.Create(selfieFile);
+
+            return new ManagerResult<bool>(true);
         }
 
         public ManagerResult<bool> UploadIdentities(IdentityFileDto dto)

@@ -1,4 +1,5 @@
 ﻿using Core.Identity.Dto;
+using Core.Identity.Entities;
 using Core.Services.Dto;
 using Web.Models.User;
 
@@ -95,6 +96,37 @@ namespace Web.Mappers
                 Password = viewModel.Password,
                 Surname = viewModel.Surname,
                 UserTypeId = viewModel.UserTypeId,
+            };
+        }
+
+        public static UserProfileViewModel ToViewModel(this User user, string identityURL, string selfieURL, bool hasPack)
+        {
+            return new UserProfileViewModel
+            {
+                Address = user.Address,
+                Birthday = user.Birthday,
+                Mobile = user.Mobile,
+                FirstName = user.Name,
+                LastName = user.Surname,
+                IsStudent = user.UserStatus == Core.Identity.Enums.UserStatus.PhoneConfirmed || user.UserType.Name == "دانشجو",
+                IdentityURL = identityURL,
+                SelfieURL = selfieURL,
+                HasActivePack = hasPack,
+                Roles = user.Roles.Select(x => x.Name).ToList(),
+                Status = user.UserStatus,
+            };
+        }
+
+        public static EditUserDto ToDto(this EditUserViewModel viewModel, string userId)
+        {
+            return new EditUserDto
+            {
+                Address = viewModel.Address,
+                Birthday = viewModel.Birthday,
+                Name = viewModel.Name,
+                Surname = viewModel.Surname,
+                Id = userId,
+                RefCode = viewModel.RefCode
             };
         }
     }

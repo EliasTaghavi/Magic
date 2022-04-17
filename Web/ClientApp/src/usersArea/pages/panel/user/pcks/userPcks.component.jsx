@@ -17,7 +17,7 @@ const UserPackages = () => {
   const [pcksData, setPcksData] = useState([]);
   const [discount, setDiscount] = useState(undefined);
   const [confirmBuyPckModal, setConfirmBuyPckModal] = useState(null);
-   const userData = useShallowPickerSelector('user', ['userData']);
+  const userData = useShallowPickerSelector('user', ['userData']);
 
   useEffect(() => {
     getPcksData()
@@ -47,6 +47,11 @@ const UserPackages = () => {
 
   return (
     <div className="d-flex flex-column centered w-100">
+       {!userData?.identityURL && userData?.isStudent && <div className="w-100 alert alert-warning">
+          <p className="font-weight-bold fs16 alert-heading">توجه!</p>
+          <p>اطلاعات حساب کاربری شما تکمیل نشده است. در صورت خرید پکیج و عدم تکمیل اطلاعات حساب کاربری در مدت یک هفته،
+             مدت زمان استفاده از پکیج به نصف کاهش می یابد.</p>
+       </div>}
       <div className="card cardPrimary px-3 w-100">
         <div className="card-header bg-transparent d-flex flex-column flex-sm-row align-items-start justify-content-center align-items-sm-center justify-content-sm-between">
           <p className="card-title fs22 my-2">اشتراک ها</p>

@@ -139,7 +139,8 @@ namespace Infrastructure.Identity.Managers
 
         public ManagerResult<User> GetProfileDetails(string userId)
         {
-            throw new NotImplementedException();
+            var user = UserRepo.GetSet().Where(x => x.Id == userId).Include(x => x.UserType).FirstOrDefault();
+            return new ManagerResult<User>(user);
         }
 
         public ManagerResult<User> CreateByPhone(CreateUserDto dto, string roleName = default)
@@ -191,8 +192,8 @@ namespace Infrastructure.Identity.Managers
             var photos = appFileRepo.GetPhotos(userIds);
             foreach (var item in result.Items)
             {
-                item.SelfieURL = photos.FirstOrDefault(x => x.RefId == item.Id && x.Type == FileType.Selfie)?.FullName;
-                item.IdentityURL = photos.FirstOrDefault(x => x.RefId == item.Id && x.Type == FileType.Identity)?.FullName;
+                item.SelfieURL = appFileRepo.GetSelfie(item.Id);
+                item.IdentityURL = appFileRepo.GetIdentity(item.Id);
             }
             return new ManagerResult<PagedListDto<UserListDto>>(result);
         }
@@ -349,6 +350,21 @@ namespace Infrastructure.Identity.Managers
             expert = UserRepo.Create(expert);
 
             return new ManagerResult<string>(expert.Id);
+        }
+
+        public ManagerResult<bool> Edit(EditUserDto dto)
+        {
+            var user = UserRepo.Read(dto.Id);
+
+            user.Name = dto.Name;
+            user.Surname = dto.Surname;
+            user.Birthday = dto.Birthday;
+            user.Address = dto.Address;
+            user.RefCode = dto.RefCode;
+
+            UserRepo.Update(user);
+
+            return new ManagerResult<bool>(true);
         }
     }
 }

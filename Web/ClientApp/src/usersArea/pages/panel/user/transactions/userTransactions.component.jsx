@@ -12,9 +12,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../../../../../adminArea/pages/panel/components/RenderPageButtons";
+import {useShallowPickerSelector} from "../../../../../store/selectors";
 
 const UserTransactions = () => {
   const dispatch = useDispatch();
+  const userData = useShallowPickerSelector('user', ['userData']);
   const [bigLoader, setBigLoader] = useState(false);
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -132,108 +134,115 @@ const UserTransactions = () => {
   };
 
   return (
-     <div className="card cardPrimary px-3 w-100">
-       <div className="card-header bg-transparent d-flex align-items-center justify-content-between">
-         <p className="card-title fs22 my-2">لیست تراکنش ها</p>
-       </div>
-       <div className="card-body w-100 d-flex flex-column px-3">
-         <div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
-           <div className="flex form-group mt-4 d-flex flex-column flex-md-row align-items-start justify-content-start">
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
-               <Select
-                  defaultValue={statusTypes[0]}
-                  options={statusTypes}
-                  isClearable={false}
-                  isRtl={true}
-                  isMulti={false}
-                  isSearchable={false}
-                  maxMenuHeight={200}
-                  placeholder=""
-                  onChange={(value) => changeStatus(value)}
-                  styles={theme.customStyles}/>
-             </div>
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
-               <DatePicker
-                  value={from}
-                  onChange={(value) => selectDay('from', value)}
-                  shouldHighlightWeekends
-                  calendarClassName="responsive-calendar"
-                  locale="fa"
-                  inputPlaceholder="از تاریخ..."
-                  wrapperClassName="w-100"
-                  inputClassName={`w-100 text-right fs16 form-control input ${errors['from'] && 'is-invalid'}`}
-               />
-               {from && <button type="button" className="btn bg-transparent position-absolute"
-                                style={{left: 0, zIndex: 100}} onClick={() => selectDay('from', '')}>
-                 <FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
-               </button>}
-             </div>
-             <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
-               <DatePicker
-                  value={to}
-                  onChange={(value) => selectDay('to', value)}
-                  shouldHighlightWeekends
-                  calendarClassName="responsive-calendar"
-                  locale="fa"
-                  inputPlaceholder="تا تاریخ..."
-                  wrapperClassName="w-100"
-                  inputClassName={`w-100 text-right fs16 form-control mr-0 mr-md-3 input ${errors['to'] && 'is-invalid'}`}
-               />
-               {to && <button type="button" className="btn bg-transparent position-absolute"
-                              style={{left: 0, zIndex: 100}} onClick={() => selectDay('to', '')}>
-                 <FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
-               </button>}
-             </div>
-           </div>
-           {/*<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />*/}
+     <div className="w-100 d-flex flex-column align-items-center justify-content-start">
+       {!userData?.identityURL && userData?.isStudent &&<div className="w-100 alert alert-warning">
+         <p className="font-weight-bold fs16 alert-heading">توجه!</p>
+         <p>اطلاعات حساب کاربری شما تکمیل نشده است. در صورت خرید پکیج و عدم تکمیل اطلاعات حساب کاربری در مدت یک هفته،
+           مدت زمان استفاده از پکیج به نصف کاهش می یابد.</p>
+       </div>}
+       <div className="card cardPrimary px-3 w-100">
+         <div className="card-header bg-transparent d-flex align-items-center justify-content-between">
+           <p className="card-title fs22 my-2">لیست تراکنش ها</p>
          </div>
-         <div className="table-responsive table-striped">
-           <table className="w-100 mt-5">
-             <thead>
-             <tr>
-               <th style={{minWidth: 120}}>ردیف</th>
-               <th style={{minWidth: 120}}>تاریخ تراکنش</th>
-               <th style={{minWidth: 120}}>مبلغ تراکنش</th>
-               <th style={{minWidth: 120}}>نوع پکیج</th>
-               <th style={{minWidth: 120}}>وضعیت</th>
-             </tr>
-             </thead>
-             <tbody className="w-100">
-             {!bigLoader && data.length > 0 && data.map((item, index) => {
-               return (
-                  <tr key={item?.id} className="customTr">
-                    <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
-                    <td>{item?.payDate ?? '-----'}</td>
-                    <td>{item?.price ?? '-----'}</td>
-                    <td>{item?.packTitle ?? '-----'}</td>
-                    <td>{item?.status === true ? (
-                       <p className="font-weight-bold text-success my-1">پرداخت شده</p>
-                    ) : (
-                       <p className="font-weight-bold text-danger my-1">پرداخت نشده</p>
-                    )}</td>
-                  </tr>
-               );
-             })}
-             </tbody>
-           </table>
-           {(data?.length < 1 && !bigLoader) && <div className="w-100 d-flex centered py-3">
-             <span className="text-danger">داده ای وجود ندارد.</span>
-           </div>}
-           {bigLoader && <div className="w-100 d-flex centered py-3">
-             <Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
-           </div>}
-         </div>
-         <hr className="w-100" />
-         <div className="w-100 bg-white p-3 pb-0 d-flex flex-column align-items-center justify-content-start flex-md-row align-items-md-center justify-content-md-between">
-           <RenderPageButtons disabledArrowButtons={data?.length < 1} pagesNumber={pagesNumber} currentPage={currentPage} changePage={(value) => changePageFn(value)} />
-           <div className="d-block mt-3 my-md-0">
-             <select className="filterDropDown outline" defaultValue="5" onChange={setPageSizeValue}>
-               <option value="5">5</option>
-               <option value="10">10</option>
-               <option value="15">15</option>
-             </select>
+         <div className="card-body w-100 d-flex flex-column px-3">
+           <div className="w-100 d-flex flex-column-reverse flex-md-row flex-wrap align-items-center justify-content-between">
+             <div className="flex form-group mt-4 d-flex flex-column flex-md-row align-items-start justify-content-start">
+               <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
+                 <Select
+                    defaultValue={statusTypes[0]}
+                    options={statusTypes}
+                    isClearable={false}
+                    isRtl={true}
+                    isMulti={false}
+                    isSearchable={false}
+                    maxMenuHeight={200}
+                    placeholder=""
+                    onChange={(value) => changeStatus(value)}
+                    styles={theme.customStyles}/>
+               </div>
+               <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
+                 <DatePicker
+                    value={from}
+                    onChange={(value) => selectDay('from', value)}
+                    shouldHighlightWeekends
+                    calendarClassName="responsive-calendar"
+                    locale="fa"
+                    inputPlaceholder="از تاریخ..."
+                    wrapperClassName="w-100"
+                    inputClassName={`w-100 text-right fs16 form-control input ${errors['from'] && 'is-invalid'}`}
+                 />
+                 {from && <button type="button" className="btn bg-transparent position-absolute"
+                                  style={{left: 0, zIndex: 100}} onClick={() => selectDay('from', '')}>
+                   <FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
+                 </button>}
+               </div>
+               <div className="col-12 col-sm-6 col-md-4 col-xl-3 position-relative mt-3 mt-md-0" style={{maxWidth: 280}}>
+                 <DatePicker
+                    value={to}
+                    onChange={(value) => selectDay('to', value)}
+                    shouldHighlightWeekends
+                    calendarClassName="responsive-calendar"
+                    locale="fa"
+                    inputPlaceholder="تا تاریخ..."
+                    wrapperClassName="w-100"
+                    inputClassName={`w-100 text-right fs16 form-control mr-0 mr-md-3 input ${errors['to'] && 'is-invalid'}`}
+                 />
+                 {to && <button type="button" className="btn bg-transparent position-absolute"
+                                style={{left: 0, zIndex: 100}} onClick={() => selectDay('to', '')}>
+                   <FontAwesomeIcon icon={faTimes} className="textGray fs16"/>
+                 </button>}
+               </div>
+             </div>
+             {/*<SearchBox searchValue={searchValue} searchData={searchData} changeValue={changeValue} />*/}
            </div>
-           <span className="mt-3 mt-md-0">{`(\xa0${totalCount}\xa0آیتم\xa0)`}</span>
+           <div className="table-responsive table-striped">
+             <table className="w-100 mt-5">
+               <thead>
+               <tr>
+                 <th style={{minWidth: 120}}>ردیف</th>
+                 <th style={{minWidth: 120}}>تاریخ تراکنش</th>
+                 <th style={{minWidth: 120}}>مبلغ تراکنش</th>
+                 <th style={{minWidth: 120}}>نوع پکیج</th>
+                 <th style={{minWidth: 120}}>وضعیت</th>
+               </tr>
+               </thead>
+               <tbody className="w-100">
+               {!bigLoader && data.length > 0 && data.map((item, index) => {
+                 return (
+                    <tr key={item?.id} className="customTr">
+                      <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
+                      <td>{item?.payDate ?? '-----'}</td>
+                      <td>{item?.price ?? '-----'}</td>
+                      <td>{item?.packTitle ?? '-----'}</td>
+                      <td>{item?.status === true ? (
+                         <p className="font-weight-bold text-success my-1">پرداخت شده</p>
+                      ) : (
+                         <p className="font-weight-bold text-danger my-1">پرداخت نشده</p>
+                      )}</td>
+                    </tr>
+                 );
+               })}
+               </tbody>
+             </table>
+             {(data?.length < 1 && !bigLoader) && <div className="w-100 d-flex centered py-3">
+               <span className="text-danger">داده ای وجود ندارد.</span>
+             </div>}
+             {bigLoader && <div className="w-100 d-flex centered py-3">
+               <Loader type="ThreeDots" color='#ff521d' height={8} width={100} className="loader"/>
+             </div>}
+           </div>
+           <hr className="w-100" />
+           <div className="w-100 bg-white p-3 pb-0 d-flex flex-column align-items-center justify-content-start flex-md-row align-items-md-center justify-content-md-between">
+             <RenderPageButtons disabledArrowButtons={data?.length < 1} pagesNumber={pagesNumber} currentPage={currentPage} changePage={(value) => changePageFn(value)} />
+             <div className="d-block mt-3 my-md-0">
+               <select className="filterDropDown outline" defaultValue="5" onChange={setPageSizeValue}>
+                 <option value="5">5</option>
+                 <option value="10">10</option>
+                 <option value="15">15</option>
+               </select>
+             </div>
+             <span className="mt-3 mt-md-0">{`(\xa0${totalCount}\xa0آیتم\xa0)`}</span>
+           </div>
          </div>
        </div>
      </div>

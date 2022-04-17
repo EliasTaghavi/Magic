@@ -194,6 +194,11 @@ const UserDashboard = () => {
 
    return (
     <div className="d-flex flex-column centered">
+       {!userData?.identityURL && userData?.isStudent && <div className="w-100 alert alert-warning">
+          <p className="font-weight-bold fs16 alert-heading">توجه!</p>
+          <p>اطلاعات حساب کاربری شما تکمیل نشده است. در صورت خرید پکیج و عدم تکمیل اطلاعات حساب کاربری در مدت یک هفته،
+             مدت زمان استفاده از پکیج به نصف کاهش می یابد.</p>
+       </div>}
        <div className="col-12 d-flex flex-column-reverse flex-lg-row flex-wrap-reverse align-items-start justify-content-between px-0">
           <div className="flex1 col-12 px-1 mt-2 mw550">
              <div className="col-12 card cardPrimary px-0" style={{height: 550}}>

@@ -1,4 +1,5 @@
 using Core.Base.Entities;
+using Hangfire;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -64,6 +65,10 @@ namespace Web
                 RequestPath = "/ids"
             });
             app.UseSpaStaticFiles();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                
+            });
             app.UseSerilogRequestLogging();
             app.UseRouting();
             app.UseAuthentication();
@@ -89,6 +94,8 @@ namespace Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            JobSeeder jobSeeder = new(app.ApplicationServices);
+            jobSeeder.AddStudentJob();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -102,6 +109,7 @@ namespace Web
             services.AddCors();
             services.AddSwaggerGen();
             services.AddPayment(Configuration);
+            services.AddBackJobs(Configuration);
 
             services.AddControllersWithViews().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.Configure<ApiBehaviorOptions>(op =>

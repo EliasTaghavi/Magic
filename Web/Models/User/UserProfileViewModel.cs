@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Web.JsonConverter;
 
-namespace Web.Models.Session
+namespace Web.Models.User
 {
-    public class VerifiedUserViewModel
+    public class UserProfileViewModel
     {
         public string Token { get; set; }
         public UserStatus Status { get; set; }

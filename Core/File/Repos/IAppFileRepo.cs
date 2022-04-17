@@ -7,5 +7,6 @@ namespace Core.File.Repos
     {
         List<AppFile> GetPhotos(IEnumerable<string> userIds);
         string GetSelfie(string userId);
+        string GetIdentity(string userId);
     }
 }

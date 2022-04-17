@@ -1,6 +1,7 @@
 ﻿using Core.File.Managers;
 using Core.Identity.Entities;
 using Core.Identity.Managers;
+using Core.Packs.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -16,11 +17,13 @@ namespace Web.Controllers
     {
         private readonly IUserManager UserManager;
         private readonly IFileManager fileManager;
+        private readonly IPackManager packManager;
 
-        public UserController(IUserManager userManager, IFileManager fileManager)
+        public UserController(IUserManager userManager, IFileManager fileManager, IPackManager packManager)
         {
             UserManager = userManager;
             this.fileManager = fileManager;
+            this.packManager = packManager;
         }
 
         [HttpPost]
@@ -39,7 +42,11 @@ namespace Web.Controllers
             {
                 string userId = User.Claims.First(x => x.Type == ClaimTypes.UserData).Value;
                 User user = UserManager.GetProfileDetails(userId).Result;
-                return Ok(user);
+                var selfieUrl = fileManager.GetSelfie(userId).Result;
+                var identityUrl = fileManager.GetIdentity(userId).Result;
+                var responsePack = packManager.GetCurrent(userId);
+
+                return Ok(user.ToViewModel(identityUrl, selfieUrl, responsePack.Success));
             }
             catch (Exception)
             {
@@ -168,6 +175,37 @@ namespace Web.Controllers
             {
                 return Ok(fileResponse);
             }
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit([FromForm]EditUserViewModel viewModel)
+        {
+            string userId = User.GetUserId();
+
+            var dto = viewModel.ToDto(userId);
+
+            var fileViewModel = new IdentityFileModel
+            {
+                Identity = viewModel.Identity,
+                Selfie = viewModel.Selfie,
+            };
+
+            var fileDto = fileViewModel.ToDto(userId);
+
+            var response = UserManager.Edit(dto);
+
+            if (!string.IsNullOrEmpty(fileDto?.IdentityDto?.Extension))
+            {
+                fileManager.UpdateIdentity(fileDto.IdentityDto, fileDto.UserId);
+            }
+
+            if (!string.IsNullOrEmpty(fileDto?.SelfieDto?.Extension))
+            {
+                fileManager.UpdateSelfie(fileDto.SelfieDto, fileDto.UserId);
+            }
+
             return Ok(response);
         }
     }

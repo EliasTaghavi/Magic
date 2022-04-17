@@ -13,5 +13,6 @@ namespace Core.Packs.Entities
         public string GatewayName { get; set; }
         public bool? PayStatus { get; set; }
         public DateTime? PayDate { get; set; }
+        public DateTime RealExpireDate { get; set; }
     }
 }
