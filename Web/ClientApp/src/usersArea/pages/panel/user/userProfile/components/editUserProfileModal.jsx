@@ -262,6 +262,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 						toast.success('اطلاعات شما با موفقیت ویرایش شد', toastOptions);
 						setBtnLoader(false);
 						setProgressBarModal(false);
+						onClose();
 						reload();
 						// dispatch(UserStore.actions.updateUserData({firstName, lastName, birthday, address}));
 					}
