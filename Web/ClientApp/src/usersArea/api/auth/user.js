@@ -54,7 +54,6 @@ export const sendUserLoginPassword = ({mobile, loginPassword}) => {
     username: mobile,
     password: loginPassword,
   };
-  console.log(rawData);
   let data = JSON.stringify(rawData);
   return axios.post('/api/Session/createByUP', data, {headers}).then((res) => {
     if (res?.data?.code === '401') {
@@ -147,7 +146,6 @@ export const editUserProfile = (data) => {
 
 
   return axios.post('/api/user/edit', formData, {headers}).then((res) => {
-    console.log(res);
     if (res?.data?.code === '401') {
       return 401;
     } else {
@@ -155,7 +153,6 @@ export const editUserProfile = (data) => {
     }
   })
      .catch((error) => {
-       console.log(error, error.response);
        if (error.response.status === 401) {
          return 401;
        } else {

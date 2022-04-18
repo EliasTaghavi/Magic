@@ -1,6 +1,5 @@
 export const dateConvertor = (date) => {
 	let splittedDate = date?.split('/');
-	console.log(splittedDate);
 	if (date) {
 		return {
 			day: Number(splittedDate[2]),
