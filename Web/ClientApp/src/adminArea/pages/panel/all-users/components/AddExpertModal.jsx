@@ -216,7 +216,6 @@ const AddExpertModal = ({setOpen, refreshList}) => {
 		};
 		sendExpertData(expertData)
 			.then((response) => {
-				console.log(response);
 				let {success} = response;
 				if (response) {
 					if (response === 401) {
@@ -233,7 +232,6 @@ const AddExpertModal = ({setOpen, refreshList}) => {
 				}
 			})
 			.catch((e) => {
-				console.log(e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setLoader(false);
 			});
