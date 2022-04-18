@@ -53,7 +53,6 @@ export const sendShopLoginPassword = ({mobile, loginPassword}) => {
 		username: mobile,
 		password: loginPassword,
 	};
-	console.log(rawData);
 	let data = JSON.stringify(rawData);
 	return axios.post('/api/shop/createByUp', data, {headers}).then((res) => {
 		if (res?.data?.code === '401') {

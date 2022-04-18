@@ -54,7 +54,6 @@ export const sendUserLoginPassword = ({mobile, loginPassword}) => {
     username: mobile,
     password: loginPassword,
   };
-  console.log(rawData);
   let data = JSON.stringify(rawData);
   return axios.post('/api/Session/createByUP', data, {headers}).then((res) => {
     if (res?.data?.code === '401') {
@@ -118,7 +117,7 @@ export const signupUser = (data) => {
 }
 
 export const editUserProfile = (data) => {
-  let {firstName, lastName, birthday, image, selfiImage, address} = data;
+  let {firstName, lastName, birthday, image, selfiImage, address, referralCode} = data;
   const token = tokenStore.getUserToken();
   let headers = {
     'Content-Type': 'application/json',
@@ -128,25 +127,25 @@ export const editUserProfile = (data) => {
 
   let textData = {
     Name: firstName,
-    Surename: lastName,
+    Surname: lastName,
     Birthday: birthday ? `${birthday?.year}/${birthday?.month}/${birthday?.day}` : '1401/01/01',
     Address: address,
+    RefCode: referralCode,
   };
 
   for (let [key, value] of Object.entries(textData)) {
     formData.append(key, value);
   }
 
-  if (image) {
+  if (image && typeof image === 'object') {
     formData.append('Identity', image);
   }
-  if (selfiImage) {
+  if (selfiImage && typeof selfiImage === 'object') {
     formData.append('Selfie', selfiImage);
   }
 
 
   return axios.post('/api/user/edit', formData, {headers}).then((res) => {
-    console.log(res);
     if (res?.data?.code === '401') {
       return 401;
     } else {
@@ -154,7 +153,6 @@ export const editUserProfile = (data) => {
     }
   })
      .catch((error) => {
-       console.log(error, error.response);
        if (error.response.status === 401) {
          return 401;
        } else {

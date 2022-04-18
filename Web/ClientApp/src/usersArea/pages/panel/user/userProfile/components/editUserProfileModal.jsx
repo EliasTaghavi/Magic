@@ -16,6 +16,8 @@ import {useDispatch} from "react-redux";
 import EditUserValidation from "../../../../../../components/validations/editUser/editUser";
 import {useShallowPickerSelector} from "../../../../../../store/selectors";
 import RenderProgressBarModal from "../../../../../../components/shared/renderProgressBarModal";
+import {dateConvertor} from "../../../../../../components/dateConvertor";
+import {imagePreUrl} from "../../../../../api/imagePreUrl";
 
 const EditUserProfileModal = ({onClose, reload}) => {
 	const dispatch = useDispatch();
@@ -23,21 +25,20 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [errors, setErrors] = useState({});
 	const [firstName, setFirstName] = useState(userData?.firstName ?? '');
 	const [lastName, setLastName] = useState(userData?.lastName ?? '');
-	const [birthday, setBirthday] = useState(userData?.birthday ?? '');
+	const [birthday, setBirthday] = useState(userData?.birthday ? dateConvertor(userData?.birthday) : '');
 	const [address, setAddress] = useState(userData?.address ?? '');
 	const [focused, setFocused] = useState('');
 	const [selectMediaModal, setSelectMediaModal] = useState('');
 	const [image, setImage] = useState('');
 	const [selfiImage, setSelfiImage] = useState('');
-	const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-	const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState('');
+	const [imagePreviewUrl, setImagePreviewUrl] = useState(imagePreUrl(userData?.identityURL));
+	const [selfiImagePreviewUrl, setSelfiImagePreviewUrl] = useState(imagePreUrl(userData?.selfieURL));
 	const [referralCode, setReferralCode] = useState('');
 	const [referralCodeLoader, setReferralCodeLoader] = useState(false);
 	const [resultData, setResultData] = useState('');
 	const [camera, setCamera] = useState(false);
 	const [btnLoader, setBtnLoader] = useState(false);
 	const [progressBarModal, setProgressBarModal] = useState(false);
-	console.log(44444, userData);
 
 	const focusedFn = (e) => {
 		let target = e.target;
@@ -248,32 +249,30 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const sendEditUserData = (data) => {
 		setBtnLoader(true);
 		setProgressBarModal(true);
-		console.log(data);
 		editUserProfile(data)
 			.then((response) => {
-				console.log(response);
-				// let {success} = response;
-				// if (response) {
-				// 	if (response === 401) {
-				// 		dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
-				// 	} else if (success) {
-				// 		toast.success('اطلاعات شما با موفقیت ویرایش شد', toastOptions);
-				// 		setBtnLoader(false);
-				// 		setProgressBarModal(false);
-				// 		reload();
-				// 		// dispatch(UserStore.actions.updateUserData({firstName, lastName, birthday, address}));
-				// 	}
-				// } else {
-				// 	toast.error('خطای سرور', toastOptions);
-				// 	setBtnLoader(false);
-				// 	setProgressBarModal(false);
-				// }
+				let {success} = response;
+				if (response) {
+					if (response === 401) {
+						dispatch(MainStore.actions.setLogoutModal({type: 'user', modal: true}));
+					} else if (success) {
+						toast.success('اطلاعات شما با موفقیت ویرایش شد', toastOptions);
+						setBtnLoader(false);
+						setProgressBarModal(false);
+						onClose();
+						reload();
+						// dispatch(UserStore.actions.updateUserData({firstName, lastName, birthday, address}));
+					}
+				} else {
+					toast.error('خطای سرور', toastOptions);
+					setBtnLoader(false);
+					setProgressBarModal(false);
+				}
 			})
 			.catch((e) => {
-				console.log(e, e.response);
-				// toast.error('خطای سرور', toastOptions);
-				// setBtnLoader(false);
-				// setProgressBarModal(false);
+				toast.error('خطای سرور', toastOptions);
+				setBtnLoader(false);
+				setProgressBarModal(false);
 			})
 	};
 
@@ -387,7 +386,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 									</button>
 								</div>}
 							</div>
-							<div className={`d-flex flex-column align-items-start justify-content-start w-100 overflow-hidden transition jobPartOpened`}>
+							<div className={`d-flex flex-column align-items-start justify-content-start w-100 overflow-hidden transition mt-3`}>
 								<label htmlFor="image" className="transition fs14 mb-0 textThird">
 									تصویر کارت دانشجویی<span style={{color: 'red'}}>{`\xa0*`}</span>
 								</label>

@@ -77,7 +77,6 @@ const AdminAllUsers = () => {
 		};
 		adminGetAllUsers(filteredData)
 			.then((response) => {
-				console.log(response);
 				const {result: {count, items}, success} = response;
 				if (response) {
 					if (response === 401) {

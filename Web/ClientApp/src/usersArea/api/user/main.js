@@ -82,7 +82,6 @@ export const SendChangeUserPasswordData = (data) => {
 		newPassword: newPassword,
 	});
 
-	console.log(body);
 
 	return axios.post('/api/user/changePassword', body,{headers}).then((res) => {
 		if (res?.data?.code === '401') {

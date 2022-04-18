@@ -162,7 +162,6 @@ export const sendShopImage = (data) => {
 }
 
 export const deleteShopImage = (data) => {
-	console.log(7878, data);
 	const token = tokenStore.getAdminToken();
 	let headers = {
 		'Content-Type': 'application/json',
@@ -172,7 +171,6 @@ export const deleteShopImage = (data) => {
 		photoId: data.replace(/(.png)|(.jpg)|(.jpeg)/gm, ''),
 	});
 
-	console.log(body);
 
 
 	return axios.post('/api/shop/deletePhoto', body, {headers}).then((res) => {
