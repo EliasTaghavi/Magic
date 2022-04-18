@@ -165,8 +165,11 @@ namespace Infrastructure.Identity.Managers
                 newUser.Roles.Add(role);
                 if (dto.IsStudent)
                 {
-                    var type = userTypeRepo.GetSet().FirstOrDefault(x => x.Id == "823a5500-e962-42b3-89d8-f5fb5b0270a9");
-                    newUser.UserType = type;
+                    newUser.UserTypeId = "823a5500-e962-42b3-89d8-f5fb5b0270a9";
+                }
+                else
+                {
+                    newUser.UserTypeId = "34e4a710-292d-4464-874a-bfcd739323e5";
                 }
                 user = UserRepo.Create(newUser);
             }
