@@ -25,7 +25,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [errors, setErrors] = useState({});
 	const [firstName, setFirstName] = useState(userData?.firstName ?? '');
 	const [lastName, setLastName] = useState(userData?.lastName ?? '');
-	const [birthday, setBirthday] = useState(dateConvertor(userData?.birthday) ?? '');
+	const [birthday, setBirthday] = useState(userData?.birthday ? dateConvertor(userData?.birthday) : '');
 	const [address, setAddress] = useState(userData?.address ?? '');
 	const [focused, setFocused] = useState('');
 	const [selectMediaModal, setSelectMediaModal] = useState('');
@@ -39,7 +39,6 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [camera, setCamera] = useState(false);
 	const [btnLoader, setBtnLoader] = useState(false);
 	const [progressBarModal, setProgressBarModal] = useState(false);
-	console.log(44444, userData, birthday);
 
 	const focusedFn = (e) => {
 		let target = e.target;
@@ -51,7 +50,6 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	}
 
 	const selectDay = (data) => {
-		console.log(data);
 		delete errors['birthday'];
 		setBirthday(data)
 	};
@@ -251,10 +249,8 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const sendEditUserData = (data) => {
 		setBtnLoader(true);
 		setProgressBarModal(true);
-		console.log(data, typeof data?.selfiImage);
 		editUserProfile(data)
 			.then((response) => {
-				console.log(response);
 				let {success} = response;
 				if (response) {
 					if (response === 401) {
@@ -274,7 +270,6 @@ const EditUserProfileModal = ({onClose, reload}) => {
 				}
 			})
 			.catch((e) => {
-				console.log(e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setBtnLoader(false);
 				setProgressBarModal(false);

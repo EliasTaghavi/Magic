@@ -52,7 +52,6 @@ export const sendReport = (data) => {
 		email,
 		text: description,
 	});
-	console.log(body);
 
 	return axios.post(`api/comment/add`, body, {headers}).then((res) => {
 		if (res?.data?.code === '401') {

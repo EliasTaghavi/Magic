@@ -64,14 +64,12 @@ const Home = () => {
         setSendLoader(true);
         sendReport({mainToken, email, description})
            .then((response) => {
-             console.log(response);
              setEmail('');
              setDescription('');
              toast.success('نظر شما با موفقیت ثبت شد', toastOptions);
              setSendLoader(false);
            })
            .catch((e) =>{
-             console.log(e, e.response);
              setEmail('');
              setDescription('');
              toast.error('لطفا مجددا تلاش کنید', toastOptions);

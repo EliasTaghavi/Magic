@@ -25,14 +25,12 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 
 	const handleValidate = (e) => {
 		e.preventDefault();
-		console.log(images);
 		setLoader(true);
 		let data = {
 			files: addedImages,
 			deleted: deletedImages.map((i) => i.replace(/(.png)|(.jpg)|(.jpeg)/gm, '')),
 			shopId: item?.id,
 		};
-		console.log(data);
 		sendShopImage(data)
 			.then((response) => {
 				let {success} = response
@@ -50,7 +48,6 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 				}
 			})
 			.catch((e) => {
-				console.log(e, e.response);
 				toast.error('خطای سرور', toastOptions);
 				setLoader(false);
 			})
@@ -121,7 +118,6 @@ const AddImageModal = ({item, setOpen, refreshData}) => {
 		setImages(newImages);
 	}
 
-	console.log('images', images);
 
 	return (
 		<Modal
