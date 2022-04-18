@@ -25,7 +25,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [errors, setErrors] = useState({});
 	const [firstName, setFirstName] = useState(userData?.firstName ?? '');
 	const [lastName, setLastName] = useState(userData?.lastName ?? '');
-	const [birthday, setBirthday] = useState(dateConvertor(userData?.birthday) ?? '');
+	const [birthday, setBirthday] = useState(userData?.birthday ? dateConvertor(userData?.birthday) : '');
 	const [address, setAddress] = useState(userData?.address ?? '');
 	const [focused, setFocused] = useState('');
 	const [selectMediaModal, setSelectMediaModal] = useState('');
