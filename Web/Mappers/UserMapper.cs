@@ -114,6 +114,7 @@ namespace Web.Mappers
                 HasActivePack = hasPack,
                 Roles = user.Roles.Select(x => x.Name).ToList(),
                 Status = user.UserStatus,
+                TypeId = user.UserTypeId
             };
         }
 

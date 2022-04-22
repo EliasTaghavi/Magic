@@ -19,5 +19,6 @@ namespace Web.Models.User
         public bool HasActivePack { get; set; }
         public List<string> Roles { get; set; }
         public bool IsStudent { get; set; }
+        public string TypeId { get; set; }
     }
 }
