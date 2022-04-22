@@ -126,7 +126,8 @@ namespace Web.Mappers
                 Name = viewModel.Name,
                 Surname = viewModel.Surname,
                 Id = userId,
-                RefCode = viewModel.RefCode
+                RefCode = viewModel.RefCode,
+                TypeId = viewModel.TypeId
             };
         }
     }

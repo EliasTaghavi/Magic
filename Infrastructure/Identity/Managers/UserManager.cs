@@ -361,6 +361,7 @@ namespace Infrastructure.Identity.Managers
             user.Birthday = dto.Birthday;
             user.Address = dto.Address;
             user.RefCode = dto.RefCode;
+            user.UserTypeId = dto.TypeId;
 
             UserRepo.Update(user);
 
