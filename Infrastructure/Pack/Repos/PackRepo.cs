@@ -17,7 +17,7 @@ namespace Infrastructure.Packs.Repos
 
         public PagedListDto<PackListDto> Search(PageRequestDto<PackFilterDto> dto)
         {
-            var query = GetSet();
+            var query = GetSet().Where(x => x.Enable == true);
             if (!string.IsNullOrEmpty(dto.MetaData.Title))
             {
                 query = query.Where(x => x.Title.Contains(dto.MetaData.Title));

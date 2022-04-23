@@ -30,7 +30,7 @@ namespace Infrastructure.Packs.Managers
 
         public ManagerResult<bool> Delete(string id)
         {
-            packRepo.Delete(id);
+            packRepo.Disable(id);
             return new ManagerResult<bool>(true);
         }
 
