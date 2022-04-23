@@ -114,6 +114,7 @@ namespace Web.Mappers
                 HasActivePack = hasPack,
                 Roles = user.Roles.Select(x => x.Name).ToList(),
                 Status = user.UserStatus,
+                TypeId = user.UserTypeId
             };
         }
 
@@ -126,7 +127,8 @@ namespace Web.Mappers
                 Name = viewModel.Name,
                 Surname = viewModel.Surname,
                 Id = userId,
-                RefCode = viewModel.RefCode
+                RefCode = viewModel.RefCode,
+                TypeId = viewModel.TypeId
             };
         }
     }

@@ -9,7 +9,7 @@ namespace Core.Identity.Dto
 		public DateTime Birthday { get; set; }
 		public string Address { get; set; }
         public string RefCode { get; set; }
-
+        public string TypeId { get; set; }
     }
 }
 

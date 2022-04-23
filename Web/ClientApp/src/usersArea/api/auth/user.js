@@ -117,7 +117,7 @@ export const signupUser = (data) => {
 }
 
 export const editUserProfile = (data) => {
-  let {firstName, lastName, birthday, image, selfiImage, address, referralCode} = data;
+  let {firstName, lastName, birthday, image, selfiImage, address, referralCode, TypeId} = data;
   const token = tokenStore.getUserToken();
   let headers = {
     'Content-Type': 'application/json',
@@ -131,6 +131,7 @@ export const editUserProfile = (data) => {
     Birthday: birthday ? `${birthday?.year}/${birthday?.month}/${birthday?.day}` : '1401/01/01',
     Address: address,
     RefCode: referralCode,
+    TypeId: TypeId ? '823a5500-e962-42b3-89d8-f5fb5b0270a9' : '34e4a710-292d-4464-874a-bfcd739323e5',
   };
 
   for (let [key, value] of Object.entries(textData)) {

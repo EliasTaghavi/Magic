@@ -10,6 +10,7 @@ import {useShallowPickerSelector} from "../../../../../store/selectors";
 import * as MainStore from "../../../../../store/main";
 import {useDispatch} from "react-redux";
 import * as UserStore from "../../../../../store/user";
+import CompleteProfileAlert from "../../../../components/completeProfileAlert";
 
 const UserPackages = () => {
    const dispatch = useDispatch();
@@ -45,17 +46,14 @@ const UserPackages = () => {
 
   let disabled = userData?.hasActivePack;
 
-  return (
+   return (
     <div className="d-flex flex-column centered w-100">
-       {!userData?.identityURL && userData?.isStudent && <div className="w-100 alert alert-warning">
-          <p className="font-weight-bold fs16 alert-heading">توجه!</p>
-          <p>اطلاعات حساب کاربری شما تکمیل نشده است. در صورت خرید پکیج و عدم تکمیل اطلاعات حساب کاربری در مدت یک هفته،
-             مدت زمان استفاده از پکیج به نصف کاهش می یابد.</p>
-       </div>}
+      <CompleteProfileAlert />
       <div className="card cardPrimary px-3 w-100">
         <div className="card-header bg-transparent d-flex flex-column flex-sm-row align-items-start justify-content-center align-items-sm-center justify-content-sm-between">
           <p className="card-title fs22 my-2">اشتراک ها</p>
-          <p className="card-title fs16 font-weight-bold my-2 mx-0 mr-sm-3 text-danger">{`خرید شما، شامل ${discount ?? 0}% تخفیف می باشد.`}</p>
+           {discount > 0 && <p
+              className="card-title fs16 font-weight-bold my-2 mx-0 mr-sm-3 text-danger">{`خرید شما، شامل ${discount ?? 0}% تخفیف می باشد.`}</p>}
         </div>
         <div className="card-body w-100 d-flex flex-column py-5 px-0">
           <p className="fs20 text-justify  text-dark">با خرید هریک از اشتراک های زیر، با توجه به مدت زمانی خریداری شده، امکان استفاده با تخفیف از کلیه خدمات فروشگاه های هدف را دارید.</p>
