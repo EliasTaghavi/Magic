@@ -13,10 +13,10 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import Loader from "react-loader-spinner";
 import RenderPageButtons from "../../../../../adminArea/pages/panel/components/RenderPageButtons";
 import {useShallowPickerSelector} from "../../../../../store/selectors";
+import CompleteProfileAlert from "../../../../components/completeProfileAlert";
 
 const UserTransactions = () => {
   const dispatch = useDispatch();
-  const userData = useShallowPickerSelector('user', ['userData']);
   const [bigLoader, setBigLoader] = useState(false);
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -135,11 +135,7 @@ const UserTransactions = () => {
 
   return (
      <div className="w-100 d-flex flex-column align-items-center justify-content-start">
-       {!userData?.identityURL && userData?.isStudent &&<div className="w-100 alert alert-warning">
-         <p className="font-weight-bold fs16 alert-heading">توجه!</p>
-         <p>اطلاعات حساب کاربری شما تکمیل نشده است. در صورت خرید پکیج و عدم تکمیل اطلاعات حساب کاربری در مدت یک هفته،
-           مدت زمان استفاده از پکیج به نصف کاهش می یابد.</p>
-       </div>}
+       <CompleteProfileAlert />
        <div className="card cardPrimary px-3 w-100">
          <div className="card-header bg-transparent d-flex align-items-center justify-content-between">
            <p className="card-title fs22 my-2">لیست تراکنش ها</p>
