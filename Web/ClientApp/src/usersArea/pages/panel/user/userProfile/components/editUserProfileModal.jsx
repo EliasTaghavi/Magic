@@ -39,6 +39,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 	const [camera, setCamera] = useState(false);
 	const [btnLoader, setBtnLoader] = useState(false);
 	const [progressBarModal, setProgressBarModal] = useState(false);
+	const [isStudent, setIsStudent] = useState(userData?.isStudent);
 
 	const focusedFn = (e) => {
 		let target = e.target;
@@ -227,6 +228,7 @@ const EditUserProfileModal = ({onClose, reload}) => {
 			address,
 			token: userData?.token,
 			referralCode,
+			TypeId: isStudent,
 		}
 		EditUserValidation(data)
 			.then((response) => {
@@ -385,6 +387,14 @@ const EditUserProfileModal = ({onClose, reload}) => {
 										<FontAwesomeIcon icon={faTimes} color="red"/>
 									</button>
 								</div>}
+							</div>
+							<div className="mt-5 cursor d-flex align-items-center mb-4">
+								<input id="isStudent" type="checkbox" className="cursor customCheckBox" checked={isStudent} value={isStudent} onChange={(e) => {
+									setIsStudent(!isStudent);
+								}} />
+								<label htmlFor="isStudent" className="pr-2 mb-0 cursor fs14 textThird">
+									دانشجو هستم
+								</label>
 							</div>
 							<div className={`d-flex flex-column align-items-start justify-content-start w-100 overflow-hidden transition mt-3`}>
 								<label htmlFor="image" className="transition fs14 mb-0 textThird">

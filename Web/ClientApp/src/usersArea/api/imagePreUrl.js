@@ -1,5 +1,5 @@
 export const imagePreUrl = (imageId) => {
-	return `/ids/${imageId}`
+	return imageId ? `/ids/${imageId}` : '';
 };
 
 export const qrCodePreUrl = (qrId) => {
