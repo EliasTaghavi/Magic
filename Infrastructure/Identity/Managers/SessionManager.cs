@@ -160,6 +160,7 @@ namespace Infrastructure.Identity.Managers
                     Mobile = dto.Phone,
                     Username = dto.Phone,
                     UserStatus = UserStatus.PhoneConfirmed,
+                    QRCode = Guid.NewGuid().ToString()
                 };
                 var role = roleRepo.GetSet().FirstOrDefault(x => x.EnName == "User");
                 newUser.Roles.Add(role);
