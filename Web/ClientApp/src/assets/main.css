@@ -261,7 +261,7 @@
     height: 22px;
     top: -5px;
     right: 0;
-    z-index: 999;
+    z-index: 9;
 }
 
 .newAuthBtn {

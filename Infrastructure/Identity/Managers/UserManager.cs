@@ -362,6 +362,7 @@ namespace Infrastructure.Identity.Managers
             user.Address = dto.Address;
             user.RefCode = dto.RefCode;
             user.UserTypeId = dto.TypeId;
+            user.UserStatus = UserStatus.NotConfirmed;
 
             UserRepo.Update(user);
 

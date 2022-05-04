@@ -517,6 +517,7 @@ const LoginUser = () => {
                   inputPlaceholder="..."
                   maximumDate={maximumDate}
                   wrapperClassName="w-100"
+                  calendarPopperPosition="bottom"
                   inputClassName={`text-right fs16 form-control input ${errors['birthday'] && 'is-invalid'}`}
                 />
                 <span className="invalid-feedback mt-2 fs14" style={{
