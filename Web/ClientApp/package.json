@@ -12,7 +12,7 @@
     "chart.js": "^2.9.4",
     "connected-react-router": "6.5.2",
     "history": "4.10.1",
-    "jquery": "^3.6.0",
+    "jquery": "^3.6.1",
     "merge": "2.1.1",
     "moment": "^2.29.1",
     "moment-jalaali": "^0.9.4",
